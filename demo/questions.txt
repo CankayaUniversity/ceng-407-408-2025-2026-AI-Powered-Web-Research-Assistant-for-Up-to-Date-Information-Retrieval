@@ -1,0 +1,27 @@
+Science & Nature
+"What is the speed of light?"
+"How far is the Moon from Earth?"
+"What causes earthquakes?"
+"How many bones are in the human body?"
+Geography
+"What is the capital of Japan?"
+"What is the largest ocean in the world?"
+"Which country has the most population?"
+"What is the longest river in Africa?"
+History
+"When did World War 2 end?"
+"Who invented the telephone?"
+"When was the first moon landing?"
+"Who built the pyramids of Giza?"
+Current Affairs / People
+"Who is the president of France?"
+"Who is the CEO of Tesla?"
+"What country hosted the 2022 World Cup?"
+Technology
+"Who founded Microsoft?"
+"When was the iPhone first released?"
+"What programming language did Google develop?"
+Sports
+"Which country has won the most FIFA World Cups?"
+"Who holds the 100m sprint world record?"
+"How many Grand Slam titles has Novak Djokovic won?"
