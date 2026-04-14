@@ -1,0 +1,40 @@
+1 Simple factual (single-claim)
+“When was JFK assassinated?”
+“What is the capital of Canada?”
+“Who is the CEO of NVIDIA in 2026?”
+2 Multi-part factual
+“What is LangGraph, who maintains it, and when was it first released?”
+“Compare Python and Go release years, creators, and primary use cases.”
+“Who founded OpenAI, when, and where is its headquarters?”
+3 Time-sensitive / dynamic web
+“What are the latest major updates in Ollama this month?”
+“What is the current Bitcoin price and 24h change?”
+“What is the latest NASA mission news this week?”
+4 Conflicting / controversial claims
+“Did coffee increase lifespan according to recent studies?”
+“Is intermittent fasting better than calorie counting for weight loss?”
+“Are e-cigarettes safer than regular cigarettes?”
+5 Local event + recency
+“What happened in Turkey’s economy this week according to major sources?”
+“Latest developments about EU AI Act enforcement timeline.”
+“Recent major earthquake reports in the Mediterranean region.”
+6 Numeric/statistical claims
+“What is the global population now?”
+“What is Türkiye’s inflation rate this year?”
+“How many users does ChatGPT have currently?”
+7 Entity disambiguation
+“Tell me about Apple’s latest quarterly results.” (company, not fruit)
+“What is Jaguar’s newest model?” (car brand ambiguity)
+“Who is Jordan?” (person/country ambiguity)
+8 Source reliability stress tests
+“Did [viral social media claim] happen? verify with reliable sources.”
+“Is ‘X supplement cures cancer’ true?”
+“Fact-check: ‘The Earth’s core has stopped spinning.’”
+9 Deep-reading required
+“Summarize key points from this page and cite them: [URL]”
+“What does this official announcement say about deadlines? [URL]”
+“Extract 3 factual claims from this report page: [URL]”
+10 Negative / no-evidence tests
+“Did Einstein publish a paper in 2020?”
+“Which country elected Elon Musk as president?”
+“Did NASA confirm life on Mars yesterday?”

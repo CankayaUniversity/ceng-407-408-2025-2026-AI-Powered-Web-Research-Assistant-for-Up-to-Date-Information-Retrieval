@@ -1,9 +1,15 @@
 import requests
 from bs4 import BeautifulSoup
+from langchain_community.tools import DuckDuckGoSearchResults
 from langchain_community.tools.tavily_search import TavilySearchResults
 from langchain_core.tools import tool
 
-from config import DEEP_READER_MAX_CHARS, DEEP_READER_TIMEOUT_SECONDS, TAVILY_MAX_RESULTS
+from config import (
+    DEEP_READER_MAX_CHARS,
+    DEEP_READER_TIMEOUT_SECONDS,
+    DUCKDUCKGO_MAX_RESULTS,
+    TAVILY_MAX_RESULTS,
+)
 
 
 @tool
@@ -33,5 +39,6 @@ def deep_site_reader(url: str) -> str:
 
 
 def build_tools():
-    web_search_tool = TavilySearchResults(max_results=TAVILY_MAX_RESULTS)
-    return [web_search_tool, deep_site_reader]
+    tavily_search_tool = TavilySearchResults(max_results=TAVILY_MAX_RESULTS)
+    duckduckgo_search_tool = DuckDuckGoSearchResults(num_results=DUCKDUCKGO_MAX_RESULTS)
+    return [tavily_search_tool, duckduckgo_search_tool, deep_site_reader]

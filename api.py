@@ -3,6 +3,9 @@ from langchain_core.messages import HumanMessage
 
 from agent import build_agent
 from config import load_environment
+from fact_extraction import extract_claims
+
+TOOL_LOG_PREVIEW_CHARS = 2000
 
 
 load_environment()
@@ -30,10 +33,36 @@ def ask_agent(question: str):
                     print(f" TOOL USED: {tool_call['name']}")
                     print(f" TOOL INPUT: {tool_call['args']}")
             elif message.type == "tool":
-                print(f"\n[TOOL RESULT ({message.name})]: {message.content[:150]}... (truncated)")
+                tool_output = str(message.content)
+                print(f"\n[TOOL RESULT ({message.name})]:")
+                if len(tool_output) <= TOOL_LOG_PREVIEW_CHARS:
+                    print(tool_output)
+                else:
+                    print(tool_output[:TOOL_LOG_PREVIEW_CHARS])
+                    print(f"... (truncated, total chars: {len(tool_output)})")
         print("=" * 40 + "\n")
 
         final_answer = result["messages"][-1].content.replace("\n", " ")
-        return {"your_question": question, "agent_answer": final_answer}
+        tool_messages = [
+            {"name": message.name, "content": str(message.content)}
+            for message in result["messages"]
+            if message.type == "tool"
+        ]
+        extraction = extract_claims(final_answer, tool_messages)
+
+        print("FACT EXTRACTION SUMMARY")
+        for idx, fact in enumerate(extraction["facts"], start=1):
+            print(f" FACT {idx}: {fact['claim_text']}")
+            print(f"  URLs: {fact['evidence_urls']}")
+            print(f"  FLAGS: {fact['fact_quality_flags']}")
+        print(f" TRUST SIGNALS: {extraction['trust_signals']}")
+
+        return {
+            "your_question": question,
+            "agent_answer": final_answer,
+            "facts": extraction["facts"],
+            "sources": extraction["sources"],
+            "trust_signals": extraction["trust_signals"],
+        }
     except Exception as e:
         return {"error": f"Agent error: {str(e)}"}
