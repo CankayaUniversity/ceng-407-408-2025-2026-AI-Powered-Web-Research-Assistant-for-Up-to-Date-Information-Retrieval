@@ -20,6 +20,7 @@ from config import (
 )
 from config import load_environment
 from fact_extraction import extract_claims
+from verification import verify_answer
 
 TOOL_LOG_PREVIEW_CHARS = 2000
 
@@ -260,6 +261,21 @@ def ask_agent_stream(
                         elif message_type == "ai" and getattr(message, "content", None):
                             final_answer = message.content
                             yield _sse("answer", {"text": final_answer})
+
+            # Verification pass — re-check the draft answer against tool results
+            # and rewrite any claim the search results contradict or don't support.
+            if final_answer and tool_messages_collected:
+                yield _sse("verifying", {})
+                verified_answer, was_changed = verify_answer(
+                    question=question,
+                    answer=final_answer,
+                    tool_messages=tool_messages_collected,
+                    model_id=model_info["id"],
+                    today_iso=date.today().isoformat(),
+                )
+                if was_changed:
+                    final_answer = verified_answer
+                    yield _sse("answer", {"text": final_answer, "verified": True})
 
             yield _sse("extracting", {})
 

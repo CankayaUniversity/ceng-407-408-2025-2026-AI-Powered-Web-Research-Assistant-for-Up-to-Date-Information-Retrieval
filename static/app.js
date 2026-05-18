@@ -685,6 +685,10 @@ function startResearch(question) {
     scrollToBottom();
   });
 
+  es.addEventListener('verifying', () => {
+    traceLabel.textContent = 'Fact-checking answer against sources…';
+  });
+
   es.addEventListener('extracting', () => {
     traceLabel.textContent = 'Extracting facts & verifying citations…';
   });
