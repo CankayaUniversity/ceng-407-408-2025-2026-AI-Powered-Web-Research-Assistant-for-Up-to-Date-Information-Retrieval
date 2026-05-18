@@ -1,11 +1,12 @@
 import json
+from datetime import date
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
-from langchain_core.messages import AIMessage, HumanMessage
+from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
 from pydantic import BaseModel
 
 import cache_store
@@ -130,6 +131,19 @@ def _build_history(chat: dict | None) -> list:
     return history
 
 
+def _today_context_message() -> SystemMessage:
+    today_iso = date.today().isoformat()
+    return SystemMessage(
+        content=(
+            f"Today's date is {today_iso}. "
+            "Your training data is from before this date and is unreliable for any time-sensitive fact. "
+            "For any question about current people, prices, events, statistics, dates, or recent developments, "
+            "you MUST use your search tools and base your answer exclusively on the retrieved content. "
+            "Do not state remembered facts from training as if they were current truth."
+        )
+    )
+
+
 @app.get("/ask_agent_stream")
 def ask_agent_stream(
     question: str,
@@ -203,7 +217,11 @@ def ask_agent_stream(
 
             agent = AGENTS[model_key]
             history_messages = _build_history(chat)
-            input_messages = history_messages + [HumanMessage(content=question)]
+            input_messages = (
+                [_today_context_message()]
+                + history_messages
+                + [HumanMessage(content=question)]
+            )
 
             tool_messages_collected: list[dict] = []
             final_answer = ""
@@ -314,7 +332,9 @@ def ask_agent(question: str, model: str | None = None):
         model_info = MODEL_REGISTRY[model_key]
         agent = AGENTS[model_key]
 
-        input_message = {"messages": [HumanMessage(content=question)]}
+        input_message = {
+            "messages": [_today_context_message(), HumanMessage(content=question)]
+        }
         result = agent.invoke(input_message)
 
         print("\n" + "=" * 40)
