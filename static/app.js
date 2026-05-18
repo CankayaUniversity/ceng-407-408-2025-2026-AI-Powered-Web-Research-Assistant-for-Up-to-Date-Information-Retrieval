@@ -28,6 +28,7 @@ let selectedModel = localStorage.getItem('selectedModel') || 'llama';
 const MODEL_LABELS = {
   llama: 'Llama 3.1',
   qwen: 'Qwen 2.5',
+  llama32: 'Llama 3.2',
 };
 
 if (window.marked && marked.setOptions) {

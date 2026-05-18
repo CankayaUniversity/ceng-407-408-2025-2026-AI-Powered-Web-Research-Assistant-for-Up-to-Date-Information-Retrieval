@@ -23,6 +23,7 @@
   --danger: #f47c7c;
   --llama-color: #f59e0b;
   --qwen-color: #06b6d4;
+  --llama32-color: #22c55e;
   --radius: 14px;
   --radius-sm: 10px;
   --radius-lg: 18px;
@@ -704,6 +705,11 @@ body {
   background: rgba(6, 182, 212, 0.10);
   color: var(--qwen-color);
 }
+.meta-badge.model-llama32 {
+  border-color: rgba(34, 197, 94, 0.4);
+  background: rgba(34, 197, 94, 0.10);
+  color: var(--llama32-color);
+}
 .meta-badge svg {
   width: 11px;
   height: 11px;
@@ -1078,11 +1084,15 @@ body {
 }
 .dot-llama { background: var(--llama-color); }
 .dot-qwen { background: var(--qwen-color); }
+.dot-llama32 { background: var(--llama32-color); }
 .model-option.active .dot-llama {
   box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.18);
 }
 .model-option.active .dot-qwen {
   box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.18);
+}
+.model-option.active .dot-llama32 {
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.18);
 }
 
 #submit-btn {

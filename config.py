@@ -3,11 +3,13 @@ from dotenv import load_dotenv
 
 MODEL_NAME = "llama3.1"
 QWEN_MODEL_NAME = "qwen2.5:7b"
+LLAMA32_MODEL_NAME = "llama3.2:3b"
 DEFAULT_MODEL_KEY = "llama"
 
 MODEL_REGISTRY = {
     "llama": {"id": MODEL_NAME, "label": "Llama 3.1", "size": "8B"},
     "qwen": {"id": QWEN_MODEL_NAME, "label": "Qwen 2.5", "size": "7B"},
+    "llama32": {"id": LLAMA32_MODEL_NAME, "label": "Llama 3.2", "size": "3B"},
 }
 
 MODEL_TEMPERATURE = 0
