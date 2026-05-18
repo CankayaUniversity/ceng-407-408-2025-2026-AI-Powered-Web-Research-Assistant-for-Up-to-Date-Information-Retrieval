@@ -118,7 +118,7 @@ function clearConversation() {
 
 /* ----------------- auto-hide scrollbar ----------------- */
 
-function setupAutoHideScroll(element, idleMs = 500) {
+function setupAutoHideScroll(element, idleMs = 350) {
   if (!element) return;
   let timer = null;
   element.addEventListener(
@@ -136,6 +136,29 @@ function setupAutoHideScroll(element, idleMs = 500) {
 
 setupAutoHideScroll(conversation);
 setupAutoHideScroll(chatList);
+
+/* ----------------- theme toggle ----------------- */
+
+const themeToggle = document.getElementById('theme-toggle');
+
+function applyTheme(theme) {
+  if (theme === 'light') {
+    document.documentElement.setAttribute('data-theme', 'light');
+  } else {
+    document.documentElement.removeAttribute('data-theme');
+  }
+}
+
+let currentTheme = localStorage.getItem('theme') || 'dark';
+applyTheme(currentTheme);
+
+themeToggle.addEventListener('click', () => {
+  currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  try {
+    localStorage.setItem('theme', currentTheme);
+  } catch (err) {}
+  applyTheme(currentTheme);
+});
 
 /* ----------------- model toggle ----------------- */
 
