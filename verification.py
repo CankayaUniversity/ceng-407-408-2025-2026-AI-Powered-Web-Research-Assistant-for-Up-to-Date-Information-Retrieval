@@ -22,23 +22,33 @@ LIVE WEB SEARCH RESULTS (current, authoritative — TRUST THESE OVER ANY PRIOR K
 
 TODAY'S DATE: {today}
 
+SOURCE TIERS:
+Each source is annotated with a tier in its content:
+- HIGH tier (Wikipedia, official org sites, major newswires) — strongest evidence.
+- MEDIUM tier (mainstream news, established publications) — solid evidence.
+- LOW tier (unknown blogs, small sites) — weak evidence; corroborate before relying on it.
+- PREDICTION tier (betting/odds sites, "who will win" articles, previews of upcoming events) — NEVER use these as evidence for past facts. They are speculation about events that have NOT yet happened.
+
 YOUR TASK:
-For every specific factual claim in the draft — names of people in any office (president, prime minister, CEO, rector, minister), dates, prices, statistics, current events, software versions, recent developments — check whether the live search results confirm it.
+For every specific factual claim in the draft — names of people in any office, current champions/winners, dates, prices, statistics, current events, software versions, recent developments — check whether the HIGH or MEDIUM tier search results confirm it.
 
 RULES:
-1. If a claim CONTRADICTS the search results, REPLACE it with what the search results actually say. Quote specific names, dates, or numbers from the sources.
-2. If a claim is NOT mentioned anywhere in the search results, replace it with "the search results did not confirm this".
-3. Do NOT add information that is not in the search results.
-4. Do NOT use your own knowledge — your training is outdated and unreliable for current facts.
-5. Preserve the original answer's bullet/paragraph structure and language style.
-6. If the draft is fully consistent with the search results, return it unchanged.
+1. If a claim CONTRADICTS the high/medium-tier search results, REPLACE it with what those results say. Quote specific names, dates, or numbers.
+2. If a claim is ONLY supported by PREDICTION-tier sources, REMOVE it — prediction sites describe future events, not past facts. Replace with "the search results did not confirm this".
+3. If a claim is NOT mentioned anywhere in the search results, replace it with "the search results did not confirm this".
+4. For temporal queries ("last winner of X", "most recent Y", "who won Z"): the answer must come from a source describing a COMPLETED, PAST event in past tense from a HIGH or MEDIUM tier source. Predictions or previews of upcoming events are not valid answers.
+5. Do NOT add information that is not in the high/medium-tier search results.
+6. Do NOT use your own knowledge — your training is outdated.
+7. Preserve the original answer's bullet/paragraph structure and language style.
+8. If the draft is fully consistent with the high/medium-tier search results, return it unchanged.
 
-CRITICAL EXAMPLE OF WHAT TO FIX:
-- Draft says "the president of X is Joe Biden" but search results mention "President Donald Trump" → REPLACE with "the president of X is Donald Trump" (or whatever name appears in the live results).
-- Draft uses old prices, old officials, old dates from training data → REPLACE with values from the search results.
+CRITICAL EXAMPLES:
+- Draft says "the president of X is Joe Biden" but high-tier results mention "President Donald Trump" → REPLACE with "the president of X is Donald Trump".
+- Draft says "Manchester City won the last Champions League" based on prediction-tier sources about an upcoming final, but high-tier Wikipedia/UEFA sources say "Paris Saint-Germain won the 2024-25 UEFA Champions League" → REPLACE with the high-tier confirmed answer.
+- Draft uses old prices, old officials, old dates → REPLACE with high/medium-tier values.
 
 OUTPUT FORMAT:
-Output ONLY the corrected final answer text that should be shown to the user. No preamble. No "Here is the corrected answer:". No explanation. No apology. Just the answer."""
+Output ONLY the corrected final answer text. No preamble. No "Here is the corrected answer:". No explanation. No apology. Just the answer."""
 
 
 def build_sources_text(

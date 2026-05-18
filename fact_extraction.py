@@ -7,6 +7,7 @@ from urllib.parse import urlparse
 from langchain_ollama import ChatOllama
 
 from config import MODEL_NAME
+from source_quality import classify_source
 
 
 @dataclass
@@ -46,6 +47,9 @@ def _claim_tokens(text: str) -> set[str]:
     }
 
 
+_TIER_SCORE_BONUS = {"high": 0.45, "medium": 0.20, "low": 0.0, "prediction": -0.60}
+
+
 def _score_source_for_claim(claim_text: str, source: SourceEntry) -> float:
     claim_tokens = _claim_tokens(claim_text)
     if not claim_tokens:
@@ -61,7 +65,11 @@ def _score_source_for_claim(claim_text: str, source: SourceEntry) -> float:
     date_bonus = 0.35 if claim_dates and claim_dates.intersection(source_dates) else 0.0
 
     tavily_bonus = float(source.relevance_score) * 0.25 if source.relevance_score is not None else 0.0
-    return token_overlap_score + date_bonus + tavily_bonus
+
+    tier = classify_source(source.url, source.title, source.snippet)
+    tier_bonus = _TIER_SCORE_BONUS.get(tier, 0.0)
+
+    return token_overlap_score + date_bonus + tavily_bonus + tier_bonus
 
 
 def _enrich_evidence_urls(claim_text: str, initial_urls: list[str], sources: list[SourceEntry]) -> list[str]:

@@ -427,6 +427,300 @@
       "original_question": "Who is the president of the united states?",
       "cached_at": "2026-05-18T18:47:59.678147+00:00",
       "cached_ts": 1779130079.678158
+    },
+    "llama32::who is the president of usa": {
+      "answer": "The current president of the United States is Donald John Trump.",
+      "facts": [
+        {
+          "claim_text": "The current president of the United States is Donald John Trump.",
+          "evidence_urls": [
+            "https://en.wikipedia.org/wiki/List_of_Presidents_of_the_United_States",
+            "https://www.usa.gov/presidents",
+            "https://www.govtrack.us/congress/other-people/presidents"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        }
+      ],
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/List_of_Presidents_of_the_United_States",
+          "title": "List of presidents of the United States - Wikipedia",
+          "domain": "en.wikipedia.org",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Upon the resignation of 37th president, Richard Nixon, Gerald Ford became the 38th president even though he simply served out the remainder of ..."
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/President_of_the_United_States",
+          "title": "President of the United States - Wikipedia",
+          "domain": "en.wikipedia.org",
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "relevance_score": 0.8029425,
+          "snippet": "Unrelated to and quite dissimilar from the later office of president of the United States, it was a largely ceremonial position with no executive ..."
+        },
+        {
+          "url": "https://www.enchantedlearning.com/history/us/pres/list.shtml",
+          "title": "The Presidents of the USA - Enchanted Learning",
+          "domain": "www.enchantedlearning.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Anyone can write a letter to the President of the USA. ... table to answer the questions about the age and background of recent Presidents of the USA ..."
+        },
+        {
+          "url": "https://www.usa.gov/presidents",
+          "title": "Presidents, vice presidents, and first ladies | USAGov",
+          "domain": "www.usa.gov",
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "relevance_score": 0.74251556,
+          "snippet": "Senate and takes over the role of president of the United States if the president is unable to perform their duties."
+        },
+        {
+          "url": "https://www.presidentsusa.net/",
+          "title": "Presidents of the United States",
+          "domain": "www.presidentsusa.net",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "The Presidents of the United States have numerous historical sites associated with their lives and careers. PresidentsUSA has the most ..."
+        },
+        {
+          "url": "https://www.govtrack.us/congress/other-people/presidents",
+          "title": "Presidents of the United States - GovTrack.us",
+          "domain": "www.govtrack.us",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": 0.73596483,
+          "snippet": "[President Donald Trump [Republican, 2025-2029]](\n   [President Joseph Biden [Democrat, 2021-2025]](\n   [President Donald Trump [Republican, 2017-2021]](\n   [President Barack Obama [Democrat, 2009-2017]](\n   [President George Walker Bush [Republican, 2001-2009]](\n   [President William “Bill” Clinton [Democrat, 1993-2001]](\n   [President George Herbert Walker Bush [Republican, 1989-1993]](\n   [Pres"
+        }
+      ],
+      "trust_signals": {
+        "citation_coverage": 1.0,
+        "avg_sources_per_claim": 3.0,
+        "multi_source_claim_ratio": 1.0,
+        "distinct_domain_count": 5
+      },
+      "model_key": "llama32",
+      "original_question": "Who is the president of USA?",
+      "cached_at": "2026-05-18T19:04:19.997083+00:00",
+      "cached_ts": 1779131059.997106
+    },
+    "llama::president of usa": {
+      "answer": "The current President of the United States is Donald John Trump. He assumed office on January 20, 2025, and is the 47th president of the United States.\n\nNote: The search results confirm that Donald Trump is indeed the current President of the United States, but they do not mention him assuming office in 2025. According to Wikipedia, he began his term on January 20, 2025, which suggests that this date may be correct. However, it's worth noting that the search results do not provide a clear confirmation of this specific date.",
+      "facts": [
+        {
+          "claim_text": "The current President of the United States is Donald John Trump.",
+          "evidence_urls": [
+            "https://en.wikipedia.org/wiki/Donald_Trump",
+            "https://www.usa.gov/presidents",
+            "https://www.jagranjosh.com/general-knowledge/current-president-of-usa-1820008802-1"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "He assumed office on January 20, 2025.",
+          "evidence_urls": [
+            "https://en.wikipedia.org/wiki/President_of_the_United_States",
+            "https://en.wikipedia.org/wiki/List_of_presidents_of_the_United_States",
+            "https://www.usa.gov/presidents"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "and is the 47th president of the United States.",
+          "evidence_urls": [
+            "https://www.usa.gov/presidents",
+            "https://en.wikipedia.org/wiki/List_of_presidents_of_the_United_States",
+            "https://www.jagranjosh.com/general-knowledge/current-president-of-usa-1820008802-1"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        }
+      ],
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/President_of_the_United_States",
+          "title": "President of the United States - Wikipedia",
+          "domain": "en.wikipedia.org",
+          "source_tools": [
+            "tavily_search_results_json",
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": 0.8029425,
+          "snippet": "The president of the United States (POTUS)( is the head of state and head of government of the United States. The president directs the executive branch of the federal government and is the commander-in-chief of the United States Armed Forces. [...] President Joe Biden with his Supreme Court appointee Justice Ketanji Brown Jackson and Vice President Kamala Harris (in background) following Brown Ja"
+        },
+        {
+          "url": "https://www.usa.gov/presidents",
+          "title": "Presidents, vice presidents, and first ladies - USAGov",
+          "domain": "www.usa.gov",
+          "source_tools": [
+            "tavily_search_results_json",
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": 0.74251556,
+          "snippet": "### Current president\n\nThe 47th and current president of the United States is Donald John Trump.He was sworn into office on January 20, 2025.\n\n### Former U.S. presidents\n\nThe United States has had 45 former U.S. presidents. Read about past presidents and vice presidents.\n\nMany former presidents have presidential libraries and museums you can visit to learn about their lives and their time in offic"
+        },
+        {
+          "url": "https://www.govtrack.us/congress/other-people/presidents",
+          "title": "Presidents of the United States - GovTrack.us",
+          "domain": "www.govtrack.us",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": 0.73596483,
+          "snippet": "[President Donald Trump [Republican, 2025-2029]](\n   [President Joseph Biden [Democrat, 2021-2025]](\n   [President Donald Trump [Republican, 2017-2021]](\n   [President Barack Obama [Democrat, 2009-2017]](\n   [President George Walker Bush [Republican, 2001-2009]](\n   [President William “Bill” Clinton [Democrat, 1993-2001]](\n   [President George Herbert Walker Bush [Republican, 1989-1993]](\n   [Pres"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/List_of_presidents_of_the_United_States",
+          "title": "List of presidents of the United States - Wikipedia",
+          "domain": "en.wikipedia.org",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "3 days ago - Constitution, the officeholder ... Washington, won a unanimous vote of the Electoral College. The incumbent president is Donald Trump, who assumed office on January 20, 2025...."
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Donald_Trump",
+          "title": "Donald Trump - Wikipedia",
+          "domain": "en.wikipedia.org",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "2 hours ago - In response to the COVID-19 pandemic in 2020, he downplayed its severity, contradicted health officials, and signed the CARES Act. After losing the 2020 presidential election to Joe Biden, Trump refused to concede defeat and attempted to overturn the result, culminating in the January 6 Capitol attack in 2021."
+        },
+        {
+          "url": "https://www.jagranjosh.com/general-knowledge/current-president-of-usa-1820008802-1",
+          "title": "Who is the Current President of USA?",
+          "domain": "www.jagranjosh.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "6 days ago - Donald John Trump also known as Donald J. Trump is the current president of USA. He is the 47th president of the United States and began his term on January 20, 2025. Previously, he served as the 45th president of the United States from 2017 to 2021."
+        }
+      ],
+      "trust_signals": {
+        "citation_coverage": 1.0,
+        "avg_sources_per_claim": 3.0,
+        "multi_source_claim_ratio": 1.0,
+        "distinct_domain_count": 4
+      },
+      "model_key": "llama",
+      "original_question": "President of USA?",
+      "cached_at": "2026-05-18T19:15:58.314530+00:00",
+      "cached_ts": 1779131758.314556
+    },
+    "llama32::last ucl winner": {
+      "answer": "The last UCL winner was Manchester City in the 2025-26 season.",
+      "facts": [
+        {
+          "claim_text": "The last UCL winner was Manchester City in the 2025-26 season.",
+          "evidence_urls": [
+            "https://www.worldfootball.net/competition/co19/uefa-champions-league/records-winners-list/",
+            "https://en.wikipedia.org/wiki/2026_UEFA_Champions_League_final",
+            "https://www.espn.com/soccer/story/_/id/48137718/predicting-2026-uefa-champions-league-winner-based-winners"
+          ],
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        }
+      ],
+      "sources": [
+        {
+          "url": "https://www.espn.com/soccer/story/_/id/48137718/predicting-2026-uefa-champions-league-winner-based-winners",
+          "title": "Predicting the 2026 UEFA Champions League winner ...",
+          "domain": "www.espn.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": 0.8380581,
+          "snippet": "2025-26 French Ligue 1\n\nMenu\n## ESPN\n\n   \nGab & Juls discuss Chelsea's 4-2 win over Wrexham in fifth round of the FA Cup. (1:19)\n\n   Image 84 Ryan O'Hanlon Mar 10, 2026, 07:12 AM ET Close\nRyan O'Hanlon is a staff writer for ESPN.com. He's also the author of \"Net Gains: Inside the Beautiful Game's Analytics Revolution.\"\nFollow on X  \n\nMultiple Authors\n\nImage 85Share\n\n   Copy LinkImage 86: Copy Link"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/2026_UEFA_Champions_League_final",
+          "title": "2026 UEFA Champions League final - Wikipedia",
+          "domain": "en.wikipedia.org",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": 0.7906115,
+          "snippet": "## Background\n\n[edit]\n\nParis Saint-Germain reached their third European Cup/Champions League final overall and second consecutively, having lost to Bayern Munich in 2020 before winning the title in 2025. This is their seventh UEFA competition final overall, having also triumphed in the 1996 UEFA Cup Winners' Cup final and 2025 UEFA Super Cup. They lost the Cup Winners' Cup final in 1997 as holders"
+        },
+        {
+          "url": "https://www.worldfootball.net/competition/co19/uefa-champions-league/records-winners-list/",
+          "title": "Champions League 2025/2026 » History: List of Winners",
+          "domain": "www.worldfootball.net",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": 0.77913743,
+          "snippet": "Show all news\n\n## Final\n\n30.05.2026\n\nParis Saint-Germain\n\nParis SG\n\nImage 121: Paris Saint-Germain\n\n18:00\n\n-:-\n\nImage 122: Arsenal FC\n\nArsenal\n\nArsenal FC\n\n;})\n\n© 2026 Heimspiel Medien GmbH & Co. KGImage 134Image 135Image 136Image 137Image 138Image 139Image 140Image 141Image 142Image 143Image 144Image 145Image 146 [...] | Season |  | Team | Title |\n ---  --- |\n| 2024/2025 | Image 3: Paris Saint-Ge"
+        }
+      ],
+      "trust_signals": {
+        "citation_coverage": 1.0,
+        "avg_sources_per_claim": 3.0,
+        "multi_source_claim_ratio": 1.0,
+        "distinct_domain_count": 3
+      },
+      "model_key": "llama32",
+      "original_question": "Last UCL winner?",
+      "cached_at": "2026-05-18T19:20:00.685362+00:00",
+      "cached_ts": 1779132000.68538
     }
   }
 }
