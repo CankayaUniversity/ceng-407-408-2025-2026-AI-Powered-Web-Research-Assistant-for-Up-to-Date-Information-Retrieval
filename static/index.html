@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Deep Research · Autonomous Web Agent</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <div class="app" id="app">
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+          <div class="brand-glyph">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="7" />
+              <path d="M20 20l-4-4" />
+            </svg>
+          </div>
+          <div class="brand-text">
+            <span class="brand-name">Deep Research</span>
+            <span class="brand-tag">Llama 3.1 &middot; local</span>
+          </div>
+          <button class="icon-btn sidebar-close" id="sidebar-close" title="Close sidebar">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M15 18l-6-6 6-6" />
+            </svg>
+          </button>
+        </div>
+
+        <button class="new-chat" id="new-chat-btn">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 5v14M5 12h14" />
+          </svg>
+          <span>New research</span>
+        </button>
+
+        <div class="sidebar-search">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="7" />
+            <path d="M20 20l-4-4" />
+          </svg>
+          <input type="search" id="search-input" placeholder="Search chats" autocomplete="off" />
+          <button class="search-clear" id="search-clear" title="Clear" hidden>
+            <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 6L6 18M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <div class="sidebar-list" id="chat-list">
+          <div class="sidebar-empty" id="sidebar-empty">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+            </svg>
+            <p>No chats yet</p>
+            <span>Start a new research above</span>
+          </div>
+        </div>
+
+        <div class="sidebar-footer">
+          <div class="status-pill" id="status-pill">
+            <span class="status-dot"></span>
+            <span class="status-text">Online</span>
+          </div>
+        </div>
+      </aside>
+
+      <div class="main" id="main">
+        <header class="app-header">
+          <button class="icon-btn sidebar-toggle" id="sidebar-toggle" title="Open sidebar">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 6h18M3 12h18M3 18h18" />
+            </svg>
+          </button>
+          <div class="header-title" id="header-title">Deep Research</div>
+          <div class="header-actions">
+            <button class="icon-btn" id="delete-chat-btn" title="Delete this chat" hidden>
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                <path d="M10 11v6M14 11v6" />
+              </svg>
+            </button>
+          </div>
+        </header>
+
+        <main class="conversation" id="conversation">
+          <section class="empty-state" id="empty-state">
+            <div class="hero-glyph">
+              <svg viewBox="0 0 64 64" width="40" height="40" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="28" cy="28" r="18" />
+                <path d="M42 42l14 14" />
+                <path d="M20 28h16M28 20v16" opacity="0.35" />
+              </svg>
+            </div>
+            <h1>What would you like to research?</h1>
+            <p class="empty-subtitle">
+              Ask anything. The agent searches the web with Tavily and DuckDuckGo, deep-reads sources,
+              and reports findings with citations and trust signals.
+            </p>
+            <div class="suggestions">
+              <button class="suggestion" data-q="What is LangGraph, who maintains it, and when was it first released?">
+                <span class="suggestion-icon">&#9881;</span>
+                <span>What is LangGraph, who maintains it, and when was it first released?</span>
+              </button>
+              <button class="suggestion" data-q="What is T&uuml;rkiye's inflation rate this year?">
+                <span class="suggestion-icon">&#128202;</span>
+                <span>What is T&uuml;rkiye&rsquo;s inflation rate this year?</span>
+              </button>
+              <button class="suggestion" data-q="What are the latest major updates in Ollama this month?">
+                <span class="suggestion-icon">&#9889;</span>
+                <span>Latest major updates in Ollama this month</span>
+              </button>
+              <button class="suggestion" data-q="Did NASA confirm life on Mars yesterday?">
+                <span class="suggestion-icon">&#128752;</span>
+                <span>Did NASA confirm life on Mars yesterday?</span>
+              </button>
+            </div>
+          </section>
+        </main>
+
+        <div class="composer-wrap">
+          <form class="composer" id="ask-form" autocomplete="off">
+            <textarea
+              id="question-input"
+              rows="1"
+              placeholder="Ask a research question&hellip;"
+              required
+            ></textarea>
+            <button type="submit" id="submit-btn" title="Send (Enter)">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14M13 6l6 6-6 6" />
+              </svg>
+            </button>
+          </form>
+          <p class="composer-hint">
+            Local inference via Ollama &middot; powered by Tavily, DuckDuckGo, and BeautifulSoup
+          </p>
+        </div>
+      </div>
+
+      <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="/static/app.js"></script>
+  </body>
+</html>

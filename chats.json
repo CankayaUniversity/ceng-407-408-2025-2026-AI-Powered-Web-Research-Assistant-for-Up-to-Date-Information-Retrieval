@@ -1,0 +1,231 @@
+{
+  "chats": [
+    {
+      "id": "2d2e9c41cba0",
+      "title": "testing",
+      "created_at": "2026-05-18T16:21:51.660552+00:00",
+      "updated_at": "2026-05-18T16:25:51.762144+00:00",
+      "turns": [
+        {
+          "question": "testing",
+          "answer": "Based on the search results, here is a concise bullet list of findings:\n\n* Software testing is the act of checking whether software meets its intended objectives and satisfies expectations.\n* It can provide objective, independent information about the quality of software and the risk of its failure to a user or sponsor or any other stakeholder.\n* There are various types of software testing, including:\n\t+ Unit testing: a form of software testing by which isolated source code is tested to validate expected behavior.\n\t+ Integration testing: testing that involves combining multiple units or components to ensure they work together as expected.\n\t+ System testing: testing the entire software application as a whole and ensuring it meets its functional and non-functional requirements.\n\t+ Acceptance testing: testing performed by the end-user of the software to verify that it meets their expectations.\n* The goal of software testing is to identify defects, errors, or potential issues before the software is released to the end-users.\n\nSources:\n\n* Wikipedia: Software Testing\n* Wikipedia: Test\n* Simple English Wikipedia: Test\n* Wikipedia: Unit testing",
+          "facts": [
+            {
+              "claim_text": "Software testing is the act of checking whether software meets its intended objectives and satisfies expectations.",
+              "evidence_urls": [
+                "https://en.wikipedia.org/wiki/Software_testing",
+                "https://www.browserstack.com/guide/types-of-testing",
+                "https://www.geeksforgeeks.org/software-testing/types-software-testing/"
+              ],
+              "source_tools": [
+                "duckduckgo_results_json",
+                "tavily_search_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": true,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            },
+            {
+              "claim_text": "It can provide objective, independent information about the quality of software and the risk of its failure to a user or sponsor or any other stakeholder.",
+              "evidence_urls": [
+                "https://en.wikipedia.org/wiki/Software_testing",
+                "https://www.geeksforgeeks.org/software-testing/types-software-testing/",
+                "https://www.vocabulary.com/dictionary/testing"
+              ],
+              "source_tools": [
+                "duckduckgo_results_json",
+                "tavily_search_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": true,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            },
+            {
+              "claim_text": "There are various types of software testing, including: Unit testing: a form of software testing by which isolated source code is tested to validate expected behavior.",
+              "evidence_urls": [
+                "https://en.wikipedia.org/wiki/Unit_testing",
+                "https://www.vocabulary.com/dictionary/testing",
+                "https://www.browserstack.com/guide/types-of-testing"
+              ],
+              "source_tools": [
+                "duckduckgo_results_json",
+                "tavily_search_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": true,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            },
+            {
+              "claim_text": "Integration testing: testing that involves combining multiple units or components to ensure they work together as expected.",
+              "evidence_urls": [
+                "https://www.browserstack.com/guide/types-of-testing",
+                "https://www.geeksforgeeks.org/software-testing/types-software-testing/",
+                "https://www.vocabulary.com/dictionary/testing"
+              ],
+              "source_tools": [
+                "tavily_search_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": true,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            },
+            {
+              "claim_text": "System testing: testing the entire software application as a whole and ensuring it meets its functional and non-functional requirements.",
+              "evidence_urls": [
+                "https://www.vocabulary.com/dictionary/testing",
+                "https://www.browserstack.com/guide/types-of-testing",
+                "https://www.geeksforgeeks.org/software-testing/types-software-testing/"
+              ],
+              "source_tools": [
+                "tavily_search_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": true,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            },
+            {
+              "claim_text": "Acceptance testing: testing performed by the end-user of the software to verify that it meets their expectations.",
+              "evidence_urls": [
+                "https://en.wikipedia.org/wiki/Software_testing",
+                "https://www.geeksforgeeks.org/software-testing/types-software-testing/",
+                "https://www.browserstack.com/guide/types-of-testing"
+              ],
+              "source_tools": [
+                "duckduckgo_results_json",
+                "tavily_search_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": true,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            },
+            {
+              "claim_text": "The goal of software testing is to identify defects, errors, or potential issues before the software is released to the end-users.",
+              "evidence_urls": [
+                "https://en.wikipedia.org/wiki/Software_testing",
+                "https://www.browserstack.com/guide/types-of-testing",
+                "https://www.geeksforgeeks.org/software-testing/types-software-testing/"
+              ],
+              "source_tools": [
+                "duckduckgo_results_json",
+                "tavily_search_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": true,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            }
+          ],
+          "sources": [
+            {
+              "url": "https://en.wikipedia.org/wiki/Software_testing",
+              "title": "Software testing - Wikipedia",
+              "domain": "en.wikipedia.org",
+              "source_tools": [
+                "duckduckgo_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "4 days ago - Software testing is the act of checking whether software meets its intended objectives and satisfies expectations. Software testing can provide objective, independent information about the quality of software and the risk of its failure to a user or sponsor or any other stakeholder."
+            },
+            {
+              "url": "https://en.wikipedia.org/wiki/Test",
+              "title": "Test - Wikipedia",
+              "domain": "en.wikipedia.org",
+              "source_tools": [
+                "duckduckgo_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "April 15, 2026 - Look up test, testing, Test, or TEST in Wiktionary, the free dictionary. ... Test (assessment), an educational assessment intended to measure the respondents' knowledge or other abilities ... Test., abbreviation for Testament, referring to the Old Testament and New Testament of the Christian Bible."
+            },
+            {
+              "url": "https://simple.wikipedia.org/wiki/Test",
+              "title": "Test - Simple English Wikipedia, the free encyclopedia",
+              "domain": "simple.wikipedia.org",
+              "source_tools": [
+                "duckduckgo_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "February 23, 2026 - A test is a structured procedure designed to evaluate whether a subject, claim, or system meets specified criteria. The Concise Oxford English Dictionary defines a test as: \"a procedure intended to establish the quality, performance, or reliability ..."
+            },
+            {
+              "url": "https://en.wikipedia.org/wiki/Unit_testing",
+              "title": "Unit testing - Wikipedia",
+              "domain": "en.wikipedia.org",
+              "source_tools": [
+                "duckduckgo_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "2 days ago - Unit testing, a.k.a. component or module testing, is a form of software testing by which isolated source code is tested to validate expected behavior. Unit testing describes tests that are run at the unit-level to contrast testing at the integration or system level."
+            },
+            {
+              "url": "https://grokipedia.com/page/Software_Testing",
+              "title": "Software Testing",
+              "domain": "grokipedia.com",
+              "source_tools": [
+                "duckduckgo_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "Courses and certifications to begin a career in software testing or QA, including ISTQB Foundation Level certification (study via free/online materials); Udemy courses on Manual Testing and Selenium for automation basics. Suitable for entry-level ro…"
+            },
+            {
+              "url": "https://www.vocabulary.com/dictionary/testing",
+              "title": "Testing - Definition, Meaning & Synonyms - Vocabulary.com",
+              "domain": "www.vocabulary.com",
+              "source_tools": [
+                "tavily_search_results_json"
+              ],
+              "relevance_score": 0.99528164,
+              "snippet": "Vocabulary.com\n\n# testing\n\nOther forms: testings\n\nUse the word testing to mean the process of evaluating how something works or how well students have learned. Most colleges require applicants to undergo testing.\n\nThere are two kinds of testing: the testing that's done on products to make sure they work or are safe, and the testing that's done on students to make sure they're learning what they ne"
+            },
+            {
+              "url": "https://www.browserstack.com/guide/types-of-testing",
+              "title": "Different Types of Testing in Software | BrowserStack",
+              "domain": "www.browserstack.com",
+              "source_tools": [
+                "tavily_search_results_json"
+              ],
+              "relevance_score": 0.9942697,
+              "snippet": "#### 3. System Testing\n\nSystem testing\") is a testing type that tests the entire software application as a whole and ensures that the software meets its functional and non-functional requirements. System testing is typically performed after integration testing. During system testing, testers evaluate the software application’s behavior in various scenarios and under different conditions, including"
+            },
+            {
+              "url": "https://www.geeksforgeeks.org/software-testing/types-software-testing/",
+              "title": "Types of Software Testing - GeeksforGeeks",
+              "domain": "www.geeksforgeeks.org",
+              "source_tools": [
+                "tavily_search_results_json"
+              ],
+              "relevance_score": 0.993255,
+              "snippet": "### 11. Localization Testing\n\nLocalization Testing is a Type of Software Testing that is performed to verify the quality of a product for a specific culture or locale. Localization testing is performed only on the local version of the product.\n\n### Advantages of Localization Testing:\n\n Localization testing reduces the overall testing cost.\n Localization testing reduces the overall support cost.\n I"
+            }
+          ],
+          "trust_signals": {
+            "citation_coverage": 1.0,
+            "avg_sources_per_claim": 3.0,
+            "multi_source_claim_ratio": 1.0,
+            "distinct_domain_count": 6
+          },
+          "timestamp": "2026-05-18T16:25:51.762118+00:00"
+        }
+      ]
+    }
+  ]
+}

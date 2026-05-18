@@ -1,6 +1,14 @@
-from fastapi import FastAPI
-from langchain_core.messages import HumanMessage
+import json
+from pathlib import Path
 
+from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse, StreamingResponse
+from fastapi.staticfiles import StaticFiles
+from langchain_core.messages import HumanMessage
+from pydantic import BaseModel
+
+import chat_store
 from agent import build_agent
 from config import load_environment
 from fact_extraction import extract_claims
@@ -12,10 +20,158 @@ load_environment()
 app = FastAPI()
 autonomous_agent = build_agent()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+STATIC_DIR = Path(__file__).parent / "static"
+app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
+
+
+class TitleUpdate(BaseModel):
+    title: str
+
 
 @app.get("/")
 def home():
+    return FileResponse(STATIC_DIR / "index.html")
+
+
+@app.get("/api/health")
+def health():
     return {"message": "Deep research agent is active!"}
+
+
+@app.get("/api/chats")
+def api_list_chats(q: str | None = None):
+    if q:
+        return {"chats": chat_store.search_chats(q)}
+    return {"chats": chat_store.list_chats()}
+
+
+@app.get("/api/chats/{chat_id}")
+def api_get_chat(chat_id: str):
+    chat = chat_store.get_chat(chat_id)
+    if not chat:
+        raise HTTPException(status_code=404, detail="Chat not found")
+    return chat
+
+
+@app.patch("/api/chats/{chat_id}")
+def api_update_chat(chat_id: str, body: TitleUpdate):
+    chat = chat_store.update_title(chat_id, body.title)
+    if not chat:
+        raise HTTPException(status_code=404, detail="Chat not found")
+    return chat
+
+
+@app.delete("/api/chats/{chat_id}")
+def api_delete_chat(chat_id: str):
+    if not chat_store.delete_chat(chat_id):
+        raise HTTPException(status_code=404, detail="Chat not found")
+    return {"ok": True}
+
+
+def _sse(event_type: str, payload: dict) -> str:
+    return f"event: {event_type}\ndata: {json.dumps(payload, ensure_ascii=False)}\n\n"
+
+
+@app.get("/ask_agent_stream")
+def ask_agent_stream(question: str, chat_id: str | None = None):
+    def generate():
+        try:
+            if chat_id:
+                chat = chat_store.get_chat(chat_id) or chat_store.create_chat(question)
+            else:
+                chat = chat_store.create_chat(question)
+            resolved_chat_id = chat["id"]
+
+            yield _sse("start", {"question": question, "chat_id": resolved_chat_id})
+
+            input_message = {"messages": [HumanMessage(content=question)]}
+            tool_messages_collected: list[dict] = []
+            final_answer = ""
+
+            for chunk in autonomous_agent.stream(input_message, stream_mode="updates"):
+                if not isinstance(chunk, dict):
+                    continue
+                for _node_name, node_data in chunk.items():
+                    messages = node_data.get("messages", []) if isinstance(node_data, dict) else []
+                    for message in messages:
+                        message_type = getattr(message, "type", None)
+
+                        if message_type == "ai" and getattr(message, "tool_calls", None):
+                            for tool_call in message.tool_calls:
+                                yield _sse(
+                                    "tool_call",
+                                    {
+                                        "id": tool_call.get("id", ""),
+                                        "name": tool_call.get("name", "tool"),
+                                        "args": tool_call.get("args", {}),
+                                    },
+                                )
+                        elif message_type == "tool":
+                            content_str = str(message.content)
+                            tool_name = getattr(message, "name", "")
+                            tool_messages_collected.append({"name": tool_name, "content": content_str})
+                            yield _sse(
+                                "tool_result",
+                                {
+                                    "id": getattr(message, "tool_call_id", ""),
+                                    "name": tool_name,
+                                    "preview": content_str[:600],
+                                    "length": len(content_str),
+                                },
+                            )
+                        elif message_type == "ai" and getattr(message, "content", None):
+                            final_answer = message.content
+                            yield _sse("answer", {"text": final_answer})
+
+            yield _sse("extracting", {})
+
+            cleaned_answer = final_answer.replace("\n", " ")
+            extraction = extract_claims(cleaned_answer, tool_messages_collected)
+
+            saved_chat = chat_store.append_turn(
+                resolved_chat_id,
+                {
+                    "question": question,
+                    "answer": final_answer,
+                    "facts": extraction["facts"],
+                    "sources": extraction["sources"],
+                    "trust_signals": extraction["trust_signals"],
+                },
+            )
+
+            yield _sse(
+                "final",
+                {
+                    "question": question,
+                    "chat_id": resolved_chat_id,
+                    "chat_title": (saved_chat or {}).get("title", ""),
+                    "answer": final_answer,
+                    "facts": extraction["facts"],
+                    "sources": extraction["sources"],
+                    "trust_signals": extraction["trust_signals"],
+                },
+            )
+            yield _sse("done", {"chat_id": resolved_chat_id})
+        except Exception as exc:
+            yield _sse("error", {"message": str(exc)})
+
+    return StreamingResponse(
+        generate(),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "X-Accel-Buffering": "no",
+            "Connection": "keep-alive",
+        },
+    )
 
 
 @app.get("/ask_agent")
