@@ -188,8 +188,8 @@ def _json_from_text(text: str) -> Any:
         return None
 
 
-def _llm_extract_claims(answer_text: str, sources: list[SourceEntry]) -> list[dict[str, Any]]:
-    model = ChatOllama(model=MODEL_NAME, temperature=0)
+def _llm_extract_claims(answer_text: str, sources: list[SourceEntry], model_id: str = MODEL_NAME) -> list[dict[str, Any]]:
+    model = ChatOllama(model=model_id, temperature=0)
     source_lines = [f"- {s.url} | {s.title}" for s in sources[:15]]
     prompt = (
         "Extract factual claims from the answer and map each claim to supporting source URLs.\n"
@@ -220,11 +220,11 @@ def _fallback_extract_claims(answer_text: str, sources: list[SourceEntry]) -> li
     return claims
 
 
-def extract_claims(answer_text: str, tool_messages: list[dict[str, str]]) -> dict[str, Any]:
+def extract_claims(answer_text: str, tool_messages: list[dict[str, str]], model_id: str = MODEL_NAME) -> dict[str, Any]:
     sources = normalize_sources(tool_messages)
 
     try:
-        raw_claims = _llm_extract_claims(answer_text, sources)
+        raw_claims = _llm_extract_claims(answer_text, sources, model_id)
     except Exception:
         raw_claims = []
     if not raw_claims:

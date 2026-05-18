@@ -16,12 +16,19 @@ const headerTitle = document.getElementById('header-title');
 const deleteChatBtn = document.getElementById('delete-chat-btn');
 const statusPill = document.getElementById('status-pill');
 const statusText = statusPill.querySelector('.status-text');
+const modelToggle = document.getElementById('model-toggle');
 
 let isAsking = false;
 let activeSource = null;
 let activeChatId = null;
 let cachedChats = [];
 let searchDebounce = null;
+let selectedModel = localStorage.getItem('selectedModel') || 'llama';
+
+const MODEL_LABELS = {
+  llama: 'Llama 3.1',
+  qwen: 'Qwen 2.5',
+};
 
 if (window.marked && marked.setOptions) {
   marked.setOptions({ breaks: true, gfm: true });
@@ -107,6 +114,45 @@ function clearConversation() {
     if (child !== emptyState) conversation.removeChild(child);
   });
 }
+
+/* ----------------- auto-hide scrollbar ----------------- */
+
+function setupAutoHideScroll(element, idleMs = 500) {
+  if (!element) return;
+  let timer = null;
+  element.addEventListener(
+    'scroll',
+    () => {
+      element.classList.add('scrolling');
+      if (timer) clearTimeout(timer);
+      timer = setTimeout(() => {
+        element.classList.remove('scrolling');
+      }, idleMs);
+    },
+    { passive: true }
+  );
+}
+
+setupAutoHideScroll(conversation);
+setupAutoHideScroll(chatList);
+
+/* ----------------- model toggle ----------------- */
+
+function applySelectedModel() {
+  modelToggle.querySelectorAll('.model-option').forEach((btn) => {
+    btn.classList.toggle('active', btn.dataset.model === selectedModel);
+  });
+}
+
+modelToggle.querySelectorAll('.model-option').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    selectedModel = btn.dataset.model;
+    localStorage.setItem('selectedModel', selectedModel);
+    applySelectedModel();
+  });
+});
+
+applySelectedModel();
 
 /* ----------------- sidebar ----------------- */
 
@@ -292,7 +338,32 @@ form.addEventListener('submit', (event) => {
   startResearch(question);
 });
 
-/* ----------------- rendering: turn building blocks ----------------- */
+/* ----------------- rendering helpers ----------------- */
+
+function buildBadges({ model, fromCache, memoryTurns }) {
+  const wrap = el('div', 'turn-badges');
+  const modelKey = model || 'llama';
+  const modelBadge = el('span', `meta-badge model-${modelKey}`);
+  modelBadge.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3 7h7l-5.5 4 2 7L12 16l-6.5 4 2-7L2 9h7z"/></svg>`;
+  modelBadge.appendChild(txt('span', null, MODEL_LABELS[modelKey] || modelKey));
+  wrap.appendChild(modelBadge);
+
+  if (fromCache) {
+    const cacheBadge = el('span', 'meta-badge cache');
+    cacheBadge.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 2 13 10 19 10"/><path d="M21 12A9 9 0 1 1 12 3"/></svg>`;
+    cacheBadge.appendChild(txt('span', null, 'From cache'));
+    wrap.appendChild(cacheBadge);
+  }
+
+  if (memoryTurns && memoryTurns > 0) {
+    const memBadge = el('span', 'meta-badge memory');
+    memBadge.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>`;
+    memBadge.appendChild(txt('span', null, `${memoryTurns} prior turn${memoryTurns > 1 ? 's' : ''}`));
+    wrap.appendChild(memBadge);
+  }
+
+  return wrap;
+}
 
 function buildAnswerCard(markdownText) {
   const card = el('div', 'answer-card');
@@ -421,6 +492,9 @@ function renderHistoricalTurn(turn) {
   turnEl.appendChild(txt('div', 'user-msg', turn.question || ''));
 
   const agentBlock = el('div', 'agent-block');
+  agentBlock.appendChild(
+    buildBadges({ model: turn.model, fromCache: !!turn.from_cache, memoryTurns: 0 })
+  );
   agentBlock.appendChild(buildAnswerCard(turn.answer || ''));
 
   if (turn.sources && turn.sources.length) {
@@ -451,6 +525,7 @@ function startResearch(question) {
   turn.appendChild(txt('div', 'user-msg', question));
 
   const agentBlock = el('div', 'agent-block');
+  let badgesEl = null;
   turn.appendChild(agentBlock);
 
   const trace = el('div', 'trace');
@@ -476,7 +551,7 @@ function startResearch(question) {
   conversation.appendChild(turn);
   scrollToBottom();
 
-  const params = new URLSearchParams({ question });
+  const params = new URLSearchParams({ question, model: selectedModel });
   if (activeChatId) params.set('chat_id', activeChatId);
   const url = `/ask_agent_stream?${params.toString()}`;
 
@@ -484,6 +559,28 @@ function startResearch(question) {
   activeSource = es;
   const startTime = Date.now();
   const pendingTools = new Map();
+  let streamedFromCache = false;
+  let streamedMemoryTurns = 0;
+  let streamedModel = selectedModel;
+
+  function ensureBadges() {
+    if (badgesEl) {
+      const fresh = buildBadges({
+        model: streamedModel,
+        fromCache: streamedFromCache,
+        memoryTurns: streamedMemoryTurns,
+      });
+      badgesEl.replaceWith(fresh);
+      badgesEl = fresh;
+    } else {
+      badgesEl = buildBadges({
+        model: streamedModel,
+        fromCache: streamedFromCache,
+        memoryTurns: streamedMemoryTurns,
+      });
+      agentBlock.insertBefore(badgesEl, trace);
+    }
+  }
 
   es.addEventListener('start', (event) => {
     const data = JSON.parse(event.data);
@@ -492,7 +589,28 @@ function startResearch(question) {
       headerTitle.textContent = data.question || 'Deep Research';
       deleteChatBtn.hidden = false;
     }
-    traceLabel.textContent = 'Planning research…';
+    streamedModel = data.model || selectedModel;
+    streamedMemoryTurns = data.memory_turns || 0;
+    ensureBadges();
+    traceLabel.textContent = streamedMemoryTurns > 0
+      ? 'Planning with conversation context…'
+      : 'Planning research…';
+  });
+
+  es.addEventListener('cached', (event) => {
+    const data = JSON.parse(event.data);
+    streamedFromCache = true;
+    ensureBadges();
+    spinner.remove();
+    const icon = el(
+      'span',
+      'trace-cache-icon',
+      '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 2 13 10 19 10"/><path d="M21 12A9 9 0 1 1 12 3"/></svg>'
+    );
+    traceTitle.insertBefore(icon, traceLabel);
+    const elapsed = ((Date.now() - startTime) / 1000).toFixed(2);
+    traceLabel.textContent = `Served from cache · ${elapsed}s`;
+    trace.classList.add('collapsed');
   });
 
   es.addEventListener('tool_call', (event) => {
@@ -549,17 +667,23 @@ function startResearch(question) {
 
   es.addEventListener('final', (event) => {
     const data = JSON.parse(event.data);
-    const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+    const elapsed = ((Date.now() - startTime) / 1000).toFixed(streamedFromCache ? 2 : 1);
 
-    spinner.remove();
-    const check = el(
-      'span',
-      'trace-check',
-      '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'
-    );
-    traceTitle.insertBefore(check, traceLabel);
-    traceLabel.textContent = `Research complete · ${elapsed}s`;
-    trace.classList.add('collapsed');
+    if (!streamedFromCache) {
+      spinner.remove();
+      const check = el(
+        'span',
+        'trace-check',
+        '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'
+      );
+      traceTitle.insertBefore(check, traceLabel);
+      traceLabel.textContent = `Research complete · ${elapsed}s`;
+      trace.classList.add('collapsed');
+    }
+
+    streamedFromCache = !!data.from_cache;
+    streamedModel = data.model || streamedModel;
+    ensureBadges();
 
     let answerCard = agentBlock.querySelector('.answer-card');
     if (!answerCard) {

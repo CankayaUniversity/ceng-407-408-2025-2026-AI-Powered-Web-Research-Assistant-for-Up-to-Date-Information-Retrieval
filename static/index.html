@@ -24,7 +24,7 @@
           </div>
           <div class="brand-text">
             <span class="brand-name">Deep Research</span>
-            <span class="brand-tag">Llama 3.1 &middot; local</span>
+            <span class="brand-tag">Local &middot; multi-model</span>
           </div>
           <button class="icon-btn sidebar-close" id="sidebar-close" title="Close sidebar">
             <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
@@ -132,11 +132,23 @@
               placeholder="Ask a research question&hellip;"
               required
             ></textarea>
-            <button type="submit" id="submit-btn" title="Send (Enter)">
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M5 12h14M13 6l6 6-6 6" />
-              </svg>
-            </button>
+            <div class="composer-controls">
+              <div class="model-toggle" id="model-toggle">
+                <button type="button" class="model-option active" data-model="llama">
+                  <span class="model-dot dot-llama"></span>
+                  <span>Llama 3.1</span>
+                </button>
+                <button type="button" class="model-option" data-model="qwen">
+                  <span class="model-dot dot-qwen"></span>
+                  <span>Qwen 2.5</span>
+                </button>
+              </div>
+              <button type="submit" id="submit-btn" title="Send (Enter)">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 12h14M13 6l6 6-6 6" />
+                </svg>
+              </button>
+            </div>
           </form>
           <p class="composer-hint">
             Local inference via Ollama &middot; powered by Tavily, DuckDuckGo, and BeautifulSoup

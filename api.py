@@ -5,11 +5,18 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
-from langchain_core.messages import HumanMessage
+from langchain_core.messages import AIMessage, HumanMessage
 from pydantic import BaseModel
 
+import cache_store
 import chat_store
 from agent import build_agent
+from config import (
+    CACHE_TTL_SECONDS,
+    DEFAULT_MODEL_KEY,
+    HISTORY_TURN_LIMIT,
+    MODEL_REGISTRY,
+)
 from config import load_environment
 from fact_extraction import extract_claims
 
@@ -18,7 +25,13 @@ TOOL_LOG_PREVIEW_CHARS = 2000
 
 load_environment()
 app = FastAPI()
-autonomous_agent = build_agent()
+
+print("Building agents…")
+AGENTS: dict[str, object] = {
+    key: build_agent(info["id"]) for key, info in MODEL_REGISTRY.items()
+}
+print(f"Agents ready: {list(AGENTS.keys())}")
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -44,6 +57,16 @@ def home():
 @app.get("/api/health")
 def health():
     return {"message": "Deep research agent is active!"}
+
+
+@app.get("/api/models")
+def api_models():
+    return {
+        "default": DEFAULT_MODEL_KEY,
+        "models": [
+            {"key": key, **info} for key, info in MODEL_REGISTRY.items()
+        ],
+    }
 
 
 @app.get("/api/chats")
@@ -76,27 +99,116 @@ def api_delete_chat(chat_id: str):
     return {"ok": True}
 
 
+@app.post("/api/cache/clear")
+def api_clear_cache():
+    cache_store.clear()
+    return {"ok": True}
+
+
 def _sse(event_type: str, payload: dict) -> str:
     return f"event: {event_type}\ndata: {json.dumps(payload, ensure_ascii=False)}\n\n"
 
 
+def _resolve_model_key(model_key: str | None) -> str:
+    if model_key and model_key in MODEL_REGISTRY:
+        return model_key
+    return DEFAULT_MODEL_KEY
+
+
+def _build_history(chat: dict | None) -> list:
+    if not chat:
+        return []
+    turns = chat.get("turns", []) or []
+    history: list = []
+    for turn in turns[-HISTORY_TURN_LIMIT:]:
+        question = turn.get("question")
+        answer = turn.get("answer")
+        if question:
+            history.append(HumanMessage(content=question))
+        if answer:
+            history.append(AIMessage(content=answer))
+    return history
+
+
 @app.get("/ask_agent_stream")
-def ask_agent_stream(question: str, chat_id: str | None = None):
+def ask_agent_stream(
+    question: str,
+    chat_id: str | None = None,
+    model: str | None = None,
+):
     def generate():
         try:
+            model_key = _resolve_model_key(model)
+            model_info = MODEL_REGISTRY[model_key]
+
             if chat_id:
                 chat = chat_store.get_chat(chat_id) or chat_store.create_chat(question)
             else:
                 chat = chat_store.create_chat(question)
             resolved_chat_id = chat["id"]
 
-            yield _sse("start", {"question": question, "chat_id": resolved_chat_id})
+            prior_turns = chat.get("turns", []) or []
+            has_memory = len(prior_turns) > 0
 
-            input_message = {"messages": [HumanMessage(content=question)]}
+            yield _sse(
+                "start",
+                {
+                    "question": question,
+                    "chat_id": resolved_chat_id,
+                    "model": model_key,
+                    "model_label": model_info["label"],
+                    "memory_turns": len(prior_turns),
+                },
+            )
+
+            # Cache check (skip when memory is active — answer depends on context).
+            if not has_memory:
+                cached = cache_store.get(model_key, question, CACHE_TTL_SECONDS)
+                if cached:
+                    saved_chat = chat_store.append_turn(
+                        resolved_chat_id,
+                        {
+                            "question": question,
+                            "answer": cached.get("answer", ""),
+                            "facts": cached.get("facts", []),
+                            "sources": cached.get("sources", []),
+                            "trust_signals": cached.get("trust_signals", {}),
+                            "model": model_key,
+                            "from_cache": True,
+                        },
+                    )
+                    yield _sse(
+                        "cached",
+                        {
+                            "cached_at": cached.get("cached_at", ""),
+                            "original_question": cached.get("original_question", question),
+                        },
+                    )
+                    yield _sse(
+                        "final",
+                        {
+                            "question": question,
+                            "chat_id": resolved_chat_id,
+                            "chat_title": (saved_chat or {}).get("title", ""),
+                            "model": model_key,
+                            "from_cache": True,
+                            "answer": cached.get("answer", ""),
+                            "facts": cached.get("facts", []),
+                            "sources": cached.get("sources", []),
+                            "trust_signals": cached.get("trust_signals", {}),
+                        },
+                    )
+                    yield _sse("done", {"chat_id": resolved_chat_id})
+                    return
+
+            agent = AGENTS[model_key]
+            history_messages = _build_history(chat)
+            input_messages = history_messages + [HumanMessage(content=question)]
+
             tool_messages_collected: list[dict] = []
             final_answer = ""
 
-            for chunk in autonomous_agent.stream(input_message, stream_mode="updates"):
+            for chunk in agent.stream({"messages": input_messages}, stream_mode="updates"):
                 if not isinstance(chunk, dict):
                     continue
                 for _node_name, node_data in chunk.items():
@@ -134,7 +246,11 @@ def ask_agent_stream(question: str, chat_id: str | None = None):
             yield _sse("extracting", {})
 
             cleaned_answer = final_answer.replace("\n", " ")
-            extraction = extract_claims(cleaned_answer, tool_messages_collected)
+            extraction = extract_claims(
+                cleaned_answer,
+                tool_messages_collected,
+                model_id=model_info["id"],
+            )
 
             saved_chat = chat_store.append_turn(
                 resolved_chat_id,
@@ -144,8 +260,23 @@ def ask_agent_stream(question: str, chat_id: str | None = None):
                     "facts": extraction["facts"],
                     "sources": extraction["sources"],
                     "trust_signals": extraction["trust_signals"],
+                    "model": model_key,
+                    "from_cache": False,
                 },
             )
+
+            # Cache only when memory was NOT used — context-dependent answers must not pollute global cache.
+            if not has_memory and final_answer:
+                cache_store.put(
+                    model_key,
+                    question,
+                    {
+                        "answer": final_answer,
+                        "facts": extraction["facts"],
+                        "sources": extraction["sources"],
+                        "trust_signals": extraction["trust_signals"],
+                    },
+                )
 
             yield _sse(
                 "final",
@@ -153,6 +284,8 @@ def ask_agent_stream(question: str, chat_id: str | None = None):
                     "question": question,
                     "chat_id": resolved_chat_id,
                     "chat_title": (saved_chat or {}).get("title", ""),
+                    "model": model_key,
+                    "from_cache": False,
                     "answer": final_answer,
                     "facts": extraction["facts"],
                     "sources": extraction["sources"],
@@ -175,13 +308,17 @@ def ask_agent_stream(question: str, chat_id: str | None = None):
 
 
 @app.get("/ask_agent")
-def ask_agent(question: str):
+def ask_agent(question: str, model: str | None = None):
     try:
+        model_key = _resolve_model_key(model)
+        model_info = MODEL_REGISTRY[model_key]
+        agent = AGENTS[model_key]
+
         input_message = {"messages": [HumanMessage(content=question)]}
-        result = autonomous_agent.invoke(input_message)
+        result = agent.invoke(input_message)
 
         print("\n" + "=" * 40)
-        print("AGENT REASONING TRACE")
+        print(f"AGENT REASONING TRACE ({model_info['label']})")
         for message in result["messages"]:
             if message.type == "ai" and hasattr(message, "tool_calls") and message.tool_calls:
                 print("\n[THOUGHT]: The agent decided to use tools.")
@@ -204,7 +341,7 @@ def ask_agent(question: str):
             for message in result["messages"]
             if message.type == "tool"
         ]
-        extraction = extract_claims(final_answer, tool_messages)
+        extraction = extract_claims(final_answer, tool_messages, model_id=model_info["id"])
 
         print("FACT EXTRACTION SUMMARY")
         for idx, fact in enumerate(extraction["facts"], start=1):
@@ -215,6 +352,7 @@ def ask_agent(question: str):
 
         return {
             "your_question": question,
+            "model": model_key,
             "agent_answer": final_answer,
             "facts": extraction["facts"],
             "sources": extraction["sources"],
