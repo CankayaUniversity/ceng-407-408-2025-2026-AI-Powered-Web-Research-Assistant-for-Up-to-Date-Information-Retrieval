@@ -16,8 +16,22 @@ from config import (
 from source_quality import classify_source, sort_results
 
 
-_tavily_underlying = TavilySearchResults(max_results=TAVILY_MAX_RESULTS)
-_duckduckgo_underlying = DuckDuckGoSearchResults(num_results=DUCKDUCKGO_MAX_RESULTS)
+_tavily_underlying = None
+_duckduckgo_underlying = None
+
+
+def _get_tavily():
+    global _tavily_underlying
+    if _tavily_underlying is None:
+        _tavily_underlying = TavilySearchResults(max_results=TAVILY_MAX_RESULTS)
+    return _tavily_underlying
+
+
+def _get_duckduckgo():
+    global _duckduckgo_underlying
+    if _duckduckgo_underlying is None:
+        _duckduckgo_underlying = DuckDuckGoSearchResults(num_results=DUCKDUCKGO_MAX_RESULTS)
+    return _duckduckgo_underlying
 
 
 def _annotate_tavily_items(items: list[dict]) -> list[dict]:
@@ -85,7 +99,7 @@ def tavily_search_results_json(query: str) -> str:
                        events that have NOT yet happened.
     """
     try:
-        raw = _tavily_underlying.invoke({"query": query})
+        raw = _get_tavily().invoke({"query": query})
     except Exception as exc:
         return f"Tavily search error: {exc}"
     if isinstance(raw, str):
@@ -111,7 +125,7 @@ def duckduckgo_results_json(query: str) -> str:
     facts; they describe events that have not yet happened.
     """
     try:
-        raw = _duckduckgo_underlying.invoke({"query": query})
+        raw = _get_duckduckgo().invoke({"query": query})
     except Exception as exc:
         return f"DuckDuckGo search error: {exc}"
     raw_str = str(raw) if raw is not None else ""
