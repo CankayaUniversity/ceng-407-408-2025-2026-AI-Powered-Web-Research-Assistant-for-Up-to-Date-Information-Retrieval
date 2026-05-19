@@ -7,7 +7,7 @@ from urllib.parse import urlparse
 from langchain_ollama import ChatOllama
 
 from config import MODEL_NAME
-from source_quality import classify_source
+from source_quality import classify_source, tier_weight
 
 
 @dataclass
@@ -18,6 +18,7 @@ class SourceEntry:
     source_tools: list[str]
     relevance_score: float | None = None
     snippet: str = ""
+    tier: str = "low"
 
 
 @dataclass
@@ -50,7 +51,7 @@ def _claim_tokens(text: str) -> set[str]:
 _TIER_SCORE_BONUS = {"high": 0.45, "medium": 0.20, "low": 0.0, "prediction": -0.60}
 
 
-def _score_source_for_claim(claim_text: str, source: SourceEntry) -> float:
+def _score_source_for_claim(claim_text: str, source: "SourceEntry") -> float:
     claim_tokens = _claim_tokens(claim_text)
     if not claim_tokens:
         return 0.0
@@ -66,16 +67,16 @@ def _score_source_for_claim(claim_text: str, source: SourceEntry) -> float:
 
     tavily_bonus = float(source.relevance_score) * 0.25 if source.relevance_score is not None else 0.0
 
-    tier = classify_source(source.url, source.title, source.snippet)
-    tier_bonus = _TIER_SCORE_BONUS.get(tier, 0.0)
+    # Use pre-computed tier (avoids redundant classify_source call)
+    tier_bonus = _TIER_SCORE_BONUS.get(source.tier, 0.0)
 
     return token_overlap_score + date_bonus + tavily_bonus + tier_bonus
 
 
-def _enrich_evidence_urls(claim_text: str, initial_urls: list[str], sources: list[SourceEntry]) -> list[str]:
-    # Keep URLs predicted by LLM first, then add strongest supporting sources from distinct domains.
+def _enrich_evidence_urls(claim_text: str, initial_urls: list[str], sources: list["SourceEntry"]) -> list[str]:
+    """Keep LLM-predicted URLs first, then add highest-scoring sources from distinct domains."""
     ordered_urls: list[str] = []
-    seen = set()
+    seen: set[str] = set()
     for url in initial_urls:
         if url and url not in seen:
             ordered_urls.append(url)
@@ -90,10 +91,10 @@ def _enrich_evidence_urls(claim_text: str, initial_urls: list[str], sources: lis
 
     used_domains = {_safe_domain(url) for url in ordered_urls if _safe_domain(url)}
     for source, score in scored_sources:
-        if score < 0.20:
-            continue
+        if score < 0.10:  # Lowered from 0.20 — catches medium-relevance sources
+            break
         domain = source.domain
-        # Prefer domain diversity first.
+        # Enforce domain diversity once we already have 2+ URLs
         if domain and domain in used_domains and len(ordered_urls) >= 2:
             continue
         ordered_urls.append(source.url)
@@ -138,7 +139,7 @@ def _parse_duckduckgo_results(tool_content: str) -> list[dict[str, Any]]:
     return items
 
 
-def normalize_sources(tool_messages: list[dict[str, str]]) -> list[SourceEntry]:
+def normalize_sources(tool_messages: list[dict[str, str]]) -> list["SourceEntry"]:
     by_url: dict[str, SourceEntry] = {}
 
     for message in tool_messages:
@@ -168,13 +169,18 @@ def normalize_sources(tool_messages: list[dict[str, str]]) -> list[SourceEntry]:
                     existing.snippet = str(item["content"])[:400]
                 continue
 
+            snippet = str(item.get("content", ""))[:400]
+            title = str(item.get("title", "")).strip()
+            tier = classify_source(url, title, snippet)
+
             by_url[url] = SourceEntry(
                 url=url,
-                title=str(item.get("title", "")).strip(),
+                title=title,
                 domain=_safe_domain(url),
                 source_tools=[tool_name] if tool_name else [],
                 relevance_score=float(item["score"]) if isinstance(item.get("score"), (float, int)) else None,
-                snippet=str(item.get("content", ""))[:400],
+                snippet=snippet,
+                tier=tier,
             )
 
     return list(by_url.values())
@@ -196,7 +202,7 @@ def _json_from_text(text: str) -> Any:
         return None
 
 
-def _llm_extract_claims(answer_text: str, sources: list[SourceEntry], model_id: str = MODEL_NAME) -> list[dict[str, Any]]:
+def _llm_extract_claims(answer_text: str, sources: list["SourceEntry"], model_id: str = MODEL_NAME) -> list[dict[str, Any]]:
     model = ChatOllama(model=model_id, temperature=0)
     source_lines = [f"- {s.url} | {s.title}" for s in sources[:15]]
     prompt = (
@@ -214,18 +220,38 @@ def _llm_extract_claims(answer_text: str, sources: list[SourceEntry], model_id: 
     return []
 
 
-def _fallback_extract_claims(answer_text: str, sources: list[SourceEntry]) -> list[dict[str, Any]]:
+def _fallback_extract_claims(answer_text: str, sources: list["SourceEntry"]) -> list[dict[str, Any]]:
+    """Heuristic fallback: split into sentences, score each source per sentence.
+
+    Unlike the old approach (source_urls[:1] for all), this assigns each claim
+    the sources that best match it based on token overlap, dates, and tier — so
+    different claims get different supporting sources, producing continuous metrics.
+    """
     sentences = [
         sentence.strip()
         for sentence in re.split(r"(?<=[\.\!\?])\s+", answer_text or "")
         if sentence.strip()
     ]
     claims = []
-    source_urls = [source.url for source in sources]
     for sentence in sentences:
-        evidence_urls = source_urls[:1] if source_urls else []
+        scored = [
+            (source.url, _score_source_for_claim(sentence, source))
+            for source in sources
+            if source.url
+        ]
+        scored.sort(key=lambda x: x[1], reverse=True)
+        # Keep top-3 sources above a low threshold; claims that don't overlap stay uncited
+        evidence_urls = [url for url, score in scored[:3] if score >= 0.08]
         claims.append({"claim_text": sentence, "evidence_urls": evidence_urls})
     return claims
+
+
+def _claim_citation_strength(evidence_urls: list[str], url_to_source: dict[str, "SourceEntry"]) -> float:
+    """Max tier weight of this claim's supporting sources; 0.0 if uncited."""
+    if not evidence_urls:
+        return 0.0
+    weights = [tier_weight(url_to_source[url].tier) for url in evidence_urls if url in url_to_source]
+    return max(weights) if weights else 0.0
 
 
 def extract_claims(answer_text: str, tool_messages: list[dict[str, str]], model_id: str = MODEL_NAME) -> dict[str, Any]:
@@ -247,7 +273,12 @@ def extract_claims(answer_text: str, tool_messages: list[dict[str, str]], model_
             continue
         llm_urls = [url for url in claim.get("evidence_urls", []) if url in url_to_source]
         evidence_urls = _enrich_evidence_urls(claim_text, llm_urls, sources)
-        tools = sorted({tool for url in evidence_urls for tool in url_to_source[url].source_tools})
+        tools = sorted({
+            tool
+            for url in evidence_urls
+            if url in url_to_source
+            for tool in url_to_source[url].source_tools
+        })
         has_source = len(evidence_urls) > 0
         multi_source = len({_safe_domain(url) for url in evidence_urls if _safe_domain(url)}) >= 2
         weak_evidence = not has_source or len(evidence_urls) == 1
@@ -273,11 +304,38 @@ def extract_claims(answer_text: str, tool_messages: list[dict[str, str]], model_
     source_count_sum = sum(len(fact.evidence_urls) for fact in facts)
     distinct_domains = sorted({source.domain for source in sources if source.domain})
 
+    # ── Continuous source-quality metrics ────────────────────────────────────
+    source_tier_weights = [tier_weight(s.tier) for s in sources]
+    source_quality_score = (sum(source_tier_weights) / len(source_tier_weights)) if source_tier_weights else 0.0
+
+    high_count = sum(1 for s in sources if s.tier == "high")
+    medium_count = sum(1 for s in sources if s.tier == "medium")
+    low_count = sum(1 for s in sources if s.tier == "low")
+    prediction_count = sum(1 for s in sources if s.tier == "prediction")
+    total_sources_count = len(sources)
+    high_tier_ratio = (high_count / total_sources_count) if total_sources_count else 0.0
+
+    # Per-claim citation strength: max tier weight of supporting sources, averaged
+    per_claim_strengths = [_claim_citation_strength(fact.evidence_urls, url_to_source) for fact in facts]
+    citation_strength = (sum(per_claim_strengths) / len(per_claim_strengths)) if per_claim_strengths else 0.0
+
     trust_signals = {
+        # Coverage metrics (now continuous because fallback no longer forces a single source)
         "citation_coverage": (cited_claims / total_claims) if total_claims else 0.0,
         "avg_sources_per_claim": (source_count_sum / total_claims) if total_claims else 0.0,
         "multi_source_claim_ratio": (multi_source_claims / total_claims) if total_claims else 0.0,
         "distinct_domain_count": len(distinct_domains),
+        # Quality metrics: reflect the reputation tier of retrieved sources
+        "source_quality_score": round(source_quality_score, 3),
+        "high_tier_ratio": round(high_tier_ratio, 3),
+        "citation_strength": round(citation_strength, 3),
+        "tier_breakdown": {
+            "high": high_count,
+            "medium": medium_count,
+            "low": low_count,
+            "prediction": prediction_count,
+        },
+        "total_sources": total_sources_count,
     }
 
     return {

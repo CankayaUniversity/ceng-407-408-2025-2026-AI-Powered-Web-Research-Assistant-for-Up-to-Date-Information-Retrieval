@@ -24,6 +24,8 @@ let activeChatId = null;
 let cachedChats = [];
 let searchDebounce = null;
 let selectedModel = localStorage.getItem('selectedModel') || 'llama';
+let activeTraceSpinner = null;
+let activeTraceLabel = null;
 
 const MODEL_LABELS = {
   llama: 'Llama 3.1',
@@ -34,6 +36,66 @@ const MODEL_LABELS = {
 if (window.marked && marked.setOptions) {
   marked.setOptions({ breaks: true, gfm: true });
 }
+
+/* ----------------- send / stop button ----------------- */
+
+const SEND_ICON = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`;
+const STOP_ICON = `<svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><rect x="5" y="5" width="14" height="14" rx="2.5"/></svg>`;
+
+function setSubmitMode(mode) {
+  if (mode === 'stop') {
+    submitBtn.innerHTML = STOP_ICON;
+    submitBtn.classList.add('stop-mode');
+    submitBtn.disabled = false;
+    submitBtn.title = 'Stop (Esc)';
+  } else {
+    submitBtn.innerHTML = SEND_ICON;
+    submitBtn.classList.remove('stop-mode');
+    submitBtn.disabled = false;
+    submitBtn.title = 'Send (Enter)';
+    activeTraceSpinner = null;
+    activeTraceLabel = null;
+  }
+}
+
+function stopResearch() {
+  if (activeSource) {
+    activeSource.close();
+    activeSource = null;
+  }
+  isAsking = false;
+  setStatus(null, 'Online');
+
+  // Update trace BEFORE setSubmitMode clears the refs
+  if (activeTraceSpinner) {
+    const stopIcon = el(
+      'span',
+      'trace-stop-icon',
+      '<svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><rect x="5" y="5" width="14" height="14" rx="2.5"/></svg>'
+    );
+    activeTraceSpinner.replaceWith(stopIcon);
+    activeTraceSpinner = null;
+  }
+  if (activeTraceLabel) {
+    activeTraceLabel.textContent = 'Stopped';
+    activeTraceLabel = null;
+  }
+
+  setSubmitMode('send');
+}
+
+// Intercept submit-button click while searching → act as stop button
+submitBtn.addEventListener('click', (e) => {
+  if (isAsking) {
+    e.preventDefault();
+    stopResearch();
+  }
+});
+
+// Escape key shortcut
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && isAsking) stopResearch();
+});
 
 /* ----------------- helpers ----------------- */
 
@@ -322,13 +384,7 @@ searchClear.addEventListener('click', () => {
 /* ----------------- new chat / suggestions ----------------- */
 
 newChatBtn.addEventListener('click', () => {
-  if (activeSource) {
-    activeSource.close();
-    activeSource = null;
-    isAsking = false;
-    submitBtn.disabled = false;
-    setStatus(null, 'Online');
-  }
+  if (isAsking) stopResearch();
   showEmptyState();
   input.value = '';
   autosizeInput();
@@ -406,6 +462,13 @@ function buildSection(label, count, body) {
   return section;
 }
 
+const TIER_META = {
+  high:       { label: 'High',       cls: 'tier-high' },
+  medium:     { label: 'Medium',     cls: 'tier-medium' },
+  low:        { label: 'Low',        cls: 'tier-low' },
+  prediction: { label: 'Prediction', cls: 'tier-prediction' },
+};
+
 function buildSourcesGrid(sources) {
   const grid = el('div', 'sources-grid');
   sources.forEach((source) => {
@@ -426,6 +489,12 @@ function buildSourcesGrid(sources) {
     };
     head.appendChild(fav);
     head.appendChild(txt('span', 'source-domain', source.domain || domainOf(source.url)));
+
+    // Tier badge on each source card
+    if (source.tier) {
+      const meta = TIER_META[source.tier] || { label: source.tier, cls: 'tier-low' };
+      head.appendChild(txt('span', `source-tier-badge ${meta.cls}`, meta.label));
+    }
     card.appendChild(head);
 
     if (source.title) card.appendChild(txt('div', 'source-title', source.title));
@@ -489,7 +558,19 @@ function buildTrustCard(label, value, ratio) {
 }
 
 function buildTrustGrid(signals) {
+  const wrap = el('div', 'trust-wrap');
+
   const grid = el('div', 'trust-grid');
+
+  // Source quality: weighted average tier of all retrieved sources (high=1.0 … prediction=0.02)
+  const sqScore = signals.source_quality_score || 0;
+  grid.appendChild(buildTrustCard('Source quality', Math.round(sqScore * 100) + '%', sqScore));
+
+  // Citation strength: how authoritative are the sources backing each claim
+  const strength = signals.citation_strength || 0;
+  grid.appendChild(buildTrustCard('Citation strength', Math.round(strength * 100) + '%', strength));
+
+  // What fraction of claims have at least one source
   grid.appendChild(
     buildTrustCard(
       'Citation coverage',
@@ -497,8 +578,8 @@ function buildTrustGrid(signals) {
       signals.citation_coverage || 0
     )
   );
-  const avg = signals.avg_sources_per_claim || 0;
-  grid.appendChild(buildTrustCard('Avg sources / claim', avg.toFixed(1), Math.min(avg / 3, 1)));
+
+  // What fraction of claims are backed by ≥2 independent domains
   grid.appendChild(
     buildTrustCard(
       'Multi-source claims',
@@ -506,9 +587,32 @@ function buildTrustGrid(signals) {
       signals.multi_source_claim_ratio || 0
     )
   );
-  const domains = signals.distinct_domain_count || 0;
-  grid.appendChild(buildTrustCard('Distinct domains', String(domains), Math.min(domains / 5, 1)));
-  return grid;
+
+  wrap.appendChild(grid);
+
+  // Tier breakdown row
+  const breakdown = signals.tier_breakdown;
+  if (breakdown) {
+    const row = el('div', 'tier-breakdown');
+    [
+      { key: 'high',       label: 'High',       cls: 'tier-high' },
+      { key: 'medium',     label: 'Medium',     cls: 'tier-medium' },
+      { key: 'low',        label: 'Low',        cls: 'tier-low' },
+      { key: 'prediction', label: 'Prediction', cls: 'tier-prediction' },
+    ].forEach(({ key, label, cls }) => {
+      const count = (breakdown[key] || 0);
+      if (count === 0) return;   // hide zero-count tiers to save space
+      const chip = el('span', `tier-chip ${cls}`);
+      chip.innerHTML = `<span class="tier-chip-dot"></span>${count} ${label}`;
+      row.appendChild(chip);
+    });
+    if (signals.total_sources) {
+      row.appendChild(txt('span', 'tier-total', `${signals.total_sources} source${signals.total_sources !== 1 ? 's' : ''} retrieved`));
+    }
+    wrap.appendChild(row);
+  }
+
+  return wrap;
 }
 
 function renderHistoricalTurn(turn) {
@@ -539,7 +643,7 @@ function renderHistoricalTurn(turn) {
 
 function startResearch(question) {
   isAsking = true;
-  submitBtn.disabled = true;
+  setSubmitMode('stop');
   input.value = '';
   autosizeInput();
   setStatus('thinking', 'Researching');
@@ -556,8 +660,10 @@ function startResearch(question) {
   const traceHeader = el('div', 'trace-header');
   const traceTitle = el('div', 'trace-title');
   const spinner = el('span', 'trace-spinner');
+  activeTraceSpinner = spinner;
   traceTitle.appendChild(spinner);
   const traceLabel = txt('span', null, 'Planning research…');
+  activeTraceLabel = traceLabel;
   traceTitle.appendChild(traceLabel);
   traceHeader.appendChild(traceTitle);
   const chevron = el(
@@ -625,7 +731,7 @@ function startResearch(question) {
     const data = JSON.parse(event.data);
     streamedFromCache = true;
     ensureBadges();
-    spinner.remove();
+    if (activeTraceSpinner) { activeTraceSpinner.remove(); activeTraceSpinner = null; }
     const icon = el(
       'span',
       'trace-cache-icon',
@@ -698,7 +804,7 @@ function startResearch(question) {
     const elapsed = ((Date.now() - startTime) / 1000).toFixed(streamedFromCache ? 2 : 1);
 
     if (!streamedFromCache) {
-      spinner.remove();
+      if (activeTraceSpinner) { activeTraceSpinner.remove(); activeTraceSpinner = null; }
       const check = el(
         'span',
         'trace-check',
@@ -741,7 +847,7 @@ function startResearch(question) {
     es.close();
     activeSource = null;
     isAsking = false;
-    submitBtn.disabled = false;
+    setSubmitMode('send');
     setStatus(null, 'Online');
     loadChats(searchInput.value.trim());
     input.focus();
@@ -752,14 +858,14 @@ function startResearch(question) {
     try {
       if (event.data) message = JSON.parse(event.data).message || message;
     } catch {}
-    spinner.remove();
-    traceLabel.textContent = 'Failed';
+    if (activeTraceSpinner) { activeTraceSpinner.remove(); activeTraceSpinner = null; }
+    if (activeTraceLabel) { activeTraceLabel.textContent = 'Failed'; activeTraceLabel = null; }
     const banner = txt('div', 'error-banner', message);
     agentBlock.appendChild(banner);
     es.close();
     activeSource = null;
     isAsking = false;
-    submitBtn.disabled = false;
+    setSubmitMode('send');
     setStatus('error', 'Error');
     scrollToBottom();
   });

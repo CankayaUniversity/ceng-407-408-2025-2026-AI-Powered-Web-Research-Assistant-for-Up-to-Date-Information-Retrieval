@@ -721,6 +721,33 @@
       "original_question": "Last UCL winner?",
       "cached_at": "2026-05-18T19:20:00.685362+00:00",
       "cached_ts": 1779132000.68538
+    },
+    "llama32::who won ucl last": {
+      "answer": "According to the latest available information from UEFA, the 2024-25 UEFA Champions League winner is Paris Saint-Germain.",
+      "facts": [
+        {
+          "claim_text": "The 2024-25 UEFA Champions League winner is Paris Saint-Germain.",
+          "evidence_urls": [],
+          "source_tools": [],
+          "fact_quality_flags": {
+            "has_source": false,
+            "multi_source": false,
+            "weak_evidence": true,
+            "needs_review": true
+          }
+        }
+      ],
+      "sources": [],
+      "trust_signals": {
+        "citation_coverage": 0.0,
+        "avg_sources_per_claim": 0.0,
+        "multi_source_claim_ratio": 0.0,
+        "distinct_domain_count": 0
+      },
+      "model_key": "llama32",
+      "original_question": "Who won UCL last?",
+      "cached_at": "2026-05-18T19:48:57.016522+00:00",
+      "cached_ts": 1779133737.016541
     }
   }
 }
