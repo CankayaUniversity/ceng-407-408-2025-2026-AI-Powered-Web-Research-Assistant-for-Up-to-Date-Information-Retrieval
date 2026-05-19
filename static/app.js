@@ -99,9 +99,14 @@ function handleSubmitClick(e) {
 
 submitBtn.addEventListener('click', handleSubmitClick);
 
-// Escape key shortcut — close the explainer modal first, otherwise stop the search
+// Escape key shortcut — close any open modal first, otherwise stop the search
 document.addEventListener('keydown', (e) => {
   if (e.key !== 'Escape') return;
+  if (answerBreakdownModal && answerBreakdownModal.classList.contains('open')) {
+    e.preventDefault();
+    closeAnswerBreakdown();
+    return;
+  }
   if (trustExplainerModal && trustExplainerModal.classList.contains('open')) {
     e.preventDefault();
     closeTrustExplainer();
@@ -636,6 +641,341 @@ function buildTrustExplainerModal() {
   return backdrop;
 }
 
+/* ----------------- per-answer trust breakdown ----------------- */
+
+const TIER_WEIGHTS = { high: 1.0, medium: 0.65, low: 0.35, prediction: 0.02 };
+const TIER_ORDER   = { high: 0, medium: 1, low: 2, prediction: 3 };
+
+function tierWeight(tier) {
+  const w = TIER_WEIGHTS[tier];
+  return typeof w === 'number' ? w : 0.35;
+}
+
+function escapeHtml(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[c]));
+}
+
+function truncate(s, max) {
+  const str = String(s || '');
+  if (str.length <= max) return str;
+  return str.slice(0, max).trim() + '…';
+}
+
+let answerBreakdownModal = null;
+
+function buildAnswerBreakdownButton(signals, sources, facts) {
+  const btn = el('button', 'section-help-btn breakdown-btn');
+  btn.type = 'button';
+  btn.title = "Show how this answer's trust signals were computed";
+  btn.setAttribute('aria-label', 'Show breakdown for this answer');
+  btn.innerHTML = `
+    <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="14" width="4" height="7"/>
+      <rect x="10" y="9" width="4" height="12"/>
+      <rect x="17" y="4" width="4" height="17"/>
+    </svg>
+    <span>Show the math</span>
+  `;
+  btn.addEventListener('click', () => openAnswerBreakdown(signals, sources, facts));
+  return btn;
+}
+
+function buildTrustActions(signals, sources, facts) {
+  const wrap = el('div', 'section-actions');
+  wrap.appendChild(buildTrustHelpButton());
+  if (signals && Array.isArray(sources) && Array.isArray(facts)) {
+    wrap.appendChild(buildAnswerBreakdownButton(signals, sources, facts));
+  }
+  return wrap;
+}
+
+function openAnswerBreakdown(signals, sources, facts) {
+  closeAnswerBreakdown();
+  answerBreakdownModal = buildAnswerBreakdownModal(signals, sources, facts);
+  document.body.appendChild(answerBreakdownModal);
+  // Force reflow then add open class for animation
+  void answerBreakdownModal.offsetWidth;
+  answerBreakdownModal.classList.add('open');
+  document.body.classList.add('modal-open');
+}
+
+function closeAnswerBreakdown() {
+  if (answerBreakdownModal) {
+    answerBreakdownModal.remove();
+    answerBreakdownModal = null;
+  }
+  if (!trustExplainerModal || !trustExplainerModal.classList.contains('open')) {
+    document.body.classList.remove('modal-open');
+  }
+}
+
+function buildAnswerBreakdownModal(signals, sources, facts) {
+  const safeSignals = signals || {};
+  const safeSources = Array.isArray(sources) ? sources : [];
+  const safeFacts   = Array.isArray(facts)   ? facts   : [];
+
+  // url → source lookup for fast tier resolution
+  const sourceByUrl = new Map();
+  safeSources.forEach((s) => { if (s && s.url) sourceByUrl.set(s.url, s); });
+
+  const backdrop = el('div', 'modal-backdrop breakdown-backdrop');
+  backdrop.addEventListener('click', closeAnswerBreakdown);
+
+  const modal = el('div', 'modal breakdown-modal');
+  modal.addEventListener('click', (e) => e.stopPropagation());
+
+  modal.innerHTML = `
+    <button class="modal-close" type="button" aria-label="Close">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 6L6 18M6 6l12 12"/>
+      </svg>
+    </button>
+    <div class="modal-header">
+      <h2>Breakdown of this answer</h2>
+      <p>The actual values that went into the trust signals shown above — every source, every claim, and every step of the arithmetic.</p>
+    </div>
+    <div class="modal-body">
+      ${renderSourceQualityBreakdown(safeSignals, safeSources)}
+      ${renderCitationStrengthBreakdown(safeSignals, safeFacts, sourceByUrl)}
+      ${renderCitationCoverageBreakdown(safeSignals, safeFacts)}
+      ${renderMultiSourceBreakdown(safeSignals, safeFacts)}
+    </div>
+  `;
+
+  modal.querySelector('.modal-close').addEventListener('click', closeAnswerBreakdown);
+
+  backdrop.appendChild(modal);
+  return backdrop;
+}
+
+function renderSourceQualityBreakdown(signals, sources) {
+  const score   = signals.source_quality_score || 0;
+  const scorePct = Math.round(score * 100);
+
+  if (sources.length === 0) {
+    return breakdownEmpty('Source quality', scorePct, 'mean( tier_weight(s) for s in sources )', 'No sources were retrieved for this answer.');
+  }
+
+  // Sort: high → medium → low → prediction
+  const sorted = [...sources].sort((a, b) => (TIER_ORDER[a.tier] ?? 99) - (TIER_ORDER[b.tier] ?? 99));
+  const sum = sorted.reduce((acc, s) => acc + tierWeight(s.tier), 0);
+  const avg = sum / sorted.length;
+  const weightsStr = sorted.map((s) => tierWeight(s.tier).toFixed(2)).join(' + ');
+  const formula = `(${weightsStr}) ÷ ${sorted.length} = ${avg.toFixed(3)}`;
+
+  const rows = sorted.map((s) => {
+    const tier      = s.tier || 'low';
+    const tierLabel = tier.toUpperCase();
+    const weight    = tierWeight(tier).toFixed(2);
+    const domain    = s.domain || domainOf(s.url || '');
+    return `
+      <div class="breakdown-row">
+        <span class="breakdown-row-tag tier-${tier}">${tierLabel}</span>
+        <span class="breakdown-row-weight">${weight}</span>
+        <span class="breakdown-row-domain" title="${escapeHtml(domain)}">${escapeHtml(domain)}</span>
+        <span class="breakdown-row-title" title="${escapeHtml(s.title || '')}">${escapeHtml(s.title || '—')}</span>
+      </div>
+    `;
+  }).join('');
+
+  return `
+    <div class="breakdown-section">
+      ${breakdownHead('Source quality', scorePct)}
+      ${breakdownFormula(formula)}
+      <p class="breakdown-explainer">Weighted average across ${sorted.length} retrieved source${sorted.length === 1 ? '' : 's'}, sorted by tier.</p>
+      <div class="breakdown-rows">${rows}</div>
+    </div>
+  `;
+}
+
+function renderCitationStrengthBreakdown(signals, facts, sourceByUrl) {
+  const score = signals.citation_strength || 0;
+  const scorePct = Math.round(score * 100);
+
+  if (facts.length === 0) {
+    return breakdownEmpty('Citation strength', scorePct, 'mean( max(tier_weight(s)) for s in claim.evidence )', 'No claims were extracted from this answer.');
+  }
+
+  const perClaim = facts.map((fact) => {
+    let bestWeight = 0;
+    let bestTier = null;
+    let bestSource = null;
+    (fact.evidence_urls || []).forEach((url) => {
+      const s = sourceByUrl.get(url);
+      if (s) {
+        const w = tierWeight(s.tier);
+        if (w > bestWeight) {
+          bestWeight = w;
+          bestTier = s.tier;
+          bestSource = s;
+        }
+      }
+    });
+    return { fact, bestWeight, bestTier, bestSource };
+  });
+
+  const sum = perClaim.reduce((acc, c) => acc + c.bestWeight, 0);
+  const avg = sum / perClaim.length;
+  const weightsStr = perClaim.map((c) => c.bestWeight.toFixed(2)).join(' + ');
+  const formula = `(${weightsStr}) ÷ ${perClaim.length} = ${avg.toFixed(3)}`;
+
+  const rows = perClaim.map((c, idx) => {
+    const claim = truncate(c.fact.claim_text, 140);
+    const cls = c.bestSource ? 'cited' : 'uncited';
+    if (c.bestSource) {
+      const tier = c.bestTier || 'low';
+      const domain = c.bestSource.domain || domainOf(c.bestSource.url || '');
+      return `
+        <div class="breakdown-claim-row ${cls}">
+          <span class="breakdown-claim-num">#${idx + 1}</span>
+          <span class="breakdown-claim-text">${escapeHtml(claim)}</span>
+          <span class="breakdown-claim-best">
+            <span class="breakdown-row-tag tier-${tier}">${tier.toUpperCase()}</span>
+            <span class="breakdown-claim-domain">${escapeHtml(domain)}</span>
+          </span>
+          <span class="breakdown-claim-weight">${c.bestWeight.toFixed(2)}</span>
+        </div>
+      `;
+    }
+    return `
+      <div class="breakdown-claim-row ${cls}">
+        <span class="breakdown-claim-num">#${idx + 1}</span>
+        <span class="breakdown-claim-text">${escapeHtml(claim)}</span>
+        <span class="breakdown-claim-best uncited">no supporting source</span>
+        <span class="breakdown-claim-weight">0.00</span>
+      </div>
+    `;
+  }).join('');
+
+  return `
+    <div class="breakdown-section">
+      ${breakdownHead('Citation strength', scorePct)}
+      ${breakdownFormula(formula)}
+      <p class="breakdown-explainer">For each of the ${perClaim.length} claim${perClaim.length === 1 ? '' : 's'}, the highest-tier supporting source contributes its weight. Then averaged.</p>
+      <div class="breakdown-claims">${rows}</div>
+    </div>
+  `;
+}
+
+function renderCitationCoverageBreakdown(signals, facts) {
+  const score = signals.citation_coverage || 0;
+  const scorePct = Math.round(score * 100);
+
+  if (facts.length === 0) {
+    return breakdownEmpty('Citation coverage', scorePct, 'claims_with_sources ÷ total_claims', 'No claims were extracted from this answer.');
+  }
+
+  const cited = facts.filter((f) => (f.evidence_urls || []).length > 0).length;
+  const total = facts.length;
+  const formula = `${cited} ÷ ${total} = ${(cited / total).toFixed(3)}`;
+
+  const rows = facts.map((fact, idx) => {
+    const urls = fact.evidence_urls || [];
+    const count = urls.length;
+    const cls = count > 0 ? 'cited' : 'uncited';
+    const status = count > 0 ? '✓' : '✗';
+    const label = count > 0 ? `${count} source${count === 1 ? '' : 's'}` : 'no sources';
+    return `
+      <div class="breakdown-claim-row ${cls}">
+        <span class="breakdown-claim-status">${status}</span>
+        <span class="breakdown-claim-num">#${idx + 1}</span>
+        <span class="breakdown-claim-text">${escapeHtml(truncate(fact.claim_text, 140))}</span>
+        <span class="breakdown-claim-count ${cls}">${label}</span>
+      </div>
+    `;
+  }).join('');
+
+  return `
+    <div class="breakdown-section">
+      ${breakdownHead('Citation coverage', scorePct)}
+      ${breakdownFormula(formula)}
+      <p class="breakdown-explainer">${cited} of ${total} claim${total === 1 ? '' : 's'} have at least one supporting source attached.</p>
+      <div class="breakdown-claims">${rows}</div>
+    </div>
+  `;
+}
+
+function renderMultiSourceBreakdown(signals, facts) {
+  const score = signals.multi_source_claim_ratio || 0;
+  const scorePct = Math.round(score * 100);
+
+  if (facts.length === 0) {
+    return breakdownEmpty('Multi-source claims', scorePct, 'claims_with_≥2_distinct_domains ÷ total_claims', 'No claims were extracted from this answer.');
+  }
+
+  const perClaim = facts.map((fact) => {
+    const urls = fact.evidence_urls || [];
+    const domains = new Set();
+    urls.forEach((url) => {
+      try {
+        const d = new URL(url).hostname.replace(/^www\./, '');
+        if (d) domains.add(d);
+      } catch (_) { /* ignore bad URLs */ }
+    });
+    return { fact, domains: [...domains] };
+  });
+
+  const multi = perClaim.filter((c) => c.domains.length >= 2).length;
+  const total = perClaim.length;
+  const formula = `${multi} ÷ ${total} = ${(multi / total).toFixed(3)}`;
+
+  const rows = perClaim.map((c, idx) => {
+    const count = c.domains.length;
+    const cls = count >= 2 ? 'cited' : 'uncited';
+    const status = count >= 2 ? '✓' : '✗';
+    const chips = count > 0
+      ? c.domains.map((d) => `<span class="breakdown-mini-domain">${escapeHtml(d)}</span>`).join('')
+      : '<span class="breakdown-claim-count uncited">no domains</span>';
+    return `
+      <div class="breakdown-claim-row ${cls}">
+        <span class="breakdown-claim-status">${status}</span>
+        <span class="breakdown-claim-num">#${idx + 1}</span>
+        <span class="breakdown-claim-text">${escapeHtml(truncate(c.fact.claim_text, 140))}</span>
+        <span class="breakdown-claim-domains">${chips}</span>
+      </div>
+    `;
+  }).join('');
+
+  return `
+    <div class="breakdown-section">
+      ${breakdownHead('Multi-source claims', scorePct)}
+      ${breakdownFormula(formula)}
+      <p class="breakdown-explainer">${multi} of ${total} claim${total === 1 ? '' : 's'} corroborated by ≥2 independent domains.</p>
+      <div class="breakdown-claims">${rows}</div>
+    </div>
+  `;
+}
+
+function breakdownHead(name, scorePct) {
+  return `
+    <div class="breakdown-section-head">
+      <span class="breakdown-section-name">${name}</span>
+      <span class="breakdown-section-value">${scorePct}%</span>
+    </div>
+  `;
+}
+
+function breakdownFormula(text) {
+  return `
+    <p class="breakdown-formula">
+      <span class="breakdown-label">Math:</span>
+      <code>${text}</code>
+    </p>
+  `;
+}
+
+function breakdownEmpty(name, scorePct, formula, explainer) {
+  return `
+    <div class="breakdown-section">
+      ${breakdownHead(name, scorePct)}
+      ${breakdownFormula(formula)}
+      <p class="breakdown-empty">${explainer}</p>
+    </div>
+  `;
+}
+
 const TIER_META = {
   high:       { label: 'High',       cls: 'tier-high' },
   medium:     { label: 'Medium',     cls: 'tier-medium' },
@@ -807,7 +1147,12 @@ function renderHistoricalTurn(turn) {
   }
   if (turn.trust_signals) {
     agentBlock.appendChild(
-      buildSection('Trust signals', null, buildTrustGrid(turn.trust_signals), buildTrustHelpButton())
+      buildSection(
+        'Trust signals',
+        null,
+        buildTrustGrid(turn.trust_signals),
+        buildTrustActions(turn.trust_signals, turn.sources || [], turn.facts || [])
+      )
     );
   }
 
@@ -1013,7 +1358,12 @@ function startResearch(question) {
     }
     if (data.trust_signals) {
       agentBlock.appendChild(
-        buildSection('Trust signals', null, buildTrustGrid(data.trust_signals), buildTrustHelpButton())
+        buildSection(
+          'Trust signals',
+          null,
+          buildTrustGrid(data.trust_signals),
+          buildTrustActions(data.trust_signals, data.sources || [], data.facts || [])
+        )
       );
     }
 
