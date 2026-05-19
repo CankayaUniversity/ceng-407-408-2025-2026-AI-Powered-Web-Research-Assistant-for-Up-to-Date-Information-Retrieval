@@ -36,8 +36,17 @@ def _safe_domain(url: str) -> str:
         return ""
 
 
-def _extract_urls(text: str) -> list[str]:
-    return re.findall(r"https?://[^\s,\]\)]+", text or "")
+# ChatOllama clients are cached per model_id — instantiation is cheap but
+# the call still does discovery/handshake work we don't need to repeat.
+_LLM_CACHE: dict[str, ChatOllama] = {}
+
+
+def _get_llm(model_id: str) -> ChatOllama:
+    llm = _LLM_CACHE.get(model_id)
+    if llm is None:
+        llm = ChatOllama(model=model_id, temperature=0)
+        _LLM_CACHE[model_id] = llm
+    return llm
 
 
 def _claim_tokens(text: str) -> set[str]:
@@ -203,7 +212,7 @@ def _json_from_text(text: str) -> Any:
 
 
 def _llm_extract_claims(answer_text: str, sources: list["SourceEntry"], model_id: str = MODEL_NAME) -> list[dict[str, Any]]:
-    model = ChatOllama(model=model_id, temperature=0)
+    model = _get_llm(model_id)
     source_lines = [f"- {s.url} | {s.title}" for s in sources[:15]]
     prompt = (
         "Extract factual claims from the answer and map each claim to supporting source URLs.\n"

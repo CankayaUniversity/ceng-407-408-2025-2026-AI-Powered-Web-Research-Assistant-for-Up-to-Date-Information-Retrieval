@@ -1,4 +1,5 @@
 import json
+import logging
 from datetime import date
 from pathlib import Path
 
@@ -17,22 +18,30 @@ from config import (
     DEFAULT_MODEL_KEY,
     HISTORY_TURN_LIMIT,
     MODEL_REGISTRY,
+    load_environment,
 )
-from config import load_environment
 from fact_extraction import extract_claims
 from verification import verify_answer
 
 TOOL_LOG_PREVIEW_CHARS = 2000
 
 
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s | %(levelname)-7s | %(name)s | %(message)s",
+    datefmt="%H:%M:%S",
+)
+logger = logging.getLogger("deep_research")
+
+
 load_environment()
 app = FastAPI()
 
-print("Building agents…")
+logger.info("Building agents for models: %s", list(MODEL_REGISTRY.keys()))
 AGENTS: dict[str, object] = {
     key: build_agent(info["id"]) for key, info in MODEL_REGISTRY.items()
 }
-print(f"Agents ready: {list(AGENTS.keys())}")
+logger.info("Agents ready: %s", list(AGENTS.keys()))
 
 
 app.add_middleware(
@@ -341,6 +350,7 @@ def ask_agent_stream(
             )
             yield _sse("done", {"chat_id": resolved_chat_id})
         except Exception as exc:
+            logger.exception("Agent stream failed: %s", exc)
             yield _sse("error", {"message": str(exc)})
 
     return StreamingResponse(
@@ -356,6 +366,8 @@ def ask_agent_stream(
 
 @app.get("/ask_agent")
 def ask_agent(question: str, model: str | None = None):
+    """Legacy non-streaming endpoint. Useful for command-line / Swagger testing.
+    The streaming endpoint /ask_agent_stream is what the UI uses."""
     try:
         model_key = _resolve_model_key(model)
         model_info = MODEL_REGISTRY[model_key]
@@ -366,38 +378,26 @@ def ask_agent(question: str, model: str | None = None):
         }
         result = agent.invoke(input_message)
 
-        print("\n" + "=" * 40)
-        print(f"AGENT REASONING TRACE ({model_info['label']})")
+        logger.info("=== agent reasoning trace (%s) ===", model_info["label"])
         for message in result["messages"]:
-            if message.type == "ai" and hasattr(message, "tool_calls") and message.tool_calls:
-                print("\n[THOUGHT]: The agent decided to use tools.")
+            if message.type == "ai" and getattr(message, "tool_calls", None):
                 for tool_call in message.tool_calls:
-                    print(f" TOOL USED: {tool_call['name']}")
-                    print(f" TOOL INPUT: {tool_call['args']}")
+                    logger.info("  tool=%s args=%s", tool_call["name"], tool_call["args"])
             elif message.type == "tool":
                 tool_output = str(message.content)
-                print(f"\n[TOOL RESULT ({message.name})]:")
-                if len(tool_output) <= TOOL_LOG_PREVIEW_CHARS:
-                    print(tool_output)
-                else:
-                    print(tool_output[:TOOL_LOG_PREVIEW_CHARS])
-                    print(f"... (truncated, total chars: {len(tool_output)})")
-        print("=" * 40 + "\n")
+                preview = tool_output[:TOOL_LOG_PREVIEW_CHARS]
+                truncated = " ...(truncated)" if len(tool_output) > TOOL_LOG_PREVIEW_CHARS else ""
+                logger.info("  result[%s]: %s%s", message.name, preview, truncated)
 
-        final_answer = result["messages"][-1].content.replace("\n", " ")
+        # Keep newlines so markdown formatting in the answer survives.
+        final_answer = result["messages"][-1].content
         tool_messages = [
             {"name": message.name, "content": str(message.content)}
             for message in result["messages"]
             if message.type == "tool"
         ]
         extraction = extract_claims(final_answer, tool_messages, model_id=model_info["id"])
-
-        print("FACT EXTRACTION SUMMARY")
-        for idx, fact in enumerate(extraction["facts"], start=1):
-            print(f" FACT {idx}: {fact['claim_text']}")
-            print(f"  URLs: {fact['evidence_urls']}")
-            print(f"  FLAGS: {fact['fact_quality_flags']}")
-        print(f" TRUST SIGNALS: {extraction['trust_signals']}")
+        logger.info("trust_signals: %s", extraction["trust_signals"])
 
         return {
             "your_question": question,
@@ -407,5 +407,6 @@ def ask_agent(question: str, model: str | None = None):
             "sources": extraction["sources"],
             "trust_signals": extraction["trust_signals"],
         }
-    except Exception as e:
-        return {"error": f"Agent error: {str(e)}"}
+    except Exception as exc:
+        logger.exception("ask_agent failed: %s", exc)
+        return {"error": f"Agent error: {exc}"}

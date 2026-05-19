@@ -9,6 +9,19 @@ final answer from stale training memory instead of the retrieved content.
 from langchain_ollama import ChatOllama
 
 
+# ChatOllama clients are cached per model_id to avoid repeating handshake work
+# on every verification pass.
+_LLM_CACHE: dict[str, ChatOllama] = {}
+
+
+def _get_llm(model_id: str) -> ChatOllama:
+    llm = _LLM_CACHE.get(model_id)
+    if llm is None:
+        llm = ChatOllama(model=model_id, temperature=0)
+        _LLM_CACHE[model_id] = llm
+    return llm
+
+
 VERIFICATION_PROMPT = """You are a strict fact-checker. Your only job is to verify a draft answer against live web search results and correct any factual errors.
 
 QUESTION ASKED:
@@ -94,7 +107,7 @@ def verify_answer(
     )
 
     try:
-        llm = ChatOllama(model=model_id, temperature=0)
+        llm = _get_llm(model_id)
         response = llm.invoke(prompt)
         corrected = (response.content or "").strip()
         # Strip the common "Here is the corrected answer:" preamble if the model added one.

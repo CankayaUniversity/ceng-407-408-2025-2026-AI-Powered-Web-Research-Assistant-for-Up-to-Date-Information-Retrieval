@@ -1,5 +1,6 @@
 import json
 import re
+import threading
 from typing import Any
 
 import requests
@@ -20,6 +21,7 @@ from source_quality import classify_source, sort_results
 
 _tavily_underlying = None
 _duckduckgo_underlying = None
+_client_lock = threading.Lock()
 
 
 # --------------------------------------------------------------------------
@@ -92,14 +94,18 @@ class DeepReaderInput(BaseModel):
 def _get_tavily():
     global _tavily_underlying
     if _tavily_underlying is None:
-        _tavily_underlying = TavilySearchResults(max_results=TAVILY_MAX_RESULTS)
+        with _client_lock:
+            if _tavily_underlying is None:  # double-checked locking
+                _tavily_underlying = TavilySearchResults(max_results=TAVILY_MAX_RESULTS)
     return _tavily_underlying
 
 
 def _get_duckduckgo():
     global _duckduckgo_underlying
     if _duckduckgo_underlying is None:
-        _duckduckgo_underlying = DuckDuckGoSearchResults(num_results=DUCKDUCKGO_MAX_RESULTS)
+        with _client_lock:
+            if _duckduckgo_underlying is None:
+                _duckduckgo_underlying = DuckDuckGoSearchResults(num_results=DUCKDUCKGO_MAX_RESULTS)
     return _duckduckgo_underlying
 
 

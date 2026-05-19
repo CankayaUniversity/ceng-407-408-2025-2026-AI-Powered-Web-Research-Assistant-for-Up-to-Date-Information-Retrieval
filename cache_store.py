@@ -51,6 +51,18 @@ def _build_key(model_key: str, question: str) -> str:
     return f"{model_key}::{normalize_question(question)}"
 
 
+def _prune_expired(data: dict, ttl_seconds: int) -> bool:
+    """Drop expired entries in-place. Returns True if anything was removed."""
+    now = _now_ts()
+    expired_keys = [
+        key for key, entry in data["entries"].items()
+        if now - entry.get("cached_ts", 0) > ttl_seconds
+    ]
+    for key in expired_keys:
+        del data["entries"][key]
+    return bool(expired_keys)
+
+
 def get(model_key: str, question: str, ttl_seconds: int) -> dict[str, Any] | None:
     normalized = normalize_question(question)
     if not normalized:
@@ -60,9 +72,15 @@ def get(model_key: str, question: str, ttl_seconds: int) -> dict[str, Any] | Non
         data = _read()
         entry = data["entries"].get(key)
         if not entry:
+            # Opportunistic prune so cache.json doesn't grow forever
+            if _prune_expired(data, ttl_seconds):
+                _write(data)
             return None
         cached_ts = entry.get("cached_ts", 0)
         if _now_ts() - cached_ts > ttl_seconds:
+            # This specific entry is stale — drop it and prune siblings too
+            _prune_expired(data, ttl_seconds)
+            _write(data)
             return None
         return entry
 
@@ -86,9 +104,3 @@ def put(model_key: str, question: str, payload: dict[str, Any]) -> None:
 def clear() -> None:
     with _lock:
         _write({"entries": {}})
-
-
-def stats() -> dict[str, Any]:
-    with _lock:
-        data = _read()
-        return {"entry_count": len(data["entries"])}

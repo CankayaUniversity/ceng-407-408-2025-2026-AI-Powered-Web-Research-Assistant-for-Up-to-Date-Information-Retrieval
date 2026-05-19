@@ -866,6 +866,236 @@
       "original_question": "weather in ankara today",
       "cached_at": "2026-05-19T15:06:28.631810+00:00",
       "cached_ts": 1779203188.631831
+    },
+    "llama32::ankara weather today": {
+      "answer": "* Temperature: 19°C Cool (Feels like 19°C)\n* Humidity: 48%\n* Wind Speed: 7.2 km/h from N (356 degrees), Gust 2.3 m/s\n* UV Index: 2.3 (Moderate)\n* Air Pressure: 1012 mb\n* Cloud Cover: 76%\n* Visibility: 10 km\n* Precipitation: 0.02 mm (89% chance of rain)\n\nIt is currently raining in Ankara, with a 89% chance of rain throughout the day. The temperature is expected to be around 13°C today, with a high of 19°C and a low of 8°C.\n\nPlease note that these conditions are based on the search results provided by Tavily and Weather25, which may not reflect the current weather in Ankara. For the most up-to-date information, it's best to check with a reliable weather source.",
+      "facts": [
+        {
+          "claim_text": "Temperature: 19°C Cool (Feels like 19°C)",
+          "evidence_urls": [
+            "https://www.aqi.in/weather/turkey/ankara/ankara",
+            "https://www.weather25.com/europe/turkey/ankara?page=month&month=May",
+            "https://www.agatetravel.com/turkey/weather-in-may.html"
+          ],
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "Humidity: 48%",
+          "evidence_urls": [
+            "https://www.aqi.in/weather/turkey/ankara/ankara",
+            "https://www.weather25.com/europe/turkey/ankara?page=month&month=May",
+            "https://www.agatetravel.com/turkey/weather-in-may.html"
+          ],
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "Wind Speed: 7.2 km/h from N (356 degrees), Gust 2.3 m/s",
+          "evidence_urls": [
+            "https://www.weather25.com/europe/turkey/ankara?page=month&month=May",
+            "https://www.aqi.in/weather/turkey/ankara/ankara",
+            "https://www.agatetravel.com/turkey/weather-in-may.html"
+          ],
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "UV Index: 2.3 (Moderate)",
+          "evidence_urls": [
+            "https://www.aqi.in/weather/turkey/ankara/ankara",
+            "https://www.weather25.com/europe/turkey/ankara?page=month&month=May",
+            "https://www.agatetravel.com/turkey/weather-in-may.html"
+          ],
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "Air Pressure: 1012 mb",
+          "evidence_urls": [
+            "https://www.aqi.in/weather/turkey/ankara/ankara",
+            "https://www.weather25.com/europe/turkey/ankara?page=month&month=May",
+            "https://www.agatetravel.com/turkey/weather-in-may.html"
+          ],
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "Cloud Cover: 76%",
+          "evidence_urls": [
+            "https://www.aqi.in/weather/turkey/ankara/ankara",
+            "https://www.weather25.com/europe/turkey/ankara?page=month&month=May",
+            "https://www.agatetravel.com/turkey/weather-in-may.html"
+          ],
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "Visibility: 10 km",
+          "evidence_urls": [
+            "https://www.aqi.in/weather/turkey/ankara/ankara",
+            "https://www.weather25.com/europe/turkey/ankara?page=month&month=May",
+            "https://www.agatetravel.com/turkey/weather-in-may.html"
+          ],
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "Precipitation: 0.02 mm (89% chance of rain)",
+          "evidence_urls": [
+            "https://www.aqi.in/weather/turkey/ankara/ankara",
+            "https://www.weather25.com/europe/turkey/ankara?page=month&month=May",
+            "https://www.agatetravel.com/turkey/weather-in-may.html"
+          ],
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "It is currently raining in Ankara, with a 89% chance of rain throughout the day.",
+          "evidence_urls": [
+            "https://www.aqi.in/weather/turkey/ankara/ankara",
+            "https://www.weather25.com/europe/turkey/ankara?page=month&month=May",
+            "https://www.agatetravel.com/turkey/weather-in-may.html"
+          ],
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "The temperature is expected to be around 13°C today, with a high of 19°C and a low of 8°C.",
+          "evidence_urls": [
+            "https://www.agatetravel.com/turkey/weather-in-may.html",
+            "https://www.aqi.in/weather/turkey/ankara/ankara",
+            "https://www.weather25.com/europe/turkey/ankara?page=month&month=May"
+          ],
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        }
+      ],
+      "sources": [
+        {
+          "url": "https://www.aqi.in/weather/turkey/ankara/ankara",
+          "title": "Ankara Weather Conditions: Temperature | 30 Days Forecast",
+          "domain": "www.aqi.in",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": 0.99996233,
+          "snippet": "What are the current weather parameters in Ankara today?\n\nHere is a complete overview of Ankara's current weather conditions as of 05:30 PM 19 May 2026:\nCondition : Patchy rain nearby\nTemperature : 19°C Cool (Feels like 19°C)\nHumidity : 48%\nWind Speed : 7.2 km/h from N (356 degrees), Gust 2.3 m/s\nUV Index : 2.3 (Moderate\nAir Pressure : 1012 mb\nCloud Cover : 76%\nVisibility : 10 km\nPrecipitation : 0",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.weather25.com/europe/turkey/ankara?page=month&month=May",
+          "title": "Ankara weather in May 2026 | Ankara 14 day weather",
+          "domain": "www.weather25.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": 0.99991035,
+          "snippet": "| 24 Patchy light rain with thunder 20° /11° | 25 Patchy rain possible 19° /8° | 26 Patchy light drizzle 20° /11° | 27 Patchy light rain with thunder 20° /10° | 28 Patchy light rain with thunder 23° /11° | 29 Patchy light rain with thunder 22° /10° | 30 Thundery outbreaks possible 21° /11° |\n| 31 Patchy light rain with thunder 22° /11° |  |  |  |  |  |  | [...] You can expect rain for roughly half",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.agatetravel.com/turkey/weather-in-may.html",
+          "title": "Turkey Weather in May, 2026 – Pleasant & Best Visit Time",
+          "domain": "www.agatetravel.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": 0.99982053,
+          "snippet": "| Ankara | 9-23°C  (48.2 - 73.4°F) | 58 | 57 | 05:22-05:49 / 19:42-20:10 |\n| Trabzon | 14-19°C  (57.2 - 66.2°F) | 48 | 80 | 04:52-05:19 / 19:17-19:45 | [...] | Ankara | 9-23°C  (48.2 - 73.4°F) | 58 | 57 | 05:22-05:49 / 19:42-20:10 |\n| Trabzon | 14-19°C  (57.2 - 66.2°F) | 48 | 80 | 04:52-05:19 / 19:17-19:45 | [...] | Ankara | 9-23°C  (48.2 - 73.4°F) | 58 | 57 | 05:22-05:49 / 19:42-20:10 |\n| Trabzon",
+          "tier": "low"
+        }
+      ],
+      "trust_signals": {
+        "citation_coverage": 1.0,
+        "avg_sources_per_claim": 3.0,
+        "multi_source_claim_ratio": 1.0,
+        "distinct_domain_count": 3,
+        "source_quality_score": 0.35,
+        "high_tier_ratio": 0.0,
+        "citation_strength": 0.35,
+        "tier_breakdown": {
+          "high": 0,
+          "medium": 0,
+          "low": 3,
+          "prediction": 0
+        },
+        "total_sources": 3
+      },
+      "model_key": "llama32",
+      "original_question": "Ankara weather today",
+      "cached_at": "2026-05-19T15:23:06.367554+00:00",
+      "cached_ts": 1779204186.367633
     }
   }
 }
