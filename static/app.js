@@ -99,9 +99,15 @@ function handleSubmitClick(e) {
 
 submitBtn.addEventListener('click', handleSubmitClick);
 
-// Escape key shortcut to stop
+// Escape key shortcut — close the explainer modal first, otherwise stop the search
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && isAsking) {
+  if (e.key !== 'Escape') return;
+  if (trustExplainerModal && trustExplainerModal.classList.contains('open')) {
+    e.preventDefault();
+    closeTrustExplainer();
+    return;
+  }
+  if (isAsking) {
     e.preventDefault();
     stopResearch();
   }
@@ -462,14 +468,172 @@ function buildAnswerCard(markdownText) {
   return card;
 }
 
-function buildSection(label, count, body) {
+function buildSection(label, count, body, actionEl) {
   const section = el('div', 'section');
   const title = el('div', 'section-title');
   title.appendChild(txt('span', null, label));
   if (count != null) title.appendChild(txt('span', 'section-title-badge', String(count)));
+  if (actionEl) title.appendChild(actionEl);
   section.appendChild(title);
   section.appendChild(body);
   return section;
+}
+
+/* ----------------- trust signals explainer ----------------- */
+
+let trustExplainerModal = null;
+
+function buildTrustHelpButton() {
+  const btn = el('button', 'section-help-btn');
+  btn.type = 'button';
+  btn.title = 'How are trust signals calculated?';
+  btn.setAttribute('aria-label', 'Explain trust signals');
+  btn.innerHTML = `
+    <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="9"/>
+      <path d="M12 8h.01"/>
+      <path d="M11 12h1v5h1"/>
+    </svg>
+    <span>How is this scored?</span>
+  `;
+  btn.addEventListener('click', openTrustExplainer);
+  return btn;
+}
+
+function openTrustExplainer() {
+  if (!trustExplainerModal) {
+    trustExplainerModal = buildTrustExplainerModal();
+    document.body.appendChild(trustExplainerModal);
+  }
+  trustExplainerModal.classList.add('open');
+  document.body.classList.add('modal-open');
+}
+
+function closeTrustExplainer() {
+  if (trustExplainerModal) {
+    trustExplainerModal.classList.remove('open');
+  }
+  document.body.classList.remove('modal-open');
+}
+
+function buildTrustExplainerModal() {
+  const backdrop = el('div', 'modal-backdrop trust-explainer-backdrop');
+  backdrop.addEventListener('click', closeTrustExplainer);
+
+  const modal = el('div', 'modal');
+  modal.addEventListener('click', (e) => e.stopPropagation());
+
+  modal.innerHTML = `
+    <button class="modal-close" type="button" aria-label="Close">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 6L6 18M6 6l12 12"/>
+      </svg>
+    </button>
+    <div class="modal-header">
+      <h2>How trust signals are calculated</h2>
+      <p>Every answer is scored on four dimensions based on the quality and consistency of the sources the agent retrieved.</p>
+    </div>
+    <div class="modal-body">
+      <div class="explainer-h3">Source reputation tiers</div>
+      <p class="explainer-intro">
+        Every URL the agent retrieves is classified into one of four reputation tiers.
+        The tier determines the source's weight in the trust score.
+      </p>
+      <div class="explainer-tier-grid">
+        <div class="explainer-tier">
+          <div class="explainer-tier-head">
+            <span class="tier-chip-dot" style="background: var(--success)"></span>
+            <span class="explainer-tier-name tier-high-text">HIGH</span>
+            <span class="explainer-tier-weight">weight 1.00</span>
+          </div>
+          <p>Wikipedia, official org sites (.gov, .edu, who.int, fifa.com, uefa.com), major newswires (Reuters, AP, AFP), major newspapers (BBC, NYT, Guardian, FT), peer-reviewed journals (Nature, Lancet).</p>
+        </div>
+        <div class="explainer-tier">
+          <div class="explainer-tier-head">
+            <span class="tier-chip-dot" style="background: var(--accent)"></span>
+            <span class="explainer-tier-name tier-medium-text">MEDIUM</span>
+            <span class="explainer-tier-weight">weight 0.65</span>
+          </div>
+          <p>Mainstream news (CNN, NBC, Bloomberg, Axios), established sports / tech publications (ESPN, TechCrunch, Wired, The Verge), business outlets (Forbes, CNBC).</p>
+        </div>
+        <div class="explainer-tier">
+          <div class="explainer-tier-head">
+            <span class="tier-chip-dot" style="background: var(--warning)"></span>
+            <span class="explainer-tier-name tier-low-text">LOW</span>
+            <span class="explainer-tier-weight">weight 0.35</span>
+          </div>
+          <p>Unknown blogs, small or unfamiliar sites, content farms. Used only when no higher-tier source is available, with the agent instructed to corroborate before relying on them.</p>
+        </div>
+        <div class="explainer-tier">
+          <div class="explainer-tier-head">
+            <span class="tier-chip-dot" style="background: var(--danger)"></span>
+            <span class="explainer-tier-name tier-prediction-text">PREDICTION</span>
+            <span class="explainer-tier-weight">weight 0.02</span>
+          </div>
+          <p>Betting / odds sites (bet365, betfair, oddschecker), "who will win" articles, upcoming-event previews. These describe events that haven't happened yet and are explicitly excluded as factual evidence.</p>
+        </div>
+      </div>
+
+      <div class="explainer-h3">How tiers are assigned</div>
+      <ol class="explainer-list">
+        <li>Curated allowlists of trusted high-tier and medium-tier domains</li>
+        <li>Top-level domain heuristics — <code>.gov</code>, <code>.edu</code>, <code>.mil</code>, <code>.ac.uk</code> → HIGH</li>
+        <li>Regex patterns on title and snippet that flag prediction content — "who will win", "odds", "predictions", "preview", "ahead of", "set to win"</li>
+        <li>Substring matches on betting-related domain names — "odds", "betting", "betfair", "draftkings", "tipster"</li>
+        <li>Anything else defaults to LOW</li>
+      </ol>
+
+      <div class="explainer-h3">The four metrics</div>
+
+      <div class="explainer-metric">
+        <div class="explainer-metric-head">
+          <span class="explainer-metric-name">Source quality</span>
+          <code class="explainer-metric-formula">mean(tier_weight(s) for s in sources)</code>
+        </div>
+        <p>The average reputation tier across <strong>all</strong> sources retrieved during research, scaled to 0–100%. If most results came from Wikipedia and Reuters, this is high; if they came from random blogs or betting sites, it drops.</p>
+        <p class="why">Why it matters — Tells you whether the answer drew from authoritative references or from low-quality material.</p>
+      </div>
+
+      <div class="explainer-metric">
+        <div class="explainer-metric-head">
+          <span class="explainer-metric-name">Citation strength</span>
+          <code class="explainer-metric-formula">mean( max(tier_weight(s) for s in claim.evidence) for claim in claims )</code>
+        </div>
+        <p>For each individual claim, take the highest-tier source backing it. Then average across all claims. Rewards <strong>quality over quantity</strong>.</p>
+        <p class="why">Why it matters — A claim backed by one Wikipedia source is more trustworthy than one backed by five unknown blogs. This metric captures that.</p>
+      </div>
+
+      <div class="explainer-metric">
+        <div class="explainer-metric-head">
+          <span class="explainer-metric-name">Citation coverage</span>
+          <code class="explainer-metric-formula">claims_with_sources / total_claims</code>
+        </div>
+        <p>The fraction of factual claims in the answer that have at least one supporting source attached.</p>
+        <p class="why">Why it matters — Detects unsupported assertions. 100% means every claim is backed by at least one citation; lower numbers reveal claims pulled from the model's own memory.</p>
+      </div>
+
+      <div class="explainer-metric">
+        <div class="explainer-metric-head">
+          <span class="explainer-metric-name">Multi-source claims</span>
+          <code class="explainer-metric-formula">claims_with_≥2_distinct_domains / total_claims</code>
+        </div>
+        <p>The fraction of claims corroborated by at least two <strong>independent domains</strong>. Two URLs from the same site don't count — different publishers required.</p>
+        <p class="why">Why it matters — A claim confirmed by multiple independent outlets is more robust than one appearing on a single site.</p>
+      </div>
+
+      <div class="explainer-h3">Reading the numbers</div>
+      <p class="explainer-intro">
+        Source quality and citation strength are tier-weight averages scaled to 0–100% (100% = every source is HIGH tier).
+        Citation coverage and multi-source ratios are plain fractions of the total claim count.
+        Below the four cards, the tier breakdown chips show the exact mix of HIGH/MEDIUM/LOW/PREDICTION sources used.
+      </p>
+    </div>
+  `;
+
+  modal.querySelector('.modal-close').addEventListener('click', closeTrustExplainer);
+
+  backdrop.appendChild(modal);
+  return backdrop;
 }
 
 const TIER_META = {
@@ -642,7 +806,9 @@ function renderHistoricalTurn(turn) {
     agentBlock.appendChild(buildSection('Extracted facts', turn.facts.length, buildFactsList(turn.facts)));
   }
   if (turn.trust_signals) {
-    agentBlock.appendChild(buildSection('Trust signals', null, buildTrustGrid(turn.trust_signals)));
+    agentBlock.appendChild(
+      buildSection('Trust signals', null, buildTrustGrid(turn.trust_signals), buildTrustHelpButton())
+    );
   }
 
   turnEl.appendChild(agentBlock);
@@ -846,7 +1012,9 @@ function startResearch(question) {
       agentBlock.appendChild(buildSection('Extracted facts', data.facts.length, buildFactsList(data.facts)));
     }
     if (data.trust_signals) {
-      agentBlock.appendChild(buildSection('Trust signals', null, buildTrustGrid(data.trust_signals)));
+      agentBlock.appendChild(
+        buildSection('Trust signals', null, buildTrustGrid(data.trust_signals), buildTrustHelpButton())
+      );
     }
 
     if (data.chat_title) headerTitle.textContent = data.chat_title;
