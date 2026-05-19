@@ -6,6 +6,9 @@ small-model failure where the agent calls its tools but then synthesizes the
 final answer from stale training memory instead of the retrieved content.
 """
 
+import json
+from urllib.parse import urlparse
+
 from langchain_ollama import ChatOllama
 
 
@@ -66,6 +69,45 @@ OUTPUT FORMAT:
 Output ONLY the corrected final answer text. No preamble. No "Here is the corrected answer:". No explanation. No apology. Just the answer."""
 
 
+def _domain_of(url: str) -> str:
+    try:
+        return urlparse(url).netloc.replace("www.", "")
+    except Exception:
+        return url or ""
+
+
+def _format_tavily_for_verifier(content: str, max_chars_per_item: int = 800) -> str:
+    """Parse Tavily's JSON output and re-render each item with the tier label
+    front-and-center, so the verifier can't misread it. Each item becomes:
+
+        [MEDIUM TIER · espn.com] "Bournemouth 2-1 Man City (Nov 2, 2024)"
+          Match ends, Bournemouth 2, Manchester City 1. …
+    """
+    try:
+        items = json.loads(content)
+    except Exception:
+        return content[:3000]
+    if not isinstance(items, list):
+        return content[:3000]
+
+    lines = []
+    for item in items:
+        if not isinstance(item, dict):
+            continue
+        tier = (item.get("_source_tier") or "low").upper()
+        domain = _domain_of(item.get("url") or "")
+        title = (item.get("title") or "").strip()
+        body = (item.get("content") or "").strip()
+        if body and len(body) > max_chars_per_item:
+            body = body[:max_chars_per_item].rstrip() + "…"
+        lines.append(f"[{tier} TIER · {domain}] {title}")
+        if body:
+            lines.append(f"  {body}")
+        else:
+            lines.append("  (no usable body text — rely on the title above)")
+    return "\n".join(lines)
+
+
 def build_sources_text(
     tool_messages: list[dict],
     max_sources: int = 6,
@@ -75,11 +117,17 @@ def build_sources_text(
         return ""
     parts = []
     for index, message in enumerate(tool_messages[:max_sources], start=1):
-        content = (message.get("content") or "")[:max_chars_each].strip()
-        if not content:
+        raw_content = (message.get("content") or "").strip()
+        if not raw_content:
             continue
         name = message.get("name") or "search_tool"
-        parts.append(f"--- SOURCE {index} (from {name}) ---\n{content}")
+        if name == "tavily_search_results_json":
+            formatted = _format_tavily_for_verifier(raw_content)
+        else:
+            # DuckDuckGo already prefixes each result with [TIER: X];
+            # deep_site_reader is plain text — just trim.
+            formatted = raw_content[:max_chars_each]
+        parts.append(f"--- TOOL CALL {index} (from {name}) ---\n{formatted}")
     return "\n\n".join(parts)
 
 

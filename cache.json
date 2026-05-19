@@ -1,13 +1,13 @@
 {
   "entries": {
-    "llama32::bournemouth vs manchester city match score": {
-      "answer": "* The match took place on 2026-05-20 at Vitality Stadium.\n* Manchester City won the match with a score of 2-1.\n* The match was part of the Premier League Round 37.\n* The referee for the match was not specified in the high/medium-tier search results.",
+    "llama32::bournemouth manchester city match score": {
+      "answer": "The current score of the Bournemouth-Manchester City match is not available as the search results do not confirm a specific score for this match. The draft mentions a 2-1 win for Bournemouth against Manchester City on November 2, 2024, but this information comes from a LOW-tier source (ESPN) and may be outdated.\n\nHowever, upon reviewing the HIGH and MEDIUM tier sources, we find that they do not mention a specific score for this match. The search results only provide general information about past matches between Bournemouth and Manchester City, including their head-to-head history and recent performances.\n\nTherefore, the final answer is:\n\nThe current score of the Bournemouth-Manchester City match is not available as the search results do not confirm a specific score for this match.",
       "facts": [
         {
-          "claim_text": "The match took place on 2026-05-20 at Vitality Stadium.",
+          "claim_text": "The current score of the Bournemouth-Manchester City match is not available as the search results do not confirm a specific score for this match.",
           "evidence_urls": [
-            "https://www.fotmob.com/matches/manchester-city-vs-afc-bournemouth/2feiv3",
-            "https://www.flashscoreusa.com/game/soccer/bournemouth-OtpNdwrc/manchester-city-Wtn9Stg0/",
+            "https://www.365scores.com/en-us/football/match/premier-league-7/bournemouth-manchester-city-50-110-7",
+            "https://www.espn.com/soccer/match/_/gameId/704377/manchester-city-afc-bournemouth",
             "https://m.aiscore.com/head-to-head/soccer-bournemouth-afc-vs-manchester-city"
           ],
           "source_tools": [
@@ -21,44 +21,11 @@
           }
         },
         {
-          "claim_text": "Manchester City won the match with a score of 2-1.",
+          "claim_text": "The draft mentions a 2-1 win for Bournemouth against Manchester City on November 2, 2024, but this information comes from a LOW-tier source (ESPN) and may be outdated.",
           "evidence_urls": [
+            "https://www.espn.com/soccer/match/_/gameId/704377/manchester-city-afc-bournemouth",
             "https://m.aiscore.com/head-to-head/soccer-bournemouth-afc-vs-manchester-city",
-            "https://www.flashscoreusa.com/game/soccer/bournemouth-OtpNdwrc/manchester-city-Wtn9Stg0/",
-            "https://www.fotmob.com/matches/manchester-city-vs-afc-bournemouth/2feiv3"
-          ],
-          "source_tools": [
-            "tavily_search_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": true,
-            "weak_evidence": false,
-            "needs_review": false
-          }
-        },
-        {
-          "claim_text": "The match was part of the Premier League Round 37.",
-          "evidence_urls": [
-            "https://m.aiscore.com/head-to-head/soccer-bournemouth-afc-vs-manchester-city",
-            "https://www.flashscoreusa.com/game/soccer/bournemouth-OtpNdwrc/manchester-city-Wtn9Stg0/",
-            "https://www.fotmob.com/matches/manchester-city-vs-afc-bournemouth/2feiv3"
-          ],
-          "source_tools": [
-            "tavily_search_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": true,
-            "weak_evidence": false,
-            "needs_review": false
-          }
-        },
-        {
-          "claim_text": "The referee for the match was not specified in the high/medium-tier search results.",
-          "evidence_urls": [
-            "https://www.flashscoreusa.com/game/soccer/bournemouth-OtpNdwrc/manchester-city-Wtn9Stg0/",
-            "https://m.aiscore.com/head-to-head/soccer-bournemouth-afc-vs-manchester-city"
+            "https://www.365scores.com/en-us/football/match/premier-league-7/bournemouth-manchester-city-50-110-7"
           ],
           "source_tools": [
             "tavily_search_results_json"
@@ -73,59 +40,59 @@
       ],
       "sources": [
         {
+          "url": "https://www.espn.com/soccer/match/_/gameId/704377/manchester-city-afc-bournemouth",
+          "title": "Bournemouth 2-1 Man City (Nov 2, 2024) Final Score - ESPN",
+          "domain": "www.espn.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": 0.99854493,
+          "snippet": "### Match Timeline\nAFC Bournemouth\nManchester City\n### Match Commentary\n| - Match ends, Bournemouth 2, Manchester City 1. |\n| 90'+7' Second Half ends, Bournemouth 2, Manchester City 1. |\n| 90'+6' Attempt missed. Phil Foden (Manchester City) left footed shot from outside the box is close, but misses to the right. Assisted by Rico Lewis. |\n### English Premier League Standings [...] | Team | GP | W |",
+          "tier": "medium"
+        },
+        {
           "url": "https://m.aiscore.com/head-to-head/soccer-bournemouth-afc-vs-manchester-city",
           "title": "Bournemouth AFC vs Manchester City Head to Head History - AiScore",
           "domain": "m.aiscore.com",
           "source_tools": [
             "tavily_search_results_json"
           ],
-          "relevance_score": 0.88178825,
-          "snippet": "imgalt\n\nAiScore App\n\nWatch Live Stream For Free\n\nENG Premier League\n\nBournemouth AFC\n\nBournemouth AFC\nManchester City\n\nManchester City\n\nFootball Live Score\n\nFootball Head to Head\n\n# Bournemouth AFC vs Manchester City Head to Head History\n\nHead to Head Overall\n\nBournemouth AFC (W)\n\nManchester City (W)\n\nTotal Matches\n\nTotal Score\n\nVitality Stadium\n\n1\n\n0\n\nEtihad Stadium\n\n10\n\n0\n\n10\n\n0\n\nEFL Cup\n\n1\n\n0\n\n",
+          "relevance_score": 0.9992446,
+          "snippet": "The Soccer Teams Bournemouth AFC and Manchester City played 19 Games since 2015. Among them, Bournemouth AFC won 1 games (Total Goals 13, PPG 0.7), Manchester City won 18 (Total Goals 56, PPG 2.9), and drew -. Bournemouth AFC vs Manchester City Past H2H Results, Asian Handicap Win%: 66.7%, Total Goals Over%: 50.0%. \nLast 5, Bournemouth AFC won 1, Draw 1, Lose 3, 2.0 Goals per match, 0.8 Goals Conc",
           "tier": "low"
         },
         {
-          "url": "https://www.flashscoreusa.com/game/soccer/bournemouth-OtpNdwrc/manchester-city-Wtn9Stg0/",
-          "title": "Bournemouth - Manchester City",
-          "domain": "www.flashscoreusa.com",
+          "url": "https://www.365scores.com/en-us/football/match/premier-league-7/bournemouth-manchester-city-50-110-7",
+          "title": "Bournemouth 1 - 0 Manchester City (05/19) - Game Report",
+          "domain": "www.365scores.com",
           "source_tools": [
             "tavily_search_results_json"
           ],
-          "relevance_score": 0.87605256,
-          "snippet": "# Bournemouth v Manchester City LIVE 19/05/2026 | Soccer - Flashscore\n\n# Bournemouth v Manchester City (19/05/2026)\n\nAdvertisement\n\nImage 1\n\n\"),\n\nNBC (Usa)\"),\n\nPeacock (Usa)\"),\n\nTelemundo (Usa)\"),\n\nUNIVERSO NOW (Usa)\"),\n\nUSA Network (Usa)\")\n\nMatch Information\n\nReferee:\n\nTaylor A.(Eng)\n\nVenue:\n\nVitality Stadium(Bournemouth)\n\nCapacity:\n\n11 307\n\nForm\n\nImage 7: Bournemouth\n\n6.\n\nBournemouth\n\n?WWTWW\n\nIm",
+          "relevance_score": 0.9988927,
+          "snippet": "# undefined undefined - undefined undefined (undefined) - Game Report [...] 35: norsknorskImage 36: Bahasa MelayuBahasa MelayuImage 37: svenskasvenskaImage 38: 中文(台灣)中文(台灣) ge 41: Tiếng ViệtTiếng ViệtImage 42: ລາວລາວImage 43: فارسىفارسى [...] English (US) il)Português (Brasil) mérica) lish (UK) paña)Español (España) sImage 20: NederlandsNederlandsImage 21: ItalianoItalianoImage 22: TürkçeTürkçeI",
           "tier": "low"
-        },
-        {
-          "url": "https://www.fotmob.com/matches/manchester-city-vs-afc-bournemouth/2feiv3",
-          "title": "Bournemouth vs Man City - live score, predicted lineups and H2H stats",
-          "domain": "www.fotmob.com",
-          "source_tools": [
-            "tavily_search_results_json"
-          ],
-          "relevance_score": 0.88444936,
-          "snippet": "2 - 1\n\n  Southampton\n\n## Preview\n\n### Preview: Man City can afford no slip ups at Bournemouth\n\n‌\n\n### Top scorers\n\nKroupiHaaland\n\nPremier League \n\n6.92FotMob rating7.67\n\n12Goals26\n\n7.96Expected goals (xG)25.20\n\n0Assists8\n\n31Matches played34\n\n## About the match\n\nAFC Bournemouth faces Manchester City at Vitality Stadium on Tue, May 19, 2026, 18:30 UTC. This match is part of the Premier League. You c",
-          "tier": "prediction"
         }
       ],
       "trust_signals": {
         "citation_coverage": 1.0,
-        "avg_sources_per_claim": 2.75,
+        "avg_sources_per_claim": 3.0,
         "multi_source_claim_ratio": 1.0,
         "distinct_domain_count": 3,
-        "source_quality_score": 0.24,
+        "source_quality_score": 0.45,
         "high_tier_ratio": 0.0,
-        "citation_strength": 0.35,
+        "citation_strength": 0.65,
         "tier_breakdown": {
           "high": 0,
-          "medium": 0,
+          "medium": 1,
           "low": 2,
-          "prediction": 1
+          "prediction": 0
         },
         "total_sources": 3
       },
       "model_key": "llama32",
-      "original_question": "bournemouth vs manchester city match score",
-      "cached_at": "2026-05-19T23:32:17.213897+00:00",
-      "cached_ts": 1779233537.213921
+      "original_question": "Bournemouth-Manchester City match score",
+      "cached_at": "2026-05-19T23:48:52.886100+00:00",
+      "cached_ts": 1779234532.886129
     }
   }
 }

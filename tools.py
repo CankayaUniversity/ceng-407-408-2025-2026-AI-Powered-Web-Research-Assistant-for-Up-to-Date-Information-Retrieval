@@ -121,25 +121,55 @@ def _get_duckduckgo():
 
 _JUNK_PATTERNS = [
     re.compile(r"\bimgalt\b", re.IGNORECASE),
-    re.compile(r"\bImage\s+\d+(?::[^\n,]{0,40})?", re.IGNORECASE),
+    re.compile(r"\bImage\s*\d+(?:\s*:[^\n,]{0,60})?", re.IGNORECASE),
     re.compile(r"\bAdvertisement\b", re.IGNORECASE),
     re.compile(r"\bShow more (?:games|matches|results)\b", re.IGNORECASE),
     re.compile(r"\bNo data\b"),
     re.compile(r"\bWatch Live Stream(?: For Free)?\b", re.IGNORECASE),
     re.compile(r"\bSubscribe to .{0,40}\b", re.IGNORECASE),
+    # JS rendering failures (e.g. "undefined undefined")
+    re.compile(r"\bundefined\b", re.IGNORECASE),
     # Stripped JS closures (e.g. `")` ` "),` artifacts)
     re.compile(r'"\)\s*[,.]?'),
     # Form strings like "WWWLL", "?WWTWW" that bleed in from fixture tables
     re.compile(r"\?[WLTD]{3,}\b"),
     re.compile(r"\b[WLTD]{4,}\b"),
+    # Doubled latin words from CSS / data-attribute leaks
+    # ("norsknorsk", "svenskasvenska", "ItalianoItaliano", "PolskiPolski")
+    re.compile(r"\b([A-Za-zÀ-ÿ]{4,30})\1+\b"),
+    # Doubled two-word phrases ("Bahasa MelayuBahasa Melayu", "中文(台灣)中文(台灣)")
+    re.compile(r"\b(\w{4,15}\s\w{4,15})\1+", re.UNICODE),
+    # Doubled non-ASCII glyph runs (CJK, Thai, Lao, Arabic, etc.)
+    re.compile(r"([^\x00-\x7f]{2,15})\1+"),
 ]
 
 _NEWLINE_RUN_RE = re.compile(r"(\n\s*){2,}")
 _MULTI_SPACE_RE = re.compile(r"[ \t]{2,}")
+_IMAGE_REF_RE = re.compile(r"\bImage\s*\d+", re.IGNORECASE)
+
+
+def _is_mostly_junk(text: str) -> bool:
+    """True if the (already-cleaned) text looks like a language menu / nav
+    soup rather than article content. When this fires, we drop the content
+    so the agent relies on the title alone."""
+    if not text or len(text) < 60:
+        return False
+    # Many "Image N" references that survived = navigation menu
+    if len(_IMAGE_REF_RE.findall(text)) >= 4:
+        return True
+    # Low letter ratio = mostly punctuation / glyph soup
+    letters = sum(1 for c in text if c.isalpha())
+    if letters / max(len(text), 1) < 0.45:
+        return True
+    return False
 
 
 def _clean_content(text: str, max_len: int = 800) -> str:
-    """Strip common scraping artifacts and collapse whitespace."""
+    """Strip common scraping artifacts and collapse whitespace.
+
+    If after cleanup the result still looks like navigation noise, returns
+    empty string — the title alone will carry the signal.
+    """
     if not text:
         return ""
     cleaned = text
@@ -148,6 +178,8 @@ def _clean_content(text: str, max_len: int = 800) -> str:
     cleaned = _NEWLINE_RUN_RE.sub("\n", cleaned)
     cleaned = _MULTI_SPACE_RE.sub(" ", cleaned)
     cleaned = cleaned.strip()
+    if _is_mostly_junk(cleaned):
+        return ""
     if len(cleaned) > max_len:
         cleaned = cleaned[:max_len].rstrip() + "…"
     return cleaned
