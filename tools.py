@@ -109,15 +109,60 @@ def _get_duckduckgo():
     return _duckduckgo_underlying
 
 
+# --------------------------------------------------------------------------
+# Content cleanup
+# --------------------------------------------------------------------------
+# Tavily and DuckDuckGo extract page text by stripping HTML, which leaves
+# behind alt-text placeholders ("imgalt"), image labels ("Image 1"), nav
+# scraps ("Show more games", "Advertisement"), and form strings like "WWWLL"
+# that look meaningless to an LLM. Removing this noise BEFORE the agent reads
+# the content reduces hallucination and makes source snippets readable in
+# the UI.
+
+_JUNK_PATTERNS = [
+    re.compile(r"\bimgalt\b", re.IGNORECASE),
+    re.compile(r"\bImage\s+\d+(?::[^\n,]{0,40})?", re.IGNORECASE),
+    re.compile(r"\bAdvertisement\b", re.IGNORECASE),
+    re.compile(r"\bShow more (?:games|matches|results)\b", re.IGNORECASE),
+    re.compile(r"\bNo data\b"),
+    re.compile(r"\bWatch Live Stream(?: For Free)?\b", re.IGNORECASE),
+    re.compile(r"\bSubscribe to .{0,40}\b", re.IGNORECASE),
+    # Stripped JS closures (e.g. `")` ` "),` artifacts)
+    re.compile(r'"\)\s*[,.]?'),
+    # Form strings like "WWWLL", "?WWTWW" that bleed in from fixture tables
+    re.compile(r"\?[WLTD]{3,}\b"),
+    re.compile(r"\b[WLTD]{4,}\b"),
+]
+
+_NEWLINE_RUN_RE = re.compile(r"(\n\s*){2,}")
+_MULTI_SPACE_RE = re.compile(r"[ \t]{2,}")
+
+
+def _clean_content(text: str, max_len: int = 800) -> str:
+    """Strip common scraping artifacts and collapse whitespace."""
+    if not text:
+        return ""
+    cleaned = text
+    for pat in _JUNK_PATTERNS:
+        cleaned = pat.sub(" ", cleaned)
+    cleaned = _NEWLINE_RUN_RE.sub("\n", cleaned)
+    cleaned = _MULTI_SPACE_RE.sub(" ", cleaned)
+    cleaned = cleaned.strip()
+    if len(cleaned) > max_len:
+        cleaned = cleaned[:max_len].rstrip() + "…"
+    return cleaned
+
+
 def _annotate_tavily_items(items: list[dict]) -> list[dict]:
     sorted_items = sort_results(items)
     annotated = []
     for item in sorted_items:
         url = item.get("url", "") or ""
         title = item.get("title", "") or ""
-        content = item.get("content", "") or ""
-        tier = classify_source(url, title, content)
-        annotated.append({**item, "_source_tier": tier})
+        raw_content = item.get("content", "") or ""
+        cleaned_content = _clean_content(raw_content)
+        tier = classify_source(url, title, cleaned_content)
+        annotated.append({**item, "content": cleaned_content, "_source_tier": tier})
     return annotated
 
 
@@ -149,9 +194,10 @@ def _parse_ddg_segments(text: str) -> list[dict]:
 def _format_ddg_with_tiers(items: list[dict]) -> str:
     parts = []
     for item in items:
-        tier = classify_source(item.get("url", ""), item.get("title", ""), item.get("snippet", ""))
+        cleaned_snippet = _clean_content(item.get("snippet", ""), max_len=500)
+        tier = classify_source(item.get("url", ""), item.get("title", ""), cleaned_snippet)
         parts.append(
-            f"[TIER: {tier.upper()}] snippet: {item.get('snippet', '')}, "
+            f"[TIER: {tier.upper()}] snippet: {cleaned_snippet}, "
             f"title: {item.get('title', '')}, link: {item.get('url', '')}"
         )
     return ", ".join(parts)

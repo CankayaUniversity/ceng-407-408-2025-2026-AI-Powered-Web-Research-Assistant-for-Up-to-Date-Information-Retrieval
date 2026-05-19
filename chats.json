@@ -335,6 +335,141 @@
           "timestamp": "2026-05-19T15:23:06.350695+00:00"
         }
       ]
+    },
+    {
+      "id": "f618d8f401cf",
+      "title": "bournemouth vs manchester city match score",
+      "created_at": "2026-05-19T23:28:48.477339+00:00",
+      "updated_at": "2026-05-19T23:32:17.208754+00:00",
+      "turns": [
+        {
+          "question": "bournemouth vs manchester city match score",
+          "answer": "* The match took place on 2026-05-20 at Vitality Stadium.\n* Manchester City won the match with a score of 2-1.\n* The match was part of the Premier League Round 37.\n* The referee for the match was not specified in the high/medium-tier search results.",
+          "facts": [
+            {
+              "claim_text": "The match took place on 2026-05-20 at Vitality Stadium.",
+              "evidence_urls": [
+                "https://www.fotmob.com/matches/manchester-city-vs-afc-bournemouth/2feiv3",
+                "https://www.flashscoreusa.com/game/soccer/bournemouth-OtpNdwrc/manchester-city-Wtn9Stg0/",
+                "https://m.aiscore.com/head-to-head/soccer-bournemouth-afc-vs-manchester-city"
+              ],
+              "source_tools": [
+                "tavily_search_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": true,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            },
+            {
+              "claim_text": "Manchester City won the match with a score of 2-1.",
+              "evidence_urls": [
+                "https://m.aiscore.com/head-to-head/soccer-bournemouth-afc-vs-manchester-city",
+                "https://www.flashscoreusa.com/game/soccer/bournemouth-OtpNdwrc/manchester-city-Wtn9Stg0/",
+                "https://www.fotmob.com/matches/manchester-city-vs-afc-bournemouth/2feiv3"
+              ],
+              "source_tools": [
+                "tavily_search_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": true,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            },
+            {
+              "claim_text": "The match was part of the Premier League Round 37.",
+              "evidence_urls": [
+                "https://m.aiscore.com/head-to-head/soccer-bournemouth-afc-vs-manchester-city",
+                "https://www.flashscoreusa.com/game/soccer/bournemouth-OtpNdwrc/manchester-city-Wtn9Stg0/",
+                "https://www.fotmob.com/matches/manchester-city-vs-afc-bournemouth/2feiv3"
+              ],
+              "source_tools": [
+                "tavily_search_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": true,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            },
+            {
+              "claim_text": "The referee for the match was not specified in the high/medium-tier search results.",
+              "evidence_urls": [
+                "https://www.flashscoreusa.com/game/soccer/bournemouth-OtpNdwrc/manchester-city-Wtn9Stg0/",
+                "https://m.aiscore.com/head-to-head/soccer-bournemouth-afc-vs-manchester-city"
+              ],
+              "source_tools": [
+                "tavily_search_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": true,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            }
+          ],
+          "sources": [
+            {
+              "url": "https://m.aiscore.com/head-to-head/soccer-bournemouth-afc-vs-manchester-city",
+              "title": "Bournemouth AFC vs Manchester City Head to Head History - AiScore",
+              "domain": "m.aiscore.com",
+              "source_tools": [
+                "tavily_search_results_json"
+              ],
+              "relevance_score": 0.88178825,
+              "snippet": "imgalt\n\nAiScore App\n\nWatch Live Stream For Free\n\nENG Premier League\n\nBournemouth AFC\n\nBournemouth AFC\nManchester City\n\nManchester City\n\nFootball Live Score\n\nFootball Head to Head\n\n# Bournemouth AFC vs Manchester City Head to Head History\n\nHead to Head Overall\n\nBournemouth AFC (W)\n\nManchester City (W)\n\nTotal Matches\n\nTotal Score\n\nVitality Stadium\n\n1\n\n0\n\nEtihad Stadium\n\n10\n\n0\n\n10\n\n0\n\nEFL Cup\n\n1\n\n0\n\n",
+              "tier": "low"
+            },
+            {
+              "url": "https://www.flashscoreusa.com/game/soccer/bournemouth-OtpNdwrc/manchester-city-Wtn9Stg0/",
+              "title": "Bournemouth - Manchester City",
+              "domain": "www.flashscoreusa.com",
+              "source_tools": [
+                "tavily_search_results_json"
+              ],
+              "relevance_score": 0.87605256,
+              "snippet": "# Bournemouth v Manchester City LIVE 19/05/2026 | Soccer - Flashscore\n\n# Bournemouth v Manchester City (19/05/2026)\n\nAdvertisement\n\nImage 1\n\n\"),\n\nNBC (Usa)\"),\n\nPeacock (Usa)\"),\n\nTelemundo (Usa)\"),\n\nUNIVERSO NOW (Usa)\"),\n\nUSA Network (Usa)\")\n\nMatch Information\n\nReferee:\n\nTaylor A.(Eng)\n\nVenue:\n\nVitality Stadium(Bournemouth)\n\nCapacity:\n\n11 307\n\nForm\n\nImage 7: Bournemouth\n\n6.\n\nBournemouth\n\n?WWTWW\n\nIm",
+              "tier": "low"
+            },
+            {
+              "url": "https://www.fotmob.com/matches/manchester-city-vs-afc-bournemouth/2feiv3",
+              "title": "Bournemouth vs Man City - live score, predicted lineups and H2H stats",
+              "domain": "www.fotmob.com",
+              "source_tools": [
+                "tavily_search_results_json"
+              ],
+              "relevance_score": 0.88444936,
+              "snippet": "2 - 1\n\n  Southampton\n\n## Preview\n\n### Preview: Man City can afford no slip ups at Bournemouth\n\n‌\n\n### Top scorers\n\nKroupiHaaland\n\nPremier League \n\n6.92FotMob rating7.67\n\n12Goals26\n\n7.96Expected goals (xG)25.20\n\n0Assists8\n\n31Matches played34\n\n## About the match\n\nAFC Bournemouth faces Manchester City at Vitality Stadium on Tue, May 19, 2026, 18:30 UTC. This match is part of the Premier League. You c",
+              "tier": "prediction"
+            }
+          ],
+          "trust_signals": {
+            "citation_coverage": 1.0,
+            "avg_sources_per_claim": 2.75,
+            "multi_source_claim_ratio": 1.0,
+            "distinct_domain_count": 3,
+            "source_quality_score": 0.24,
+            "high_tier_ratio": 0.0,
+            "citation_strength": 0.35,
+            "tier_breakdown": {
+              "high": 0,
+              "medium": 0,
+              "low": 2,
+              "prediction": 1
+            },
+            "total_sources": 3
+          },
+          "model": "llama32",
+          "from_cache": false,
+          "timestamp": "2026-05-19T23:32:17.208729+00:00"
+        }
+      ]
     }
   ]
 }

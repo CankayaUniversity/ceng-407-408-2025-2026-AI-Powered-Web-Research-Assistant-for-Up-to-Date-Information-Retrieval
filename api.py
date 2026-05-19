@@ -166,6 +166,20 @@ def _resolve_model_key(model_key: str | None) -> str:
     return DEFAULT_MODEL_KEY
 
 
+# Verification should be done by the strongest available model regardless of
+# which model wrote the draft — a 3B model verifying its own work catches
+# very little. Ordered preference: Llama 3.1 (8B) > Qwen 2.5 (7B) > Llama 3.2 (3B).
+_VERIFIER_PREFERENCE = ("llama", "qwen", "llama32")
+
+
+def _verifier_model_id() -> str:
+    for key in _VERIFIER_PREFERENCE:
+        if key in MODEL_REGISTRY:
+            return MODEL_REGISTRY[key]["id"]
+    # Fallback: same as the user-selected default
+    return MODEL_REGISTRY[DEFAULT_MODEL_KEY]["id"]
+
+
 def _build_history(chat: dict | None) -> list:
     if not chat:
         return []
@@ -403,7 +417,7 @@ async def ask_agent_stream(
                     question=question,
                     answer=final_answer,
                     tool_messages=tool_messages_collected,
-                    model_id=model_info["id"],
+                    model_id=_verifier_model_id(),
                     today_iso=date.today().isoformat(),
                 )
                 if was_changed:
