@@ -17,6 +17,7 @@ const deleteChatBtn = document.getElementById('delete-chat-btn');
 const statusPill = document.getElementById('status-pill');
 const statusText = statusPill.querySelector('.status-text');
 const modelToggle = document.getElementById('model-toggle');
+const settingsBtn = document.getElementById('settings-btn');
 
 let isAsking = false;
 let activeSource = null;
@@ -102,6 +103,11 @@ submitBtn.addEventListener('click', handleSubmitClick);
 // Escape key shortcut — close any open modal first, otherwise stop the search
 document.addEventListener('keydown', (e) => {
   if (e.key !== 'Escape') return;
+  if (settingsModal && settingsModal.classList.contains('open')) {
+    e.preventDefault();
+    closeSettings();
+    return;
+  }
   if (answerBreakdownModal && answerBreakdownModal.classList.contains('open')) {
     e.preventDefault();
     closeAnswerBreakdown();
@@ -117,6 +123,10 @@ document.addEventListener('keydown', (e) => {
     stopResearch();
   }
 });
+
+if (settingsBtn) {
+  settingsBtn.addEventListener('click', openSettings);
+}
 
 /* ----------------- helpers ----------------- */
 
@@ -976,6 +986,242 @@ function breakdownEmpty(name, scorePct, formula, explainer) {
   `;
 }
 
+/* ----------------- settings ----------------- */
+
+let settingsModal = null;
+
+async function fetchSettings() {
+  try {
+    const res = await fetch('/api/settings');
+    if (!res.ok) throw new Error('failed');
+    return await res.json();
+  } catch (err) {
+    console.error('Failed to load settings:', err);
+    return null;
+  }
+}
+
+async function patchSettings(patch) {
+  try {
+    const res = await fetch('/api/settings', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(patch),
+    });
+    if (!res.ok) throw new Error('failed');
+    return await res.json();
+  } catch (err) {
+    console.error('Failed to save settings:', err);
+    return null;
+  }
+}
+
+async function resetSettings() {
+  try {
+    const res = await fetch('/api/settings/reset', { method: 'POST' });
+    if (!res.ok) throw new Error('failed');
+    return await res.json();
+  } catch (err) {
+    console.error('Failed to reset settings:', err);
+    return null;
+  }
+}
+
+async function clearAnswerCache() {
+  try {
+    const res = await fetch('/api/cache/clear', { method: 'POST' });
+    if (!res.ok) throw new Error('failed');
+    return await res.json();
+  } catch (err) {
+    console.error('Failed to clear cache:', err);
+    return null;
+  }
+}
+
+async function openSettings() {
+  const data = await fetchSettings();
+  if (!data) return;
+  closeSettings();
+  settingsModal = buildSettingsModal(data.settings, data.defaults);
+  document.body.appendChild(settingsModal);
+  void settingsModal.offsetWidth;
+  settingsModal.classList.add('open');
+  document.body.classList.add('modal-open');
+}
+
+function closeSettings() {
+  if (settingsModal) {
+    settingsModal.remove();
+    settingsModal = null;
+  }
+  // Only release body scroll lock if no other modals are open
+  const otherOpen =
+    (trustExplainerModal && trustExplainerModal.classList.contains('open')) ||
+    (answerBreakdownModal && answerBreakdownModal.classList.contains('open'));
+  if (!otherOpen) document.body.classList.remove('modal-open');
+}
+
+function showSettingsToast(modal, message, kind) {
+  const toast = modal.querySelector('#setting-toast');
+  if (!toast) return;
+  toast.textContent = message;
+  toast.className = 'setting-toast ' + (kind || 'success');
+  toast.hidden = false;
+  clearTimeout(toast._timer);
+  toast._timer = setTimeout(() => { toast.hidden = true; }, 2400);
+}
+
+function buildSettingsModal(settings, defaults) {
+  const backdrop = el('div', 'modal-backdrop settings-backdrop');
+  backdrop.addEventListener('click', closeSettings);
+
+  const modal = el('div', 'modal settings-modal');
+  modal.addEventListener('click', (e) => e.stopPropagation());
+
+  const cacheHours = Math.round((settings.cache_ttl_seconds || 0) / 3600);
+  const historyLimit = settings.history_turn_limit ?? 5;
+  const cacheDefaultH = Math.round((defaults.cache_ttl_seconds || 0) / 3600);
+
+  modal.innerHTML = `
+    <button class="modal-close" type="button" aria-label="Close">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <div class="modal-header">
+      <h2>Settings</h2>
+      <p>Tune the agent's behavior and manage local data. Changes save automatically.</p>
+    </div>
+    <div class="modal-body">
+      <div class="explainer-h3">Performance &amp; behavior</div>
+
+      <div class="setting-row">
+        <div class="setting-label">
+          <span class="setting-name">Cache TTL</span>
+          <span class="setting-desc">How long cached answers stay valid. Set to <code>0</code> to disable caching entirely. <span class="setting-default">Default: ${cacheDefaultH}h</span></span>
+        </div>
+        <div class="setting-control">
+          <input type="number" id="setting-cache-ttl" value="${cacheHours}" min="0" max="720" class="setting-input"/>
+          <span class="setting-unit">hours</span>
+        </div>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-label">
+          <span class="setting-name">History limit</span>
+          <span class="setting-desc">How many prior turns are passed back to the agent as conversation context. Set to <code>0</code> to disable memory. <span class="setting-default">Default: ${defaults.history_turn_limit}</span></span>
+        </div>
+        <div class="setting-control">
+          <input type="number" id="setting-history" value="${historyLimit}" min="0" max="20" class="setting-input"/>
+          <span class="setting-unit">turns</span>
+        </div>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-label">
+          <span class="setting-name">Verification pass</span>
+          <span class="setting-desc">A second LLM call re-checks each draft answer against the search results and rewrites unsupported claims. Adds ~5–10s but catches hallucinations.</span>
+        </div>
+        <div class="setting-control">
+          <label class="toggle">
+            <input type="checkbox" id="setting-verification" ${settings.verification_enabled ? 'checked' : ''}/>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-label">
+          <span class="setting-name">LLM claim extraction</span>
+          <span class="setting-desc">When ON, an LLM extracts and maps each claim to its sources. When OFF, a faster heuristic is used — trust signals stay computable but may be less accurate.</span>
+        </div>
+        <div class="setting-control">
+          <label class="toggle">
+            <input type="checkbox" id="setting-fact-extraction" ${settings.fact_extraction_enabled ? 'checked' : ''}/>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="explainer-h3">Data</div>
+
+      <div class="setting-row">
+        <div class="setting-label">
+          <span class="setting-name">Clear answer cache</span>
+          <span class="setting-desc">Wipes <code>cache.json</code>. Your chat history is not affected.</span>
+        </div>
+        <div class="setting-control">
+          <button class="setting-action-btn danger" id="setting-clear-cache" type="button">Clear cache</button>
+        </div>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-label">
+          <span class="setting-name">Reset settings</span>
+          <span class="setting-desc">Restore every setting above to its default value.</span>
+        </div>
+        <div class="setting-control">
+          <button class="setting-action-btn" id="setting-reset" type="button">Reset to defaults</button>
+        </div>
+      </div>
+
+      <div id="setting-toast" class="setting-toast" hidden></div>
+    </div>
+  `;
+
+  modal.querySelector('.modal-close').addEventListener('click', closeSettings);
+
+  const cacheInput = modal.querySelector('#setting-cache-ttl');
+  cacheInput.addEventListener('change', async () => {
+    const hours = Math.max(0, Math.min(720, parseInt(cacheInput.value, 10) || 0));
+    cacheInput.value = hours;
+    const result = await patchSettings({ cache_ttl_seconds: hours * 3600 });
+    showSettingsToast(modal, result ? `Cache TTL set to ${hours}h.` : 'Failed to save', result ? 'success' : 'error');
+  });
+
+  const historyInput = modal.querySelector('#setting-history');
+  historyInput.addEventListener('change', async () => {
+    const limit = Math.max(0, Math.min(20, parseInt(historyInput.value, 10) || 0));
+    historyInput.value = limit;
+    const result = await patchSettings({ history_turn_limit: limit });
+    showSettingsToast(modal, result ? `History limit set to ${limit}.` : 'Failed to save', result ? 'success' : 'error');
+  });
+
+  const verifyToggle = modal.querySelector('#setting-verification');
+  verifyToggle.addEventListener('change', async () => {
+    const result = await patchSettings({ verification_enabled: verifyToggle.checked });
+    showSettingsToast(modal, result ? `Verification ${verifyToggle.checked ? 'enabled' : 'disabled'}.` : 'Failed to save', result ? 'success' : 'error');
+  });
+
+  const factToggle = modal.querySelector('#setting-fact-extraction');
+  factToggle.addEventListener('change', async () => {
+    const result = await patchSettings({ fact_extraction_enabled: factToggle.checked });
+    showSettingsToast(modal, result ? `LLM claim extraction ${factToggle.checked ? 'enabled' : 'disabled'}.` : 'Failed to save', result ? 'success' : 'error');
+  });
+
+  modal.querySelector('#setting-clear-cache').addEventListener('click', async () => {
+    if (!confirm('Wipe the entire answer cache? This cannot be undone.')) return;
+    const result = await clearAnswerCache();
+    showSettingsToast(modal, result ? 'Cache cleared.' : 'Failed to clear cache.', result ? 'success' : 'error');
+  });
+
+  modal.querySelector('#setting-reset').addEventListener('click', async () => {
+    if (!confirm('Reset all settings to their defaults?')) return;
+    const data = await resetSettings();
+    if (!data) {
+      showSettingsToast(modal, 'Failed to reset.', 'error');
+      return;
+    }
+    const s = data.settings;
+    cacheInput.value = Math.round((s.cache_ttl_seconds || 0) / 3600);
+    historyInput.value = s.history_turn_limit;
+    verifyToggle.checked = !!s.verification_enabled;
+    factToggle.checked = !!s.fact_extraction_enabled;
+    showSettingsToast(modal, 'Settings reset to defaults.', 'success');
+  });
+
+  backdrop.appendChild(modal);
+  return backdrop;
+}
+
 const TIER_META = {
   high:       { label: 'High',       cls: 'tier-high' },
   medium:     { label: 'Medium',     cls: 'tier-medium' },
@@ -1264,8 +1510,33 @@ function startResearch(question) {
     trace.classList.add('collapsed');
   });
 
+  es.addEventListener('token', (event) => {
+    const data = JSON.parse(event.data);
+    if (!data.text) return;
+    if (traceLabel) traceLabel.textContent = 'Drafting answer…';
+    let answerCard = agentBlock.querySelector('.answer-card');
+    if (!answerCard) {
+      answerCard = buildAnswerCard('');
+      agentBlock.appendChild(answerCard);
+    }
+    if (answerCard._streamedText == null) answerCard._streamedText = '';
+    answerCard._streamedText += data.text;
+    if (window.marked) {
+      answerCard.innerHTML = marked.parse(answerCard._streamedText);
+    } else {
+      answerCard.textContent = answerCard._streamedText;
+    }
+    scrollToBottom();
+  });
+
   es.addEventListener('tool_call', (event) => {
     const data = JSON.parse(event.data);
+    // Clear any intermediate reasoning tokens — they're pre-tool noise.
+    const answerCard = agentBlock.querySelector('.answer-card');
+    if (answerCard) {
+      answerCard._streamedText = '';
+      answerCard.innerHTML = '';
+    }
     const step = el('div', 'trace-step');
     const head = el('div', 'trace-step-head');
     head.appendChild(txt('span', 'trace-tool', data.name));
@@ -1309,6 +1580,8 @@ function startResearch(question) {
     } else {
       answerCard.textContent = data.text || '';
     }
+    // Sync the streamed-text accumulator with the authoritative answer
+    answerCard._streamedText = data.text || '';
     scrollToBottom();
   });
 

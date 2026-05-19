@@ -1,9 +1,11 @@
+import asyncio
 import json
 import logging
+import threading
 from datetime import date
 from pathlib import Path
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
@@ -12,11 +14,10 @@ from pydantic import BaseModel
 
 import cache_store
 import chat_store
+import settings_store
 from agent import build_agent
 from config import (
-    CACHE_TTL_SECONDS,
     DEFAULT_MODEL_KEY,
-    HISTORY_TURN_LIMIT,
     MODEL_REGISTRY,
     load_environment,
 )
@@ -129,6 +130,32 @@ def api_clear_cache():
     return {"ok": True}
 
 
+class SettingsPatch(BaseModel):
+    cache_ttl_seconds: int | None = None
+    history_turn_limit: int | None = None
+    verification_enabled: bool | None = None
+    fact_extraction_enabled: bool | None = None
+
+
+@app.get("/api/settings")
+def api_get_settings():
+    return {
+        "settings": settings_store.get_all(),
+        "defaults": settings_store.DEFAULTS,
+    }
+
+
+@app.patch("/api/settings")
+def api_patch_settings(body: SettingsPatch):
+    patch = {k: v for k, v in body.model_dump().items() if v is not None}
+    return {"settings": settings_store.update(patch)}
+
+
+@app.post("/api/settings/reset")
+def api_reset_settings():
+    return {"settings": settings_store.reset()}
+
+
 def _sse(event_type: str, payload: dict) -> str:
     return f"event: {event_type}\ndata: {json.dumps(payload, ensure_ascii=False)}\n\n"
 
@@ -143,8 +170,11 @@ def _build_history(chat: dict | None) -> list:
     if not chat:
         return []
     turns = chat.get("turns", []) or []
+    history_limit = settings_store.get("history_turn_limit") or 0
+    if history_limit <= 0:
+        return []
     history: list = []
-    for turn in turns[-HISTORY_TURN_LIMIT:]:
+    for turn in turns[-history_limit:]:
         question = turn.get("question")
         answer = turn.get("answer")
         if question:
@@ -168,12 +198,14 @@ def _today_context_message() -> SystemMessage:
 
 
 @app.get("/ask_agent_stream")
-def ask_agent_stream(
+async def ask_agent_stream(
+    request: Request,
     question: str,
     chat_id: str | None = None,
     model: str | None = None,
 ):
-    def generate():
+    async def generate():
+        cancelled = threading.Event()
         try:
             model_key = _resolve_model_key(model)
             model_info = MODEL_REGISTRY[model_key]
@@ -198,9 +230,14 @@ def ask_agent_stream(
                 },
             )
 
+            settings = settings_store.get_all()
+            cache_ttl = settings.get("cache_ttl_seconds", 24 * 3600)
+            verification_enabled = settings.get("verification_enabled", True)
+            fact_extraction_enabled = settings.get("fact_extraction_enabled", True)
+
             # Cache check (skip when memory is active — answer depends on context).
-            if not has_memory:
-                cached = cache_store.get(model_key, question, CACHE_TTL_SECONDS)
+            if not has_memory and cache_ttl > 0:
+                cached = cache_store.get(model_key, question, cache_ttl)
                 if cached:
                     saved_chat = chat_store.append_turn(
                         resolved_chat_id,
@@ -246,13 +283,84 @@ def ask_agent_stream(
                 + [HumanMessage(content=question)]
             )
 
+            # ── Run the agent in a background thread ─────────────────────────
+            # We need real cancellation when the client disconnects, plus the
+            # ability to interleave disconnect checks with chunk processing.
+            # Solution: agent.stream() runs in a thread, producing chunks into
+            # an asyncio.Queue. The async loop pulls with a short timeout so it
+            # can poll request.is_disconnected() in between.
+            chunk_queue: asyncio.Queue = asyncio.Queue()
+            loop = asyncio.get_running_loop()
+
+            def _enqueue(item):
+                loop.call_soon_threadsafe(chunk_queue.put_nowait, item)
+
+            def run_agent():
+                stream_iter = None
+                try:
+                    stream_iter = agent.stream(
+                        {"messages": input_messages},
+                        stream_mode=["updates", "messages"],
+                    )
+                    for chunk in stream_iter:
+                        if cancelled.is_set():
+                            return
+                        _enqueue(("chunk", chunk))
+                except Exception as exc:
+                    _enqueue(("error", exc))
+                finally:
+                    # Explicitly close the stream so the underlying httpx
+                    # connection to Ollama is released — this is what actually
+                    # tells Ollama to stop generating.
+                    if stream_iter is not None and hasattr(stream_iter, "close"):
+                        try:
+                            stream_iter.close()
+                        except Exception:
+                            pass
+                    _enqueue(("done", None))
+
+            agent_thread = threading.Thread(target=run_agent, daemon=True)
+            agent_thread.start()
+
             tool_messages_collected: list[dict] = []
             final_answer = ""
 
-            for chunk in agent.stream({"messages": input_messages}, stream_mode="updates"):
-                if not isinstance(chunk, dict):
+            while True:
+                try:
+                    item = await asyncio.wait_for(chunk_queue.get(), timeout=0.25)
+                except asyncio.TimeoutError:
+                    if await request.is_disconnected():
+                        cancelled.set()
+                        logger.info("Client disconnected — stopping agent (chat=%s)", resolved_chat_id)
+                        return
                     continue
-                for _node_name, node_data in chunk.items():
+
+                kind, payload = item
+                if kind == "done":
+                    break
+                if kind == "error":
+                    raise payload
+
+                # kind == "chunk": LangGraph yields (stream_mode, data) tuples
+                if not isinstance(payload, tuple) or len(payload) != 2:
+                    continue
+                stream_mode, data = payload
+
+                if stream_mode == "messages":
+                    # data is (message_chunk, metadata) — emit each token
+                    msg_chunk = data[0] if isinstance(data, tuple) and data else None
+                    if msg_chunk is None:
+                        continue
+                    content = getattr(msg_chunk, "content", "")
+                    if isinstance(content, str) and content:
+                        yield _sse("token", {"text": content})
+                    continue
+
+                if stream_mode != "updates":
+                    continue
+                if not isinstance(data, dict):
+                    continue
+                for _node_name, node_data in data.items():
                     messages = node_data.get("messages", []) if isinstance(node_data, dict) else []
                     for message in messages:
                         message_type = getattr(message, "type", None)
@@ -286,9 +394,12 @@ def ask_agent_stream(
 
             # Verification pass — re-check the draft answer against tool results
             # and rewrite any claim the search results contradict or don't support.
-            if final_answer and tool_messages_collected:
+            if verification_enabled and final_answer and tool_messages_collected:
+                if await request.is_disconnected():
+                    return
                 yield _sse("verifying", {})
-                verified_answer, was_changed = verify_answer(
+                verified_answer, was_changed = await asyncio.to_thread(
+                    verify_answer,
                     question=question,
                     answer=final_answer,
                     tool_messages=tool_messages_collected,
@@ -299,13 +410,18 @@ def ask_agent_stream(
                     final_answer = verified_answer
                     yield _sse("answer", {"text": final_answer, "verified": True})
 
+            if await request.is_disconnected():
+                return
+
             yield _sse("extracting", {})
 
             cleaned_answer = final_answer.replace("\n", " ")
-            extraction = extract_claims(
+            extraction = await asyncio.to_thread(
+                extract_claims,
                 cleaned_answer,
                 tool_messages_collected,
                 model_id=model_info["id"],
+                use_llm=fact_extraction_enabled,
             )
 
             saved_chat = chat_store.append_turn(
@@ -322,7 +438,7 @@ def ask_agent_stream(
             )
 
             # Cache only when memory was NOT used — context-dependent answers must not pollute global cache.
-            if not has_memory and final_answer:
+            if not has_memory and final_answer and cache_ttl > 0:
                 cache_store.put(
                     model_key,
                     question,
@@ -352,6 +468,9 @@ def ask_agent_stream(
         except Exception as exc:
             logger.exception("Agent stream failed: %s", exc)
             yield _sse("error", {"message": str(exc)})
+        finally:
+            # Always signal the agent thread to exit, even on disconnect/exception
+            cancelled.set()
 
     return StreamingResponse(
         generate(),

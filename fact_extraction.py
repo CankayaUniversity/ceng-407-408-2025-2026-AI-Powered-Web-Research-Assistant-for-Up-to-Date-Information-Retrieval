@@ -263,13 +263,20 @@ def _claim_citation_strength(evidence_urls: list[str], url_to_source: dict[str, 
     return max(weights) if weights else 0.0
 
 
-def extract_claims(answer_text: str, tool_messages: list[dict[str, str]], model_id: str = MODEL_NAME) -> dict[str, Any]:
+def extract_claims(
+    answer_text: str,
+    tool_messages: list[dict[str, str]],
+    model_id: str = MODEL_NAME,
+    use_llm: bool = True,
+) -> dict[str, Any]:
     sources = normalize_sources(tool_messages)
 
-    try:
-        raw_claims = _llm_extract_claims(answer_text, sources, model_id)
-    except Exception:
-        raw_claims = []
+    raw_claims: list[dict[str, Any]] = []
+    if use_llm:
+        try:
+            raw_claims = _llm_extract_claims(answer_text, sources, model_id)
+        except Exception:
+            raw_claims = []
     if not raw_claims:
         raw_claims = _fallback_extract_claims(answer_text, sources)
 
