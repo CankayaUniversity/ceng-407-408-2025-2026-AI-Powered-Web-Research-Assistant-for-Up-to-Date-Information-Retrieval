@@ -84,17 +84,27 @@ function stopResearch() {
   setSubmitMode('send');
 }
 
-// Intercept submit-button click while searching → act as stop button
-submitBtn.addEventListener('click', (e) => {
+// Single click handler — routes to stop or submit based on isAsking.
+// Button is type="button" so it NEVER auto-submits the form. We own the flow.
+function handleSubmitClick(e) {
+  if (e) e.preventDefault();
   if (isAsking) {
+    stopResearch();
+    return;
+  }
+  const question = input.value.trim();
+  if (!question) return;
+  startResearch(question);
+}
+
+submitBtn.addEventListener('click', handleSubmitClick);
+
+// Escape key shortcut to stop
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && isAsking) {
     e.preventDefault();
     stopResearch();
   }
-});
-
-// Escape key shortcut
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && isAsking) stopResearch();
 });
 
 /* ----------------- helpers ----------------- */

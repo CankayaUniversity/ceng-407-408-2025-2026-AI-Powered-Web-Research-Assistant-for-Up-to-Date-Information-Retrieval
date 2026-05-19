@@ -1,11 +1,13 @@
 import json
 import re
+from typing import Any
 
 import requests
 from bs4 import BeautifulSoup
 from langchain_community.tools import DuckDuckGoSearchResults
 from langchain_community.tools.tavily_search import TavilySearchResults
 from langchain_core.tools import tool
+from pydantic import BaseModel, Field, field_validator
 
 from config import (
     DEEP_READER_MAX_CHARS,
@@ -18,6 +20,73 @@ from source_quality import classify_source, sort_results
 
 _tavily_underlying = None
 _duckduckgo_underlying = None
+
+
+# --------------------------------------------------------------------------
+# Defensive input coercion
+# --------------------------------------------------------------------------
+# Llama 3.1's tool calling sometimes hallucinates the JSON schema definition
+# into the argument value — passing {"type": "string"} instead of the actual
+# query — and invents extra parameters like {"object": "<nil>", "url": "<nil>"}.
+# Qwen 2.5 and Llama 3.2 don't do this. To keep all three models working from
+# the same tool definitions, we coerce malformed inputs into clean strings
+# before they reach the search clients.
+
+_SCHEMA_LEAK_VALUES = {"string", "query", "<nil>", "nil", "null", "none"}
+
+
+def _sanitize_string_arg(value: Any) -> str:
+    """Extract a usable string from whatever shape the LLM hands us."""
+    if isinstance(value, str):
+        cleaned = value.strip()
+        if cleaned and cleaned.lower() not in _SCHEMA_LEAK_VALUES:
+            return cleaned
+        return ""
+
+    if isinstance(value, dict):
+        # Common schema-leak pattern from Llama 3.1: {"type": "string"} or
+        # {"type": "string", "description": "..."} as the VALUE of `query`.
+        if "type" in value and value.get("type") in {"string", "str"}:
+            return ""
+        # Sometimes the actual query is nested under another key
+        for nested_key in ("query", "q", "search", "input", "text", "value", "url"):
+            nested = value.get(nested_key)
+            if isinstance(nested, str):
+                nested_clean = nested.strip()
+                if nested_clean and nested_clean.lower() not in _SCHEMA_LEAK_VALUES:
+                    return nested_clean
+        return ""
+
+    if isinstance(value, list) and value:
+        return _sanitize_string_arg(value[0])
+
+    return ""
+
+
+class SearchToolInput(BaseModel):
+    """Input schema for web-search tools.
+
+    Uses a pre-validator to swallow Llama 3.1's schema-leak hallucinations
+    (e.g. passing {"type": "string"} as the query value).
+    """
+
+    query: str = Field(..., description="The search query as a plain string.")
+
+    @field_validator("query", mode="before")
+    @classmethod
+    def coerce_query(cls, v):
+        return _sanitize_string_arg(v)
+
+
+class DeepReaderInput(BaseModel):
+    """Input schema for deep_site_reader with the same defensive coercion."""
+
+    url: str = Field(..., description="The URL to read as a plain string.")
+
+    @field_validator("url", mode="before")
+    @classmethod
+    def coerce_url(cls, v):
+        return _sanitize_string_arg(v)
 
 
 def _get_tavily():
@@ -82,7 +151,16 @@ def _format_ddg_with_tiers(items: list[dict]) -> str:
     return ", ".join(parts)
 
 
-@tool
+_EMPTY_QUERY_RETRY_MSG = (
+    "Error: the 'query' argument was missing or malformed. "
+    "Call this tool again with a single string parameter named 'query', "
+    "containing the user's question as plain text. "
+    'Example: {"query": "weather in Ankara today"}. '
+    "Do NOT pass a JSON schema, a dict, or extra parameters."
+)
+
+
+@tool(args_schema=SearchToolInput)
 def tavily_search_results_json(query: str) -> str:
     """Search the web via Tavily for current, authoritative information. Results are
     returned as JSON, sorted so the highest-quality sources appear first. Each item
@@ -97,9 +175,13 @@ def tavily_search_results_json(query: str) -> str:
       - "prediction" — Betting/odds sites, "who will win" articles, previews of
                        upcoming events. NEVER cite these as facts. They describe
                        events that have NOT yet happened.
+
+    Call exactly like: {"query": "your search question as a plain string"}.
     """
+    if not query or not query.strip():
+        return _EMPTY_QUERY_RETRY_MSG
     try:
-        raw = _get_tavily().invoke({"query": query})
+        raw = _get_tavily().invoke({"query": query.strip()})
     except Exception as exc:
         return f"Tavily search error: {exc}"
     if isinstance(raw, str):
@@ -117,15 +199,19 @@ def tavily_search_results_json(query: str) -> str:
     return json.dumps(annotated, ensure_ascii=False)
 
 
-@tool
+@tool(args_schema=SearchToolInput)
 def duckduckgo_results_json(query: str) -> str:
     """Search the web via DuckDuckGo. Returns results sorted with the highest-quality
     sources first. Each result is prefixed with [TIER: HIGH|MEDIUM|LOW|PREDICTION].
     Same tier semantics as the Tavily tool — never treat PREDICTION-tier results as
     facts; they describe events that have not yet happened.
+
+    Call exactly like: {"query": "your search question as a plain string"}.
     """
+    if not query or not query.strip():
+        return _EMPTY_QUERY_RETRY_MSG
     try:
-        raw = _get_duckduckgo().invoke({"query": query})
+        raw = _get_duckduckgo().invoke({"query": query.strip()})
     except Exception as exc:
         return f"DuckDuckGo search error: {exc}"
     raw_str = str(raw) if raw is not None else ""
@@ -136,9 +222,17 @@ def duckduckgo_results_json(query: str) -> str:
     return _format_ddg_with_tiers(items)
 
 
-@tool
+@tool(args_schema=DeepReaderInput)
 def deep_site_reader(url: str) -> str:
-    """Reads and extracts visible text from a specific URL."""
+    """Reads and extracts visible text from a specific URL.
+
+    Call exactly like: {"url": "https://example.com/page"}.
+    """
+    if not url or not url.strip():
+        return (
+            "Error: the 'url' argument was missing or malformed. "
+            "Call this tool again with {\"url\": \"https://...\"} — a single string."
+        )
     try:
         headers = {
             "User-Agent": (
@@ -147,7 +241,7 @@ def deep_site_reader(url: str) -> str:
                 "Chrome/91.0.4472.124 Safari/537.36"
             )
         }
-        response = requests.get(url, headers=headers, timeout=DEEP_READER_TIMEOUT_SECONDS, verify=False)
+        response = requests.get(url.strip(), headers=headers, timeout=DEEP_READER_TIMEOUT_SECONDS, verify=False)
         response.encoding = response.apparent_encoding
 
         soup = BeautifulSoup(response.text, "html.parser")

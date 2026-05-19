@@ -748,6 +748,124 @@
       "original_question": "Who won UCL last?",
       "cached_at": "2026-05-18T19:48:57.016522+00:00",
       "cached_ts": 1779133737.016541
+    },
+    "llama32::what is the weather in ankara like today": {
+      "answer": "I'll rephrase the question to make it a valid string.\n{\"name\": \"tavily_search_results_json\", \"parameters\": {\"query\": \"Ankara weather today\"}} \n\nError invoking tool 'tavily_search_results_json' with kwargs {'query': {'type': 'string'}} with error:\n query: Input should be a valid string\n Please fix the error and try again.\n\nThe search results did not confirm this.",
+      "facts": [
+        {
+          "claim_text": "I'll rephrase the question to make it a valid string.",
+          "evidence_urls": [],
+          "source_tools": [],
+          "fact_quality_flags": {
+            "has_source": false,
+            "multi_source": false,
+            "weak_evidence": true,
+            "needs_review": true
+          }
+        },
+        {
+          "claim_text": "{\"name\": \"tavily_search_results_json\", \"parameters\": {\"query\": \"Ankara weather today\"}}   Error invoking tool 'tavily_search_results_json' with kwargs {'query': {'type': 'string'}} with error:  query: Input should be a valid string  Please fix the error and try again.",
+          "evidence_urls": [],
+          "source_tools": [],
+          "fact_quality_flags": {
+            "has_source": false,
+            "multi_source": false,
+            "weak_evidence": true,
+            "needs_review": true
+          }
+        },
+        {
+          "claim_text": "The search results did not confirm this.",
+          "evidence_urls": [],
+          "source_tools": [],
+          "fact_quality_flags": {
+            "has_source": false,
+            "multi_source": false,
+            "weak_evidence": true,
+            "needs_review": true
+          }
+        }
+      ],
+      "sources": [],
+      "trust_signals": {
+        "citation_coverage": 0.0,
+        "avg_sources_per_claim": 0.0,
+        "multi_source_claim_ratio": 0.0,
+        "distinct_domain_count": 0,
+        "source_quality_score": 0.0,
+        "high_tier_ratio": 0.0,
+        "citation_strength": 0.0,
+        "tier_breakdown": {
+          "high": 0,
+          "medium": 0,
+          "low": 0,
+          "prediction": 0
+        },
+        "total_sources": 0
+      },
+      "model_key": "llama32",
+      "original_question": "What is the weather in Ankara like today?",
+      "cached_at": "2026-05-19T14:48:09.874338+00:00",
+      "cached_ts": 1779202089.874347
+    },
+    "llama32::weather in ankara today": {
+      "answer": "I'll rephrase the query to include the location.\n \nThe search results did not confirm this.\n\nThe weather in Ankara today could not be found due to an error invoking tool 'tavily_search_results_json' with kwargs {'query': {'type': 'string'}, 'object': '<nil>', 'url': '<nil>'}.",
+      "facts": [
+        {
+          "claim_text": "I'll rephrase the query to include the location.",
+          "evidence_urls": [],
+          "source_tools": [],
+          "fact_quality_flags": {
+            "has_source": false,
+            "multi_source": false,
+            "weak_evidence": true,
+            "needs_review": true
+          }
+        },
+        {
+          "claim_text": "The search results did not confirm this.",
+          "evidence_urls": [],
+          "source_tools": [],
+          "fact_quality_flags": {
+            "has_source": false,
+            "multi_source": false,
+            "weak_evidence": true,
+            "needs_review": true
+          }
+        },
+        {
+          "claim_text": "The weather in Ankara today could not be found due to an error invoking tool 'tavily_search_results_json' with kwargs {'query': {'type': 'string'}, 'object': '<nil>', 'url': '<nil>'}.",
+          "evidence_urls": [],
+          "source_tools": [],
+          "fact_quality_flags": {
+            "has_source": false,
+            "multi_source": false,
+            "weak_evidence": true,
+            "needs_review": true
+          }
+        }
+      ],
+      "sources": [],
+      "trust_signals": {
+        "citation_coverage": 0.0,
+        "avg_sources_per_claim": 0.0,
+        "multi_source_claim_ratio": 0.0,
+        "distinct_domain_count": 0,
+        "source_quality_score": 0.0,
+        "high_tier_ratio": 0.0,
+        "citation_strength": 0.0,
+        "tier_breakdown": {
+          "high": 0,
+          "medium": 0,
+          "low": 0,
+          "prediction": 0
+        },
+        "total_sources": 0
+      },
+      "model_key": "llama32",
+      "original_question": "weather in ankara today",
+      "cached_at": "2026-05-19T15:06:28.631810+00:00",
+      "cached_ts": 1779203188.631831
     }
   }
 }

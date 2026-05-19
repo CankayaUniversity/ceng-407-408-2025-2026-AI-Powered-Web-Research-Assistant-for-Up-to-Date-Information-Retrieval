@@ -1295,20 +1295,27 @@ body {
   cursor: not-allowed;
   background: var(--bg-3);
 }
-/* Stop mode — red square icon */
-#submit-btn.stop-mode {
-  background: linear-gradient(135deg, #f47c7c, #d95f5f);
-  box-shadow: 0 4px 14px rgba(244, 124, 124, 0.35);
-  animation: stop-pulse 1.8s ease-in-out infinite;
+/* Stop mode — red square icon. Use !important to defeat any later rules. */
+#submit-btn.stop-mode,
+#submit-btn.stop-mode:disabled {
+  background: linear-gradient(135deg, #ef4444, #b91c1c) !important;
+  color: white !important;
+  cursor: pointer !important;
+  opacity: 1 !important;
+  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.45) !important;
+  animation: stop-pulse 1.4s ease-in-out infinite;
 }
 #submit-btn.stop-mode:hover {
-  box-shadow: 0 6px 22px rgba(244, 124, 124, 0.55);
+  box-shadow: 0 6px 22px rgba(239, 68, 68, 0.65) !important;
   transform: translateY(-1px);
   animation: none;
 }
+#submit-btn.stop-mode:active {
+  transform: translateY(0);
+}
 @keyframes stop-pulse {
-  0%, 100% { box-shadow: 0 4px 14px rgba(244, 124, 124, 0.35); }
-  50%       { box-shadow: 0 4px 22px rgba(244, 124, 124, 0.60); }
+  0%, 100% { box-shadow: 0 4px 14px rgba(239, 68, 68, 0.45); }
+  50%      { box-shadow: 0 4px 24px rgba(239, 68, 68, 0.75); }
 }
 
 /* Trace stop icon (shown when user stops mid-stream) */
