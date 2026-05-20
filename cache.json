@@ -138,6 +138,54 @@
       "original_question": "Bournemouth vs Manchester City match score",
       "cached_at": "2026-05-20T00:45:45.891846+00:00",
       "cached_ts": 1779237945.891859
+    },
+    "llama::what is my name": {
+      "answer": "I'm not able to provide information about your personal identity. Is there anything else I can help you with?",
+      "facts": [
+        {
+          "claim_text": "I'm not able to provide information about your personal identity.",
+          "evidence_urls": [],
+          "source_tools": [],
+          "fact_quality_flags": {
+            "has_source": false,
+            "multi_source": false,
+            "weak_evidence": true,
+            "needs_review": true
+          }
+        },
+        {
+          "claim_text": "Is there anything else I can help you with?",
+          "evidence_urls": [],
+          "source_tools": [],
+          "fact_quality_flags": {
+            "has_source": false,
+            "multi_source": false,
+            "weak_evidence": true,
+            "needs_review": true
+          }
+        }
+      ],
+      "sources": [],
+      "trust_signals": {
+        "citation_coverage": 0.0,
+        "avg_sources_per_claim": 0.0,
+        "multi_source_claim_ratio": 0.0,
+        "distinct_domain_count": 0,
+        "source_quality_score": 0.0,
+        "high_tier_ratio": 0.0,
+        "citation_strength": 0.0,
+        "tier_breakdown": {
+          "high": 0,
+          "medium": 0,
+          "low": 0,
+          "prediction": 0
+        },
+        "total_sources": 0
+      },
+      "model_key": "llama",
+      "original_question": "What is my name?",
+      "cached_at": "2026-05-20T02:04:29.023291+00:00",
+      "cached_ts": 1779242669.023298
     }
   }
 }

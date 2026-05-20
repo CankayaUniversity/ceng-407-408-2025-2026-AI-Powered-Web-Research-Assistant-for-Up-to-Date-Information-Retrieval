@@ -44,7 +44,10 @@ _LLM_CACHE: dict[str, ChatOllama] = {}
 def _get_llm(model_id: str) -> ChatOllama:
     llm = _LLM_CACHE.get(model_id)
     if llm is None:
-        llm = ChatOllama(model=model_id, temperature=0)
+        # num_predict caps generation — extractor returns small JSON, 2048 is ample.
+        # keep_alive=0 frees the model promptly after extraction since this is the
+        # last LLM step in the pipeline.
+        llm = ChatOllama(model=model_id, temperature=0, num_predict=2048, keep_alive=0)
         _LLM_CACHE[model_id] = llm
     return llm
 
