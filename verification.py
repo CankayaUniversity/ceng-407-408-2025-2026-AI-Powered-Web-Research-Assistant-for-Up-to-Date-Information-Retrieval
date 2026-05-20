@@ -6,9 +6,6 @@ small-model failure where the agent calls its tools but then synthesizes the
 final answer from stale training memory instead of the retrieved content.
 """
 
-import json
-from urllib.parse import urlparse
-
 from langchain_ollama import ChatOllama
 
 
@@ -59,6 +56,7 @@ RULES:
    (b) If the draft REFUSES to report a value but a HIGH/MEDIUM-tier source DOES contain a confirmed past result for the question → REWRITE the draft to include that confirmed result. An over-cautious "I couldn't find a score" is just as wrong as inventing one.
    (c) If the draft cites a value that is NOT in any HIGH/MEDIUM-tier source → REPLACE with "the search results did not confirm this value".
    (d) Confirmed past results are valid answers to questions that don't specify "current" or "latest". Do NOT refuse a confirmed past score just because a more recent match might exist.
+   (e) TITLES ARE DATA. Each search result has a TITLE line and a CONTENT line. If the TITLE contains a specific value (e.g. "Bournemouth 1-0 Manchester City (05/19) - Game Report"), that value IS confirmed — even if the CONTENT is empty. Use the title as the source. Do NOT say "the search results did not confirm this" when the answer is sitting in a result title.
 
 6. Do NOT add information that is not in the high/medium-tier search results.
 7. Do NOT use your own knowledge — your training is outdated.
@@ -76,50 +74,13 @@ OUTPUT FORMAT:
 Output ONLY the corrected final answer text. No preamble. No "Here is the corrected answer:". No explanation. No apology. Just the answer."""
 
 
-def _domain_of(url: str) -> str:
-    try:
-        return urlparse(url).netloc.replace("www.", "")
-    except Exception:
-        return url or ""
-
-
-def _format_tavily_for_verifier(content: str, max_chars_per_item: int = 800) -> str:
-    """Parse Tavily's JSON output and re-render each item with the tier label
-    front-and-center, so the verifier can't misread it. Each item becomes:
-
-        [MEDIUM TIER · espn.com] "Bournemouth 2-1 Man City (Nov 2, 2024)"
-          Match ends, Bournemouth 2, Manchester City 1. …
-    """
-    try:
-        items = json.loads(content)
-    except Exception:
-        return content[:3000]
-    if not isinstance(items, list):
-        return content[:3000]
-
-    lines = []
-    for item in items:
-        if not isinstance(item, dict):
-            continue
-        tier = (item.get("_source_tier") or "low").upper()
-        domain = _domain_of(item.get("url") or "")
-        title = (item.get("title") or "").strip()
-        body = (item.get("content") or "").strip()
-        if body and len(body) > max_chars_per_item:
-            body = body[:max_chars_per_item].rstrip() + "…"
-        lines.append(f"[{tier} TIER · {domain}] {title}")
-        if body:
-            lines.append(f"  {body}")
-        else:
-            lines.append("  (no usable body text — rely on the title above)")
-    return "\n".join(lines)
-
-
 def build_sources_text(
     tool_messages: list[dict],
     max_sources: int = 6,
-    max_chars_each: int = 3000,
+    max_chars_each: int = 4000,
 ) -> str:
+    """The search tools now emit verifier-ready text (RESULT N — TIER: X — domain),
+    so we just trim and pass through. No more JSON parsing here."""
     if not tool_messages:
         return ""
     parts = []
@@ -128,13 +89,8 @@ def build_sources_text(
         if not raw_content:
             continue
         name = message.get("name") or "search_tool"
-        if name == "tavily_search_results_json":
-            formatted = _format_tavily_for_verifier(raw_content)
-        else:
-            # DuckDuckGo already prefixes each result with [TIER: X];
-            # deep_site_reader is plain text — just trim.
-            formatted = raw_content[:max_chars_each]
-        parts.append(f"--- TOOL CALL {index} (from {name}) ---\n{formatted}")
+        truncated = raw_content[:max_chars_each]
+        parts.append(f"--- TOOL CALL {index} (from {name}) ---\n{truncated}")
     return "\n\n".join(parts)
 
 

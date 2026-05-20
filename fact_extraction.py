@@ -115,36 +115,36 @@ def _enrich_evidence_urls(claim_text: str, initial_urls: list[str], sources: lis
     return ordered_urls
 
 
-def _parse_tavily_results(tool_content: str) -> list[dict[str, Any]]:
-    try:
-        payload = json.loads(tool_content)
-        if isinstance(payload, list):
-            return [item for item in payload if isinstance(item, dict) and item.get("url")]
-    except Exception:
-        return []
-    return []
+def _parse_search_results_text(tool_content: str) -> list[dict[str, Any]]:
+    """Parse the unified RESULT N — TIER: X format emitted by tools.py.
 
-
-def _parse_duckduckgo_results(tool_content: str) -> list[dict[str, Any]]:
-    items = []
+    Both Tavily and DuckDuckGo tools now return the same line-based format,
+    so a single parser covers both.
+    """
+    items: list[dict[str, Any]] = []
+    current: dict[str, Any] | None = None
     if not tool_content:
         return items
-
-    segments = [segment.strip() for segment in tool_content.split("snippet: ") if segment.strip()]
-    for segment in segments:
-        title_match = re.search(r"title:\s*(.*?),\s*link:", segment, flags=re.IGNORECASE | re.DOTALL)
-        link_match = re.search(r"link:\s*(https?://[^\s,]+)", segment, flags=re.IGNORECASE)
-        snippet = segment.split(", title:", 1)[0].strip()
-        if not link_match:
-            continue
-        items.append(
-            {
-                "title": title_match.group(1).strip() if title_match else "",
-                "url": link_match.group(1).strip(),
-                "content": snippet,
-                "score": None,
-            }
-        )
+    for line in tool_content.split("\n"):
+        if line.startswith("RESULT "):
+            if current and current.get("url"):
+                items.append(current)
+            current = {"url": "", "title": "", "content": "", "score": None, "_source_tier": "low"}
+            tier_match = re.search(r"TIER:\s*(\w+)", line, re.IGNORECASE)
+            if tier_match:
+                current["_source_tier"] = tier_match.group(1).lower()
+        elif current is not None:
+            if line.startswith("TITLE: "):
+                current["title"] = line[7:].strip()
+            elif line.startswith("URL: "):
+                current["url"] = line[5:].strip()
+            elif line.startswith("CONTENT: "):
+                body = line[9:].strip()
+                if body.startswith("(empty"):
+                    body = ""
+                current["content"] = body
+    if current and current.get("url"):
+        items.append(current)
     return items
 
 
@@ -155,12 +155,10 @@ def normalize_sources(tool_messages: list[dict[str, str]]) -> list["SourceEntry"
         tool_name = message.get("name", "")
         content = message.get("content", "")
 
-        if tool_name == "tavily_search_results_json":
-            parsed_items = _parse_tavily_results(content)
-        elif tool_name == "duckduckgo_results_json":
-            parsed_items = _parse_duckduckgo_results(content)
+        if tool_name in ("tavily_search_results_json", "duckduckgo_results_json"):
+            parsed_items = _parse_search_results_text(content)
         elif tool_name == "deep_site_reader":
-            parsed_items = [{"title": "Deep page read", "url": "", "content": content, "score": None}]
+            parsed_items = [{"title": "Deep page read", "url": "", "content": content, "score": None, "_source_tier": "low"}]
         else:
             parsed_items = []
 
@@ -180,7 +178,9 @@ def normalize_sources(tool_messages: list[dict[str, str]]) -> list["SourceEntry"
 
             snippet = str(item.get("content", ""))[:400]
             title = str(item.get("title", "")).strip()
-            tier = classify_source(url, title, snippet)
+            # Prefer the tier from the parsed search-result block; fall back
+            # to re-classifying if the parser didn't yield one (e.g. deep_site_reader).
+            tier = item.get("_source_tier") or classify_source(url, title, snippet)
 
             by_url[url] = SourceEntry(
                 url=url,

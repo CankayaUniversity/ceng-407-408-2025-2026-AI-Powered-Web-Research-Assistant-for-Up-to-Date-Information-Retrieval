@@ -2,6 +2,7 @@ import json
 import re
 import threading
 from typing import Any
+from urllib.parse import urlparse
 
 import requests
 from bs4 import BeautifulSoup
@@ -167,8 +168,9 @@ def _is_mostly_junk(text: str) -> bool:
 def _clean_content(text: str, max_len: int = 800) -> str:
     """Strip common scraping artifacts and collapse whitespace.
 
-    If after cleanup the result still looks like navigation noise, returns
-    empty string — the title alone will carry the signal.
+    If after cleanup the result is short, mostly punctuation, or still looks
+    like navigation noise, returns empty string — the title alone will carry
+    the signal.
     """
     if not text:
         return ""
@@ -178,6 +180,11 @@ def _clean_content(text: str, max_len: int = 800) -> str:
     cleaned = _NEWLINE_RUN_RE.sub("\n", cleaned)
     cleaned = _MULTI_SPACE_RE.sub(" ", cleaned)
     cleaned = cleaned.strip()
+    # Cleanup yielded too few real letters — call it empty so the formatter
+    # emits the "TITLE above IS the answer" hint instead of garbage.
+    alpha_chars = sum(1 for c in cleaned if c.isalpha())
+    if alpha_chars < 5:
+        return ""
     if _is_mostly_junk(cleaned):
         return ""
     if len(cleaned) > max_len:
@@ -223,16 +230,48 @@ def _parse_ddg_segments(text: str) -> list[dict]:
     return items
 
 
-def _format_ddg_with_tiers(items: list[dict]) -> str:
-    parts = []
-    for item in items:
-        cleaned_snippet = _clean_content(item.get("snippet", ""), max_len=500)
-        tier = classify_source(item.get("url", ""), item.get("title", ""), cleaned_snippet)
-        parts.append(
-            f"[TIER: {tier.upper()}] snippet: {cleaned_snippet}, "
-            f"title: {item.get('title', '')}, link: {item.get('url', '')}"
-        )
-    return ", ".join(parts)
+def _domain_of(url: str) -> str:
+    try:
+        return urlparse(url or "").netloc.replace("www.", "")
+    except Exception:
+        return url or ""
+
+
+def _format_results_for_llm(items: list[dict]) -> str:
+    """Render search results in a clean, line-based text format.
+
+    - Drops prediction-tier results entirely (they were already weighted
+      near-zero and just add noise to the agent's context).
+    - Each result becomes a labelled block: TIER, TITLE, URL, CONTENT.
+    - When CONTENT is empty (junk-detected), explicitly tells the agent
+      the TITLE is the data.
+
+    This format is easy for the LLM to read AND easy to parse with regex
+    for downstream fact extraction.
+    """
+    useful = [it for it in items if (it.get("_source_tier") or "low") != "prediction"]
+    if not useful:
+        return ("No usable results — only prediction / betting / preview sites came back. "
+                "Try a different search query (e.g. add 'final score', 'result', or the date).")
+
+    lines = []
+    for idx, item in enumerate(useful, start=1):
+        tier = (item.get("_source_tier") or "low").upper()
+        url = (item.get("url") or "").strip()
+        domain = _domain_of(url)
+        title = (item.get("title") or "").strip() or "(no title)"
+        content = (item.get("content") or "").strip()
+
+        lines.append(f"RESULT {idx} — TIER: {tier} — {domain}")
+        lines.append(f"TITLE: {title}")
+        lines.append(f"URL: {url}")
+        if content:
+            lines.append(f"CONTENT: {content}")
+        else:
+            lines.append("CONTENT: (empty — the TITLE above IS the answer; use it directly)")
+        lines.append("")
+
+    return "\n".join(lines).rstrip()
 
 
 _EMPTY_QUERY_RETRY_MSG = (
@@ -244,24 +283,34 @@ _EMPTY_QUERY_RETRY_MSG = (
 )
 
 
+_SEARCH_TOOL_DOC = """Search the web. Returns up to ~5 results in this format:
+
+    RESULT 1 — TIER: HIGH — wikipedia.org
+    TITLE: Headline / article title (often contains the answer directly)
+    URL: https://...
+    CONTENT: Body snippet, or "(empty — the TITLE above IS the answer)"
+
+    RESULT 2 — TIER: MEDIUM — ...
+
+Source tiers:
+  HIGH    — Wikipedia, official org sites, major newswires (Reuters, AP, BBC)
+  MEDIUM  — mainstream news, established publications (CNN, ESPN, Bloomberg)
+  LOW     — unknown sites; corroborate before relying on it
+  Prediction-tier results (betting / odds / preview sites) are DROPPED before
+  you see them — never use those as facts.
+
+IMPORTANT — READ TITLES:
+When CONTENT is "(empty — the TITLE above IS the answer)", the TITLE itself
+contains the data you need. Titles like "Bournemouth 1-0 Manchester City (05/19)"
+or "Apple Q4 2024: $94.9B revenue" directly state the answer. Do NOT respond
+with "the search results did not confirm this" when the answer is in the title.
+
+Call exactly like: {"query": "your search question as a plain string"}.
+"""
+
+
 @tool(args_schema=SearchToolInput)
 def tavily_search_results_json(query: str) -> str:
-    """Search the web via Tavily for current, authoritative information. Results are
-    returned as JSON, sorted so the highest-quality sources appear first. Each item
-    has a `_source_tier` field with one of these values:
-      - "high"       — Wikipedia, official org sites (uefa.com, fifa.com, nasa.gov),
-                       major newswires (Reuters, AP), major newspapers (BBC, NYT).
-                       Use these for factual claims.
-      - "medium"     — Mainstream news (CNN, Bloomberg), established sports news
-                       (ESPN), trusted tech publications. Acceptable for facts.
-      - "low"        — Unknown or unfamiliar sites. Use only if no higher-tier
-                       source is available and corroborate with another source.
-      - "prediction" — Betting/odds sites, "who will win" articles, previews of
-                       upcoming events. NEVER cite these as facts. They describe
-                       events that have NOT yet happened.
-
-    Call exactly like: {"query": "your search question as a plain string"}.
-    """
     if not query or not query.strip():
         return _EMPTY_QUERY_RETRY_MSG
     try:
@@ -278,20 +327,16 @@ def tavily_search_results_json(query: str) -> str:
     else:
         items = []
     if not isinstance(items, list):
-        return json.dumps(items, ensure_ascii=False)
+        return str(items)
     annotated = _annotate_tavily_items(items)
-    return json.dumps(annotated, ensure_ascii=False)
+    return _format_results_for_llm(annotated)
+
+
+tavily_search_results_json.__doc__ = _SEARCH_TOOL_DOC
 
 
 @tool(args_schema=SearchToolInput)
 def duckduckgo_results_json(query: str) -> str:
-    """Search the web via DuckDuckGo. Returns results sorted with the highest-quality
-    sources first. Each result is prefixed with [TIER: HIGH|MEDIUM|LOW|PREDICTION].
-    Same tier semantics as the Tavily tool — never treat PREDICTION-tier results as
-    facts; they describe events that have not yet happened.
-
-    Call exactly like: {"query": "your search question as a plain string"}.
-    """
     if not query or not query.strip():
         return _EMPTY_QUERY_RETRY_MSG
     try:
@@ -301,9 +346,22 @@ def duckduckgo_results_json(query: str) -> str:
     raw_str = str(raw) if raw is not None else ""
     items = _parse_ddg_segments(raw_str)
     if not items:
-        return raw_str
+        return raw_str[:2000]
     items = sort_results(items)
-    return _format_ddg_with_tiers(items)
+    # Normalize DDG items to the same shape as Tavily, then use the same formatter.
+    normalized = []
+    for it in items:
+        cleaned_snippet = _clean_content(it.get("snippet", ""), max_len=500)
+        normalized.append({
+            "url": it.get("url", ""),
+            "title": it.get("title", ""),
+            "content": cleaned_snippet,
+            "_source_tier": classify_source(it.get("url", ""), it.get("title", ""), cleaned_snippet),
+        })
+    return _format_results_for_llm(normalized)
+
+
+duckduckgo_results_json.__doc__ = _SEARCH_TOOL_DOC
 
 
 @tool(args_schema=DeepReaderInput)
