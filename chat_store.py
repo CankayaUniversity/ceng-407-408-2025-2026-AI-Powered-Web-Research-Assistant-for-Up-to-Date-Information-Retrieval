@@ -127,6 +127,29 @@ def append_turn(chat_id: str, turn: dict[str, Any]) -> dict | None:
         return None
 
 
+def replace_last_turn(chat_id: str, new_turn: dict[str, Any]) -> dict | None:
+    """Atomically drop the most recent turn and append `new_turn` in its place.
+    Used by the regenerate flow so a regenerated answer overwrites the original
+    rather than appending a duplicate. Returns the updated chat, or None if the
+    chat doesn't exist."""
+    with _lock:
+        data = _read()
+        for chat in data["chats"]:
+            if chat["id"] == chat_id:
+                turns = chat.get("turns", []) or []
+                if turns:
+                    turns.pop()
+                stored_turn = dict(new_turn)
+                stored_turn["timestamp"] = _now()
+                turns.append(stored_turn)
+                chat["turns"] = turns
+                chat["updated_at"] = _now()
+                # Title intentionally NOT updated — keep the original.
+                _write(data)
+                return chat
+        return None
+
+
 def update_title(chat_id: str, title: str) -> dict | None:
     with _lock:
         data = _read()

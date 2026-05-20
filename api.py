@@ -180,10 +180,12 @@ def _verifier_model_id() -> str:
     return MODEL_REGISTRY[DEFAULT_MODEL_KEY]["id"]
 
 
-def _build_history(chat: dict | None) -> list:
+def _build_history(chat: dict | None, exclude_last: bool = False) -> list:
     if not chat:
         return []
     turns = chat.get("turns", []) or []
+    if exclude_last and turns:
+        turns = turns[:-1]  # the turn we're about to replace
     history_limit = settings_store.get("history_turn_limit") or 0
     if history_limit <= 0:
         return []
@@ -217,6 +219,7 @@ async def ask_agent_stream(
     question: str,
     chat_id: str | None = None,
     model: str | None = None,
+    regenerate: bool = False,
 ):
     async def generate():
         cancelled = threading.Event()
@@ -249,8 +252,9 @@ async def ask_agent_stream(
             verification_enabled = settings.get("verification_enabled", True)
             fact_extraction_enabled = settings.get("fact_extraction_enabled", True)
 
-            # Cache check (skip when memory is active — answer depends on context).
-            if not has_memory and cache_ttl > 0:
+            # Cache check (skip when memory is active OR when this is an explicit
+            # regenerate — the user is asking for a fresh attempt, not a cached one).
+            if not has_memory and not regenerate and cache_ttl > 0:
                 cached = cache_store.get(model_key, question, cache_ttl)
                 if cached:
                     saved_chat = chat_store.append_turn(
@@ -290,7 +294,7 @@ async def ask_agent_stream(
                     return
 
             agent = AGENTS[model_key]
-            history_messages = _build_history(chat)
+            history_messages = _build_history(chat, exclude_last=regenerate)
             input_messages = (
                 [_today_context_message()]
                 + history_messages
@@ -438,21 +442,23 @@ async def ask_agent_stream(
                 use_llm=fact_extraction_enabled,
             )
 
-            saved_chat = chat_store.append_turn(
-                resolved_chat_id,
-                {
-                    "question": question,
-                    "answer": final_answer,
-                    "facts": extraction["facts"],
-                    "sources": extraction["sources"],
-                    "trust_signals": extraction["trust_signals"],
-                    "model": model_key,
-                    "from_cache": False,
-                },
-            )
+            turn_payload = {
+                "question": question,
+                "answer": final_answer,
+                "facts": extraction["facts"],
+                "sources": extraction["sources"],
+                "trust_signals": extraction["trust_signals"],
+                "model": model_key,
+                "from_cache": False,
+                "regenerated": regenerate,
+            }
+            if regenerate:
+                saved_chat = chat_store.replace_last_turn(resolved_chat_id, turn_payload)
+            else:
+                saved_chat = chat_store.append_turn(resolved_chat_id, turn_payload)
 
-            # Cache only when memory was NOT used — context-dependent answers must not pollute global cache.
-            if not has_memory and final_answer and cache_ttl > 0:
+            # Cache only on the first-write path. Regenerations bypass cache by design.
+            if not has_memory and not regenerate and final_answer and cache_ttl > 0:
                 cache_store.put(
                     model_key,
                     question,

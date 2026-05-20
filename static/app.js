@@ -370,6 +370,16 @@ async function openChat(chatId) {
     deleteChatBtn.hidden = false;
 
     (chat.turns || []).forEach((turn) => renderHistoricalTurn(turn));
+    // Attach a regenerate button to the most recent rendered turn.
+    const turnEls = conversation.querySelectorAll('.turn');
+    if (turnEls.length && chat.turns && chat.turns.length) {
+      const lastTurnEl = turnEls[turnEls.length - 1];
+      const lastQ = chat.turns[chat.turns.length - 1].question;
+      const agentBlock = lastTurnEl.querySelector('.agent-block');
+      if (lastQ && agentBlock) {
+        agentBlock.appendChild(buildRegenerateButton(lastQ));
+      }
+    }
     if (isMobile()) closeSidebar();
     scrollToBottom();
   } catch (err) {
@@ -450,6 +460,46 @@ form.addEventListener('submit', (event) => {
 });
 
 /* ----------------- rendering helpers ----------------- */
+
+/* ----------------- regenerate ----------------- */
+
+function buildRegenerateButton(question) {
+  const btn = el('button', 'regenerate-btn');
+  btn.type = 'button';
+  btn.title = 'Regenerate this answer with the currently-selected model';
+  btn.setAttribute('aria-label', 'Regenerate answer');
+  btn.innerHTML = `
+    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="23 4 23 10 17 10"/>
+      <polyline points="1 20 1 14 7 14"/>
+      <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+    </svg>
+    <span>Regenerate</span>
+  `;
+  btn.dataset.question = question || '';
+  btn.addEventListener('click', () => {
+    if (btn.disabled) return;
+    regenerateLastTurn(btn.dataset.question);
+  });
+  return btn;
+}
+
+function removeAllRegenerateButtons() {
+  conversation.querySelectorAll('.regenerate-btn').forEach((b) => b.remove());
+}
+
+function regenerateLastTurn(question) {
+  if (isAsking) return;
+  if (!question || !question.trim()) return;
+  // Remove the current last turn from the DOM. The backend still has it
+  // until the new answer completes — chat_store.replace_last_turn does the
+  // swap atomically only on success, so a cancelled regenerate leaves the
+  // stored data intact (visible again on reload).
+  const turns = [...conversation.querySelectorAll('.turn')];
+  if (turns.length) turns[turns.length - 1].remove();
+  removeAllRegenerateButtons();
+  startResearch(question, { regenerate: true });
+}
 
 function buildBadges({ model, fromCache, memoryTurns }) {
   const wrap = el('div', 'turn-badges');
@@ -1408,12 +1458,17 @@ function renderHistoricalTurn(turn) {
 
 /* ----------------- streaming ----------------- */
 
-function startResearch(question) {
+function startResearch(question, options) {
+  const opts = options || {};
+  const isRegenerate = !!opts.regenerate;
   isAsking = true;
   setSubmitMode('stop');
-  input.value = '';
-  autosizeInput();
-  setStatus('thinking', 'Researching');
+  if (!isRegenerate) {
+    input.value = '';
+    autosizeInput();
+  }
+  removeAllRegenerateButtons();
+  setStatus('thinking', isRegenerate ? 'Regenerating' : 'Researching');
   hideEmptyState();
 
   const turn = el('div', 'turn');
@@ -1450,6 +1505,7 @@ function startResearch(question) {
 
   const params = new URLSearchParams({ question, model: selectedModel });
   if (activeChatId) params.set('chat_id', activeChatId);
+  if (isRegenerate) params.set('regenerate', 'true');
   const url = `/ask_agent_stream?${params.toString()}`;
 
   const es = new EventSource(url);
@@ -1652,6 +1708,9 @@ function startResearch(question) {
     setStatus(null, 'Online');
     loadChats(searchInput.value.trim());
     input.focus();
+    // Stamp a regenerate button on the just-completed turn.
+    removeAllRegenerateButtons();
+    agentBlock.appendChild(buildRegenerateButton(question));
   });
 
   es.addEventListener('error', (event) => {

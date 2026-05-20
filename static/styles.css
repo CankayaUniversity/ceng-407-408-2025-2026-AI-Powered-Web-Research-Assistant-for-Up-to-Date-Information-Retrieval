@@ -449,6 +449,41 @@ body {
   gap: 8px;
 }
 
+/* REGENERATE BUTTON (appears at the bottom of the most recent turn) */
+.regenerate-btn {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  margin-top: 4px;
+  background: var(--bg-1);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--text-muted);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.12s;
+}
+.regenerate-btn:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--bg-2);
+  transform: translateY(-1px);
+}
+.regenerate-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+.regenerate-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.regenerate-btn svg {
+  flex-shrink: 0;
+}
+
 /* TEMP dev marker (bumped on each UI change) */
 .version-badge {
   display: inline-flex;
