@@ -2,7 +2,6 @@ import json
 import logging
 import re
 import threading
-from datetime import date, timedelta
 from typing import Any
 from urllib.parse import urlparse
 
@@ -97,41 +96,6 @@ class DeepReaderInput(BaseModel):
 
 
 # --------------------------------------------------------------------------
-# Deterministic relative-date substitution
-# --------------------------------------------------------------------------
-# The system prompt tells the agent to translate "yesterday", "today", etc.
-# into specific dates before searching. Small models ignore this. Tavily and
-# DDG cannot interpret the literal word "yesterday" — they pattern-match text,
-# so an article from any past day matches. To stop the agent from passing
-# week-old results off as "yesterday's", we substitute deterministically here
-# right before the query hits the search engine.
-
-_REL_DATE_TOKEN_RE = re.compile(r"\b(yesterday|today|tonight|tomorrow)\b", re.IGNORECASE)
-
-
-def _substitute_relative_dates(query: str) -> str:
-    """Replace relative time words with the absolute calendar date.
-
-    Example: "premier league results yesterday" -> "premier league results May 19, 2026".
-    The natural-language format ("May 19, 2026") matches how news articles
-    typically date their content, giving better search recall than ISO format.
-    """
-    if not query or not _REL_DATE_TOKEN_RE.search(query):
-        return query
-    today = date.today()
-    yesterday = today - timedelta(days=1)
-    tomorrow = today + timedelta(days=1)
-    mapping = {
-        "yesterday": yesterday.strftime("%B %d, %Y"),
-        "today":     today.strftime("%B %d, %Y"),
-        "tonight":   today.strftime("%B %d, %Y"),
-        "tomorrow":  tomorrow.strftime("%B %d, %Y"),
-    }
-    def _sub(match: re.Match) -> str:
-        return mapping[match.group(1).lower()]
-    return _REL_DATE_TOKEN_RE.sub(_sub, query)
-
-
 def _get_tavily():
     global _tavily_underlying
     if _tavily_underlying is None:
@@ -353,11 +317,8 @@ Call exactly like: {"query": "your search question as a plain string"}.
 def tavily_search_results_json(query: str) -> str:
     if not query or not query.strip():
         return _EMPTY_QUERY_RETRY_MSG
-    effective_query = _substitute_relative_dates(query.strip())
-    if effective_query != query.strip():
-        logger.info("Tavily: relative-date substitution %r -> %r", query, effective_query)
     try:
-        raw = _get_tavily().invoke({"query": effective_query})
+        raw = _get_tavily().invoke({"query": query.strip()})
     except Exception as exc:
         return f"Tavily search error: {exc}"
     if isinstance(raw, str):
@@ -382,11 +343,8 @@ tavily_search_results_json.__doc__ = _SEARCH_TOOL_DOC
 def duckduckgo_results_json(query: str) -> str:
     if not query or not query.strip():
         return _EMPTY_QUERY_RETRY_MSG
-    effective_query = _substitute_relative_dates(query.strip())
-    if effective_query != query.strip():
-        logger.info("DuckDuckGo: relative-date substitution %r -> %r", query, effective_query)
     try:
-        raw = _get_duckduckgo().invoke({"query": effective_query})
+        raw = _get_duckduckgo().invoke({"query": query.strip()})
     except Exception as exc:
         return f"DuckDuckGo search error: {exc}"
     raw_str = str(raw) if raw is not None else ""
@@ -408,163 +366,6 @@ def duckduckgo_results_json(query: str) -> str:
 
 
 duckduckgo_results_json.__doc__ = _SEARCH_TOOL_DOC
-
-
-# --------------------------------------------------------------------------
-# Wikipedia tool
-# --------------------------------------------------------------------------
-# Wikipedia is HIGH-tier and authoritative. For entities (people, orgs,
-# places), historical events, and especially sports-season articles
-# (e.g. "2025-26 Premier League season" has every matchday's complete
-# results), it's the single best source. Tavily/DDG give a scattering of
-# snippets across multiple sites; Wikipedia gives one comprehensive article.
-# That's what kills the "matchup fabrication" failure mode — the agent sees
-# all pairings in one place instead of crossing entities from different
-# snippets.
-
-WIKIPEDIA_API_BASE = "https://en.wikipedia.org/w/api.php"
-WIKIPEDIA_HEADERS = {
-    "User-Agent": "DeepResearchAgent/1.0 (local research assistant; +https://example.local)"
-}
-WIKIPEDIA_MAX_CHARS = 8000
-WIKIPEDIA_FOCUS_WINDOW = 4000
-
-_MONTH_NAMES_TUPLE = (
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December",
-)
-_DATE_IN_QUERY_RE = re.compile(
-    r"\b(" + "|".join(_MONTH_NAMES_TUPLE) + r")\s+(\d{1,2}),?\s+(\d{4})\b",
-    re.IGNORECASE,
-)
-
-
-def _focus_around_date(text: str, query: str) -> str | None:
-    """When the query contains a "Month DD, YYYY" date and that date appears
-    in the article text, return a window centered on the first occurrence.
-
-    Returns None if no date or no match — caller falls back to full text.
-    This stops the agent from drowning in a 100K-character season article
-    when it only needs a specific matchday.
-    """
-    match = _DATE_IN_QUERY_RE.search(query)
-    if not match:
-        return None
-    needle = f"{match.group(1)} {match.group(2)}"  # e.g. "May 19"
-    idx = text.lower().find(needle.lower())
-    if idx == -1:
-        return None
-    half = WIKIPEDIA_FOCUS_WINDOW // 2
-    start = max(0, idx - half)
-    end = min(len(text), idx + half)
-    prefix = "…" if start > 0 else ""
-    suffix = "…" if end < len(text) else ""
-    return f"{prefix}{text[start:end]}{suffix}"
-
-
-@tool(args_schema=SearchToolInput)
-def wikipedia_search(query: str) -> str:
-    """Search Wikipedia for the most relevant article and return its content.
-
-    Wikipedia is HIGH-tier — when the article matches the question, prefer
-    it over Tavily/DDG snippets. Use this for:
-      - Entities: people, organizations, places, products, concepts
-      - Sports seasons: "2025-26 Premier League season" lists every match
-        result, top scorers, standings — the single most reliable source
-        for "what happened on date X" sports queries
-      - Historical events with established facts
-      - Biographies, definitions, technical concepts
-
-    Less useful for: breaking news from the last 24-48 hours (Wikipedia
-    may not yet have it — fall back to Tavily/DuckDuckGo for those).
-
-    If the query contains a specific date (e.g. "May 19, 2026"), the tool
-    focuses the returned excerpt around that date in the article so the
-    agent sees the relevant matchday/event directly.
-
-    Call exactly like: {"query": "2025-26 Premier League season"} or
-    {"query": "Bournemouth A.F.C."} or {"query": "LangGraph"}.
-    """
-    if not query or not query.strip():
-        return _EMPTY_QUERY_RETRY_MSG
-    effective_query = _substitute_relative_dates(query.strip())
-    if effective_query != query.strip():
-        logger.info("Wikipedia: relative-date substitution %r -> %r", query, effective_query)
-
-    # Step 1: full-text search to find the best matching article title.
-    # We use action=query&list=search (full-text relevance ranking) instead of
-    # opensearch (title-prefix matching). opensearch was too literal — it
-    # returned the 2022-23 PL article when the query was "2025-26 Premier
-    # League season" because of partial title overlap. Full-text search
-    # correctly ranks the actual 2025-26 article first.
-    try:
-        search_resp = requests.get(
-            WIKIPEDIA_API_BASE,
-            params={
-                "action": "query",
-                "list": "search",
-                "srsearch": effective_query,
-                "srlimit": 3,
-                "format": "json",
-            },
-            headers=WIKIPEDIA_HEADERS,
-            timeout=10,
-        )
-        search_resp.raise_for_status()
-        search_data = search_resp.json()
-    except Exception as exc:
-        return f"Wikipedia search error: {exc}"
-
-    hits = (search_data.get("query") or {}).get("search") or []
-    if not hits:
-        return f"No Wikipedia article found for '{query}'."
-
-    top_title = hits[0].get("title") or ""
-    if not top_title:
-        return f"No Wikipedia article found for '{query}'."
-    top_url = f"https://en.wikipedia.org/wiki/{top_title.replace(' ', '_')}"
-
-    # Step 2: fetch plain-text extract of the article
-    try:
-        content_resp = requests.get(
-            WIKIPEDIA_API_BASE,
-            params={
-                "action": "query",
-                "prop": "extracts",
-                "explaintext": 1,
-                "titles": top_title,
-                "format": "json",
-                "redirects": 1,
-            },
-            headers=WIKIPEDIA_HEADERS,
-            timeout=15,
-        )
-        content_resp.raise_for_status()
-        content_data = content_resp.json()
-    except Exception as exc:
-        return f"Wikipedia content fetch error: {exc}"
-
-    pages = (content_data.get("query") or {}).get("pages") or {}
-    if not pages:
-        return f"Wikipedia article not found for '{top_title}'."
-    page = next(iter(pages.values()))
-    extract = (page.get("extract") or "").strip()
-    if not extract:
-        return f"Wikipedia article '{top_title}' has no content."
-
-    # If the query carries a date AND the article mentions it, focus the
-    # excerpt around that date. Otherwise return the article's lead section.
-    focused = _focus_around_date(extract, effective_query)
-    content_block = focused if focused else extract
-    if len(content_block) > WIKIPEDIA_MAX_CHARS:
-        content_block = content_block[:WIKIPEDIA_MAX_CHARS].rstrip() + "…[truncated]"
-
-    return (
-        f"RESULT 1 — TIER: HIGH — en.wikipedia.org\n"
-        f"TITLE: {top_title}\n"
-        f"URL: {top_url}\n"
-        f"CONTENT: {content_block}"
-    )
 
 
 @tool(args_schema=DeepReaderInput)
@@ -600,9 +401,4 @@ def deep_site_reader(url: str) -> str:
 
 
 def build_tools():
-    return [
-        wikipedia_search,
-        tavily_search_results_json,
-        duckduckgo_results_json,
-        deep_site_reader,
-    ]
+    return [tavily_search_results_json, duckduckgo_results_json, deep_site_reader]

@@ -1,10 +1,1124 @@
 {
   "entries": {
-    "llama32::premier league results from yesterday": {
-      "answer": "Based on the live web search results, I will correct the draft answer as follows:\n\n\"Who won the Premier League title this season?\"\n\nAccording to the Wikipedia article, Arsenal won their fourth Premier League title and 14th English title with one match to spare, ending their 22-year Premier League drought since 2004.\n\nThe search results confirm that Arsenal indeed won the Premier League title in the 2025-26 season. The exact date of their win is not specified in the high-tier source, but it mentions that they won with one match to spare, following Manchester City's 1–1 draw away against Bournemouth on 19 May 2026.\n\nThe rest of the draft answer remains unchanged as it does not contain any specific factual claims that contradict or are unsupported by the high/medium-tier search results.",
+    "llama32::who is the prime minister of france": {
+      "answer": "Here is the final answer:\n\n* The current Prime Minister of France is Gabriel Attal.\n  Source:\n  - https://en.wikipedia.org/wiki/2027_French_presidential_election\n  - https://en.wikipedia.org/wiki/List_of_prime_ministers_of_France",
       "facts": [
         {
-          "claim_text": "Based on the live web search results, I will correct the draft answer as follows:  \"Who won the Premier League title this season?\"  According to the Wikipedia article, Arsenal won their fourth Premier League title and 14th English title with one match to spare, ending their 22-year Premier League drought since 2004.",
+          "claim_text": "Here is the final answer:  * The current Prime Minister of France is Gabriel Attal.",
+          "evidence_urls": [
+            "https://en.wikipedia.org/wiki/2027_French_presidential_election",
+            "https://en.wikipedia.org/wiki/List_of_prime_ministers_of_France",
+            "https://en.wikipedia.org/wiki/Prime_Minister_of_France"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": false,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "Source:   - https://en.wikipedia.org/wiki/2027_French_presidential_election   - https://en.wikipedia.org/wiki/List_of_prime_ministers_of_France",
+          "evidence_urls": [
+            "https://en.wikipedia.org/wiki/2027_French_presidential_election",
+            "https://en.wikipedia.org/wiki/List_of_prime_ministers_of_France",
+            "https://en.wikipedia.org/wiki/Prime_Minister_of_France"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": false,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        }
+      ],
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/List_of_prime_ministers_of_France",
+          "title": "List of prime ministers of France - Wikipedia",
+          "domain": "en.wikipedia.org",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "The head of the government of France has been called the prime minister of France (French: Premier ministre) since 1959, when Michel Debré became the first officeholder appointed under the Fifth Republic. During earlier periods of French history, the country's head of government was known by different titles. As was common in European democracies of the 1815–1958 period (the Bourbon Restoration an",
+          "tier": "high"
+        },
+        {
+          "url": "https://kids.kiddle.co/List_of_prime_ministers_of_France",
+          "title": "List of prime ministers of France Facts for Kids",
+          "domain": "kids.kiddle.co",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "",
+          "tier": "low"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Prime_Minister_of_France",
+          "title": "Prime Minister of France - Wikipedia",
+          "domain": "en.wikipedia.org",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Prime Minister of the French Republic. Premier ministre de la République française.The president appoints the prime minister but cannot dismiss them, only request their resignation. The Government of France, including the prime minister, can be dismissed by the National Assembly.",
+          "tier": "high"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/2027_French_presidential_election",
+          "title": "2027 French presidential election - Wikipedia",
+          "domain": "en.wikipedia.org",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Gabriel Attal, Prime Minister of France (2024); Deputy for Hauts-de-Seine's 10th constituency (2017–2018; 2022; 2024–present); General Secretary of Renaissance (2024–present)[63].",
+          "tier": "high"
+        },
+        {
+          "url": "https://grokipedia.com/page/Prime_Minister_of_France",
+          "title": "Prime Minister of France",
+          "domain": "grokipedia.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Hôtel Matignon, official residence of the Prime Minister of France) The Prime Minister of France (Premier ministre de la République française) is the head of government of...",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.expatica.com/fr/living/gov-law-admin/french-government-107814/",
+          "title": "The French government: politics in France | Expatica",
+          "domain": "www.expatica.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "The current prime minister of France: François Bayrou. Naturally, the new prime minister should have hailed from the NPF, which had garnered the most votes. However, the RN steadfastly refused to work with the leftist party, which was probably quite content not to be picked anyway.",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.worldatlas.com/articles/presidents-of-france-since-1959.html",
+          "title": "Presidents Of France Since 1959",
+          "domain": "www.worldatlas.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "The French President is directly elected to be the nation's Head of State, and makes many of the country's most important diplomatic and national security decisions. The French President’s greatest power is that he is the only person or institution that can appoint a Prime Minister.",
+          "tier": "low"
+        }
+      ],
+      "trust_signals": {
+        "citation_coverage": 1.0,
+        "avg_sources_per_claim": 3.0,
+        "multi_source_claim_ratio": 0.0,
+        "distinct_domain_count": 5,
+        "source_quality_score": 0.629,
+        "high_tier_ratio": 0.429,
+        "citation_strength": 1.0,
+        "tier_breakdown": {
+          "high": 3,
+          "medium": 0,
+          "low": 4,
+          "prediction": 0
+        },
+        "total_sources": 7
+      },
+      "model_key": "llama32",
+      "original_question": "Who is the Prime Minister of France?",
+      "cached_at": "2026-05-20T18:54:44.651717+00:00",
+      "cached_ts": 1779303284.651724
+    },
+    "qwen::who is the prime minister of france": {
+      "answer": "- The current Prime Minister of France is Sébastien Lecornu. He has been serving since September 2025.\n- For more detailed information on his tenure or other prime ministers, you can refer to the Wikipedia page: [List of Prime Ministers of France](https://en.wikipedia.org/wiki/List_of_prime_ministers_of_France).\n\nThis information is based on recent updates and can be subject to change.",
+      "facts": [
+        {
+          "claim_text": "- The current Prime Minister of France is Sébastien Lecornu.",
+          "evidence_urls": [
+            "https://en.wikipedia.org/wiki/Sébastien_Lecornu",
+            "https://en.wikipedia.org/wiki/List_of_prime_ministers_of_France",
+            "https://en.wikipedia.org/wiki/Prime_Minister_of_France"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": false,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "He has been serving since September 2025.",
+          "evidence_urls": [
+            "https://en.wikipedia.org/wiki/Sébastien_Lecornu",
+            "https://en.wikipedia.org/wiki/List_of_prime_ministers_of_France",
+            "https://en.wikipedia.org/wiki/Prime_Minister_of_France"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": false,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "- For more detailed information on his tenure or other prime ministers, you can refer to the Wikipedia page: [List of Prime Ministers of France](https://en.wikipedia.org/wiki/List_of_prime_ministers_of_France).",
+          "evidence_urls": [
+            "https://en.wikipedia.org/wiki/List_of_prime_ministers_of_France",
+            "https://en.wikipedia.org/wiki/Prime_Minister_of_France",
+            "https://en.wikipedia.org/wiki/Sébastien_Lecornu"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": false,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "This information is based on recent updates and can be subject to change.",
+          "evidence_urls": [
+            "https://en.wikipedia.org/wiki/List_of_prime_ministers_of_France",
+            "https://en.wikipedia.org/wiki/Prime_Minister_of_France",
+            "https://en.wikipedia.org/wiki/Sébastien_Lecornu"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": false,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        }
+      ],
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/List_of_prime_ministers_of_France",
+          "title": "List of prime ministers of France - Wikipedia",
+          "domain": "en.wikipedia.org",
+          "source_tools": [
+            "tavily_search_results_json",
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "The head of the government of France has been called the prime minister of France (French: Premier ministre) since 1959, when Michel Debré became the first officeholder appointed under the Fifth Republic. During earlier periods of French history, the country's head of government was known by different titles. As was common in European democracies of the 1815–1958 period (the Bourbon Restoration an",
+          "tier": "high"
+        },
+        {
+          "url": "https://kids.kiddle.co/List_of_prime_ministers_of_France",
+          "title": "List of prime ministers of France Facts for Kids",
+          "domain": "kids.kiddle.co",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "",
+          "tier": "low"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Prime_Minister_of_France",
+          "title": "Prime Minister of France - Wikipedia",
+          "domain": "en.wikipedia.org",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "3 weeks ago - The prime minister of France (French: Premier ministre français), officially the prime minister of the French Republic (Premier ministre de la République française), is the nominal head of government of the French Republic and leader of its Council of Ministers, although the officeholder does not chair its meetings, as the president does.",
+          "tier": "high"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Sébastien_Lecornu",
+          "title": "Sébastien Lecornu - Wikipedia",
+          "domain": "en.wikipedia.org",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "2 weeks ago - Sébastien Lecornu (French: [sebastjɛ̃ ləkɔʁny]; born 11 June 1986) is a French politician who has served as Prime Minister of France since September 2025. Positioned on the right of the ideological political spectrum, Lecornu has promoted Gaullist, Séguinist, and socially conservative ...",
+          "tier": "high"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Emmanuel_Macron",
+          "title": "Emmanuel Macron - Wikipedia",
+          "domain": "en.wikipedia.org",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "3 days ago - He appointed Patrick Strzoda as his chief of staff and Ismaël Emelien as his special advisor for strategy, communication and speeches. On 15 May, he appointed Édouard Philippe of the Republicans as Prime Minister.",
+          "tier": "high"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/President_of_France",
+          "title": "President of France - Wikipedia",
+          "domain": "en.wikipedia.org",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "1 week ago - Although the Prime Minister of France, through their government as well as Parliament, oversees much of the nation's actual day-to-day domestic affairs, the French president wields significant influence and authority, especially in the fields of national security and foreign policy.",
+          "tier": "high"
+        }
+      ],
+      "trust_signals": {
+        "citation_coverage": 1.0,
+        "avg_sources_per_claim": 3.0,
+        "multi_source_claim_ratio": 0.0,
+        "distinct_domain_count": 2,
+        "source_quality_score": 0.892,
+        "high_tier_ratio": 0.833,
+        "citation_strength": 1.0,
+        "tier_breakdown": {
+          "high": 5,
+          "medium": 0,
+          "low": 1,
+          "prediction": 0
+        },
+        "total_sources": 6
+      },
+      "model_key": "qwen",
+      "original_question": "Who is the Prime Minister of France?",
+      "cached_at": "2026-05-20T18:56:50.802108+00:00",
+      "cached_ts": 1779303410.80212
+    },
+    "qwen::what is the latest iphone model as of today": {
+      "answer": "Based on the information gathered from multiple sources:\n\n- As of 2026, the latest iPhone models are the iPhone 17 series (iPhone 17, iPhone 17 Air, iPhone 17 Pro, and iPhone 17 Pro Max), which were released in September 2025.\n- The iPhone 18 model is rumored to be coming out in 2026 but specific details are not yet confirmed.\n\nKey sources:\n- Wikipedia: https://en.wikipedia.org/wiki/List_of_iPhone_models\n- Apple's official website: https://www.apple.com/iphone/\n- MacRumors: https://www.macrumors.com/roundup/iphone-18/\n\nThe iPhone 17 series is the current latest model as of today, 2026-05-20.",
+      "facts": [
+        {
+          "claim_text": "Based on the information gathered from multiple sources:  - As of 2026, the latest iPhone models are the iPhone 17 series (iPhone 17, iPhone 17 Air, iPhone 17 Pro, and iPhone 17 Pro Max), which were released in September 2025.",
+          "evidence_urls": [
+            "https://en.wikipedia.org/wiki/List_of_iPhone_models",
+            "https://www.macrumors.com/roundup/iphone-18/",
+            "https://tech.yahoo.com/phones/breaking-news/article/the-new-iphone-ultra-and-iphone-18-lineup-everything-you-need-to-know-about-apples-rumored-2026-launches-175120818.html"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "- The iPhone 18 model is rumored to be coming out in 2026 but specific details are not yet confirmed.",
+          "evidence_urls": [
+            "https://en.wikipedia.org/wiki/List_of_iPhone_models",
+            "https://www.hepsiburada.com/iphone-ios-telefonlar-c-60005202",
+            "https://www.macrumors.com/roundup/iphone-18/"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "Key sources: - Wikipedia: https://en.wikipedia.org/wiki/List_of_iPhone_models - Apple's official website: https://www.apple.com/iphone/ - MacRumors: https://www.macrumors.com/roundup/iphone-18/  The iPhone 17 series is the current latest model as of today, 2026-05-20.",
+          "evidence_urls": [
+            "https://en.wikipedia.org/wiki/List_of_iPhone_models",
+            "https://www.macrumors.com/roundup/iphone-18/",
+            "https://www.donanimhaber.com/dunyanin-en-iyi-telefonlari-iste-markalar-modeller-ve-fiyatlar--169016"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        }
+      ],
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/List_of_iPhone_models",
+          "title": "List of iPhone Models - Wikipedia",
+          "domain": "en.wikipedia.org",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Over the years, Apple has released numerous models, each iteration bringing changes in hardware, software, performance and design. As of 2026, the most recent iPhone models are the iPhone 17, iPhone Air, iPhone 17 Pro, and iPhone 17 Pro Max, released on September 19, 2025...",
+          "tier": "high"
+        },
+        {
+          "url": "https://www.macworld.com/article/2953687/iphone-18-pro-2026-release-date-design-specs-rumors.html",
+          "title": "Macworld | iPhone 18 Pro & Max Leaks: What’s Changing This Year",
+          "domain": "www.macworld.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Here’s a quick summary of what all the rumors and leaks say to expect from the iPhone 18 Pro and Pro Max in 2026.",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.hepsiburada.com/iphone-ios-telefonlar-c-60005202",
+          "title": "iPhone Fiyatları 2026 | Tüm Modeller & Taksit Seçenekleri",
+          "domain": "www.hepsiburada.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Siz de farklı serilere ait modelleri inceleyebilir, dilerseniz iPhone 13 Pro Max modelleri arasından ihtiyacınıza en uygun seçeneği belirleyebilirsiniz.",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.macrumors.com/roundup/iphone-18/",
+          "title": "MacRumors | iPhone 18: Rumors and Release Date",
+          "domain": "www.macrumors.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "The standard iPhone 18 could be upgraded to 12GB RAM in 2026, with all iPhone 18 models (including the iPhone Fold) to feature 12GB RAM.",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.donanimhaber.com/dunyanin-en-iyi-telefonlari-iste-markalar-modeller-ve-fiyatlar--169016",
+          "title": "Dünyanın En İyi Telefonları! İşte Markalar, Modeller ve Fiyatlar",
+          "domain": "www.donanimhaber.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Peki 2026'da en iyi telefonlar hangileri? İşte dünyanın en iyi telefon markaları ve modelleri sıralamasıApple’ın yeni amiral gemisi iPhone 17 Pro Max, satın alınabilecek en iyi akıllı telefon modellerinin başlarında yer alıyor.",
+          "tier": "low"
+        },
+        {
+          "url": "https://tech.yahoo.com/phones/breaking-news/article/the-new-iphone-ultra-and-iphone-18-lineup-everything-you-need-to-know-about-apples-rumored-2026-launches-175120818.html",
+          "title": "The new iPhone Ultra and iPhone 18 lineup: Everything you need to know about Apple's rumored 2026 launches",
+          "domain": "tech.yahoo.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "September 2026: Expect the iPhone 18 Pro, Pro Max and iPhone Fold to be announced in September, MacRumors reports. However, it's possible the foldable iPhone won't ship until as late as December. However, other reports suggest it's on track for a September launch, though progress has reportedly been stalled due to hinge issues.",
+          "tier": "low"
+        },
+        {
+          "url": "https://setapp.com/how-to/every-iphone-release-in-chronological-order?srsltid=AfmBOop6q4OXDn2o_O7qu2JlybiiYhdrIqwBGJWRdw3W8SqjeIR38wkq",
+          "title": "iPhone release date in order: Apple iPhone releases year by year",
+          "domain": "setapp.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "September 20, 2024: The iPhone 16 came out on September 20, 2024, with pre-orders starting September 13, marking Apple's entry into the AI-powered smartphone era. Therefore, it's no surprise that Apple centered the iPhone 16 lineup around Apple Intelligence while also rolling out some notable upgrades in other areas. [...] ### What are the current iPhone models?",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.apple.com/iphone/",
+          "title": "iPhone - Apple",
+          "domain": "www.apple.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "An array of iPhone 17 and 17 Pro devices each with a different screen showcasing iOS 26 and Apple Intelligence features",
+          "tier": "low"
+        }
+      ],
+      "trust_signals": {
+        "citation_coverage": 1.0,
+        "avg_sources_per_claim": 3.0,
+        "multi_source_claim_ratio": 1.0,
+        "distinct_domain_count": 8,
+        "source_quality_score": 0.431,
+        "high_tier_ratio": 0.125,
+        "citation_strength": 1.0,
+        "tier_breakdown": {
+          "high": 1,
+          "medium": 0,
+          "low": 7,
+          "prediction": 0
+        },
+        "total_sources": 8
+      },
+      "model_key": "qwen",
+      "original_question": "What is the latest iPhone model as of today?",
+      "cached_at": "2026-05-20T19:00:47.485862+00:00",
+      "cached_ts": 1779303647.485869
+    },
+    "qwen::what major world news happened in the last 24 48 hours": {
+      "answer": "Based on the recent web searches, here are some major world news items from the last 24–48 hours:\n\n- **Mango Founder's Son Arrested**: The son of Isak Andic, billionaire founder of the Spanish fashion brand Mango, was arrested in Spain for allegedly playing a role in his December 2024 death. (Source: CBS News)\n  \n- **U.K. Prime Minister Chaos**: Britain has seen six prime ministers in less than ten years, including one who lasted only 45 days. (Source: CBS News)\n\n- **Man Killed by Mother Bear with Cubs in Bulgaria**: A rare attack where a man was killed by a mother bear and her cubs in Bulgaria. (Source: CBS News)\n\n- **Raúl Castro Indictment**: Former Cuban President Raúl Castro faces an indictment, though no specific details were provided. (Source: CBS News)\n\nFor more detailed information on these or other recent news items, you can visit the following sources:\n- [CBS News](https://www.cbsnews.com/world/)\n- [Reuters](https://www.reuters.com/world/)\n- [Al Jazeera](https://www.aljazeera.com/news/)",
+      "facts": [
+        {
+          "claim_text": "Based on the recent web searches, here are some major world news items from the last 24–48 hours:  - **Mango Founder's Son Arrested**: The son of Isak Andic, billionaire founder of the Spanish fashion brand Mango, was arrested in Spain for allegedly playing a role in his December 2024 death.",
+          "evidence_urls": [
+            "https://www.reuters.com/world/",
+            "https://www.cbsnews.com/world/",
+            "https://www.aljazeera.com/news/"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "(Source: CBS News)    - **U.K.",
+          "evidence_urls": [
+            "https://www.reuters.com/world/",
+            "https://www.aljazeera.com/news/",
+            "https://www.cbsnews.com/world/"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "Prime Minister Chaos**: Britain has seen six prime ministers in less than ten years, including one who lasted only 45 days.",
+          "evidence_urls": [
+            "https://www.reuters.com/world/",
+            "https://www.aljazeera.com/news/",
+            "https://www.cbsnews.com/world/"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "(Source: CBS News)  - **Man Killed by Mother Bear with Cubs in Bulgaria**: A rare attack where a man was killed by a mother bear and her cubs in Bulgaria.",
+          "evidence_urls": [
+            "https://www.reuters.com/world/",
+            "https://www.aljazeera.com/news/",
+            "https://www.cbsnews.com/world/"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "(Source: CBS News)  - **Raúl Castro Indictment**: Former Cuban President Raúl Castro faces an indictment, though no specific details were provided.",
+          "evidence_urls": [
+            "https://www.reuters.com/world/",
+            "https://www.aljazeera.com/news/",
+            "https://www.cbsnews.com/world/"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "(Source: CBS News)  For more detailed information on these or other recent news items, you can visit the following sources: - [CBS News](https://www.cbsnews.com/world/) - [Reuters](https://www.reuters.com/world/) - [Al Jazeera](https://www.aljazeera.com/news/)",
+          "evidence_urls": [
+            "https://www.reuters.com/world/",
+            "https://www.aljazeera.com/news/",
+            "https://www.cbsnews.com/world/"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        }
+      ],
+      "sources": [
+        {
+          "url": "https://www.reuters.com/world/",
+          "title": "World News | Latest Top Stories | Reuters",
+          "domain": "www.reuters.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Follow the latest international and world news, breaking stories and global current events from your trusted online news source.",
+          "tier": "high"
+        },
+        {
+          "url": "https://www.aljazeera.com/news/",
+          "title": "News | Today's latest from Al Jazeera",
+          "domain": "www.aljazeera.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Stay on top of News latest developments on the ground with Al Jazeera's fact-based news, exclusive video footage, photos and updated maps.",
+          "tier": "medium"
+        },
+        {
+          "url": "https://7news.com.au/news/world",
+          "title": "World News: Latest & Breaking International News Today - Global News ...",
+          "domain": "7news.com.au",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Breaking world news headlines for today from the US, North America, UK and Europe, South America, Asia and the Middle East. Stay up to date with all of the breaking headlines from around the World. Today's World news, live updates & all the latest breaking stories from 7News.",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.ndtv.com/world-news",
+          "title": "World News | Breaking and Latest World News, International News ...",
+          "domain": "www.ndtv.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "World News: Get Latest and breaking news from World. Today's Top International News Headlines, news on politics, Business, Crime, Sports and Current Affairs.",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.youtube.com/CBSNews/live",
+          "title": "LIVE: Breaking News and Top Stories on CBS News 24/7",
+          "domain": "www.youtube.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Get today's top stories, breaking news and original reporting on CBS News 24/7.#news #livenews #breakingnews CBS News 24/7 is the premier anchored streaming ...",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.cbsnews.com/world/",
+          "title": "World news: Latest news, breaking news, today's ...",
+          "domain": "www.cbsnews.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "#### Mango founder Isak Andic's son arrested in his death",
+          "tier": "medium"
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=B0zmJFi0oaw",
+          "title": "Top U.S. & World Headlines — February 19, 2026",
+          "domain": "www.youtube.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "69K views • 7 hours ago",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=4OrcNac_NtU",
+          "title": "Top U.S. & World Headlines — May 19, 2026",
+          "domain": "www.youtube.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "14:31 Top U.S. & World Headlines — May 20, 2026 Democracy Now!46K views • 3 hours ago Live Playlist ()Mix (50+)26:01 \"It's The Best\" - Jon Stewart On Losing A Late Night Show, And The Joyful Noise That Is Coming The Late Show with Stephen Colbert 1.1M views • 14 hours ago Live Playlist ()Mix (50+)Max Blumenthal : US Consumers Paying for Trump’s War Judge Napolitano - Judging Freedom 1.9K watching ",
+          "tier": "low"
+        }
+      ],
+      "trust_signals": {
+        "citation_coverage": 1.0,
+        "avg_sources_per_claim": 3.0,
+        "multi_source_claim_ratio": 1.0,
+        "distinct_domain_count": 6,
+        "source_quality_score": 0.506,
+        "high_tier_ratio": 0.125,
+        "citation_strength": 1.0,
+        "tier_breakdown": {
+          "high": 1,
+          "medium": 2,
+          "low": 5,
+          "prediction": 0
+        },
+        "total_sources": 8
+      },
+      "model_key": "qwen",
+      "original_question": "What major world news happened in the last 24–48 hours?",
+      "cached_at": "2026-05-20T19:02:04.011988+00:00",
+      "cached_ts": 1779303724.011994
+    },
+    "qwen::has there been any major earthquake in turkey in the last 2 days": {
+      "answer": "- No major earthquakes have been reported in Turkey within the last 2 days. The largest earthquake mentioned was a magnitude 7.8 event that occurred on February 6, 2023, which is outside the timeframe of interest.\n\n- However, there were several smaller quakes recorded in Turkey recently:\n  - A 4.4 magnitude earthquake on March 2, 2026.\n  - Another 4.2 magnitude earthquake on April 2026 (date not specified).\n\n- The Wikipedia entry for the \"2025 Istanbul Earthquake\" does not provide information about recent events and seems to be outdated.\n\nFor more detailed and up-to-date information, you can visit:\n- [Earthquakes in Turkey Live Map](https://earth3dmap.com/earthquake-turkey/)\n- [The Complete Türkiye Earthquake Report (Up-To-Date 2026)](https://earthquakelist.org/turkiye/)",
+      "facts": [
+        {
+          "claim_text": "- No major earthquakes have been reported in Turkey within the last 2 days.",
+          "evidence_urls": [
+            "https://en.wikipedia.org/wiki/2025_Istanbul_earthquake",
+            "https://en.wikipedia.org/wiki/2023_Turkey%E2%80%93Syria_earthquakes",
+            "https://earthquakelist.org/turkiye/"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "The largest earthquake mentioned was a magnitude 7.8 event that occurred on February 6, 2023, which is outside the timeframe of interest.",
+          "evidence_urls": [
+            "https://en.wikipedia.org/wiki/2023_Turkey%E2%80%93Syria_earthquakes",
+            "https://en.wikipedia.org/wiki/2025_Istanbul_earthquake",
+            "https://allquakes.com/earthquakes/turkey.html"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "- However, there were several smaller quakes recorded in Turkey recently:   - A 4.4 magnitude earthquake on March 2, 2026.",
+          "evidence_urls": [
+            "https://en.wikipedia.org/wiki/2023_Turkey%E2%80%93Syria_earthquakes",
+            "https://earthquakelist.org/turkiye/",
+            "https://en.wikipedia.org/wiki/2025_Istanbul_earthquake"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "- Another 4.2 magnitude earthquake on April 2026 (date not specified).",
+          "evidence_urls": [
+            "https://earthquakelist.org/turkiye/",
+            "https://en.wikipedia.org/wiki/2025_Istanbul_earthquake",
+            "https://en.wikipedia.org/wiki/2023_Turkey%E2%80%93Syria_earthquakes"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "- The Wikipedia entry for the \"2025 Istanbul Earthquake\" does not provide information about recent events and seems to be outdated.",
+          "evidence_urls": [
+            "https://en.wikipedia.org/wiki/2025_Istanbul_earthquake",
+            "https://en.wikipedia.org/wiki/2023_Turkey%E2%80%93Syria_earthquakes",
+            "https://allquakes.com/earthquakes/turkey.html"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "For more detailed and up-to-date information, you can visit: - [Earthquakes in Turkey Live Map](https://earth3dmap.com/earthquake-turkey/) - [The Complete Türkiye Earthquake Report (Up-To-Date 2026)](https://earthquakelist.org/turkiye/)",
+          "evidence_urls": [
+            "https://earthquakelist.org/turkiye/",
+            "https://en.wikipedia.org/wiki/2023_Turkey%E2%80%93Syria_earthquakes",
+            "https://en.wikipedia.org/wiki/2025_Istanbul_earthquake"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        }
+      ],
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/2025_Istanbul_earthquake",
+          "title": "2025 Istanbul Earthquake - Wikipedia",
+          "domain": "en.wikipedia.org",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Its offshore epicenter was located in the Sea of Marmara, 21 km (13 mi) southeast of Marmara Ereğlisi in Tekirdağ Province, or 73 km (45 mi) southwest of Istanbul.[1] Shaking lasted 13 seconds.[9] It was the most powerful earthquake to hit Turkey since the 2023...",
+          "tier": "high"
+        },
+        {
+          "url": "https://earthquakelist.org/turkiye/",
+          "title": "The Complete Türkiye Earthquake Report (Up-To-Date 2026).",
+          "domain": "earthquakelist.org",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Find the latest and strongest earthquakes near Türkiye (Turkey), updated every few minutes.On average an earthquake will hit near Türkiye roughly every 1 days.",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.volcanoesandearthquakes.com/region/Turkey",
+          "title": "Latest Earthquakes in or Near Turkey - Interactive Map",
+          "domain": "www.volcanoesandearthquakes.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "",
+          "tier": "low"
+        },
+        {
+          "url": "https://earth3dmap.com/earthquake-turkey/",
+          "title": "Earthquake in Turkey Live Map | Earth 3D Map",
+          "domain": "earth3dmap.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "View the latest earthquakes in Turkey on the interactive map. You can view the earthquake magnitude, location, depth and earthquake time.",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.ndtv.com/world-news/powerful-7-8-magnitude-earthquake-hits-turkey-3756172",
+          "title": "3 Powerful Earthquakes In Turkey In 24 Hours, More Than 3,600 Killed",
+          "domain": "www.ndtv.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Another 7.5-magnitude earthquake hit southeast Turkey.A major earthquake struck Turkey and Syria on Monday, killing more than 3,600 people and flattening thousands of buildings as rescuers dug with bare hands for survivors.",
+          "tier": "low"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/2023_Turkey%E2%80%93Syria_earthquakes",
+          "title": "2023 Turkey–Syria earthquakes - Wikipedia",
+          "domain": "en.wikipedia.org",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "At 10:24 UTC, an earthquake measuring Mww 7.5 according to USGS, Mw 7.6 according to KOERI, or Mw 7.7 according to Geoscope and the GCMT, struck with an epicenter near Ekinözü, 95 km northeast of the Mw 7.8 event. It had a depth of 7.4 km (5 mi) according to the USGS, 5 km (3 mi) by KOERI, and 13 km (8 mi) by Geoscope. The shock was also the result of strike-slip faulting; it had an epicenter nort",
+          "tier": "high"
+        },
+        {
+          "url": "https://allquakes.com/earthquakes/turkey.html",
+          "title": "Turkey Earthquakes Today: Past 24 Hours | AllQuakes.com",
+          "domain": "allquakes.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "The largest quake that occurred in or near Turkey during the past 100 years was a magnitude 7.8 earthquake that hit Gaziantep, Turkey, 3 years ago on Monday, Feb 6, 2023, at 04:17 am local time (Europe/Istanbul GMT +3). The earthquake struck in 38 km (23 mi) distance northwest from Gaziantep at 10 km (6 mi) depth.",
+          "tier": "low"
+        },
+        {
+          "url": "https://earthquaketrack.com/p/turkey/recent",
+          "title": "Today's Earthquakes in Turkey - Earthquake Track",
+          "domain": "earthquaketrack.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "#### 4.4 magnitude earthquake",
+          "tier": "low"
+        }
+      ],
+      "trust_signals": {
+        "citation_coverage": 1.0,
+        "avg_sources_per_claim": 3.0,
+        "multi_source_claim_ratio": 1.0,
+        "distinct_domain_count": 7,
+        "source_quality_score": 0.512,
+        "high_tier_ratio": 0.25,
+        "citation_strength": 1.0,
+        "tier_breakdown": {
+          "high": 2,
+          "medium": 0,
+          "low": 6,
+          "prediction": 0
+        },
+        "total_sources": 8
+      },
+      "model_key": "qwen",
+      "original_question": "Has there been any major earthquake in Turkey in the last 2 days?",
+      "cached_at": "2026-05-20T19:07:18.477846+00:00",
+      "cached_ts": 1779304038.477852
+    },
+    "qwen::turkey inflation rate": {
+      "answer": "Based on the recent data available:\n\n- The annual inflation rate in April 2026 increased to 32.37% in Turkey from 30.87% in March 2026, surpassing market expectations (tradingeconomics.com).\n- In March 2026, the inflation rate cooled down to 30.9% compared to 31.5% in February, despite pricing pressures amid the Iran war (dailysabah.com).\n- The Turkish central bank raised its 2026 oil price assumption and food inflation assumption, with annual consumer inflation standing at 32.37% in April 2026 (turkishminute.com).\n\nThe sources indicate that while there was a slight decrease in March, the rate increased again in April to 32.37%, reflecting ongoing economic challenges.\n\nFor more up-to-date and specific data, you can refer to:\n- [tradingeconomics.com](https://tradingeconomics.com/turkey/inflation-cpi)\n- [dailysabah.com](https://www.dailysabah.com/business/economy/turkiyes-inflation-surprises-in-march-despite-iran-war-pressures)\n- [turkishminute.com](https://www.turkishminute.com/2026/05/14/turkeys-central-bank-raises-2026-inflation-target-to-24-percent-from-16-percent/)",
+      "facts": [
+        {
+          "claim_text": "Based on the recent data available:  - The annual inflation rate in April 2026 increased to 32.37% in Turkey from 30.87% in March 2026, surpassing market expectations (tradingeconomics.com).",
+          "evidence_urls": [
+            "https://tradingeconomics.com/turkey/inflation-cpi",
+            "https://www.inflationtool.com/rates/turkey",
+            "https://www.turkiyetoday.com/business/turkish-central-bank-raises-2026-inflation-forecast-to-26-amid-iran-war-risks-3219928"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "- In March 2026, the inflation rate cooled down to 30.9% compared to 31.5% in February, despite pricing pressures amid the Iran war (dailysabah.com).",
+          "evidence_urls": [
+            "https://www.dailysabah.com/business/economy/turkiyes-inflation-surprises-in-march-despite-iran-war-pressures",
+            "https://tradingeconomics.com/turkey/inflation-cpi",
+            "https://www.inflationtool.com/rates/turkey"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "- The Turkish central bank raised its 2026 oil price assumption and food inflation assumption, with annual consumer inflation standing at 32.37% in April 2026 (turkishminute.com).",
+          "evidence_urls": [
+            "https://www.turkishminute.com/2026/05/14/turkeys-central-bank-raises-2026-inflation-target-to-24-percent-from-16-percent/",
+            "https://www.turkiyetoday.com/business/turkish-central-bank-raises-2026-inflation-forecast-to-26-amid-iran-war-risks-3219928",
+            "https://www.inflationtool.com/rates/turkey"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "The sources indicate that while there was a slight decrease in March, the rate increased again in April to 32.37%, reflecting ongoing economic challenges.",
+          "evidence_urls": [
+            "https://tradingeconomics.com/turkey/inflation-cpi",
+            "https://www.turkiyetoday.com/business/turkish-central-bank-raises-2026-inflation-forecast-to-26-amid-iran-war-risks-3219928",
+            "https://www.inflationtool.com/rates/turkey"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "For more up-to-date and specific data, you can refer to: - [tradingeconomics.com](https://tradingeconomics.com/turkey/inflation-cpi) - [dailysabah.com](https://www.dailysabah.com/business/economy/turkiyes-inflation-surprises-in-march-despite-iran-war-pressures) - [turkishminute.com](https://www.turkishminute.com/2026/05/14/turkeys-central-bank-raises-2026-inflation-target-to-24-percent-from-16-percent/)",
+          "evidence_urls": [
+            "https://www.turkishminute.com/2026/05/14/turkeys-central-bank-raises-2026-inflation-target-to-24-percent-from-16-percent/",
+            "https://www.dailysabah.com/business/economy/turkiyes-inflation-surprises-in-march-despite-iran-war-pressures",
+            "https://www.turkiyetoday.com/business/turkish-central-bank-raises-2026-inflation-forecast-to-26-amid-iran-war-risks-3219928"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        }
+      ],
+      "sources": [
+        {
+          "url": "https://tradingeconomics.com/turkey/inflation-cpi",
+          "title": "Turkey Inflation Rate",
+          "domain": "tradingeconomics.com",
+          "source_tools": [
+            "tavily_search_results_json",
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "## Inflation Rate in Turkey increased to 32.37 percent in April from 30.87 percent in March of 2026. Inflation Rate in Turkey averaged 35.37 percent from 1965 until 2026, reaching an all time high of 138.71 percent in May of 1980 and a record low of -4.01 percent in June of 1968. This page provides the latest reported value for - Turkey Inflation Rate - plus previous releases, historical high and ",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.dailysabah.com/business/economy/turkiyes-inflation-surprises-in-march-despite-iran-war-pressures",
+          "title": "Türkiye's inflation surprises in March despite Iran war pressures | Daily Sabah",
+          "domain": "www.dailysabah.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "by Daily Sabah with Agencies Apr 03, 2026 10:47 am",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.turkishminute.com/2026/05/14/turkeys-central-bank-raises-2026-inflation-target-to-24-percent-from-16-percent/",
+          "title": "Turkey’s central bank raises 2026 inflation target to 24 percent from 16 percent - Turkish Minute",
+          "domain": "www.turkishminute.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "The central bank raised its 2026 oil price assumption to $89.40 a barrel from $60.90 and its food inflation assumption to 26.3 percent from 19 percent. It also raised its import price assumption to 6.3 percent from 2 percent.",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.inflationtool.com/rates/turkey",
+          "title": "Turkey Inflation Rate - 2026",
+          "domain": "www.inflationtool.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Apr 17, 2026 · The current inflation rate in Turkey is 30.87%, which is calculated based on CPI (Consumer Price Index) values for the last 12 months ending in March 2026. Read more",
+          "tier": "low"
+        },
+        {
+          "url": "https://worldpopulationreview.com/country-rankings/inflation-rate-by-country",
+          "title": "Inflation Rate by Country 2026 - World Population Review",
+          "domain": "worldpopulationreview.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Data on inflation rate for 180+ countries, including which countries have the highest inflation rates, which countries have the lowest inflation rates, and definitions of the 3 types of inflation index.",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.turkiyetoday.com/business/turkish-central-bank-raises-2026-inflation-forecast-to-26-amid-iran-war-risks-3219928",
+          "title": "Turkish central bank raises 2026 inflation forecast to 26% ...",
+          "domain": "www.turkiyetoday.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "3 days ago · The annual inflation rate rose to 32.4% in April, while the annual energy inflation surged by 19 percentage points to 47% over the past two months due to rising oil and natural gas prices. The central bank stated in its report that electricity and natural gas tariffs were revised upward following higher import costs.",
+          "tier": "low"
+        },
+        {
+          "url": "https://fred.stlouisfed.org/series/FPCPITOTLZGTUR",
+          "title": "Inflation, consumer prices for Turkey (FPCPITOTLZGTUR) - FRED",
+          "domain": "fred.stlouisfed.org",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Apr 15, 2026 · Graph and download economic data for Inflation, consumer prices for Turkey (FPCPITOTLZGTUR) from 1960 to 2024 about Turkey, consumer, CPI, inflation, price index, indexes, and price.",
+          "tier": "low"
+        }
+      ],
+      "trust_signals": {
+        "citation_coverage": 1.0,
+        "avg_sources_per_claim": 3.0,
+        "multi_source_claim_ratio": 1.0,
+        "distinct_domain_count": 7,
+        "source_quality_score": 0.35,
+        "high_tier_ratio": 0.0,
+        "citation_strength": 0.35,
+        "tier_breakdown": {
+          "high": 0,
+          "medium": 0,
+          "low": 7,
+          "prediction": 0
+        },
+        "total_sources": 7
+      },
+      "model_key": "qwen",
+      "original_question": "Turkey inflation rate",
+      "cached_at": "2026-05-20T19:09:01.361600+00:00",
+      "cached_ts": 1779304141.361608
+    },
+    "qwen::what changed about x in the last 6 months": {
+      "answer": "I need more information about what specifically you are referring to as \"X\". Could you please provide details so I can conduct an appropriate search?",
+      "facts": [
+        {
+          "claim_text": "I need more information about what specifically you are referring to as \"X\".",
           "evidence_urls": [],
           "source_tools": [],
           "fact_quality_flags": {
@@ -15,29 +1129,7 @@
           }
         },
         {
-          "claim_text": "The search results confirm that Arsenal indeed won the Premier League title in the 2025-26 season.",
-          "evidence_urls": [],
-          "source_tools": [],
-          "fact_quality_flags": {
-            "has_source": false,
-            "multi_source": false,
-            "weak_evidence": true,
-            "needs_review": true
-          }
-        },
-        {
-          "claim_text": "The exact date of their win is not specified in the high-tier source, but it mentions that they won with one match to spare, following Manchester City's 1–1 draw away against Bournemouth on 19 May 2026.",
-          "evidence_urls": [],
-          "source_tools": [],
-          "fact_quality_flags": {
-            "has_source": false,
-            "multi_source": false,
-            "weak_evidence": true,
-            "needs_review": true
-          }
-        },
-        {
-          "claim_text": "The rest of the draft answer remains unchanged as it does not contain any specific factual claims that contradict or are unsupported by the high/medium-tier search results.",
+          "claim_text": "Could you please provide details so I can conduct an appropriate search?",
           "evidence_urls": [],
           "source_tools": [],
           "fact_quality_flags": {
@@ -65,171 +1157,10 @@
         },
         "total_sources": 0
       },
-      "model_key": "llama32",
-      "original_question": "Premier League results from yesterday",
-      "cached_at": "2026-05-20T11:08:08.218790+00:00",
-      "cached_ts": 1779275288.218801
-    },
-    "qwen::premier league results from yesterday": {
-      "answer": "Based on the live web search results, I will correct the draft answer as follows:\n\n**Match 11:** The search results did not confirm this match.\n\n**Match 12:** Leeds United 1 - 0 Brighton & Hove Albion (per Wikipedia)\n\nThe other matches and their scores are not explicitly mentioned in the high-tier source. However, according to TNT Sports, here are some confirmed results from May 19, 2026:\n\n- Aston Villa 4 - 2 Liverpool\n- Manchester United 3 - 2 Nottingham Forest\n- Brentford 2 - 2 Crystal Palace\n- Wolverhampton Wanderers 1 - 1 Fulham\n- Sunderland 1 - 3 Everton\n- Newcastle United 3 - 1 West Ham United",
-      "facts": [
-        {
-          "claim_text": "Leeds United won against Brighton & Hove Albion with a score of 1 - 0 (per Wikipedia)",
-          "evidence_urls": [
-            "https://en.wikipedia.org/wiki/2026%E2%80%9327_Premier_League",
-            "https://www.tntsports.co.uk/football/premier-league/2025-2026/calendar-results.shtml"
-          ],
-          "source_tools": [
-            "tavily_search_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": true,
-            "weak_evidence": false,
-            "needs_review": false
-          }
-        },
-        {
-          "claim_text": "Aston Villa defeated Liverpool with a score of 4 - 2",
-          "evidence_urls": [
-            "https://www.tntsports.co.uk/football/premier-league/2025-2026/calendar-results.shtml",
-            "https://en.wikipedia.org/wiki/2026%E2%80%9327_Premier_League"
-          ],
-          "source_tools": [
-            "tavily_search_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": true,
-            "weak_evidence": false,
-            "needs_review": false
-          }
-        },
-        {
-          "claim_text": "Manchester United defeated Nottingham Forest with a score of 3 - 2",
-          "evidence_urls": [
-            "https://www.tntsports.co.uk/football/premier-league/2025-2026/calendar-results.shtml",
-            "https://en.wikipedia.org/wiki/2026%E2%80%9327_Premier_League"
-          ],
-          "source_tools": [
-            "tavily_search_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": true,
-            "weak_evidence": false,
-            "needs_review": false
-          }
-        },
-        {
-          "claim_text": "Brentford drew with Crystal Palace with a score of 2 - 2",
-          "evidence_urls": [
-            "https://www.tntsports.co.uk/football/premier-league/2025-2026/calendar-results.shtml",
-            "https://en.wikipedia.org/wiki/2026%E2%80%9327_Premier_League"
-          ],
-          "source_tools": [
-            "tavily_search_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": true,
-            "weak_evidence": false,
-            "needs_review": false
-          }
-        },
-        {
-          "claim_text": "Wolverhampton Wanderers drew with Fulham with a score of 1 - 1",
-          "evidence_urls": [
-            "https://www.tntsports.co.uk/football/premier-league/2025-2026/calendar-results.shtml",
-            "https://en.wikipedia.org/wiki/2026%E2%80%9327_Premier_League"
-          ],
-          "source_tools": [
-            "tavily_search_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": true,
-            "weak_evidence": false,
-            "needs_review": false
-          }
-        },
-        {
-          "claim_text": "Sunderland defeated Everton with a score of 3 - 1",
-          "evidence_urls": [
-            "https://www.tntsports.co.uk/football/premier-league/2025-2026/calendar-results.shtml",
-            "https://en.wikipedia.org/wiki/2026%E2%80%9327_Premier_League"
-          ],
-          "source_tools": [
-            "tavily_search_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": true,
-            "weak_evidence": false,
-            "needs_review": false
-          }
-        },
-        {
-          "claim_text": "Newcastle United defeated West Ham United with a score of 3 - 1",
-          "evidence_urls": [
-            "https://www.tntsports.co.uk/football/premier-league/2025-2026/calendar-results.shtml",
-            "https://en.wikipedia.org/wiki/2026%E2%80%9327_Premier_League"
-          ],
-          "source_tools": [
-            "tavily_search_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": true,
-            "weak_evidence": false,
-            "needs_review": false
-          }
-        }
-      ],
-      "sources": [
-        {
-          "url": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Premier_League",
-          "title": "2026–27 Premier League - Wikipedia",
-          "domain": "en.wikipedia.org",
-          "source_tools": [
-            "tavily_search_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "United F.C. Newcastle United F.C. Manchester United Manchester United F.C. Manchester United F.C. Manchester City Manchester City F.C. Manchester City F.C. Liverpool Liverpool F.C. Liverpool F.C. Leeds United Leeds United F.C. Leeds United F.C. Ipswich Town Ipswich Town F.C. Ipswich Town F.C. Fulham Fulham F.C. Fulham F.C. Everton Everton F.C. Everton F.C. Crystal Palace Crystal Palace F.C. Crysta",
-          "tier": "high"
-        },
-        {
-          "url": "https://www.tntsports.co.uk/football/premier-league/2025-2026/calendar-results.shtml",
-          "title": "Premier League 2025-2026 Fixtures & Results - Football Scores",
-          "domain": "www.tntsports.co.uk",
-          "source_tools": [
-            "tavily_search_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "# Premier League Fixtures and Results 2025/2026",
-          "tier": "low"
-        }
-      ],
-      "trust_signals": {
-        "citation_coverage": 1.0,
-        "avg_sources_per_claim": 2.0,
-        "multi_source_claim_ratio": 1.0,
-        "distinct_domain_count": 2,
-        "source_quality_score": 0.675,
-        "high_tier_ratio": 0.5,
-        "citation_strength": 1.0,
-        "tier_breakdown": {
-          "high": 1,
-          "medium": 0,
-          "low": 1,
-          "prediction": 0
-        },
-        "total_sources": 2
-      },
       "model_key": "qwen",
-      "original_question": "Premier League results from yesterday",
-      "cached_at": "2026-05-20T11:16:33.516493+00:00",
-      "cached_ts": 1779275793.516501
+      "original_question": "What changed about X in the last 6 months?",
+      "cached_at": "2026-05-20T19:26:40.762401+00:00",
+      "cached_ts": 1779305200.762408
     }
   }
 }

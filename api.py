@@ -2,7 +2,7 @@ import asyncio
 import json
 import logging
 import threading
-from datetime import date, timedelta
+from datetime import date
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException, Request
@@ -22,7 +22,6 @@ from config import (
     load_environment,
 )
 from fact_extraction import extract_claims
-from verification import verify_answer
 
 TOOL_LOG_PREVIEW_CHARS = 2000
 
@@ -133,8 +132,6 @@ def api_clear_cache():
 class SettingsPatch(BaseModel):
     cache_ttl_seconds: int | None = None
     history_turn_limit: int | None = None
-    verification_enabled: bool | None = None
-    fact_extraction_enabled: bool | None = None
 
 
 @app.get("/api/settings")
@@ -166,20 +163,6 @@ def _resolve_model_key(model_key: str | None) -> str:
     return DEFAULT_MODEL_KEY
 
 
-# Verification should be done by the strongest available model regardless of
-# which model wrote the draft — a 3B model verifying its own work catches
-# very little. Ordered preference: Llama 3.1 (8B) > Qwen 2.5 (7B) > Llama 3.2 (3B).
-_VERIFIER_PREFERENCE = ("llama", "qwen", "llama32")
-
-
-def _verifier_model_id() -> str:
-    for key in _VERIFIER_PREFERENCE:
-        if key in MODEL_REGISTRY:
-            return MODEL_REGISTRY[key]["id"]
-    # Fallback: same as the user-selected default
-    return MODEL_REGISTRY[DEFAULT_MODEL_KEY]["id"]
-
-
 def _build_history(chat: dict | None, exclude_last: bool = False) -> list:
     if not chat:
         return []
@@ -201,41 +184,7 @@ def _build_history(chat: dict | None, exclude_last: bool = False) -> list:
 
 
 def _today_context_message() -> SystemMessage:
-    today = date.today()
-    yesterday = today - timedelta(days=1)
-    today_pretty = today.strftime("%A, %B %d, %Y")
-    yesterday_pretty = yesterday.strftime("%A, %B %d, %Y")
-    return SystemMessage(
-        content=(
-            f"Today's date is {today.isoformat()} ({today_pretty}). "
-            f"Yesterday was {yesterday.isoformat()} ({yesterday_pretty}). "
-            "Relative time words ('yesterday', 'today', 'this week') in user questions are "
-            "automatically substituted with the absolute date when they reach the search tool, "
-            "so you do not need to translate them manually — but you MUST still anchor your final "
-            "answer to the correct date. If the user asked about 'yesterday', report only results "
-            f"from {yesterday_pretty}, even if the search returned articles from other days. "
-            "Your training data is from before today and is unreliable for any time-sensitive fact. "
-            "For any question about current people, prices, events, statistics, dates, or recent developments, "
-            "you MUST use your search tools and base your answer exclusively on the retrieved content. "
-            "Do not state remembered facts from training as if they were current truth."
-        )
-    )
-
-
-def _question_with_date_prefix(question: str) -> str:
-    """Inline a short date marker right before the user's question.
-
-    Small models (Llama 3.2 3B in particular) have weak long-range attention
-    and may not anchor to the SystemMessage by the time they process the
-    question. Repeating the date adjacent to the question is cheap insurance.
-    """
-    today = date.today()
-    yesterday = today - timedelta(days=1)
-    return (
-        f"[Context: Today is {today.isoformat()} ({today.strftime('%A, %B %d, %Y')}). "
-        f"Yesterday was {yesterday.isoformat()} ({yesterday.strftime('%A, %B %d, %Y')}).]\n\n"
-        f"{question}"
-    )
+    return SystemMessage(content=f"Today's date is {date.today().isoformat()}.")
 
 
 @app.get("/ask_agent_stream")
@@ -274,8 +223,6 @@ async def ask_agent_stream(
 
             settings = settings_store.get_all()
             cache_ttl = settings.get("cache_ttl_seconds", 24 * 3600)
-            verification_enabled = settings.get("verification_enabled", True)
-            fact_extraction_enabled = settings.get("fact_extraction_enabled", True)
 
             # Cache check (skip when memory is active OR when this is an explicit
             # regenerate — the user is asking for a fresh attempt, not a cached one).
@@ -320,14 +267,10 @@ async def ask_agent_stream(
 
             agent = AGENTS[model_key]
             history_messages = _build_history(chat, exclude_last=regenerate)
-            # Today's-date context sits IMMEDIATELY before the question (not before
-            # history) so the model's attention to the date is maximal when it reads
-            # the question. The question itself also carries an inline date marker
-            # for small models with weak long-range attention.
             input_messages = (
-                history_messages
-                + [_today_context_message()]
-                + [HumanMessage(content=_question_with_date_prefix(question))]
+                [_today_context_message()]
+                + history_messages
+                + [HumanMessage(content=question)]
             )
 
             # ── Run the agent in a background thread ─────────────────────────
@@ -345,9 +288,12 @@ async def ask_agent_stream(
             def run_agent():
                 stream_iter = None
                 try:
+                    # stream_mode="updates" yields one dict per agent step
+                    # (tool_call / tool_result / final answer). No token-level
+                    # streaming — answers arrive whole once the agent finishes.
                     stream_iter = agent.stream(
                         {"messages": input_messages},
-                        stream_mode=["updates", "messages"],
+                        stream_mode="updates",
                     )
                     for chunk in stream_iter:
                         if cancelled.is_set():
@@ -388,26 +334,10 @@ async def ask_agent_stream(
                 if kind == "error":
                     raise payload
 
-                # kind == "chunk": LangGraph yields (stream_mode, data) tuples
-                if not isinstance(payload, tuple) or len(payload) != 2:
+                # kind == "chunk": stream_mode="updates" yields plain update dicts
+                if not isinstance(payload, dict):
                     continue
-                stream_mode, data = payload
-
-                if stream_mode == "messages":
-                    # data is (message_chunk, metadata) — emit each token
-                    msg_chunk = data[0] if isinstance(data, tuple) and data else None
-                    if msg_chunk is None:
-                        continue
-                    content = getattr(msg_chunk, "content", "")
-                    if isinstance(content, str) and content:
-                        yield _sse("token", {"text": content})
-                    continue
-
-                if stream_mode != "updates":
-                    continue
-                if not isinstance(data, dict):
-                    continue
-                for _node_name, node_data in data.items():
+                for _node_name, node_data in payload.items():
                     messages = node_data.get("messages", []) if isinstance(node_data, dict) else []
                     for message in messages:
                         message_type = getattr(message, "type", None)
@@ -439,24 +369,6 @@ async def ask_agent_stream(
                             final_answer = message.content
                             yield _sse("answer", {"text": final_answer})
 
-            # Verification pass — re-check the draft answer against tool results
-            # and rewrite any claim the search results contradict or don't support.
-            if verification_enabled and final_answer and tool_messages_collected:
-                if await request.is_disconnected():
-                    return
-                yield _sse("verifying", {})
-                verified_answer, was_changed = await asyncio.to_thread(
-                    verify_answer,
-                    question=question,
-                    answer=final_answer,
-                    tool_messages=tool_messages_collected,
-                    model_id=_verifier_model_id(),
-                    today_iso=date.today().isoformat(),
-                )
-                if was_changed:
-                    final_answer = verified_answer
-                    yield _sse("answer", {"text": final_answer, "verified": True})
-
             if await request.is_disconnected():
                 return
 
@@ -467,8 +379,6 @@ async def ask_agent_stream(
                 extract_claims,
                 cleaned_answer,
                 tool_messages_collected,
-                model_id=model_info["id"],
-                use_llm=fact_extraction_enabled,
             )
 
             turn_payload = {
@@ -542,10 +452,7 @@ def ask_agent(question: str, model: str | None = None):
         agent = AGENTS[model_key]
 
         input_message = {
-            "messages": [
-                _today_context_message(),
-                HumanMessage(content=_question_with_date_prefix(question)),
-            ]
+            "messages": [_today_context_message(), HumanMessage(content=question)]
         }
         result = agent.invoke(input_message)
 
@@ -567,7 +474,7 @@ def ask_agent(question: str, model: str | None = None):
             for message in result["messages"]
             if message.type == "tool"
         ]
-        extraction = extract_claims(final_answer, tool_messages, model_id=model_info["id"])
+        extraction = extract_claims(final_answer, tool_messages)
         logger.info("trust_signals: %s", extraction["trust_signals"])
 
         return {

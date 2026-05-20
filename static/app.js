@@ -1165,32 +1165,6 @@ function buildSettingsModal(settings, defaults) {
         </div>
       </div>
 
-      <div class="setting-row">
-        <div class="setting-label">
-          <span class="setting-name">Verification pass</span>
-          <span class="setting-desc">A second LLM call re-checks each draft answer against the search results and rewrites unsupported claims. Adds ~5–10s but catches hallucinations.</span>
-        </div>
-        <div class="setting-control">
-          <label class="toggle">
-            <input type="checkbox" id="setting-verification" ${settings.verification_enabled ? 'checked' : ''}/>
-            <span class="toggle-slider"></span>
-          </label>
-        </div>
-      </div>
-
-      <div class="setting-row">
-        <div class="setting-label">
-          <span class="setting-name">LLM claim extraction</span>
-          <span class="setting-desc">When ON, an LLM extracts and maps each claim to its sources. When OFF, a faster heuristic is used — trust signals stay computable but may be less accurate.</span>
-        </div>
-        <div class="setting-control">
-          <label class="toggle">
-            <input type="checkbox" id="setting-fact-extraction" ${settings.fact_extraction_enabled ? 'checked' : ''}/>
-            <span class="toggle-slider"></span>
-          </label>
-        </div>
-      </div>
-
       <div class="explainer-h3">Data</div>
 
       <div class="setting-row">
@@ -1235,18 +1209,6 @@ function buildSettingsModal(settings, defaults) {
     showSettingsToast(modal, result ? `History limit set to ${limit}.` : 'Failed to save', result ? 'success' : 'error');
   });
 
-  const verifyToggle = modal.querySelector('#setting-verification');
-  verifyToggle.addEventListener('change', async () => {
-    const result = await patchSettings({ verification_enabled: verifyToggle.checked });
-    showSettingsToast(modal, result ? `Verification ${verifyToggle.checked ? 'enabled' : 'disabled'}.` : 'Failed to save', result ? 'success' : 'error');
-  });
-
-  const factToggle = modal.querySelector('#setting-fact-extraction');
-  factToggle.addEventListener('change', async () => {
-    const result = await patchSettings({ fact_extraction_enabled: factToggle.checked });
-    showSettingsToast(modal, result ? `LLM claim extraction ${factToggle.checked ? 'enabled' : 'disabled'}.` : 'Failed to save', result ? 'success' : 'error');
-  });
-
   modal.querySelector('#setting-clear-cache').addEventListener('click', async () => {
     if (!confirm('Wipe the entire answer cache? This cannot be undone.')) return;
     const result = await clearAnswerCache();
@@ -1263,8 +1225,6 @@ function buildSettingsModal(settings, defaults) {
     const s = data.settings;
     cacheInput.value = Math.round((s.cache_ttl_seconds || 0) / 3600);
     historyInput.value = s.history_turn_limit;
-    verifyToggle.checked = !!s.verification_enabled;
-    factToggle.checked = !!s.fact_extraction_enabled;
     showSettingsToast(modal, 'Settings reset to defaults.', 'success');
   });
 
@@ -1566,33 +1526,8 @@ function startResearch(question, options) {
     trace.classList.add('collapsed');
   });
 
-  es.addEventListener('token', (event) => {
-    const data = JSON.parse(event.data);
-    if (!data.text) return;
-    if (traceLabel) traceLabel.textContent = 'Drafting answer…';
-    let answerCard = agentBlock.querySelector('.answer-card');
-    if (!answerCard) {
-      answerCard = buildAnswerCard('');
-      agentBlock.appendChild(answerCard);
-    }
-    if (answerCard._streamedText == null) answerCard._streamedText = '';
-    answerCard._streamedText += data.text;
-    if (window.marked) {
-      answerCard.innerHTML = marked.parse(answerCard._streamedText);
-    } else {
-      answerCard.textContent = answerCard._streamedText;
-    }
-    scrollToBottom();
-  });
-
   es.addEventListener('tool_call', (event) => {
     const data = JSON.parse(event.data);
-    // Clear any intermediate reasoning tokens — they're pre-tool noise.
-    const answerCard = agentBlock.querySelector('.answer-card');
-    if (answerCard) {
-      answerCard._streamedText = '';
-      answerCard.innerHTML = '';
-    }
     const step = el('div', 'trace-step');
     const head = el('div', 'trace-step-head');
     head.appendChild(txt('span', 'trace-tool', data.name));
@@ -1636,13 +1571,7 @@ function startResearch(question, options) {
     } else {
       answerCard.textContent = data.text || '';
     }
-    // Sync the streamed-text accumulator with the authoritative answer
-    answerCard._streamedText = data.text || '';
     scrollToBottom();
-  });
-
-  es.addEventListener('verifying', () => {
-    traceLabel.textContent = 'Fact-checking answer against sources…';
   });
 
   es.addEventListener('extracting', () => {

@@ -16,8 +16,6 @@ _lock = threading.Lock()
 DEFAULTS: dict[str, Any] = {
     "cache_ttl_seconds": 24 * 3600,
     "history_turn_limit": 5,
-    "verification_enabled": True,
-    "fact_extraction_enabled": True,
 }
 
 
