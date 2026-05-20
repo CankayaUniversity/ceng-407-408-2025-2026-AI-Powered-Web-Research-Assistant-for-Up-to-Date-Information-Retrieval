@@ -184,7 +184,15 @@ def _build_history(chat: dict | None, exclude_last: bool = False) -> list:
 
 
 def _today_context_message() -> SystemMessage:
-    return SystemMessage(content=f"Today's date is {date.today().isoformat()}.")
+    today = date.today()
+    return SystemMessage(
+        content=(
+            f"Today's date is {today.isoformat()} ({today.strftime('%A')}). "
+            f"When the user asks about 'recent', 'latest', 'this year' or "
+            f"'current' events, include the year {today.year} in your search "
+            "query so the search engine returns up-to-date results."
+        )
+    )
 
 
 @app.get("/ask_agent_stream")

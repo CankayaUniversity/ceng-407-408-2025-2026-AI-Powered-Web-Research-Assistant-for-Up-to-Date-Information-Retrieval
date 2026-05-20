@@ -8,9 +8,9 @@ from urllib.parse import urlparse
 import requests
 from bs4 import BeautifulSoup
 from langchain_community.tools import DuckDuckGoSearchResults
-from langchain_community.tools.tavily_search import TavilySearchResults
 from langchain_core.tools import tool
 from pydantic import BaseModel, Field, field_validator
+from tavily import TavilyClient
 
 logger = logging.getLogger("deep_research")
 
@@ -96,12 +96,47 @@ class DeepReaderInput(BaseModel):
 
 
 # --------------------------------------------------------------------------
+# Recency-aware Tavily configuration
+# --------------------------------------------------------------------------
+# Tavily exposes a "news" topic + `days` window + `search_depth=advanced`
+# + `include_answer=True` which together produce dramatically better results
+# for time-sensitive queries. We detect time-sensitive queries via a regex
+# over the user's question (handed off as the tool argument) and switch into
+# news mode automatically. No LLM call needed for the detection.
+
+_TIME_SENSITIVE_RE = re.compile(
+    r"\b("
+    r"today|yesterday|tonight|tomorrow|"
+    r"this\s+(?:week|month|year|morning|afternoon|evening)|"
+    r"last\s+(?:week|month|night|weekend|year)|"
+    r"next\s+(?:week|month|weekend)|"
+    r"latest|recent(?:ly)?|current(?:ly)?|now|"
+    r"breaking\s+news|news\b|"
+    r"202[5-9]|20[3-9]\d"  # explicit recent years (2025+)
+    r")\b",
+    re.IGNORECASE,
+)
+
+NEWS_MODE_DAYS = 14  # window for news-mode queries
+
+
+def _is_time_sensitive(query: str) -> bool:
+    return bool(_TIME_SENSITIVE_RE.search(query or ""))
+
+
 def _get_tavily():
     global _tavily_underlying
     if _tavily_underlying is None:
         with _client_lock:
             if _tavily_underlying is None:  # double-checked locking
-                _tavily_underlying = TavilySearchResults(max_results=TAVILY_MAX_RESULTS)
+                import os
+                api_key = os.getenv("TAVILY_API_KEY")
+                if not api_key:
+                    raise RuntimeError(
+                        "TAVILY_API_KEY is not set in the environment. "
+                        "Add it to your .env file (see .env.example)."
+                    )
+                _tavily_underlying = TavilyClient(api_key=api_key)
     return _tavily_underlying
 
 
@@ -241,32 +276,79 @@ def _domain_of(url: str) -> str:
         return url or ""
 
 
-def _format_results_for_llm(items: list[dict]) -> str:
+def _format_published_date(raw: Any) -> str:
+    """Normalise a published_date to a short YYYY-MM-DD label.
+
+    Tavily emits two formats depending on topic:
+      - Default topic: ISO ("2026-05-19" or "2026-05-19T14:23:00Z")
+      - News topic:    RFC 2822 ("Fri, 08 May 2026 14:23:00 GMT")
+    Returns empty string when nothing parseable is present.
+    """
+    if not raw:
+        return ""
+    s = str(raw).strip()
+    if not s:
+        return ""
+    # Try RFC 2822 first — its parser is strict so it won't false-positive
+    # on ISO strings.
+    from email.utils import parsedate_to_datetime
+    try:
+        dt = parsedate_to_datetime(s)
+        if dt is not None:
+            return dt.strftime("%Y-%m-%d")
+    except (TypeError, ValueError):
+        pass
+    # ISO-like fallback. Take everything before the first 'T' or space.
+    for sep in ("T", " "):
+        if sep in s:
+            s = s.split(sep, 1)[0]
+            break
+    # Sanity-check it looks like YYYY-MM-DD.
+    if len(s) >= 10 and s[4] == "-" and s[7] == "-":
+        return s[:10]
+    return ""
+
+
+def _format_results_for_llm(items: list[dict], tavily_answer: str = "") -> str:
     """Render search results in a clean, line-based text format.
 
     - Drops prediction-tier results entirely (they were already weighted
       near-zero and just add noise to the agent's context).
-    - Each result becomes a labelled block: TIER, TITLE, URL, CONTENT.
+    - Each result becomes a labelled block: TIER, TITLE, URL, DATE, CONTENT.
     - When CONTENT is empty (junk-detected), explicitly tells the agent
       the TITLE is the data.
+    - When Tavily returned its own synthesised answer (include_answer=True),
+      surface it as a leading TAVILY SUMMARY block so the model sees it
+      as additional evidence.
 
     This format is easy for the LLM to read AND easy to parse with regex
     for downstream fact extraction.
     """
     useful = [it for it in items if (it.get("_source_tier") or "low") != "prediction"]
-    if not useful:
+    if not useful and not tavily_answer:
         return ("No usable results — only prediction / betting / preview sites came back. "
                 "Try a different search query (e.g. add 'final score', 'result', or the date).")
 
     lines = []
+    if tavily_answer and tavily_answer.strip():
+        lines.append("TAVILY SUMMARY (server-side synthesis from the top results; "
+                     "use as supporting evidence, but verify against the individual "
+                     "RESULTs below):")
+        lines.append(tavily_answer.strip())
+        lines.append("")
+        lines.append("---")
+        lines.append("")
+
     for idx, item in enumerate(useful, start=1):
         tier = (item.get("_source_tier") or "low").upper()
         url = (item.get("url") or "").strip()
         domain = _domain_of(url)
         title = (item.get("title") or "").strip() or "(no title)"
         content = (item.get("content") or "").strip()
+        pub_date = _format_published_date(item.get("published_date"))
+        date_suffix = f" — {pub_date}" if pub_date else ""
 
-        lines.append(f"RESULT {idx} — TIER: {tier} — {domain}")
+        lines.append(f"RESULT {idx} — TIER: {tier} — {domain}{date_suffix}")
         lines.append(f"TITLE: {title}")
         lines.append(f"URL: {url}")
         if content:
@@ -317,23 +399,40 @@ Call exactly like: {"query": "your search question as a plain string"}.
 def tavily_search_results_json(query: str) -> str:
     if not query or not query.strip():
         return _EMPTY_QUERY_RETRY_MSG
+
+    q = query.strip()
+    time_sensitive = _is_time_sensitive(q)
+    # Build kwargs. When the query is time-sensitive we switch into Tavily's
+    # news topic with a recency window AND advanced search depth (longer
+    # content per result). Otherwise default general search.
+    search_kwargs: dict[str, Any] = {
+        "query": q,
+        "max_results": TAVILY_MAX_RESULTS,
+        "include_answer": True,
+    }
+    if time_sensitive:
+        search_kwargs["topic"] = "news"
+        search_kwargs["days"] = NEWS_MODE_DAYS
+        search_kwargs["search_depth"] = "advanced"
+
     try:
-        raw = _get_tavily().invoke({"query": query.strip()})
+        response = _get_tavily().search(**search_kwargs)
     except Exception as exc:
         return f"Tavily search error: {exc}"
-    if isinstance(raw, str):
-        try:
-            items = json.loads(raw)
-        except Exception:
-            return raw
-    elif isinstance(raw, list):
-        items = raw
-    else:
-        items = []
+
+    if not isinstance(response, dict):
+        return str(response)
+
+    items = response.get("results") or []
     if not isinstance(items, list):
-        return str(items)
+        items = []
+    tavily_answer = response.get("answer") or ""
+    if time_sensitive:
+        logger.info("Tavily news-mode query (days=%d): %r — got %d results",
+                    NEWS_MODE_DAYS, q, len(items))
+
     annotated = _annotate_tavily_items(items)
-    return _format_results_for_llm(annotated)
+    return _format_results_for_llm(annotated, tavily_answer=tavily_answer)
 
 
 tavily_search_results_json.__doc__ = _SEARCH_TOOL_DOC

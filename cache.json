@@ -1161,6 +1161,464 @@
       "original_question": "What changed about X in the last 6 months?",
       "cached_at": "2026-05-20T19:26:40.762401+00:00",
       "cached_ts": 1779305200.762408
+    },
+    "qwen::are there any road closures in ankara today": {
+      "answer": "Based on the search results, there are no specific road closures mentioned for Ankara today (2026-05-21). However, it is noted that there may be potential for demonstrations in the city due to May 1st Labor and Solidarity Day, which could lead to temporary road closures or traffic disruptions. For the most accurate and up-to-date information, please check local authorities' announcements.\n\nFor general traffic conditions, you can refer to real-time traffic reports from sources like TomTom Traffic Index.",
+      "facts": [
+        {
+          "claim_text": "Based on the search results, there are no specific road closures mentioned for Ankara today (2026-05-21).",
+          "evidence_urls": [
+            "https://tr.usembassy.gov/routine-message-ongoing-potential-for-demonstrations-u-s-embassy-ankara-april-28-2026/",
+            "https://en.wikipedia.org/wiki/List_of_highways_in_Turkey",
+            "https://turkey.news-pravda.com/en/turkey/2026/04/30/84434.html"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "However, it is noted that there may be potential for demonstrations in the city due to May 1st Labor and Solidarity Day, which could lead to temporary road closures or traffic disruptions.",
+          "evidence_urls": [
+            "https://tr.usembassy.gov/routine-message-ongoing-potential-for-demonstrations-u-s-embassy-ankara-april-28-2026/",
+            "https://en.wikipedia.org/wiki/List_of_highways_in_Turkey",
+            "https://turkey.news-pravda.com/en/turkey/2026/04/30/84434.html"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "For the most accurate and up-to-date information, please check local authorities' announcements.",
+          "evidence_urls": [
+            "https://en.wikipedia.org/wiki/List_of_highways_in_Turkey",
+            "https://tr.usembassy.gov/routine-message-ongoing-potential-for-demonstrations-u-s-embassy-ankara-april-28-2026/",
+            "https://www.tomtom.com/traffic-index/ankara-traffic/"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "For general traffic conditions, you can refer to real-time traffic reports from sources like TomTom Traffic Index.",
+          "evidence_urls": [
+            "https://tr.usembassy.gov/routine-message-ongoing-potential-for-demonstrations-u-s-embassy-ankara-april-28-2026/",
+            "https://en.wikipedia.org/wiki/List_of_highways_in_Turkey",
+            "https://www.tomtom.com/traffic-index/ankara-traffic/"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        }
+      ],
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/List_of_highways_in_Turkey",
+          "title": "List of highways in Turkey - Wikipedia",
+          "domain": "en.wikipedia.org",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "January 18, 2026 - D.750 Zonguldak – Gerede – Ankara – Aksaray – Pozantı – Tarsus · D.850 Ünye – Tokat – Sivas – Malatya – Gaziantep – Kilis (Syria border) D.950 Hopa – Artvin – Erzurum – Bingöl – Diyarbakır – Mardin ... D.915 Of, Trabzon (D010) – Dernekpazarı – Çaykara – Intersection with D050 – Bayburt-Maden, Bayburt – Aşkale (D100) Provincial roads (İl yolu) are under the responsibility of KGM.",
+          "tier": "high"
+        },
+        {
+          "url": "https://tr.usembassy.gov/routine-message-ongoing-potential-for-demonstrations-u-s-embassy-ankara-april-28-2026/",
+          "title": "Routine Message: Ongoing Potential for Demonstrations (U.S. Embassy Ankara, April 28, 2026) - U.S. Embassy & Consulates in Türkiye",
+          "domain": "tr.usembassy.gov",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "3 weeks ago - Routine Message: Ongoing Potential for Demonstrations (U.S. Embassy Ankara, April 28, 2026) ... By U.S. EMBASSY TÜRKİYE ... Event: Demonstrations occur regularly in Türkiye. They may be critical of U.S. foreign policy and involve anti-U.S. rhetoric. Large gatherings may result in enhanced police presence, road closures, and traffic disruptions.",
+          "tier": "high"
+        },
+        {
+          "url": "https://turkey.news-pravda.com/en/turkey/2026/04/30/84434.html",
+          "title": "Ankara Police Directorate announced that if necessary, gradual closures will begin on some main arteries due to May 1st Labor and Solidarity Day - Pravda Turkey",
+          "domain": "turkey.news-pravda.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "3 weeks ago - 30.04.2026, 18:45 UTC+3 · Ankara Police Directorate announced that if necessary, gradual closures will begin on some main arteries due to May 1st Labor and Solidarity Day. The section of Anit Street between Turgut Reis Street and Anadolu Square ...",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.tomtom.com/traffic-index/ankara-traffic/",
+          "title": "Ankara traffic report | TomTom Traffic Index",
+          "domain": "www.tomtom.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "December 4, 2025 - Free access to live traffic data and TomTom Traffic Index statistics for Ankara. Check out live and typical traffic in Ankara.",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.hurriyetdailynews.com/hundreds-of-village-roads-closed-as-severe-snowstorm-grips-rural-turkiye-217258",
+          "title": "Hundreds of village roads closed as severe snowstorm grips rural Türkiye - Türkiye News",
+          "domain": "www.hurriyetdailynews.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "December 28, 2025 - A brutal winter wave sweeping in from Russia has paralyzed life across the rural parts of eastern and central Türkiye, burying hundreds of roads under heavy snow and leaving remote communities isolated as temperatures plummet.",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.usatoday.com/story/news/2026/05/08/i-285-partial-closure-starts-tonight-in-atlanta-take-other-routes/89991557007/",
+          "title": "Closure of I-285 section in Atlanta postponed due to weather, GDOT says - USA Today",
+          "domain": "www.usatoday.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "The project will likely be rescheduled for another time as the city tries to fit in roadwork before the rush of visitors for the FIFA 2026 World Cup in June.",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.norwichairport.co.uk/loganair-celebrates-launch-of-new-norwich-route-on-liberation-day/",
+          "title": "Loganair celebrates launch of new Norwich route on Liberation Day - Norwich Airport",
+          "domain": "www.norwichairport.co.uk",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Skip to content",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.manilatimes.net/2026/05/08/tmt-newswire/pr-newswire/autoliv-to-discontinue-manufacturing-operations-in-turkiye/2339282",
+          "title": "Autoliv to Discontinue Manufacturing Operations in Türkiye - The Manila Times",
+          "domain": "www.manilatimes.net",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "By PR Newswire",
+          "tier": "low"
+        }
+      ],
+      "trust_signals": {
+        "citation_coverage": 1.0,
+        "avg_sources_per_claim": 3.0,
+        "multi_source_claim_ratio": 1.0,
+        "distinct_domain_count": 8,
+        "source_quality_score": 0.512,
+        "high_tier_ratio": 0.25,
+        "citation_strength": 1.0,
+        "tier_breakdown": {
+          "high": 2,
+          "medium": 0,
+          "low": 6,
+          "prediction": 0
+        },
+        "total_sources": 8
+      },
+      "model_key": "qwen",
+      "original_question": "Are there any road closures in Ankara today?",
+      "cached_at": "2026-05-20T23:20:10.533937+00:00",
+      "cached_ts": 1779319210.533944
+    },
+    "qwen::what changed in windows 11 in the last 3 updates": {
+      "answer": "Based on the recent updates for Windows 11:\n\n- **Taskbar and Start Menu Customization**: The latest update reintroduced Windows 10-style taskbar and Start Menu customization options. This change is expected to roll out in the coming weeks for versions 24H2, 25H2, and 26H1.\n  \n- **Renaming of Recommendation Area**: The recommendation area has been renamed to \"Recent,\" keeping newly installed apps visible and refining which files appear in that section. This update is also part of the ongoing rollout.\n\n- **KB5089549 Update Issues**: There have been reports of installation issues with KB5089549, a recent update for Windows 11. However, Microsoft has provided a solution by allowing users to download this update via the official Media Creation Tool for USB installs.\n\nThese updates are part of the ongoing improvements and changes in Windows 11 as it continues to evolve based on user feedback and technological advancements.\n\n- **KB5089549 Update Details**: This update, released on April 14, 2026, has faced some installation issues but can now be downloaded for USB installs using the official Microsoft Media Creation Tool. (Source: [Neowin](https://www.neowin.net/news/windows-11-kb5089549-can-now-be-downloaded-for-usb-installs-using-official-microsoft-tool/))\n\nFor more detailed information, you can refer to the following sources:\n- TechPowerUp: [Microsoft Brings Back Windows 10-Style Taskbar and Start Menu Customization in Windows 11](https://www.techpowerup.com/349132/microsoft-brings-back-windows-10-style-taskbar-and-start-menu-customization-in-windows-11/)\n- Neowin: [Windows 11 KB5089549 reportedly failing to install, slowing internet down on certain systems](https://www.neowin.net/news/windows-11-kb5089549-reportedly-failing-to-install-slowing-internet-down-on-certain-systems/) and [Windows 11 KB5089549 can now be downloaded for USB installs using official Microsoft tool](https://www.neowin.net/news/windows-11-kb5089549-can-now-be-downloaded-for-usb-installs-using-official-microsoft-tool/)\n\nThese sources provide detailed insights into the recent changes and updates in Windows 11.",
+      "facts": [
+        {
+          "claim_text": "Based on the recent updates for Windows 11:  - **Taskbar and Start Menu Customization**: The latest update reintroduced Windows 10-style taskbar and Start Menu customization options.",
+          "evidence_urls": [
+            "https://en.wikipedia.org/wiki/Windows_11_version_history",
+            "https://www.techpowerup.com/349132/microsoft-brings-back-windows-10-style-taskbar-and-start-menu-customization-in-windows-11",
+            "https://www.windowscentral.com/microsoft/windows-11/5-things-you-need-to-know-about-changes-coming-to-windows-update-on-windows-11"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "This change is expected to roll out in the coming weeks for versions 24H2, 25H2, and 26H1.",
+          "evidence_urls": [
+            "https://www.techpowerup.com/349132/microsoft-brings-back-windows-10-style-taskbar-and-start-menu-customization-in-windows-11",
+            "https://en.wikipedia.org/wiki/Windows_11_version_history",
+            "https://www.windowscentral.com/microsoft/windows-11/11-big-windows-11-changes-in-april-2026-you-need-to-know-right-now"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "- **Renaming of Recommendation Area**: The recommendation area has been renamed to \"Recent,\" keeping newly installed apps visible and refining which files appear in that section.",
+          "evidence_urls": [
+            "https://www.techpowerup.com/349132/microsoft-brings-back-windows-10-style-taskbar-and-start-menu-customization-in-windows-11",
+            "https://en.wikipedia.org/wiki/Windows_11_version_history",
+            "https://www.bleepingcomputer.com/news/microsoft/windows-11-kb5083631-update-released-with-34-changes-and-fixes/"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "This update is also part of the ongoing rollout.",
+          "evidence_urls": [
+            "https://en.wikipedia.org/wiki/Windows_11_version_history",
+            "https://learn.microsoft.com/en-us/windows/release-health/windows11-release-information",
+            "https://www.windowscentral.com/microsoft/windows-11/5-things-you-need-to-know-about-changes-coming-to-windows-update-on-windows-11"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "- **KB5089549 Update Issues**: There have been reports of installation issues with KB5089549, a recent update for Windows 11.",
+          "evidence_urls": [
+            "https://en.wikipedia.org/wiki/Windows_11_version_history",
+            "https://www.neowin.net/news/windows-11-kb5089549-reportedly-failing-to-install-slowing-internet-down-on-certain-systems/",
+            "https://learn.microsoft.com/en-us/windows/release-health/windows11-release-information"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "However, Microsoft has provided a solution by allowing users to download this update via the official Media Creation Tool for USB installs.",
+          "evidence_urls": [
+            "https://en.wikipedia.org/wiki/Windows_11_version_history",
+            "https://www.neowin.net/news/windows-11-kb5089549-can-now-be-downloaded-for-usb-installs-using-official-microsoft-tool/",
+            "https://www.neowin.net/news/windows-11-kb5089549-reportedly-failing-to-install-slowing-internet-down-on-certain-systems/"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "These updates are part of the ongoing improvements and changes in Windows 11 as it continues to evolve based on user feedback and technological advancements.",
+          "evidence_urls": [
+            "https://en.wikipedia.org/wiki/Windows_11_version_history",
+            "https://www.techpowerup.com/349132/microsoft-brings-back-windows-10-style-taskbar-and-start-menu-customization-in-windows-11",
+            "https://www.neowin.net/news/windows-11-kb5089549-reportedly-failing-to-install-slowing-internet-down-on-certain-systems/"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "- **KB5089549 Update Details**: This update, released on April 14, 2026, has faced some installation issues but can now be downloaded for USB installs using the official Microsoft Media Creation Tool.",
+          "evidence_urls": [
+            "https://learn.microsoft.com/en-us/windows/release-health/windows11-release-information",
+            "https://www.windowscentral.com/microsoft/windows-11/11-big-windows-11-changes-in-april-2026-you-need-to-know-right-now",
+            "https://en.wikipedia.org/wiki/Windows_11_version_history"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "(Source: [Neowin](https://www.neowin.net/news/windows-11-kb5089549-can-now-be-downloaded-for-usb-installs-using-official-microsoft-tool/))  For more detailed information, you can refer to the following sources: - TechPowerUp: [Microsoft Brings Back Windows 10-Style Taskbar and Start Menu Customization in Windows 11](https://www.techpowerup.com/349132/microsoft-brings-back-windows-10-style-taskbar-and-start-menu-customization-in-windows-11/) - Neowin: [Windows 11 KB5089549 reportedly failing to install, slowing internet down on certain systems](https://www.neowin.net/news/windows-11-kb5089549-reportedly-failing-to-install-slowing-internet-down-on-certain-systems/) and [Windows 11 KB5089549 can now be downloaded for USB installs using official Microsoft tool](https://www.neowin.net/news/windows-11-kb5089549-can-now-be-downloaded-for-usb-installs-using-official-microsoft-tool/)  These sources provide detailed insights into the recent changes and updates in Windows 11.",
+          "evidence_urls": [
+            "https://en.wikipedia.org/wiki/Windows_11_version_history",
+            "https://www.techpowerup.com/349132/microsoft-brings-back-windows-10-style-taskbar-and-start-menu-customization-in-windows-11",
+            "https://www.neowin.net/news/windows-11-kb5089549-reportedly-failing-to-install-slowing-internet-down-on-certain-systems/"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        }
+      ],
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Windows_11_version_history",
+          "title": "Windows 11 version history - Wikipedia",
+          "domain": "en.wikipedia.org",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "2 days ago - Five component updates were released for this version–\"Moment 1\" with build 22621.675 on October 18, 2022, \"Moment 2\" with build 22621.1344 on February 28, 2023, \"Moment 3\" with build 22621.1778 on May 24, 2023, \"Moment 4\" with build 22621.2361 on September 26, 2023, and \"Moment 5\" with build ...",
+          "tier": "high"
+        },
+        {
+          "url": "https://learn.microsoft.com/en-us/windows/release-health/windows11-release-information",
+          "title": "Windows 11 - release information | Microsoft Learn",
+          "domain": "learn.microsoft.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "April 14, 2026 - This version is not offered as an in-place update from 24H2 or 25H2 on existing devices. (All dates are listed in ISO 8601 format: YYYY-MM-DD) ... 1 Windows 11 Enterprise LTSC 2024 edition does not have extended support. It will reach end of updates (also known as end of servicing) on 2029-10-09.",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.windowscentral.com/microsoft/windows-11/5-things-you-need-to-know-about-changes-coming-to-windows-update-on-windows-11",
+          "title": "Windows 11 is changing how Windows Update works — here are the 5 things Microsoft says will matter most",
+          "domain": "www.windowscentral.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "2 weeks ago - Finally, as part of the effort to make the updates a little less annoying, Windows 11 now allows you to skip system updates during the Out-of-box Experience (OOBE). ... One thing to note here is that if you skip updates, the computer won't download the latest drivers, features, and security patches until either you manually trigger a download or the system resumes updating automatica",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.bleepingcomputer.com/news/microsoft/windows-11-kb5083631-update-released-with-34-changes-and-fixes/",
+          "title": "Windows 11 KB5083631 update released with 34 changes and fixes",
+          "domain": "www.bleepingcomputer.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "3 weeks ago - Microsoft has released the KB5083631 ... 34 changes, such as a new Xbox mode for Windows PCs, enhanced security and performance for batch files, and performance improvements for launching startup apps....",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.windowscentral.com/microsoft/windows-11/11-big-windows-11-changes-in-april-2026-you-need-to-know-right-now",
+          "title": "We’ve tested the April 2026 Windows 11 update, and its 11 improvements genuinely make the OS feel better | Windows Central",
+          "domain": "www.windowscentral.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "3 weeks ago - Windows 11’s April 2026 update delivers 11 improvements focused on performance, polish, and everyday usability. (Image credit: Future | Edited with Gemini) ... As April is coming to an end, it's now the right time to review the new changes and features that Microsoft made available for Windows 11 through the Windows Insider Program during the second half of the month.",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.techpowerup.com/349132/microsoft-brings-back-windows-10-style-taskbar-and-start-menu-customization-in-windows-11",
+          "title": "Microsoft Brings Back Windows 10-Style Taskbar and Start Menu Customization in Windows 11 - TechPowerUp",
+          "domain": "www.techpowerup.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "elsewhere in Windows. At the same time, the company is trying to make the recommendation area more useful by renaming it to Recent, keeping newly installed apps visible, and refining which files appear in that section.These changes are rolling out in the coming weeks for Windows Insiders, meaning that regular Windows 11 users on versions 24H2, 25H2, and 26H1 will experience them in about a month o",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.neowin.net/news/windows-11-kb5089549-reportedly-failing-to-install-slowing-internet-down-on-certain-systems/",
+          "title": "Windows 11 KB5089549 reportedly failing to install, slowing internet down on certain systems - Neowin",
+          "domain": "www.neowin.net",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Yesterday Microsoft released its newest Patch Tuesday updates (KB5087544 on Windows 10 and KB5089549 on Windows 11). However the latter could be having installation issues on certain PCs as reported by users. These affected users say that the update is stubborn as it just wouldn't install even after trying several times. It is slightly unfortunate considering Microsoft just announced a major Windo",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.neowin.net/news/windows-11-kb5089549-can-now-be-downloaded-for-usb-installs-using-official-microsoft-tool/",
+          "title": "Windows 11 KB5089549 can now be downloaded for USB installs using official Microsoft tool - Neowin",
+          "domain": "www.neowin.net",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "DEALS",
+          "tier": "low"
+        }
+      ],
+      "trust_signals": {
+        "citation_coverage": 1.0,
+        "avg_sources_per_claim": 3.0,
+        "multi_source_claim_ratio": 1.0,
+        "distinct_domain_count": 6,
+        "source_quality_score": 0.431,
+        "high_tier_ratio": 0.125,
+        "citation_strength": 1.0,
+        "tier_breakdown": {
+          "high": 1,
+          "medium": 0,
+          "low": 7,
+          "prediction": 0
+        },
+        "total_sources": 8
+      },
+      "model_key": "qwen",
+      "original_question": "What changed in Windows 11 in the last 3 updates?",
+      "cached_at": "2026-05-20T23:23:40.968123+00:00",
+      "cached_ts": 1779319420.968129
     }
   }
 }
