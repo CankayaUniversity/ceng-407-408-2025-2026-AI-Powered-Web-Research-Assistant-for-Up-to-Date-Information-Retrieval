@@ -1,14 +1,14 @@
 {
   "entries": {
     "llama32::bournemouth manchester city match score": {
-      "answer": "The current score of the Bournemouth-Manchester City match is not available as the search results do not confirm a specific score for this match. The draft mentions a 2-1 win for Bournemouth against Manchester City on November 2, 2024, but this information comes from a LOW-tier source (ESPN) and may be outdated.\n\nHowever, upon reviewing the HIGH and MEDIUM tier sources, we find that they do not mention a specific score for this match. The search results only provide general information about past matches between Bournemouth and Manchester City, including their head-to-head history and recent performances.\n\nTherefore, the final answer is:\n\nThe current score of the Bournemouth-Manchester City match is not available as the search results do not confirm a specific score for this match.",
+      "answer": "Unfortunately, I don't have the most recent information on the Bournemouth-Manchester City match score. However, according to ESPN, the final score of their previous match was not confirmed in the search results provided.\n\nUpon reviewing the search results, I found that the title of one result from ESPN mentions \"Bournemouth 2-1 Man City (Nov 2, 2024)\" as a past event, but it does not confirm this information as the most recent score. Another source, AiScore, provides head-to-head statistics and past results, but it does not mention a specific final score for a match between Bournemouth and Manchester City.\n\nFor the most recent score, I recommend checking a reliable sports website or the official Manchester City website, as they may have more up-to-date information on the match.",
       "facts": [
         {
-          "claim_text": "The current score of the Bournemouth-Manchester City match is not available as the search results do not confirm a specific score for this match.",
+          "claim_text": "The final score of their previous match was not confirmed in the search results provided.",
           "evidence_urls": [
-            "https://www.365scores.com/en-us/football/match/premier-league-7/bournemouth-manchester-city-50-110-7",
             "https://www.espn.com/soccer/match/_/gameId/704377/manchester-city-afc-bournemouth",
-            "https://m.aiscore.com/head-to-head/soccer-bournemouth-afc-vs-manchester-city"
+            "https://m.aiscore.com/head-to-head/soccer-bournemouth-afc-vs-manchester-city",
+            "https://www.365scores.com/en-us/football/match/premier-league-7/bournemouth-manchester-city-50-110-7"
           ],
           "source_tools": [
             "tavily_search_results_json"
@@ -21,7 +21,41 @@
           }
         },
         {
-          "claim_text": "The draft mentions a 2-1 win for Bournemouth against Manchester City on November 2, 2024, but this information comes from a LOW-tier source (ESPN) and may be outdated.",
+          "claim_text": "The title of one result from ESPN mentions \"Bournemouth 2-1 Man City (Nov 2, 2024)\" as a past event.",
+          "evidence_urls": [
+            "https://www.espn.com/soccer/match/_/gameId/704377/manchester-city-afc-bournemouth",
+            "https://m.aiscore.com/head-to-head/soccer-bournemouth-afc-vs-manchester-city",
+            "https://www.365scores.com/en-us/football/match/premier-league-7/bournemouth-manchester-city-50-110-7"
+          ],
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "AiScore provides head-to-head statistics and past results, but it does not mention a specific final score for a match between Bournemouth and Manchester City.",
+          "evidence_urls": [
+            "https://m.aiscore.com/head-to-head/soccer-bournemouth-afc-vs-manchester-city",
+            "https://www.espn.com/soccer/match/_/gameId/704377/manchester-city-afc-bournemouth",
+            "https://www.365scores.com/en-us/football/match/premier-league-7/bournemouth-manchester-city-50-110-7"
+          ],
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "For the most recent score, I recommend checking a reliable sports website or the official Manchester City website, as they may have more up-to-date information on the match.",
           "evidence_urls": [
             "https://www.espn.com/soccer/match/_/gameId/704377/manchester-city-afc-bournemouth",
             "https://m.aiscore.com/head-to-head/soccer-bournemouth-afc-vs-manchester-city",
@@ -47,7 +81,7 @@
             "tavily_search_results_json"
           ],
           "relevance_score": 0.99854493,
-          "snippet": "### Match Timeline\nAFC Bournemouth\nManchester City\n### Match Commentary\n| - Match ends, Bournemouth 2, Manchester City 1. |\n| 90'+7' Second Half ends, Bournemouth 2, Manchester City 1. |\n| 90'+6' Attempt missed. Phil Foden (Manchester City) left footed shot from outside the box is close, but misses to the right. Assisted by Rico Lewis. |\n### English Premier League Standings [...] | Team | GP | W |",
+          "snippet": "",
           "tier": "medium"
         },
         {
@@ -69,7 +103,7 @@
             "tavily_search_results_json"
           ],
           "relevance_score": 0.9988927,
-          "snippet": "# undefined undefined - undefined undefined (undefined) - Game Report [...] 35: norsknorskImage 36: Bahasa MelayuBahasa MelayuImage 37: svenskasvenskaImage 38: 中文(台灣)中文(台灣) ge 41: Tiếng ViệtTiếng ViệtImage 42: ລາວລາວImage 43: فارسىفارسى [...] English (US) il)Português (Brasil) mérica) lish (UK) paña)Español (España) sImage 20: NederlandsNederlandsImage 21: ItalianoItalianoImage 22: TürkçeTürkçeI",
+          "snippet": "",
           "tier": "low"
         }
       ],
@@ -91,8 +125,8 @@
       },
       "model_key": "llama32",
       "original_question": "Bournemouth-Manchester City match score",
-      "cached_at": "2026-05-19T23:48:52.886100+00:00",
-      "cached_ts": 1779234532.886129
+      "cached_at": "2026-05-20T00:01:06.301911+00:00",
+      "cached_ts": 1779235266.301939
     }
   }
 }

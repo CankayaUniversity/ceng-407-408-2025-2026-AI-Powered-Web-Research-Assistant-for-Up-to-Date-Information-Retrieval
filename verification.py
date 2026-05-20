@@ -52,8 +52,14 @@ RULES:
 1. If a claim CONTRADICTS the high/medium-tier search results, REPLACE it with what those results say. Quote specific names, dates, or numbers.
 2. If a claim is ONLY supported by PREDICTION-tier sources, REMOVE it — prediction sites describe future events, not past facts. Replace with "the search results did not confirm this".
 3. If a claim is NOT mentioned anywhere in the search results, replace it with "the search results did not confirm this".
-4. For temporal queries ("last winner of X", "most recent Y", "who won Z"): the answer must come from a source describing a COMPLETED, PAST event in past tense from a HIGH or MEDIUM tier source. Predictions or previews of upcoming events are not valid answers.
-5. NUMBERS (sports scores, prices, statistics, percentages, dates): be EXTRA strict. If the draft cites a specific value (e.g. "City won 2-1"), that exact value MUST appear in a high/medium-tier source alongside the correct context (correct teams, correct date). If the source describes a match as "live", "upcoming", "scheduled", "today at X PM", or just lists a fixture without a final score, do NOT report a score — say "the final score is not yet available" or "the match has not concluded in any confirmed source". NEVER invent a score from training memory or from prediction-tier coverage.
+4. For temporal queries ("last winner of X", "most recent Y", "who won Z"): the answer must come from a source describing a COMPLETED, PAST event from a HIGH or MEDIUM tier source. Predictions or previews of upcoming events are not valid answers.
+
+5. NUMBERS (scores, prices, dates, statistics) — symmetric rule:
+   (a) If the draft cites a value AND a HIGH/MEDIUM-tier source contains that exact value attached to a real past event (e.g. "Match ends, X 2 Y 1", "Final Score: 2-1", a score paired with a date) → KEEP the value. Make sure the date and source domain are stated in the draft. This is a CONFIRMED fact and must not be removed.
+   (b) If the draft REFUSES to report a value but a HIGH/MEDIUM-tier source DOES contain a confirmed past result for the question → REWRITE the draft to include that confirmed result. An over-cautious "I couldn't find a score" is just as wrong as inventing one.
+   (c) If the draft cites a value that is NOT in any HIGH/MEDIUM-tier source → REPLACE with "the search results did not confirm this value".
+   (d) Confirmed past results are valid answers to questions that don't specify "current" or "latest". Do NOT refuse a confirmed past score just because a more recent match might exist.
+
 6. Do NOT add information that is not in the high/medium-tier search results.
 7. Do NOT use your own knowledge — your training is outdated.
 8. Preserve the original answer's bullet/paragraph structure and language style.
@@ -62,8 +68,9 @@ RULES:
 CRITICAL EXAMPLES:
 - Draft says "the president of X is Joe Biden" but high-tier results mention "President Donald Trump" → REPLACE with "the president of X is Donald Trump".
 - Draft says "Manchester City won the last Champions League" based on prediction-tier sources about an upcoming final, but high-tier Wikipedia/UEFA sources say "Paris Saint-Germain won the 2024-25 UEFA Champions League" → REPLACE with the high-tier confirmed answer.
-- Draft says "Manchester City beat Bournemouth 2-1" but the only sources for that match describe it as "LIVE 19/05/2026" or list it as a scheduled fixture with no final score → REPLACE with "the final score for this match has not been confirmed — sources show it as an upcoming/live fixture."
-- Draft uses old prices, old officials, old dates → REPLACE with high/medium-tier values.
+- Draft cites "Bournemouth beat Manchester City 2-1 (Nov 2, 2024) per ESPN" and ESPN content includes "Match ends, Bournemouth 2, Manchester City 1" → KEEP IT UNCHANGED. This is a confirmed past result from a medium-tier source. Do not remove it just because it isn't the "latest" match.
+- Draft says "I could not find a match score" but ESPN's content clearly contains "Bournemouth 2, Manchester City 1" → REWRITE to: "Per ESPN, Bournemouth beat Manchester City 2-1 on November 2, 2024." The score IS in the sources — don't hide it.
+- Draft uses old prices, old officials, old dates with no source backing → REPLACE with high/medium-tier values.
 
 OUTPUT FORMAT:
 Output ONLY the corrected final answer text. No preamble. No "Here is the corrected answer:". No explanation. No apology. Just the answer."""
