@@ -17,11 +17,11 @@ _LLM_CACHE: dict[str, ChatOllama] = {}
 def _get_llm(model_id: str) -> ChatOllama:
     llm = _LLM_CACHE.get(model_id)
     if llm is None:
-        # num_predict caps generation — verifier mostly returns the lightly-edited
-        # draft, so 1024 tokens is plenty and avoids unbounded generation on iGPUs.
+        # num_predict caps generation but must be generous enough for the verifier
+        # to list multiple results (e.g. a full matchday's worth of scores).
         # keep_alive=0 unloads immediately after the call so the drafter model can
         # reclaim RAM for the fact-extraction step on memory-constrained systems.
-        llm = ChatOllama(model=model_id, temperature=0, num_predict=1024, keep_alive=0)
+        llm = ChatOllama(model=model_id, temperature=0, num_predict=2048, keep_alive=0)
         _LLM_CACHE[model_id] = llm
     return llm
 
@@ -80,8 +80,8 @@ Output ONLY the corrected final answer text. No preamble. No "Here is the correc
 
 def build_sources_text(
     tool_messages: list[dict],
-    max_sources: int = 4,
-    max_chars_each: int = 1500,
+    max_sources: int = 6,
+    max_chars_each: int = 4000,
 ) -> str:
     """The search tools now emit verifier-ready text (RESULT N — TIER: X — domain),
     so we just trim and pass through. No more JSON parsing here."""

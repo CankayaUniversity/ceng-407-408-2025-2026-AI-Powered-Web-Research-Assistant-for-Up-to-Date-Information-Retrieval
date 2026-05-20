@@ -2,7 +2,7 @@ import asyncio
 import json
 import logging
 import threading
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException, Request
@@ -201,15 +201,40 @@ def _build_history(chat: dict | None, exclude_last: bool = False) -> list:
 
 
 def _today_context_message() -> SystemMessage:
-    today_iso = date.today().isoformat()
+    today = date.today()
+    yesterday = today - timedelta(days=1)
+    today_pretty = today.strftime("%A, %B %d, %Y")
+    yesterday_pretty = yesterday.strftime("%A, %B %d, %Y")
     return SystemMessage(
         content=(
-            f"Today's date is {today_iso}. "
-            "Your training data is from before this date and is unreliable for any time-sensitive fact. "
+            f"Today's date is {today.isoformat()} ({today_pretty}). "
+            f"Yesterday was {yesterday.isoformat()} ({yesterday_pretty}). "
+            "Relative time words ('yesterday', 'today', 'this week') in user questions are "
+            "automatically substituted with the absolute date when they reach the search tool, "
+            "so you do not need to translate them manually — but you MUST still anchor your final "
+            "answer to the correct date. If the user asked about 'yesterday', report only results "
+            f"from {yesterday_pretty}, even if the search returned articles from other days. "
+            "Your training data is from before today and is unreliable for any time-sensitive fact. "
             "For any question about current people, prices, events, statistics, dates, or recent developments, "
             "you MUST use your search tools and base your answer exclusively on the retrieved content. "
             "Do not state remembered facts from training as if they were current truth."
         )
+    )
+
+
+def _question_with_date_prefix(question: str) -> str:
+    """Inline a short date marker right before the user's question.
+
+    Small models (Llama 3.2 3B in particular) have weak long-range attention
+    and may not anchor to the SystemMessage by the time they process the
+    question. Repeating the date adjacent to the question is cheap insurance.
+    """
+    today = date.today()
+    yesterday = today - timedelta(days=1)
+    return (
+        f"[Context: Today is {today.isoformat()} ({today.strftime('%A, %B %d, %Y')}). "
+        f"Yesterday was {yesterday.isoformat()} ({yesterday.strftime('%A, %B %d, %Y')}).]\n\n"
+        f"{question}"
     )
 
 
@@ -295,10 +320,14 @@ async def ask_agent_stream(
 
             agent = AGENTS[model_key]
             history_messages = _build_history(chat, exclude_last=regenerate)
+            # Today's-date context sits IMMEDIATELY before the question (not before
+            # history) so the model's attention to the date is maximal when it reads
+            # the question. The question itself also carries an inline date marker
+            # for small models with weak long-range attention.
             input_messages = (
-                [_today_context_message()]
-                + history_messages
-                + [HumanMessage(content=question)]
+                history_messages
+                + [_today_context_message()]
+                + [HumanMessage(content=_question_with_date_prefix(question))]
             )
 
             # ── Run the agent in a background thread ─────────────────────────
@@ -513,7 +542,10 @@ def ask_agent(question: str, model: str | None = None):
         agent = AGENTS[model_key]
 
         input_message = {
-            "messages": [_today_context_message(), HumanMessage(content=question)]
+            "messages": [
+                _today_context_message(),
+                HumanMessage(content=_question_with_date_prefix(question)),
+            ]
         }
         result = agent.invoke(input_message)
 

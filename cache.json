@@ -1,149 +1,10 @@
 {
   "entries": {
-    "llama32::bournemouth vs manchester city match score": {
-      "answer": "Per ESPN, the most recent match was Bournemouth 1-1 Manchester City on May 19. Previously (per Sky Sports), they met on November 2, 2024, with Bournemouth winning 2-1.\n\nNote: The results from RESULT 3 and RESULT 5 are outdated as they refer to a different match than the one asked about.\n\nThe draft answer is mostly consistent with the high/medium-tier search results. However, I made some corrections:\n\n* The score of the most recent match was corrected to 1-1 (from RESULT 1).\n* The previous match result on November 2, 2024, was confirmed by multiple sources (RESULT 2 and RESULT 5), so it remains unchanged.\n\nThe final answer is:\n\nPer ESPN, the most recent match was Bournemouth 1-1 Manchester City on May 19. Previously (per Sky Sports), they met on November 2, 2024, with Bournemouth winning 2-1.",
+    "llama32::premier league results from yesterday": {
+      "answer": "Based on the live web search results, I will correct the draft answer as follows:\n\n\"Who won the Premier League title this season?\"\n\nAccording to the Wikipedia article, Arsenal won their fourth Premier League title and 14th English title with one match to spare, ending their 22-year Premier League drought since 2004.\n\nThe search results confirm that Arsenal indeed won the Premier League title in the 2025-26 season. The exact date of their win is not specified in the high-tier source, but it mentions that they won with one match to spare, following Manchester City's 1–1 draw away against Bournemouth on 19 May 2026.\n\nThe rest of the draft answer remains unchanged as it does not contain any specific factual claims that contradict or are unsupported by the high/medium-tier search results.",
       "facts": [
         {
-          "claim_text": "The most recent match was Bournemouth 1-1 Manchester City on May 19.",
-          "evidence_urls": [
-            "https://en.as.com/soccer/bournemouth-vs-manchester-city-live-online-score-stats-goals-updates-premier-league-202526-f202605-n/",
-            "https://www.skysports.com/football/bournemouth-vs-manchester-city/report/531491",
-            "https://www.sportingnews.com/us/soccer/news/bournemouth-vs-man-city-live-score-updates-result-arsenal-title/6d0ef2ad80c01c95a0da2edd"
-          ],
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": true,
-            "weak_evidence": false,
-            "needs_review": false
-          }
-        },
-        {
-          "claim_text": "Previously (per Sky Sports), they met on November 2, 2024, with Bournemouth winning 2-1.",
-          "evidence_urls": [
-            "https://www.skysports.com/football/bournemouth-vs-manchester-city/report/531491",
-            "https://m.aiscore.com/head-to-head/soccer-bournemouth-afc-vs-manchester-city",
-            "https://www.espn.com/soccer/match/_/gameId/704377/manchester-city-afc-bournemouth"
-          ],
-          "source_tools": [
-            "duckduckgo_results_json",
-            "tavily_search_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": true,
-            "weak_evidence": false,
-            "needs_review": false
-          }
-        }
-      ],
-      "sources": [
-        {
-          "url": "https://en.as.com/soccer/bournemouth-vs-manchester-city-live-online-score-stats-goals-updates-premier-league-202526-f202605-n/",
-          "title": "Bournemouth 1-1 Manchester City: score, goals, highlights ...",
-          "domain": "en.as.com",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "7 hours ago · Bournemouth held Man City to a draw at the Vitality Stadium in the penultimate game of the 2025/26 Premier League.",
-          "tier": "medium"
-        },
-        {
-          "url": "https://www.skysports.com/football/bournemouth-vs-manchester-city/report/531491",
-          "title": "B'mouth 1 - 1 Man City - Match Report & Highlights - Sky Sports",
-          "domain": "www.skysports.com",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "1 day ago · Manchester City's hopes of winning the Premier League title are over after a 1-1 draw at Bournemouth saw Arsenal crowned champions.",
-          "tier": "medium"
-        },
-        {
-          "url": "https://www.sportingnews.com/us/soccer/news/bournemouth-vs-man-city-live-score-updates-result-arsenal-title/6d0ef2ad80c01c95a0da2edd",
-          "title": "Bournemouth vs. Man City live score: Premier League updates ...",
-          "domain": "www.sportingnews.com",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "6 hours ago · Erling Haaland equalised deep into stoppage time for Manchester City at Bournemouth, but a 1-1 draw handed Arsenal the Premier League title with a game to spare.",
-          "tier": "medium"
-        },
-        {
-          "url": "https://www.manchestereveningnews.co.uk/sport/football/football-news/bournemouth-vs-man-city-live-33975448",
-          "title": "Bournemouth vs Man City LIVE reaction to Pep Guardiola exit ...",
-          "domain": "www.manchestereveningnews.co.uk",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "1 day ago · The City boss conducted his post match media duties as normal following Manchester City's draw with Bournemouth at the Vitality Stadium.",
-          "tier": "low"
-        },
-        {
-          "url": "https://www.livescore.com/en/football/england/premier-league/afc-bournemouth-vs-manchester-city/1529172/",
-          "title": "AFC Bournemouth vs Manchester City Live Scores | LiveScore",
-          "domain": "www.livescore.com",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "Get the latest AFC Bournemouth vs Manchester City live score in the Premier League from LiveScore.com.",
-          "tier": "low"
-        },
-        {
-          "url": "https://www.espn.com/soccer/match/_/gameId/704377/manchester-city-afc-bournemouth",
-          "title": "Bournemouth 2-1 Man City (Nov 2, 2024) Final Score - ESPN",
-          "domain": "www.espn.com",
-          "source_tools": [
-            "tavily_search_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "### Match Timeline",
-          "tier": "medium"
-        },
-        {
-          "url": "https://m.aiscore.com/head-to-head/soccer-bournemouth-afc-vs-manchester-city",
-          "title": "Bournemouth AFC vs Manchester City Head to Head History - AiScore",
-          "domain": "m.aiscore.com",
-          "source_tools": [
-            "tavily_search_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "AiScore App",
-          "tier": "low"
-        }
-      ],
-      "trust_signals": {
-        "citation_coverage": 1.0,
-        "avg_sources_per_claim": 3.0,
-        "multi_source_claim_ratio": 1.0,
-        "distinct_domain_count": 7,
-        "source_quality_score": 0.521,
-        "high_tier_ratio": 0.0,
-        "citation_strength": 0.65,
-        "tier_breakdown": {
-          "high": 0,
-          "medium": 4,
-          "low": 3,
-          "prediction": 0
-        },
-        "total_sources": 7
-      },
-      "model_key": "llama32",
-      "original_question": "Bournemouth vs Manchester City match score",
-      "cached_at": "2026-05-20T00:45:45.891846+00:00",
-      "cached_ts": 1779237945.891859
-    },
-    "llama::what is my name": {
-      "answer": "I'm not able to provide information about your personal identity. Is there anything else I can help you with?",
-      "facts": [
-        {
-          "claim_text": "I'm not able to provide information about your personal identity.",
+          "claim_text": "Based on the live web search results, I will correct the draft answer as follows:  \"Who won the Premier League title this season?\"  According to the Wikipedia article, Arsenal won their fourth Premier League title and 14th English title with one match to spare, ending their 22-year Premier League drought since 2004.",
           "evidence_urls": [],
           "source_tools": [],
           "fact_quality_flags": {
@@ -154,7 +15,29 @@
           }
         },
         {
-          "claim_text": "Is there anything else I can help you with?",
+          "claim_text": "The search results confirm that Arsenal indeed won the Premier League title in the 2025-26 season.",
+          "evidence_urls": [],
+          "source_tools": [],
+          "fact_quality_flags": {
+            "has_source": false,
+            "multi_source": false,
+            "weak_evidence": true,
+            "needs_review": true
+          }
+        },
+        {
+          "claim_text": "The exact date of their win is not specified in the high-tier source, but it mentions that they won with one match to spare, following Manchester City's 1–1 draw away against Bournemouth on 19 May 2026.",
+          "evidence_urls": [],
+          "source_tools": [],
+          "fact_quality_flags": {
+            "has_source": false,
+            "multi_source": false,
+            "weak_evidence": true,
+            "needs_review": true
+          }
+        },
+        {
+          "claim_text": "The rest of the draft answer remains unchanged as it does not contain any specific factual claims that contradict or are unsupported by the high/medium-tier search results.",
           "evidence_urls": [],
           "source_tools": [],
           "fact_quality_flags": {
@@ -182,10 +65,171 @@
         },
         "total_sources": 0
       },
-      "model_key": "llama",
-      "original_question": "What is my name?",
-      "cached_at": "2026-05-20T02:04:29.023291+00:00",
-      "cached_ts": 1779242669.023298
+      "model_key": "llama32",
+      "original_question": "Premier League results from yesterday",
+      "cached_at": "2026-05-20T11:08:08.218790+00:00",
+      "cached_ts": 1779275288.218801
+    },
+    "qwen::premier league results from yesterday": {
+      "answer": "Based on the live web search results, I will correct the draft answer as follows:\n\n**Match 11:** The search results did not confirm this match.\n\n**Match 12:** Leeds United 1 - 0 Brighton & Hove Albion (per Wikipedia)\n\nThe other matches and their scores are not explicitly mentioned in the high-tier source. However, according to TNT Sports, here are some confirmed results from May 19, 2026:\n\n- Aston Villa 4 - 2 Liverpool\n- Manchester United 3 - 2 Nottingham Forest\n- Brentford 2 - 2 Crystal Palace\n- Wolverhampton Wanderers 1 - 1 Fulham\n- Sunderland 1 - 3 Everton\n- Newcastle United 3 - 1 West Ham United",
+      "facts": [
+        {
+          "claim_text": "Leeds United won against Brighton & Hove Albion with a score of 1 - 0 (per Wikipedia)",
+          "evidence_urls": [
+            "https://en.wikipedia.org/wiki/2026%E2%80%9327_Premier_League",
+            "https://www.tntsports.co.uk/football/premier-league/2025-2026/calendar-results.shtml"
+          ],
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "Aston Villa defeated Liverpool with a score of 4 - 2",
+          "evidence_urls": [
+            "https://www.tntsports.co.uk/football/premier-league/2025-2026/calendar-results.shtml",
+            "https://en.wikipedia.org/wiki/2026%E2%80%9327_Premier_League"
+          ],
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "Manchester United defeated Nottingham Forest with a score of 3 - 2",
+          "evidence_urls": [
+            "https://www.tntsports.co.uk/football/premier-league/2025-2026/calendar-results.shtml",
+            "https://en.wikipedia.org/wiki/2026%E2%80%9327_Premier_League"
+          ],
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "Brentford drew with Crystal Palace with a score of 2 - 2",
+          "evidence_urls": [
+            "https://www.tntsports.co.uk/football/premier-league/2025-2026/calendar-results.shtml",
+            "https://en.wikipedia.org/wiki/2026%E2%80%9327_Premier_League"
+          ],
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "Wolverhampton Wanderers drew with Fulham with a score of 1 - 1",
+          "evidence_urls": [
+            "https://www.tntsports.co.uk/football/premier-league/2025-2026/calendar-results.shtml",
+            "https://en.wikipedia.org/wiki/2026%E2%80%9327_Premier_League"
+          ],
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "Sunderland defeated Everton with a score of 3 - 1",
+          "evidence_urls": [
+            "https://www.tntsports.co.uk/football/premier-league/2025-2026/calendar-results.shtml",
+            "https://en.wikipedia.org/wiki/2026%E2%80%9327_Premier_League"
+          ],
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "Newcastle United defeated West Ham United with a score of 3 - 1",
+          "evidence_urls": [
+            "https://www.tntsports.co.uk/football/premier-league/2025-2026/calendar-results.shtml",
+            "https://en.wikipedia.org/wiki/2026%E2%80%9327_Premier_League"
+          ],
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        }
+      ],
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/2026%E2%80%9327_Premier_League",
+          "title": "2026–27 Premier League - Wikipedia",
+          "domain": "en.wikipedia.org",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "United F.C. Newcastle United F.C. Manchester United Manchester United F.C. Manchester United F.C. Manchester City Manchester City F.C. Manchester City F.C. Liverpool Liverpool F.C. Liverpool F.C. Leeds United Leeds United F.C. Leeds United F.C. Ipswich Town Ipswich Town F.C. Ipswich Town F.C. Fulham Fulham F.C. Fulham F.C. Everton Everton F.C. Everton F.C. Crystal Palace Crystal Palace F.C. Crysta",
+          "tier": "high"
+        },
+        {
+          "url": "https://www.tntsports.co.uk/football/premier-league/2025-2026/calendar-results.shtml",
+          "title": "Premier League 2025-2026 Fixtures & Results - Football Scores",
+          "domain": "www.tntsports.co.uk",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "# Premier League Fixtures and Results 2025/2026",
+          "tier": "low"
+        }
+      ],
+      "trust_signals": {
+        "citation_coverage": 1.0,
+        "avg_sources_per_claim": 2.0,
+        "multi_source_claim_ratio": 1.0,
+        "distinct_domain_count": 2,
+        "source_quality_score": 0.675,
+        "high_tier_ratio": 0.5,
+        "citation_strength": 1.0,
+        "tier_breakdown": {
+          "high": 1,
+          "medium": 0,
+          "low": 1,
+          "prediction": 0
+        },
+        "total_sources": 2
+      },
+      "model_key": "qwen",
+      "original_question": "Premier League results from yesterday",
+      "cached_at": "2026-05-20T11:16:33.516493+00:00",
+      "cached_ts": 1779275793.516501
     }
   }
 }
