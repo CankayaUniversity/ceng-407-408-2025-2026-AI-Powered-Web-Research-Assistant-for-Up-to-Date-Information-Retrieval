@@ -123,6 +123,11 @@ def api_delete_chat(chat_id: str):
     return {"ok": True}
 
 
+@app.delete("/api/chats")
+def api_delete_all_chats():
+    return {"ok": True, "deleted": chat_store.delete_all()}
+
+
 @app.post("/api/cache/clear")
 def api_clear_cache():
     cache_store.clear()
@@ -382,10 +387,12 @@ async def ask_agent_stream(
 
             yield _sse("extracting", {})
 
-            cleaned_answer = final_answer.replace("\n", " ")
+            # Pass the raw answer (with newlines) so fact_extraction can
+            # detect and strip the trailing "Sources:" markdown section
+            # before splitting into claims.
             extraction = await asyncio.to_thread(
                 extract_claims,
-                cleaned_answer,
+                final_answer,
                 tool_messages_collected,
             )
 

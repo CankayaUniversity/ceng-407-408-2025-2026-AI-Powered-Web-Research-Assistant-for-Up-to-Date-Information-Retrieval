@@ -103,6 +103,16 @@ submitBtn.addEventListener('click', handleSubmitClick);
 // Escape key shortcut — close any open modal first, otherwise stop the search
 document.addEventListener('keydown', (e) => {
   if (e.key !== 'Escape') return;
+  if (confirmModal && confirmModal.classList.contains('open')) {
+    e.preventDefault();
+    closeConfirm(false);
+    return;
+  }
+  if (modelPickerModal && modelPickerModal.classList.contains('open')) {
+    e.preventDefault();
+    closeModelPicker(null);
+    return;
+  }
   if (settingsModal && settingsModal.classList.contains('open')) {
     e.preventDefault();
     closeSettings();
@@ -374,10 +384,10 @@ async function openChat(chatId) {
     const turnEls = conversation.querySelectorAll('.turn');
     if (turnEls.length && chat.turns && chat.turns.length) {
       const lastTurnEl = turnEls[turnEls.length - 1];
-      const lastQ = chat.turns[chat.turns.length - 1].question;
+      const lastTurn = chat.turns[chat.turns.length - 1];
       const agentBlock = lastTurnEl.querySelector('.agent-block');
-      if (lastQ && agentBlock) {
-        agentBlock.appendChild(buildRegenerateButton(lastQ));
+      if (lastTurn && lastTurn.question && agentBlock) {
+        agentBlock.appendChild(buildRegenerateButton(lastTurn.question, lastTurn.model));
       }
     }
     if (isMobile()) closeSidebar();
@@ -388,7 +398,13 @@ async function openChat(chatId) {
 }
 
 async function deleteChat(chatId, title) {
-  const confirmed = confirm(`Delete "${title || 'this chat'}"? This cannot be undone.`);
+  const confirmed = await confirmDialog({
+    title: 'Delete chat?',
+    message: `"${title || 'This chat'}" will be permanently removed. This cannot be undone.`,
+    confirmLabel: 'Delete chat',
+    cancelLabel: 'Keep it',
+    danger: true,
+  });
   if (!confirmed) return;
   try {
     const res = await fetch(`/api/chats/${chatId}`, { method: 'DELETE' });
@@ -463,10 +479,10 @@ form.addEventListener('submit', (event) => {
 
 /* ----------------- regenerate ----------------- */
 
-function buildRegenerateButton(question) {
+function buildRegenerateButton(question, lastModelKey) {
   const btn = el('button', 'regenerate-btn');
   btn.type = 'button';
-  btn.title = 'Regenerate this answer with the currently-selected model';
+  btn.title = 'Regenerate this answer — pick a model';
   btn.setAttribute('aria-label', 'Regenerate answer');
   btn.innerHTML = `
     <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -477,9 +493,12 @@ function buildRegenerateButton(question) {
     <span>Regenerate</span>
   `;
   btn.dataset.question = question || '';
-  btn.addEventListener('click', () => {
-    if (btn.disabled) return;
-    regenerateLastTurn(btn.dataset.question);
+  btn.dataset.lastModel = lastModelKey || selectedModel || 'llama';
+  btn.addEventListener('click', async () => {
+    if (btn.disabled || isAsking) return;
+    const choice = await pickModel(btn.dataset.lastModel);
+    if (!choice) return;
+    regenerateLastTurn(btn.dataset.question, choice);
   });
   return btn;
 }
@@ -488,17 +507,14 @@ function removeAllRegenerateButtons() {
   conversation.querySelectorAll('.regenerate-btn').forEach((b) => b.remove());
 }
 
-function regenerateLastTurn(question) {
+function regenerateLastTurn(question, modelKey) {
   if (isAsking) return;
   if (!question || !question.trim()) return;
-  // Remove the current last turn from the DOM. The backend still has it
-  // until the new answer completes — chat_store.replace_last_turn does the
-  // swap atomically only on success, so a cancelled regenerate leaves the
-  // stored data intact (visible again on reload).
-  const turns = [...conversation.querySelectorAll('.turn')];
-  if (turns.length) turns[turns.length - 1].remove();
+  // Append-as-new-turn semantics: do NOT remove the previous turn, do NOT
+  // pass regenerate=true to the backend. The new attempt is rendered as a
+  // fresh turn below the existing one and stored as an additional turn.
   removeAllRegenerateButtons();
-  startResearch(question, { regenerate: true });
+  startResearch(question, { modelOverride: modelKey });
 }
 
 function buildBadges({ model, fromCache, memoryTurns }) {
@@ -1036,6 +1052,149 @@ function breakdownEmpty(name, scorePct, formula, explainer) {
   `;
 }
 
+/* ----------------- in-UI confirm modal ----------------- */
+
+let confirmModal = null;
+let confirmResolver = null;
+
+function confirmDialog({ title, message, confirmLabel, cancelLabel, danger } = {}) {
+  return new Promise((resolve) => {
+    closeConfirm(false);
+    confirmResolver = resolve;
+
+    const backdrop = el('div', 'modal-backdrop confirm-backdrop');
+    backdrop.addEventListener('click', () => closeConfirm(false));
+
+    const modal = el('div', 'modal confirm-modal');
+    modal.addEventListener('click', (e) => e.stopPropagation());
+
+    const confirmBtnClass = danger ? 'confirm-btn danger' : 'confirm-btn';
+    modal.innerHTML = `
+      <button class="modal-close" type="button" aria-label="Close">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+      <div class="modal-header">
+        <h2>${escapeHtml(title || 'Are you sure?')}</h2>
+        <p>${escapeHtml(message || '')}</p>
+      </div>
+      <div class="modal-body confirm-body">
+        <div class="confirm-actions">
+          <button type="button" class="confirm-btn cancel" id="confirm-cancel">${escapeHtml(cancelLabel || 'Cancel')}</button>
+          <button type="button" class="${confirmBtnClass}" id="confirm-ok">${escapeHtml(confirmLabel || 'Confirm')}</button>
+        </div>
+      </div>
+    `;
+
+    modal.querySelector('.modal-close').addEventListener('click', () => closeConfirm(false));
+    modal.querySelector('#confirm-cancel').addEventListener('click', () => closeConfirm(false));
+    modal.querySelector('#confirm-ok').addEventListener('click', () => closeConfirm(true));
+
+    backdrop.appendChild(modal);
+    document.body.appendChild(backdrop);
+    confirmModal = backdrop;
+    void backdrop.offsetWidth;
+    backdrop.classList.add('open');
+    document.body.classList.add('modal-open');
+    requestAnimationFrame(() => modal.querySelector('#confirm-ok').focus());
+  });
+}
+
+function closeConfirm(result) {
+  if (confirmModal) {
+    confirmModal.remove();
+    confirmModal = null;
+  }
+  releaseBodyScrollLock();
+  if (confirmResolver) {
+    const r = confirmResolver;
+    confirmResolver = null;
+    r(!!result);
+  }
+}
+
+function releaseBodyScrollLock() {
+  const stillOpen =
+    (settingsModal && settingsModal.classList.contains('open')) ||
+    (trustExplainerModal && trustExplainerModal.classList.contains('open')) ||
+    (answerBreakdownModal && answerBreakdownModal.classList.contains('open')) ||
+    (modelPickerModal && modelPickerModal.classList.contains('open')) ||
+    (confirmModal && confirmModal.classList.contains('open'));
+  if (!stillOpen) document.body.classList.remove('modal-open');
+}
+
+/* ----------------- model picker (for regenerate) ----------------- */
+
+let modelPickerModal = null;
+let modelPickerResolver = null;
+
+const MODEL_OPTIONS = [
+  { key: 'llama',   label: 'Llama 3.1', dot: 'dot-llama',   note: 'Balanced reasoning' },
+  { key: 'qwen',    label: 'Qwen 2.5',  dot: 'dot-qwen',    note: 'Best speed / quality on this hardware' },
+  { key: 'llama32', label: 'Llama 3.2', dot: 'dot-llama32', note: 'Faster, lower quality' },
+];
+
+function pickModel(currentKey) {
+  return new Promise((resolve) => {
+    closeModelPicker(null);
+    modelPickerResolver = resolve;
+
+    const backdrop = el('div', 'modal-backdrop model-picker-backdrop');
+    backdrop.addEventListener('click', () => closeModelPicker(null));
+
+    const modal = el('div', 'modal model-picker-modal');
+    modal.addEventListener('click', (e) => e.stopPropagation());
+
+    const options = MODEL_OPTIONS.map((opt) => `
+      <button type="button" class="model-pick-option${opt.key === currentKey ? ' current' : ''}" data-model="${opt.key}">
+        <span class="model-pick-dot ${opt.dot}"></span>
+        <span class="model-pick-text">
+          <span class="model-pick-label">${escapeHtml(opt.label)}</span>
+          <span class="model-pick-note">${escapeHtml(opt.note)}${opt.key === currentKey ? ' · used last time' : ''}</span>
+        </span>
+        <svg class="model-pick-chevron" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+      </button>
+    `).join('');
+
+    modal.innerHTML = `
+      <button class="modal-close" type="button" aria-label="Close">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+      <div class="modal-header">
+        <h2>Regenerate with which model?</h2>
+        <p>The previous answer stays in place. The new attempt is appended as a fresh turn in this chat.</p>
+      </div>
+      <div class="modal-body model-picker-body">
+        ${options}
+      </div>
+    `;
+
+    modal.querySelector('.modal-close').addEventListener('click', () => closeModelPicker(null));
+    modal.querySelectorAll('.model-pick-option').forEach((btn) => {
+      btn.addEventListener('click', () => closeModelPicker(btn.dataset.model));
+    });
+
+    backdrop.appendChild(modal);
+    document.body.appendChild(backdrop);
+    modelPickerModal = backdrop;
+    void backdrop.offsetWidth;
+    backdrop.classList.add('open');
+    document.body.classList.add('modal-open');
+  });
+}
+
+function closeModelPicker(choice) {
+  if (modelPickerModal) {
+    modelPickerModal.remove();
+    modelPickerModal = null;
+  }
+  releaseBodyScrollLock();
+  if (modelPickerResolver) {
+    const r = modelPickerResolver;
+    modelPickerResolver = null;
+    r(choice || null);
+  }
+}
+
 /* ----------------- settings ----------------- */
 
 let settingsModal = null;
@@ -1084,6 +1243,17 @@ async function clearAnswerCache() {
     return await res.json();
   } catch (err) {
     console.error('Failed to clear cache:', err);
+    return null;
+  }
+}
+
+async function deleteAllChats() {
+  try {
+    const res = await fetch('/api/chats', { method: 'DELETE' });
+    if (!res.ok) throw new Error('failed');
+    return await res.json();
+  } catch (err) {
+    console.error('Failed to delete all chats:', err);
     return null;
   }
 }
@@ -1179,6 +1349,16 @@ function buildSettingsModal(settings, defaults) {
 
       <div class="setting-row">
         <div class="setting-label">
+          <span class="setting-name">Delete all chats</span>
+          <span class="setting-desc">Permanently removes every chat in <code>chats.json</code>. The answer cache is not affected.</span>
+        </div>
+        <div class="setting-control">
+          <button class="setting-action-btn danger" id="setting-delete-all-chats" type="button">Delete all chats</button>
+        </div>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-label">
           <span class="setting-name">Reset settings</span>
           <span class="setting-desc">Restore every setting above to its default value.</span>
         </div>
@@ -1210,13 +1390,46 @@ function buildSettingsModal(settings, defaults) {
   });
 
   modal.querySelector('#setting-clear-cache').addEventListener('click', async () => {
-    if (!confirm('Wipe the entire answer cache? This cannot be undone.')) return;
+    const ok = await confirmDialog({
+      title: 'Clear answer cache?',
+      message: 'Wipes the entire answer cache. Chat history is not affected. This cannot be undone.',
+      confirmLabel: 'Clear cache',
+      cancelLabel: 'Keep cache',
+      danger: true,
+    });
+    if (!ok) return;
     const result = await clearAnswerCache();
     showSettingsToast(modal, result ? 'Cache cleared.' : 'Failed to clear cache.', result ? 'success' : 'error');
   });
 
+  modal.querySelector('#setting-delete-all-chats').addEventListener('click', async () => {
+    const ok = await confirmDialog({
+      title: 'Delete every chat?',
+      message: 'All chats and their turns will be permanently removed. This cannot be undone.',
+      confirmLabel: 'Delete everything',
+      cancelLabel: 'Keep chats',
+      danger: true,
+    });
+    if (!ok) return;
+    const result = await deleteAllChats();
+    if (result) {
+      if (activeChatId) showEmptyState();
+      await loadChats(searchInput.value.trim());
+      const n = result.deleted || 0;
+      showSettingsToast(modal, `Deleted ${n} chat${n === 1 ? '' : 's'}.`, 'success');
+    } else {
+      showSettingsToast(modal, 'Failed to delete chats.', 'error');
+    }
+  });
+
   modal.querySelector('#setting-reset').addEventListener('click', async () => {
-    if (!confirm('Reset all settings to their defaults?')) return;
+    const ok = await confirmDialog({
+      title: 'Reset all settings?',
+      message: 'Every setting in this panel is restored to its default value.',
+      confirmLabel: 'Reset settings',
+      cancelLabel: 'Cancel',
+    });
+    if (!ok) return;
     const data = await resetSettings();
     if (!data) {
       showSettingsToast(modal, 'Failed to reset.', 'error');
@@ -1420,7 +1633,9 @@ function renderHistoricalTurn(turn) {
 
 function startResearch(question, options) {
   const opts = options || {};
-  const isRegenerate = !!opts.regenerate;
+  const modelOverride = opts.modelOverride || null;
+  const isRegenerate = !!modelOverride;
+  const modelForRequest = modelOverride || selectedModel;
   isAsking = true;
   setSubmitMode('stop');
   if (!isRegenerate) {
@@ -1463,9 +1678,11 @@ function startResearch(question, options) {
   conversation.appendChild(turn);
   scrollToBottom();
 
-  const params = new URLSearchParams({ question, model: selectedModel });
+  const params = new URLSearchParams({ question, model: modelForRequest });
   if (activeChatId) params.set('chat_id', activeChatId);
-  if (isRegenerate) params.set('regenerate', 'true');
+  // Regenerate-as-new-turn intentionally does NOT set regenerate=true —
+  // the backend should treat it as a normal appended turn (separate cache key,
+  // its own row in chat history), preserving the previous attempt.
   const url = `/ask_agent_stream?${params.toString()}`;
 
   const es = new EventSource(url);
@@ -1474,7 +1691,7 @@ function startResearch(question, options) {
   const pendingTools = new Map();
   let streamedFromCache = false;
   let streamedMemoryTurns = 0;
-  let streamedModel = selectedModel;
+  let streamedModel = modelForRequest;
 
   function ensureBadges() {
     if (badgesEl) {
@@ -1639,7 +1856,7 @@ function startResearch(question, options) {
     input.focus();
     // Stamp a regenerate button on the just-completed turn.
     removeAllRegenerateButtons();
-    agentBlock.appendChild(buildRegenerateButton(question));
+    agentBlock.appendChild(buildRegenerateButton(question, streamedModel));
   });
 
   es.addEventListener('error', (event) => {

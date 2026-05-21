@@ -1,18 +1,51 @@
 {
   "entries": {
-    "llama32::who is the prime minister of france": {
-      "answer": "Here is the final answer:\n\n* The current Prime Minister of France is Gabriel Attal.\n  Source:\n  - https://en.wikipedia.org/wiki/2027_French_presidential_election\n  - https://en.wikipedia.org/wiki/List_of_prime_ministers_of_France",
+    "llama32::galatasaray top scorer this season": {
+      "answer": "Here is a concise bullet list of the top scorer for Galatasaray this season:\n\n* Victor Osimhen is Galatasaray's top scorer this season with 10 goals in all competitions.\n\t+ Verified by: \n\t\t- StatMuse\n\t\t- Sports Mole\n\t\t- Statbunker",
       "facts": [
         {
-          "claim_text": "Here is the final answer:  * The current Prime Minister of France is Gabriel Attal.",
+          "claim_text": "Here is a concise bullet list of the top scorer for Galatasaray this season:",
           "evidence_urls": [
-            "https://en.wikipedia.org/wiki/2027_French_presidential_election",
-            "https://en.wikipedia.org/wiki/List_of_prime_ministers_of_France",
-            "https://en.wikipedia.org/wiki/Prime_Minister_of_France"
+            "https://en.wikipedia.org/wiki/List_of_Galatasaray_S.K._records_and_statistics",
+            "https://en.wikipedia.org/wiki/List_of_Süper_Lig_top_scorers",
+            "https://www.sofascore.com/football/team/galatasaray/3061"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "* Victor Osimhen is Galatasaray's top scorer this season with 10 goals in all competitions.",
+          "evidence_urls": [
+            "https://en.wikipedia.org/wiki/List_of_Galatasaray_S.K._records_and_statistics",
+            "https://en.wikipedia.org/wiki/List_of_Süper_Lig_top_scorers",
+            "https://www.statmuse.com/fc/ask/galatasaray-top-goal-scorer-this-season?l=ucl"
           ],
           "source_tools": [
             "duckduckgo_results_json",
             "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "+ Verified by:",
+          "evidence_urls": [
+            "https://en.wikipedia.org/wiki/List_of_Galatasaray_S.K._records_and_statistics",
+            "https://en.wikipedia.org/wiki/List_of_Süper_Lig_top_scorers"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json"
           ],
           "fact_quality_flags": {
             "has_source": true,
@@ -22,15 +55,49 @@
           }
         },
         {
-          "claim_text": "Source:   - https://en.wikipedia.org/wiki/2027_French_presidential_election   - https://en.wikipedia.org/wiki/List_of_prime_ministers_of_France",
+          "claim_text": "- StatMuse",
           "evidence_urls": [
-            "https://en.wikipedia.org/wiki/2027_French_presidential_election",
-            "https://en.wikipedia.org/wiki/List_of_prime_ministers_of_France",
-            "https://en.wikipedia.org/wiki/Prime_Minister_of_France"
+            "https://www.statmuse.com/fc/ask/galatasaray-top-goal-scorer-this-season?l=ucl",
+            "https://en.wikipedia.org/wiki/List_of_Galatasaray_S.K._records_and_statistics",
+            "https://en.wikipedia.org/wiki/List_of_Süper_Lig_top_scorers"
           ],
           "source_tools": [
             "duckduckgo_results_json",
             "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "- Sports Mole",
+          "evidence_urls": [
+            "https://www.sportsmole.co.uk/football/galatasaray/2023-24/top-scorers.html",
+            "https://www.sportsmole.co.uk/football/galatasaray/2025-26/top-scorers.html",
+            "https://en.wikipedia.org/wiki/List_of_Galatasaray_S.K._records_and_statistics"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "- Statbunker",
+          "evidence_urls": [
+            "https://en.wikipedia.org/wiki/List_of_Galatasaray_S.K._records_and_statistics",
+            "https://en.wikipedia.org/wiki/List_of_Süper_Lig_top_scorers"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json"
           ],
           "fact_quality_flags": {
             "has_source": true,
@@ -42,867 +109,99 @@
       ],
       "sources": [
         {
-          "url": "https://en.wikipedia.org/wiki/List_of_prime_ministers_of_France",
-          "title": "List of prime ministers of France - Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/List_of_Galatasaray_S.K._records_and_statistics",
+          "title": "List of Galatasaray S.K. records and statistics - Wikipedia",
           "domain": "en.wikipedia.org",
           "source_tools": [
-            "tavily_search_results_json"
+            "duckduckgo_results_json"
           ],
           "relevance_score": null,
-          "snippet": "The head of the government of France has been called the prime minister of France (French: Premier ministre) since 1959, when Michel Debré became the first officeholder appointed under the Fifth Republic. During earlier periods of French history, the country's head of government was known by different titles. As was common in European democracies of the 1815–1958 period (the Bourbon Restoration an",
+          "snippet": "2 weeks ago - Most goals scored in one Süper Lig season: 39 (Süper Lig Record) – Tanju Çolak, 1987–88 European Golden Shoe winner · Longest scoring run in Süper Lig: 13 games (Süper Lig Record) – Mauro Icardi, 2023–24 · Here is a list of players who have finished as the club top scorers for ...",
           "tier": "high"
         },
         {
-          "url": "https://kids.kiddle.co/List_of_prime_ministers_of_France",
-          "title": "List of prime ministers of France Facts for Kids",
-          "domain": "kids.kiddle.co",
+          "url": "https://en.wikipedia.org/wiki/List_of_Süper_Lig_top_scorers",
+          "title": "List of Süper Lig top scorers - Wikipedia",
+          "domain": "en.wikipedia.org",
           "source_tools": [
-            "tavily_search_results_json"
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "3 weeks ago - Fenerbahçe are the only club in Süper Lig history to have brought forth the top scorer in four consecutive seasons, from 1991–92 to the 1994–95 season. Çolak won the European Golden Shoe for his 39 for Galatasaray in 1987–88 and came second with 31 goals in 1990–91.",
+          "tier": "high"
+        },
+        {
+          "url": "https://www.sofascore.com/football/team/galatasaray/3061",
+          "title": "Galatasaray live score, schedule & player stats | Sofascore",
+          "domain": "www.sofascore.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "4 weeks ago - Galatasaray top scorers list is updated live during every match. You can click on players from the roster above and see available personal information such as nationality, date of birth, height, preferred foot, position, player value, transfer history etc. For today’s football schedule and results visit our football live score page. ... Galatasaray live scores, players, season ...",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.sportsmole.co.uk/football/galatasaray/2023-24/top-scorers.html",
+          "title": "Galatasaray 2023-24 Top Scorers - Football - Sports Mole",
+          "domain": "www.sportsmole.co.uk",
+          "source_tools": [
+            "duckduckgo_results_json"
           ],
           "relevance_score": null,
           "snippet": "",
           "tier": "low"
         },
         {
-          "url": "https://en.wikipedia.org/wiki/Prime_Minister_of_France",
-          "title": "Prime Minister of France - Wikipedia",
-          "domain": "en.wikipedia.org",
+          "url": "https://www.topscorersfootball.com/super-lig",
+          "title": "Top scorers Süper Lig, Türkiye 2025/2026",
+          "domain": "www.topscorersfootball.com",
           "source_tools": [
             "duckduckgo_results_json"
           ],
           "relevance_score": null,
-          "snippet": "Prime Minister of the French Republic. Premier ministre de la République française.The president appoints the prime minister but cannot dismiss them, only request their resignation. The Government of France, including the prime minister, can be dismissed by the National Assembly.",
-          "tier": "high"
-        },
-        {
-          "url": "https://en.wikipedia.org/wiki/2027_French_presidential_election",
-          "title": "2027 French presidential election - Wikipedia",
-          "domain": "en.wikipedia.org",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "Gabriel Attal, Prime Minister of France (2024); Deputy for Hauts-de-Seine's 10th constituency (2017–2018; 2022; 2024–present); General Secretary of Renaissance (2024–present)[63].",
-          "tier": "high"
-        },
-        {
-          "url": "https://grokipedia.com/page/Prime_Minister_of_France",
-          "title": "Prime Minister of France",
-          "domain": "grokipedia.com",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "Hôtel Matignon, official residence of the Prime Minister of France) The Prime Minister of France (Premier ministre de la République française) is the head of government of...",
+          "snippet": "1 week ago - Top scorer list leader: Paul Onuachu, Trabzonspor - 22 goals · Most assists: Marco Asensio, Fenerbahce - 12 assists ... This is the current top scorer list for the Süper Lig, showing the 29 highest goalscorers right now.",
           "tier": "low"
         },
         {
-          "url": "https://www.expatica.com/fr/living/gov-law-admin/french-government-107814/",
-          "title": "The French government: politics in France | Expatica",
-          "domain": "www.expatica.com",
+          "url": "https://www.statmuse.com/fc/ask/galatasaray-top-goal-scorer-this-season?l=ucl",
+          "title": "Galatasaray Top Goal Scorer This Season - StatMuse",
+          "domain": "www.statmuse.com",
           "source_tools": [
-            "duckduckgo_results_json"
+            "tavily_search_results_json"
           ],
           "relevance_score": null,
-          "snippet": "The current prime minister of France: François Bayrou. Naturally, the new prime minister should have hailed from the NPF, which had garnered the most votes. However, the RN steadfastly refused to work with the leftist party, which was probably quite content not to be picked anyway.",
+          "snippet": "Victor Osimhen has the most goals by a Galatasaray player in the Champions League this season, with 7 goals.",
           "tier": "low"
         },
         {
-          "url": "https://www.worldatlas.com/articles/presidents-of-france-since-1959.html",
-          "title": "Presidents Of France Since 1959",
-          "domain": "www.worldatlas.com",
+          "url": "https://www.sportsmole.co.uk/football/galatasaray/2025-26/top-scorers.html",
+          "title": "Galatasaray 2025-26 Top Scorers - Football - Sports Mole",
+          "domain": "www.sportsmole.co.uk",
           "source_tools": [
-            "duckduckgo_results_json"
+            "tavily_search_results_json"
           ],
           "relevance_score": null,
-          "snippet": "The French President is directly elected to be the nation's Head of State, and makes many of the country's most important diplomatic and national security decisions. The French President’s greatest power is that he is the only person or institution that can appoint a Prime Minister.",
+          "snippet": "Galatasaray: 2025-26 (Turkish Super Lig) ; 1 · Victor Osimhen. Last Goal: vs. Istanbul Basaksehir (H, Mar 14, 2026) Braces: 1, Hat-tricks: 0 ; 2 · Mauro Icardi.",
+          "tier": "low"
+        },
+        {
+          "url": "https://statbunker.com/competitions/TopGoalScorers?comp_id=527&club_id=119",
+          "title": "Top goal scorers Galatasaray SK UEFA Champions League 23/24",
+          "domain": "statbunker.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Kerem Akturkoglu. 2, - ; Hakim Ziyech. 2, 1 ; Mauro Icardi. 2, 1 ; Wilfred Zaha. 1, 1",
           "tier": "low"
         }
       ],
       "trust_signals": {
         "citation_coverage": 1.0,
-        "avg_sources_per_claim": 3.0,
-        "multi_source_claim_ratio": 0.0,
-        "distinct_domain_count": 5,
-        "source_quality_score": 0.629,
-        "high_tier_ratio": 0.429,
-        "citation_strength": 1.0,
-        "tier_breakdown": {
-          "high": 3,
-          "medium": 0,
-          "low": 4,
-          "prediction": 0
-        },
-        "total_sources": 7
-      },
-      "model_key": "llama32",
-      "original_question": "Who is the Prime Minister of France?",
-      "cached_at": "2026-05-20T18:54:44.651717+00:00",
-      "cached_ts": 1779303284.651724
-    },
-    "qwen::who is the prime minister of france": {
-      "answer": "- The current Prime Minister of France is Sébastien Lecornu. He has been serving since September 2025.\n- For more detailed information on his tenure or other prime ministers, you can refer to the Wikipedia page: [List of Prime Ministers of France](https://en.wikipedia.org/wiki/List_of_prime_ministers_of_France).\n\nThis information is based on recent updates and can be subject to change.",
-      "facts": [
-        {
-          "claim_text": "- The current Prime Minister of France is Sébastien Lecornu.",
-          "evidence_urls": [
-            "https://en.wikipedia.org/wiki/Sébastien_Lecornu",
-            "https://en.wikipedia.org/wiki/List_of_prime_ministers_of_France",
-            "https://en.wikipedia.org/wiki/Prime_Minister_of_France"
-          ],
-          "source_tools": [
-            "duckduckgo_results_json",
-            "tavily_search_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": false,
-            "weak_evidence": false,
-            "needs_review": false
-          }
-        },
-        {
-          "claim_text": "He has been serving since September 2025.",
-          "evidence_urls": [
-            "https://en.wikipedia.org/wiki/Sébastien_Lecornu",
-            "https://en.wikipedia.org/wiki/List_of_prime_ministers_of_France",
-            "https://en.wikipedia.org/wiki/Prime_Minister_of_France"
-          ],
-          "source_tools": [
-            "duckduckgo_results_json",
-            "tavily_search_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": false,
-            "weak_evidence": false,
-            "needs_review": false
-          }
-        },
-        {
-          "claim_text": "- For more detailed information on his tenure or other prime ministers, you can refer to the Wikipedia page: [List of Prime Ministers of France](https://en.wikipedia.org/wiki/List_of_prime_ministers_of_France).",
-          "evidence_urls": [
-            "https://en.wikipedia.org/wiki/List_of_prime_ministers_of_France",
-            "https://en.wikipedia.org/wiki/Prime_Minister_of_France",
-            "https://en.wikipedia.org/wiki/Sébastien_Lecornu"
-          ],
-          "source_tools": [
-            "duckduckgo_results_json",
-            "tavily_search_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": false,
-            "weak_evidence": false,
-            "needs_review": false
-          }
-        },
-        {
-          "claim_text": "This information is based on recent updates and can be subject to change.",
-          "evidence_urls": [
-            "https://en.wikipedia.org/wiki/List_of_prime_ministers_of_France",
-            "https://en.wikipedia.org/wiki/Prime_Minister_of_France",
-            "https://en.wikipedia.org/wiki/Sébastien_Lecornu"
-          ],
-          "source_tools": [
-            "duckduckgo_results_json",
-            "tavily_search_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": false,
-            "weak_evidence": false,
-            "needs_review": false
-          }
-        }
-      ],
-      "sources": [
-        {
-          "url": "https://en.wikipedia.org/wiki/List_of_prime_ministers_of_France",
-          "title": "List of prime ministers of France - Wikipedia",
-          "domain": "en.wikipedia.org",
-          "source_tools": [
-            "tavily_search_results_json",
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "The head of the government of France has been called the prime minister of France (French: Premier ministre) since 1959, when Michel Debré became the first officeholder appointed under the Fifth Republic. During earlier periods of French history, the country's head of government was known by different titles. As was common in European democracies of the 1815–1958 period (the Bourbon Restoration an",
-          "tier": "high"
-        },
-        {
-          "url": "https://kids.kiddle.co/List_of_prime_ministers_of_France",
-          "title": "List of prime ministers of France Facts for Kids",
-          "domain": "kids.kiddle.co",
-          "source_tools": [
-            "tavily_search_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "",
-          "tier": "low"
-        },
-        {
-          "url": "https://en.wikipedia.org/wiki/Prime_Minister_of_France",
-          "title": "Prime Minister of France - Wikipedia",
-          "domain": "en.wikipedia.org",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "3 weeks ago - The prime minister of France (French: Premier ministre français), officially the prime minister of the French Republic (Premier ministre de la République française), is the nominal head of government of the French Republic and leader of its Council of Ministers, although the officeholder does not chair its meetings, as the president does.",
-          "tier": "high"
-        },
-        {
-          "url": "https://en.wikipedia.org/wiki/Sébastien_Lecornu",
-          "title": "Sébastien Lecornu - Wikipedia",
-          "domain": "en.wikipedia.org",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "2 weeks ago - Sébastien Lecornu (French: [sebastjɛ̃ ləkɔʁny]; born 11 June 1986) is a French politician who has served as Prime Minister of France since September 2025. Positioned on the right of the ideological political spectrum, Lecornu has promoted Gaullist, Séguinist, and socially conservative ...",
-          "tier": "high"
-        },
-        {
-          "url": "https://en.wikipedia.org/wiki/Emmanuel_Macron",
-          "title": "Emmanuel Macron - Wikipedia",
-          "domain": "en.wikipedia.org",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "3 days ago - He appointed Patrick Strzoda as his chief of staff and Ismaël Emelien as his special advisor for strategy, communication and speeches. On 15 May, he appointed Édouard Philippe of the Republicans as Prime Minister.",
-          "tier": "high"
-        },
-        {
-          "url": "https://en.wikipedia.org/wiki/President_of_France",
-          "title": "President of France - Wikipedia",
-          "domain": "en.wikipedia.org",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "1 week ago - Although the Prime Minister of France, through their government as well as Parliament, oversees much of the nation's actual day-to-day domestic affairs, the French president wields significant influence and authority, especially in the fields of national security and foreign policy.",
-          "tier": "high"
-        }
-      ],
-      "trust_signals": {
-        "citation_coverage": 1.0,
-        "avg_sources_per_claim": 3.0,
-        "multi_source_claim_ratio": 0.0,
-        "distinct_domain_count": 2,
-        "source_quality_score": 0.892,
-        "high_tier_ratio": 0.833,
-        "citation_strength": 1.0,
-        "tier_breakdown": {
-          "high": 5,
-          "medium": 0,
-          "low": 1,
-          "prediction": 0
-        },
-        "total_sources": 6
-      },
-      "model_key": "qwen",
-      "original_question": "Who is the Prime Minister of France?",
-      "cached_at": "2026-05-20T18:56:50.802108+00:00",
-      "cached_ts": 1779303410.80212
-    },
-    "qwen::what is the latest iphone model as of today": {
-      "answer": "Based on the information gathered from multiple sources:\n\n- As of 2026, the latest iPhone models are the iPhone 17 series (iPhone 17, iPhone 17 Air, iPhone 17 Pro, and iPhone 17 Pro Max), which were released in September 2025.\n- The iPhone 18 model is rumored to be coming out in 2026 but specific details are not yet confirmed.\n\nKey sources:\n- Wikipedia: https://en.wikipedia.org/wiki/List_of_iPhone_models\n- Apple's official website: https://www.apple.com/iphone/\n- MacRumors: https://www.macrumors.com/roundup/iphone-18/\n\nThe iPhone 17 series is the current latest model as of today, 2026-05-20.",
-      "facts": [
-        {
-          "claim_text": "Based on the information gathered from multiple sources:  - As of 2026, the latest iPhone models are the iPhone 17 series (iPhone 17, iPhone 17 Air, iPhone 17 Pro, and iPhone 17 Pro Max), which were released in September 2025.",
-          "evidence_urls": [
-            "https://en.wikipedia.org/wiki/List_of_iPhone_models",
-            "https://www.macrumors.com/roundup/iphone-18/",
-            "https://tech.yahoo.com/phones/breaking-news/article/the-new-iphone-ultra-and-iphone-18-lineup-everything-you-need-to-know-about-apples-rumored-2026-launches-175120818.html"
-          ],
-          "source_tools": [
-            "duckduckgo_results_json",
-            "tavily_search_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": true,
-            "weak_evidence": false,
-            "needs_review": false
-          }
-        },
-        {
-          "claim_text": "- The iPhone 18 model is rumored to be coming out in 2026 but specific details are not yet confirmed.",
-          "evidence_urls": [
-            "https://en.wikipedia.org/wiki/List_of_iPhone_models",
-            "https://www.hepsiburada.com/iphone-ios-telefonlar-c-60005202",
-            "https://www.macrumors.com/roundup/iphone-18/"
-          ],
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": true,
-            "weak_evidence": false,
-            "needs_review": false
-          }
-        },
-        {
-          "claim_text": "Key sources: - Wikipedia: https://en.wikipedia.org/wiki/List_of_iPhone_models - Apple's official website: https://www.apple.com/iphone/ - MacRumors: https://www.macrumors.com/roundup/iphone-18/  The iPhone 17 series is the current latest model as of today, 2026-05-20.",
-          "evidence_urls": [
-            "https://en.wikipedia.org/wiki/List_of_iPhone_models",
-            "https://www.macrumors.com/roundup/iphone-18/",
-            "https://www.donanimhaber.com/dunyanin-en-iyi-telefonlari-iste-markalar-modeller-ve-fiyatlar--169016"
-          ],
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": true,
-            "weak_evidence": false,
-            "needs_review": false
-          }
-        }
-      ],
-      "sources": [
-        {
-          "url": "https://en.wikipedia.org/wiki/List_of_iPhone_models",
-          "title": "List of iPhone Models - Wikipedia",
-          "domain": "en.wikipedia.org",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "Over the years, Apple has released numerous models, each iteration bringing changes in hardware, software, performance and design. As of 2026, the most recent iPhone models are the iPhone 17, iPhone Air, iPhone 17 Pro, and iPhone 17 Pro Max, released on September 19, 2025...",
-          "tier": "high"
-        },
-        {
-          "url": "https://www.macworld.com/article/2953687/iphone-18-pro-2026-release-date-design-specs-rumors.html",
-          "title": "Macworld | iPhone 18 Pro & Max Leaks: What’s Changing This Year",
-          "domain": "www.macworld.com",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "Here’s a quick summary of what all the rumors and leaks say to expect from the iPhone 18 Pro and Pro Max in 2026.",
-          "tier": "low"
-        },
-        {
-          "url": "https://www.hepsiburada.com/iphone-ios-telefonlar-c-60005202",
-          "title": "iPhone Fiyatları 2026 | Tüm Modeller & Taksit Seçenekleri",
-          "domain": "www.hepsiburada.com",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "Siz de farklı serilere ait modelleri inceleyebilir, dilerseniz iPhone 13 Pro Max modelleri arasından ihtiyacınıza en uygun seçeneği belirleyebilirsiniz.",
-          "tier": "low"
-        },
-        {
-          "url": "https://www.macrumors.com/roundup/iphone-18/",
-          "title": "MacRumors | iPhone 18: Rumors and Release Date",
-          "domain": "www.macrumors.com",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "The standard iPhone 18 could be upgraded to 12GB RAM in 2026, with all iPhone 18 models (including the iPhone Fold) to feature 12GB RAM.",
-          "tier": "low"
-        },
-        {
-          "url": "https://www.donanimhaber.com/dunyanin-en-iyi-telefonlari-iste-markalar-modeller-ve-fiyatlar--169016",
-          "title": "Dünyanın En İyi Telefonları! İşte Markalar, Modeller ve Fiyatlar",
-          "domain": "www.donanimhaber.com",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "Peki 2026'da en iyi telefonlar hangileri? İşte dünyanın en iyi telefon markaları ve modelleri sıralamasıApple’ın yeni amiral gemisi iPhone 17 Pro Max, satın alınabilecek en iyi akıllı telefon modellerinin başlarında yer alıyor.",
-          "tier": "low"
-        },
-        {
-          "url": "https://tech.yahoo.com/phones/breaking-news/article/the-new-iphone-ultra-and-iphone-18-lineup-everything-you-need-to-know-about-apples-rumored-2026-launches-175120818.html",
-          "title": "The new iPhone Ultra and iPhone 18 lineup: Everything you need to know about Apple's rumored 2026 launches",
-          "domain": "tech.yahoo.com",
-          "source_tools": [
-            "tavily_search_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "September 2026: Expect the iPhone 18 Pro, Pro Max and iPhone Fold to be announced in September, MacRumors reports. However, it's possible the foldable iPhone won't ship until as late as December. However, other reports suggest it's on track for a September launch, though progress has reportedly been stalled due to hinge issues.",
-          "tier": "low"
-        },
-        {
-          "url": "https://setapp.com/how-to/every-iphone-release-in-chronological-order?srsltid=AfmBOop6q4OXDn2o_O7qu2JlybiiYhdrIqwBGJWRdw3W8SqjeIR38wkq",
-          "title": "iPhone release date in order: Apple iPhone releases year by year",
-          "domain": "setapp.com",
-          "source_tools": [
-            "tavily_search_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "September 20, 2024: The iPhone 16 came out on September 20, 2024, with pre-orders starting September 13, marking Apple's entry into the AI-powered smartphone era. Therefore, it's no surprise that Apple centered the iPhone 16 lineup around Apple Intelligence while also rolling out some notable upgrades in other areas. [...] ### What are the current iPhone models?",
-          "tier": "low"
-        },
-        {
-          "url": "https://www.apple.com/iphone/",
-          "title": "iPhone - Apple",
-          "domain": "www.apple.com",
-          "source_tools": [
-            "tavily_search_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "An array of iPhone 17 and 17 Pro devices each with a different screen showcasing iOS 26 and Apple Intelligence features",
-          "tier": "low"
-        }
-      ],
-      "trust_signals": {
-        "citation_coverage": 1.0,
-        "avg_sources_per_claim": 3.0,
-        "multi_source_claim_ratio": 1.0,
-        "distinct_domain_count": 8,
-        "source_quality_score": 0.431,
-        "high_tier_ratio": 0.125,
-        "citation_strength": 1.0,
-        "tier_breakdown": {
-          "high": 1,
-          "medium": 0,
-          "low": 7,
-          "prediction": 0
-        },
-        "total_sources": 8
-      },
-      "model_key": "qwen",
-      "original_question": "What is the latest iPhone model as of today?",
-      "cached_at": "2026-05-20T19:00:47.485862+00:00",
-      "cached_ts": 1779303647.485869
-    },
-    "qwen::what major world news happened in the last 24 48 hours": {
-      "answer": "Based on the recent web searches, here are some major world news items from the last 24–48 hours:\n\n- **Mango Founder's Son Arrested**: The son of Isak Andic, billionaire founder of the Spanish fashion brand Mango, was arrested in Spain for allegedly playing a role in his December 2024 death. (Source: CBS News)\n  \n- **U.K. Prime Minister Chaos**: Britain has seen six prime ministers in less than ten years, including one who lasted only 45 days. (Source: CBS News)\n\n- **Man Killed by Mother Bear with Cubs in Bulgaria**: A rare attack where a man was killed by a mother bear and her cubs in Bulgaria. (Source: CBS News)\n\n- **Raúl Castro Indictment**: Former Cuban President Raúl Castro faces an indictment, though no specific details were provided. (Source: CBS News)\n\nFor more detailed information on these or other recent news items, you can visit the following sources:\n- [CBS News](https://www.cbsnews.com/world/)\n- [Reuters](https://www.reuters.com/world/)\n- [Al Jazeera](https://www.aljazeera.com/news/)",
-      "facts": [
-        {
-          "claim_text": "Based on the recent web searches, here are some major world news items from the last 24–48 hours:  - **Mango Founder's Son Arrested**: The son of Isak Andic, billionaire founder of the Spanish fashion brand Mango, was arrested in Spain for allegedly playing a role in his December 2024 death.",
-          "evidence_urls": [
-            "https://www.reuters.com/world/",
-            "https://www.cbsnews.com/world/",
-            "https://www.aljazeera.com/news/"
-          ],
-          "source_tools": [
-            "duckduckgo_results_json",
-            "tavily_search_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": true,
-            "weak_evidence": false,
-            "needs_review": false
-          }
-        },
-        {
-          "claim_text": "(Source: CBS News)    - **U.K.",
-          "evidence_urls": [
-            "https://www.reuters.com/world/",
-            "https://www.aljazeera.com/news/",
-            "https://www.cbsnews.com/world/"
-          ],
-          "source_tools": [
-            "duckduckgo_results_json",
-            "tavily_search_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": true,
-            "weak_evidence": false,
-            "needs_review": false
-          }
-        },
-        {
-          "claim_text": "Prime Minister Chaos**: Britain has seen six prime ministers in less than ten years, including one who lasted only 45 days.",
-          "evidence_urls": [
-            "https://www.reuters.com/world/",
-            "https://www.aljazeera.com/news/",
-            "https://www.cbsnews.com/world/"
-          ],
-          "source_tools": [
-            "duckduckgo_results_json",
-            "tavily_search_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": true,
-            "weak_evidence": false,
-            "needs_review": false
-          }
-        },
-        {
-          "claim_text": "(Source: CBS News)  - **Man Killed by Mother Bear with Cubs in Bulgaria**: A rare attack where a man was killed by a mother bear and her cubs in Bulgaria.",
-          "evidence_urls": [
-            "https://www.reuters.com/world/",
-            "https://www.aljazeera.com/news/",
-            "https://www.cbsnews.com/world/"
-          ],
-          "source_tools": [
-            "duckduckgo_results_json",
-            "tavily_search_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": true,
-            "weak_evidence": false,
-            "needs_review": false
-          }
-        },
-        {
-          "claim_text": "(Source: CBS News)  - **Raúl Castro Indictment**: Former Cuban President Raúl Castro faces an indictment, though no specific details were provided.",
-          "evidence_urls": [
-            "https://www.reuters.com/world/",
-            "https://www.aljazeera.com/news/",
-            "https://www.cbsnews.com/world/"
-          ],
-          "source_tools": [
-            "duckduckgo_results_json",
-            "tavily_search_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": true,
-            "weak_evidence": false,
-            "needs_review": false
-          }
-        },
-        {
-          "claim_text": "(Source: CBS News)  For more detailed information on these or other recent news items, you can visit the following sources: - [CBS News](https://www.cbsnews.com/world/) - [Reuters](https://www.reuters.com/world/) - [Al Jazeera](https://www.aljazeera.com/news/)",
-          "evidence_urls": [
-            "https://www.reuters.com/world/",
-            "https://www.aljazeera.com/news/",
-            "https://www.cbsnews.com/world/"
-          ],
-          "source_tools": [
-            "duckduckgo_results_json",
-            "tavily_search_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": true,
-            "weak_evidence": false,
-            "needs_review": false
-          }
-        }
-      ],
-      "sources": [
-        {
-          "url": "https://www.reuters.com/world/",
-          "title": "World News | Latest Top Stories | Reuters",
-          "domain": "www.reuters.com",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "Follow the latest international and world news, breaking stories and global current events from your trusted online news source.",
-          "tier": "high"
-        },
-        {
-          "url": "https://www.aljazeera.com/news/",
-          "title": "News | Today's latest from Al Jazeera",
-          "domain": "www.aljazeera.com",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "Stay on top of News latest developments on the ground with Al Jazeera's fact-based news, exclusive video footage, photos and updated maps.",
-          "tier": "medium"
-        },
-        {
-          "url": "https://7news.com.au/news/world",
-          "title": "World News: Latest & Breaking International News Today - Global News ...",
-          "domain": "7news.com.au",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "Breaking world news headlines for today from the US, North America, UK and Europe, South America, Asia and the Middle East. Stay up to date with all of the breaking headlines from around the World. Today's World news, live updates & all the latest breaking stories from 7News.",
-          "tier": "low"
-        },
-        {
-          "url": "https://www.ndtv.com/world-news",
-          "title": "World News | Breaking and Latest World News, International News ...",
-          "domain": "www.ndtv.com",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "World News: Get Latest and breaking news from World. Today's Top International News Headlines, news on politics, Business, Crime, Sports and Current Affairs.",
-          "tier": "low"
-        },
-        {
-          "url": "https://www.youtube.com/CBSNews/live",
-          "title": "LIVE: Breaking News and Top Stories on CBS News 24/7",
-          "domain": "www.youtube.com",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "Get today's top stories, breaking news and original reporting on CBS News 24/7.#news #livenews #breakingnews CBS News 24/7 is the premier anchored streaming ...",
-          "tier": "low"
-        },
-        {
-          "url": "https://www.cbsnews.com/world/",
-          "title": "World news: Latest news, breaking news, today's ...",
-          "domain": "www.cbsnews.com",
-          "source_tools": [
-            "tavily_search_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "#### Mango founder Isak Andic's son arrested in his death",
-          "tier": "medium"
-        },
-        {
-          "url": "https://www.youtube.com/watch?v=B0zmJFi0oaw",
-          "title": "Top U.S. & World Headlines — February 19, 2026",
-          "domain": "www.youtube.com",
-          "source_tools": [
-            "tavily_search_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "69K views • 7 hours ago",
-          "tier": "low"
-        },
-        {
-          "url": "https://www.youtube.com/watch?v=4OrcNac_NtU",
-          "title": "Top U.S. & World Headlines — May 19, 2026",
-          "domain": "www.youtube.com",
-          "source_tools": [
-            "tavily_search_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "14:31 Top U.S. & World Headlines — May 20, 2026 Democracy Now!46K views • 3 hours ago Live Playlist ()Mix (50+)26:01 \"It's The Best\" - Jon Stewart On Losing A Late Night Show, And The Joyful Noise That Is Coming The Late Show with Stephen Colbert 1.1M views • 14 hours ago Live Playlist ()Mix (50+)Max Blumenthal : US Consumers Paying for Trump’s War Judge Napolitano - Judging Freedom 1.9K watching ",
-          "tier": "low"
-        }
-      ],
-      "trust_signals": {
-        "citation_coverage": 1.0,
-        "avg_sources_per_claim": 3.0,
-        "multi_source_claim_ratio": 1.0,
+        "avg_sources_per_claim": 2.6666666666666665,
+        "multi_source_claim_ratio": 0.6666666666666666,
         "distinct_domain_count": 6,
-        "source_quality_score": 0.506,
-        "high_tier_ratio": 0.125,
-        "citation_strength": 1.0,
-        "tier_breakdown": {
-          "high": 1,
-          "medium": 2,
-          "low": 5,
-          "prediction": 0
-        },
-        "total_sources": 8
-      },
-      "model_key": "qwen",
-      "original_question": "What major world news happened in the last 24–48 hours?",
-      "cached_at": "2026-05-20T19:02:04.011988+00:00",
-      "cached_ts": 1779303724.011994
-    },
-    "qwen::has there been any major earthquake in turkey in the last 2 days": {
-      "answer": "- No major earthquakes have been reported in Turkey within the last 2 days. The largest earthquake mentioned was a magnitude 7.8 event that occurred on February 6, 2023, which is outside the timeframe of interest.\n\n- However, there were several smaller quakes recorded in Turkey recently:\n  - A 4.4 magnitude earthquake on March 2, 2026.\n  - Another 4.2 magnitude earthquake on April 2026 (date not specified).\n\n- The Wikipedia entry for the \"2025 Istanbul Earthquake\" does not provide information about recent events and seems to be outdated.\n\nFor more detailed and up-to-date information, you can visit:\n- [Earthquakes in Turkey Live Map](https://earth3dmap.com/earthquake-turkey/)\n- [The Complete Türkiye Earthquake Report (Up-To-Date 2026)](https://earthquakelist.org/turkiye/)",
-      "facts": [
-        {
-          "claim_text": "- No major earthquakes have been reported in Turkey within the last 2 days.",
-          "evidence_urls": [
-            "https://en.wikipedia.org/wiki/2025_Istanbul_earthquake",
-            "https://en.wikipedia.org/wiki/2023_Turkey%E2%80%93Syria_earthquakes",
-            "https://earthquakelist.org/turkiye/"
-          ],
-          "source_tools": [
-            "duckduckgo_results_json",
-            "tavily_search_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": true,
-            "weak_evidence": false,
-            "needs_review": false
-          }
-        },
-        {
-          "claim_text": "The largest earthquake mentioned was a magnitude 7.8 event that occurred on February 6, 2023, which is outside the timeframe of interest.",
-          "evidence_urls": [
-            "https://en.wikipedia.org/wiki/2023_Turkey%E2%80%93Syria_earthquakes",
-            "https://en.wikipedia.org/wiki/2025_Istanbul_earthquake",
-            "https://allquakes.com/earthquakes/turkey.html"
-          ],
-          "source_tools": [
-            "duckduckgo_results_json",
-            "tavily_search_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": true,
-            "weak_evidence": false,
-            "needs_review": false
-          }
-        },
-        {
-          "claim_text": "- However, there were several smaller quakes recorded in Turkey recently:   - A 4.4 magnitude earthquake on March 2, 2026.",
-          "evidence_urls": [
-            "https://en.wikipedia.org/wiki/2023_Turkey%E2%80%93Syria_earthquakes",
-            "https://earthquakelist.org/turkiye/",
-            "https://en.wikipedia.org/wiki/2025_Istanbul_earthquake"
-          ],
-          "source_tools": [
-            "duckduckgo_results_json",
-            "tavily_search_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": true,
-            "weak_evidence": false,
-            "needs_review": false
-          }
-        },
-        {
-          "claim_text": "- Another 4.2 magnitude earthquake on April 2026 (date not specified).",
-          "evidence_urls": [
-            "https://earthquakelist.org/turkiye/",
-            "https://en.wikipedia.org/wiki/2025_Istanbul_earthquake",
-            "https://en.wikipedia.org/wiki/2023_Turkey%E2%80%93Syria_earthquakes"
-          ],
-          "source_tools": [
-            "duckduckgo_results_json",
-            "tavily_search_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": true,
-            "weak_evidence": false,
-            "needs_review": false
-          }
-        },
-        {
-          "claim_text": "- The Wikipedia entry for the \"2025 Istanbul Earthquake\" does not provide information about recent events and seems to be outdated.",
-          "evidence_urls": [
-            "https://en.wikipedia.org/wiki/2025_Istanbul_earthquake",
-            "https://en.wikipedia.org/wiki/2023_Turkey%E2%80%93Syria_earthquakes",
-            "https://allquakes.com/earthquakes/turkey.html"
-          ],
-          "source_tools": [
-            "duckduckgo_results_json",
-            "tavily_search_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": true,
-            "weak_evidence": false,
-            "needs_review": false
-          }
-        },
-        {
-          "claim_text": "For more detailed and up-to-date information, you can visit: - [Earthquakes in Turkey Live Map](https://earth3dmap.com/earthquake-turkey/) - [The Complete Türkiye Earthquake Report (Up-To-Date 2026)](https://earthquakelist.org/turkiye/)",
-          "evidence_urls": [
-            "https://earthquakelist.org/turkiye/",
-            "https://en.wikipedia.org/wiki/2023_Turkey%E2%80%93Syria_earthquakes",
-            "https://en.wikipedia.org/wiki/2025_Istanbul_earthquake"
-          ],
-          "source_tools": [
-            "duckduckgo_results_json",
-            "tavily_search_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": true,
-            "weak_evidence": false,
-            "needs_review": false
-          }
-        }
-      ],
-      "sources": [
-        {
-          "url": "https://en.wikipedia.org/wiki/2025_Istanbul_earthquake",
-          "title": "2025 Istanbul Earthquake - Wikipedia",
-          "domain": "en.wikipedia.org",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "Its offshore epicenter was located in the Sea of Marmara, 21 km (13 mi) southeast of Marmara Ereğlisi in Tekirdağ Province, or 73 km (45 mi) southwest of Istanbul.[1] Shaking lasted 13 seconds.[9] It was the most powerful earthquake to hit Turkey since the 2023...",
-          "tier": "high"
-        },
-        {
-          "url": "https://earthquakelist.org/turkiye/",
-          "title": "The Complete Türkiye Earthquake Report (Up-To-Date 2026).",
-          "domain": "earthquakelist.org",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "Find the latest and strongest earthquakes near Türkiye (Turkey), updated every few minutes.On average an earthquake will hit near Türkiye roughly every 1 days.",
-          "tier": "low"
-        },
-        {
-          "url": "https://www.volcanoesandearthquakes.com/region/Turkey",
-          "title": "Latest Earthquakes in or Near Turkey - Interactive Map",
-          "domain": "www.volcanoesandearthquakes.com",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "",
-          "tier": "low"
-        },
-        {
-          "url": "https://earth3dmap.com/earthquake-turkey/",
-          "title": "Earthquake in Turkey Live Map | Earth 3D Map",
-          "domain": "earth3dmap.com",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "View the latest earthquakes in Turkey on the interactive map. You can view the earthquake magnitude, location, depth and earthquake time.",
-          "tier": "low"
-        },
-        {
-          "url": "https://www.ndtv.com/world-news/powerful-7-8-magnitude-earthquake-hits-turkey-3756172",
-          "title": "3 Powerful Earthquakes In Turkey In 24 Hours, More Than 3,600 Killed",
-          "domain": "www.ndtv.com",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "Another 7.5-magnitude earthquake hit southeast Turkey.A major earthquake struck Turkey and Syria on Monday, killing more than 3,600 people and flattening thousands of buildings as rescuers dug with bare hands for survivors.",
-          "tier": "low"
-        },
-        {
-          "url": "https://en.wikipedia.org/wiki/2023_Turkey%E2%80%93Syria_earthquakes",
-          "title": "2023 Turkey–Syria earthquakes - Wikipedia",
-          "domain": "en.wikipedia.org",
-          "source_tools": [
-            "tavily_search_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "At 10:24 UTC, an earthquake measuring Mww 7.5 according to USGS, Mw 7.6 according to KOERI, or Mw 7.7 according to Geoscope and the GCMT, struck with an epicenter near Ekinözü, 95 km northeast of the Mw 7.8 event. It had a depth of 7.4 km (5 mi) according to the USGS, 5 km (3 mi) by KOERI, and 13 km (8 mi) by Geoscope. The shock was also the result of strike-slip faulting; it had an epicenter nort",
-          "tier": "high"
-        },
-        {
-          "url": "https://allquakes.com/earthquakes/turkey.html",
-          "title": "Turkey Earthquakes Today: Past 24 Hours | AllQuakes.com",
-          "domain": "allquakes.com",
-          "source_tools": [
-            "tavily_search_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "The largest quake that occurred in or near Turkey during the past 100 years was a magnitude 7.8 earthquake that hit Gaziantep, Turkey, 3 years ago on Monday, Feb 6, 2023, at 04:17 am local time (Europe/Istanbul GMT +3). The earthquake struck in 38 km (23 mi) distance northwest from Gaziantep at 10 km (6 mi) depth.",
-          "tier": "low"
-        },
-        {
-          "url": "https://earthquaketrack.com/p/turkey/recent",
-          "title": "Today's Earthquakes in Turkey - Earthquake Track",
-          "domain": "earthquaketrack.com",
-          "source_tools": [
-            "tavily_search_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "#### 4.4 magnitude earthquake",
-          "tier": "low"
-        }
-      ],
-      "trust_signals": {
-        "citation_coverage": 1.0,
-        "avg_sources_per_claim": 3.0,
-        "multi_source_claim_ratio": 1.0,
-        "distinct_domain_count": 7,
         "source_quality_score": 0.512,
         "high_tier_ratio": 0.25,
         "citation_strength": 1.0,
@@ -914,20 +213,36 @@
         },
         "total_sources": 8
       },
-      "model_key": "qwen",
-      "original_question": "Has there been any major earthquake in Turkey in the last 2 days?",
-      "cached_at": "2026-05-20T19:07:18.477846+00:00",
-      "cached_ts": 1779304038.477852
+      "model_key": "llama32",
+      "original_question": "Galatasaray top scorer this season.",
+      "cached_at": "2026-05-21T00:13:41.014099+00:00",
+      "cached_ts": 1779322421.014106
     },
-    "qwen::turkey inflation rate": {
-      "answer": "Based on the recent data available:\n\n- The annual inflation rate in April 2026 increased to 32.37% in Turkey from 30.87% in March 2026, surpassing market expectations (tradingeconomics.com).\n- In March 2026, the inflation rate cooled down to 30.9% compared to 31.5% in February, despite pricing pressures amid the Iran war (dailysabah.com).\n- The Turkish central bank raised its 2026 oil price assumption and food inflation assumption, with annual consumer inflation standing at 32.37% in April 2026 (turkishminute.com).\n\nThe sources indicate that while there was a slight decrease in March, the rate increased again in April to 32.37%, reflecting ongoing economic challenges.\n\nFor more up-to-date and specific data, you can refer to:\n- [tradingeconomics.com](https://tradingeconomics.com/turkey/inflation-cpi)\n- [dailysabah.com](https://www.dailysabah.com/business/economy/turkiyes-inflation-surprises-in-march-despite-iran-war-pressures)\n- [turkishminute.com](https://www.turkishminute.com/2026/05/14/turkeys-central-bank-raises-2026-inflation-target-to-24-percent-from-16-percent/)",
+    "qwen::galatasaray top scorer this season": {
+      "answer": "Based on the search results:\n\n- **TAVILY SUMMARY**: Galatasaray's top scorer this season 2026 is Virgil van Dijk, who has scored six goals in 52 matches for Liverpool in all competitions.\n\n- **INDIVIDUAL RESULTS**:\n  - **RESULT 1 (aiscore.com)**: The top scorers list for Galatasaray is updated live during every match.\n  - **RESULT 2 (sofascore.com)**: Similarly, the top scorers list for Galatasaray is also updated live during every match.\n  - **RESULT 3 (beinsports.com.tr)**: This result does not directly provide information about the current top scorer but gives a recent match summary.\n\nGiven that both aiscore.com and sofascore.com indicate that the top scorers' list is updated live, it can be inferred that Virgil van Dijk remains Galatasaray's top scorer for this season 2026. \n\n- **Final Answer**: The current top scorer for Galatasaray in the 2026 season is Virgil van Dijk, who has scored six goals so far.\n\nFor more detailed and up-to-date information, you can check aiscore.com or sofascore.com during a live match.",
       "facts": [
         {
-          "claim_text": "Based on the recent data available:  - The annual inflation rate in April 2026 increased to 32.37% in Turkey from 30.87% in March 2026, surpassing market expectations (tradingeconomics.com).",
+          "claim_text": "Based on the search results:",
           "evidence_urls": [
-            "https://tradingeconomics.com/turkey/inflation-cpi",
-            "https://www.inflationtool.com/rates/turkey",
-            "https://www.turkiyetoday.com/business/turkish-central-bank-raises-2026-inflation-forecast-to-26-amid-iran-war-risks-3219928"
+            "https://www.aiscore.com/team-galatasaray/2ezk96i1ppawkn5",
+            "https://www.sofascore.com/football/team/galatasaray/3061"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "- **TAVILY SUMMARY**: Galatasaray's top scorer this season 2026 is Virgil van Dijk, who has scored six goals in 52 matches for Liverpool in all competitions.",
+          "evidence_urls": [
+            "https://beinsports.com.tr/mac-ozetleri-goller/super-lig/ozet/2025-2026/34/kasimpasa-1-0-galatasaray-mac-ozeti",
+            "https://www.foxsports.com/soccer/turkish-super-lig-trabzonspor-vs-genclerbirligi-may-17-2026-game-boxscore-634636?tab=boxscore",
+            "https://www.foxsports.com/soccer/turkish-super-lig-fenerbahce-vs-eyupspor-may-17-2026-game-boxscore-634629?tab=boxscore"
           ],
           "source_tools": [
             "duckduckgo_results_json",
@@ -941,11 +256,27 @@
           }
         },
         {
-          "claim_text": "- In March 2026, the inflation rate cooled down to 30.9% compared to 31.5% in February, despite pricing pressures amid the Iran war (dailysabah.com).",
+          "claim_text": "- **INDIVIDUAL RESULTS**:",
           "evidence_urls": [
-            "https://www.dailysabah.com/business/economy/turkiyes-inflation-surprises-in-march-despite-iran-war-pressures",
-            "https://tradingeconomics.com/turkey/inflation-cpi",
-            "https://www.inflationtool.com/rates/turkey"
+            "https://www.aiscore.com/team-galatasaray/2ezk96i1ppawkn5",
+            "https://www.sofascore.com/football/team/galatasaray/3061"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "- **RESULT 1 (aiscore.com)**: The top scorers list for Galatasaray is updated live during every match.",
+          "evidence_urls": [
+            "https://www.aiscore.com/team-galatasaray/2ezk96i1ppawkn5",
+            "https://www.sofascore.com/football/team/galatasaray/3061",
+            "https://www.telecomasia.net/news/football/galatasaray-want-to-sign-liverpool-captain-van-dijk-for-free/"
           ],
           "source_tools": [
             "duckduckgo_results_json",
@@ -959,11 +290,11 @@
           }
         },
         {
-          "claim_text": "- The Turkish central bank raised its 2026 oil price assumption and food inflation assumption, with annual consumer inflation standing at 32.37% in April 2026 (turkishminute.com).",
+          "claim_text": "- **RESULT 2 (sofascore.com)**: Similarly, the top scorers list for Galatasaray is also updated live during every match.",
           "evidence_urls": [
-            "https://www.turkishminute.com/2026/05/14/turkeys-central-bank-raises-2026-inflation-target-to-24-percent-from-16-percent/",
-            "https://www.turkiyetoday.com/business/turkish-central-bank-raises-2026-inflation-forecast-to-26-amid-iran-war-risks-3219928",
-            "https://www.inflationtool.com/rates/turkey"
+            "https://www.sofascore.com/football/team/galatasaray/3061",
+            "https://www.aiscore.com/team-galatasaray/2ezk96i1ppawkn5",
+            "https://www.telecomasia.net/news/football/galatasaray-want-to-sign-liverpool-captain-van-dijk-for-free/"
           ],
           "source_tools": [
             "duckduckgo_results_json",
@@ -977,11 +308,27 @@
           }
         },
         {
-          "claim_text": "The sources indicate that while there was a slight decrease in March, the rate increased again in April to 32.37%, reflecting ongoing economic challenges.",
+          "claim_text": "- **RESULT 3 (beinsports.com.tr)**: This result does not directly provide information about the current top scorer but gives a recent match summary.",
           "evidence_urls": [
-            "https://tradingeconomics.com/turkey/inflation-cpi",
-            "https://www.turkiyetoday.com/business/turkish-central-bank-raises-2026-inflation-forecast-to-26-amid-iran-war-risks-3219928",
-            "https://www.inflationtool.com/rates/turkey"
+            "https://www.aiscore.com/team-galatasaray/2ezk96i1ppawkn5",
+            "https://www.sofascore.com/football/team/galatasaray/3061"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "Given that both aiscore.com and sofascore.com indicate that the top scorers' list is updated live, it can be inferred that Virgil van Dijk remains Galatasaray's top scorer for this season 2026.",
+          "evidence_urls": [
+            "https://beinsports.com.tr/mac-ozetleri-goller/super-lig/ozet/2025-2026/34/kasimpasa-1-0-galatasaray-mac-ozeti",
+            "https://www.foxsports.com/soccer/turkish-super-lig-trabzonspor-vs-genclerbirligi-may-17-2026-game-boxscore-634636?tab=boxscore",
+            "https://www.foxsports.com/soccer/turkish-super-lig-fenerbahce-vs-eyupspor-may-17-2026-game-boxscore-634629?tab=boxscore"
           ],
           "source_tools": [
             "duckduckgo_results_json",
@@ -995,11 +342,29 @@
           }
         },
         {
-          "claim_text": "For more up-to-date and specific data, you can refer to: - [tradingeconomics.com](https://tradingeconomics.com/turkey/inflation-cpi) - [dailysabah.com](https://www.dailysabah.com/business/economy/turkiyes-inflation-surprises-in-march-despite-iran-war-pressures) - [turkishminute.com](https://www.turkishminute.com/2026/05/14/turkeys-central-bank-raises-2026-inflation-target-to-24-percent-from-16-percent/)",
+          "claim_text": "- **Final Answer**: The current top scorer for Galatasaray in the 2026 season is Virgil van Dijk, who has scored six goals so far.",
           "evidence_urls": [
-            "https://www.turkishminute.com/2026/05/14/turkeys-central-bank-raises-2026-inflation-target-to-24-percent-from-16-percent/",
-            "https://www.dailysabah.com/business/economy/turkiyes-inflation-surprises-in-march-despite-iran-war-pressures",
-            "https://www.turkiyetoday.com/business/turkish-central-bank-raises-2026-inflation-forecast-to-26-amid-iran-war-risks-3219928"
+            "https://beinsports.com.tr/mac-ozetleri-goller/super-lig/ozet/2025-2026/34/kasimpasa-1-0-galatasaray-mac-ozeti",
+            "https://www.foxsports.com/soccer/turkish-super-lig-trabzonspor-vs-genclerbirligi-may-17-2026-game-boxscore-634636?tab=boxscore",
+            "https://www.foxsports.com/soccer/turkish-super-lig-fenerbahce-vs-eyupspor-may-17-2026-game-boxscore-634629?tab=boxscore"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "For more detailed and up-to-date information, you can check aiscore.com or sofascore.com during a live match.",
+          "evidence_urls": [
+            "https://www.sofascore.com/football/team/galatasaray/3061",
+            "https://www.aiscore.com/team-galatasaray/2ezk96i1ppawkn5",
+            "https://www.telecomasia.net/news/football/galatasaray-want-to-sign-liverpool-captain-van-dijk-for-free/"
           ],
           "source_tools": [
             "duckduckgo_results_json",
@@ -1015,81 +380,219 @@
       ],
       "sources": [
         {
-          "url": "https://tradingeconomics.com/turkey/inflation-cpi",
-          "title": "Turkey Inflation Rate",
-          "domain": "tradingeconomics.com",
+          "url": "https://www.aiscore.com/team-galatasaray/2ezk96i1ppawkn5",
+          "title": "Galatasaray Live Score, 25-26 Fixtures, Results",
+          "domain": "www.aiscore.com",
           "source_tools": [
-            "tavily_search_results_json",
             "duckduckgo_results_json"
           ],
           "relevance_score": null,
-          "snippet": "## Inflation Rate in Turkey increased to 32.37 percent in April from 30.87 percent in March of 2026. Inflation Rate in Turkey averaged 35.37 percent from 1965 until 2026, reaching an all time high of 138.71 percent in May of 1980 and a record low of -4.01 percent in June of 1968. This page provides the latest reported value for - Turkey Inflation Rate - plus previous releases, historical high and ",
+          "snippet": "(Galatasaray top scorers/assists list is updated live during every match).",
           "tier": "low"
         },
         {
-          "url": "https://www.dailysabah.com/business/economy/turkiyes-inflation-surprises-in-march-despite-iran-war-pressures",
-          "title": "Türkiye's inflation surprises in March despite Iran war pressures | Daily Sabah",
-          "domain": "www.dailysabah.com",
+          "url": "https://www.sofascore.com/football/team/galatasaray/3061",
+          "title": "Galatasaray Live Score, Schedule & Player Stats | Sofascore",
+          "domain": "www.sofascore.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "When the match starts, you will be able to follow Galatasaray vs Antalyaspor live score, standings, minute by minute updated live results and match statistics.Galatasaray top scorers list is updated live during every match.",
+          "tier": "low"
+        },
+        {
+          "url": "https://beinsports.com.tr/mac-ozetleri-goller/super-lig/ozet/2025-2026/34/kasimpasa-1-0-galatasaray-mac-ozeti",
+          "title": "Kasımpaşa - Galatasaray Maç Özeti (Video) | beIN SPORTS",
+          "domain": "beinsports.com.tr",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "10’. Streek'in vuruşunda top direkten döndü. 15’. Kocaelispor öne geçmeye çok yaklaştı. 43’.0. - 3. 17 Mayıs 2026, Pazar, 17:00.",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.telecomasia.net/news/football/galatasaray-want-to-sign-liverpool-captain-van-dijk-for-free/",
+          "title": "Galatasaray Want to Sign Liverpool Captain Van Dijk for Free - Telecom Asia Sport",
+          "domain": "www.telecomasia.net",
           "source_tools": [
             "tavily_search_results_json"
           ],
           "relevance_score": null,
-          "snippet": "by Daily Sabah with Agencies Apr 03, 2026 10:47 am",
+          "snippet": "# Galatasaray Want to Sign Liverpool Captain Van Dijk for Free",
           "tier": "low"
         },
         {
-          "url": "https://www.turkishminute.com/2026/05/14/turkeys-central-bank-raises-2026-inflation-target-to-24-percent-from-16-percent/",
-          "title": "Turkey’s central bank raises 2026 inflation target to 24 percent from 16 percent - Turkish Minute",
-          "domain": "www.turkishminute.com",
+          "url": "https://www.foxsports.com/soccer/turkish-super-lig-trabzonspor-vs-genclerbirligi-may-17-2026-game-boxscore-634636?tab=boxscore",
+          "title": "Trabzonspor vs. Genclerbirligi - Boxscore - Live Score - May 17, 2026 - FOX Sports",
+          "domain": "www.foxsports.com",
           "source_tools": [
             "tavily_search_results_json"
           ],
           "relevance_score": null,
-          "snippet": "The central bank raised its 2026 oil price assumption to $89.40 a barrel from $60.90 and its food inflation assumption to 26.3 percent from 19 percent. It also raised its import price assumption to 6.3 percent from 2 percent.",
+          "snippet": "60 Average Possession (%) 50",
           "tier": "low"
         },
         {
-          "url": "https://www.inflationtool.com/rates/turkey",
-          "title": "Turkey Inflation Rate - 2026",
-          "domain": "www.inflationtool.com",
+          "url": "https://www.foxsports.com/soccer/turkish-super-lig-fenerbahce-vs-eyupspor-may-17-2026-game-boxscore-634629?tab=boxscore",
+          "title": "Fenerbahce vs. Eyupspor - Boxscore - Live Score - May 17, 2026 - FOX Sports",
+          "domain": "www.foxsports.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "65 Average Possession (%) 54",
+          "tier": "low"
+        }
+      ],
+      "trust_signals": {
+        "citation_coverage": 1.0,
+        "avg_sources_per_claim": 2.6666666666666665,
+        "multi_source_claim_ratio": 1.0,
+        "distinct_domain_count": 5,
+        "source_quality_score": 0.35,
+        "high_tier_ratio": 0.0,
+        "citation_strength": 0.35,
+        "tier_breakdown": {
+          "high": 0,
+          "medium": 0,
+          "low": 6,
+          "prediction": 0
+        },
+        "total_sources": 6
+      },
+      "model_key": "qwen",
+      "original_question": "Galatasaray top scorer this season.",
+      "cached_at": "2026-05-21T00:15:21.462224+00:00",
+      "cached_ts": 1779322521.462231
+    },
+    "llama::galatasaray top scorer this season": {
+      "answer": "The top scorer for Galatasaray this season is Victor Osimhen with 10 goals in all competitions. He leads the team in the Turkish Super Lig and Champions League as of May 2026.\n\nSources:\n- statmuse.com: Victor Osimhen has the most goals by a Galatasaray player in the Champions League this season, with 7 goals.\n- sportsmole.co.uk: Victor Osimhen is the top scorer for Galatasaray in the Turkish Super Lig this season.\n- statbunker.com: Kerem Akturkoglu and Mauro Icardi are tied for second place with 2 goals each.",
+      "facts": [
+        {
+          "claim_text": "The top scorer for Galatasaray this season is Victor Osimhen with 10 goals in all competitions.",
+          "evidence_urls": [
+            "https://www.statmuse.com/fc/ask/galatasaray-top-goal-scorer-this-season?l=ucl",
+            "https://www.hotrecentnews.com/news/galatasaray-breaks-turkish-record-with-victor/8436",
+            "https://www.footboom1.com/en/news/football/1763193601-where-to-watch-liverpool-galatasaray-tv-channel-and-start-time"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "He leads the team in the Turkish Super Lig and Champions League as of May 2026.",
+          "evidence_urls": [
+            "https://www.sportsmole.co.uk/football/galatasaray/2025-26/top-scorers.html",
+            "https://www.statmuse.com/fc/ask/galatasaray-top-goal-scorer-this-season?l=ucl",
+            "https://statbunker.com/competitions/TopGoalScorers?comp_id=527&club_id=119"
+          ],
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        }
+      ],
+      "sources": [
+        {
+          "url": "https://www.statmuse.com/fc/ask/galatasaray-top-goal-scorer-this-season?l=ucl",
+          "title": "Galatasaray Top Goal Scorer This Season - StatMuse",
+          "domain": "www.statmuse.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Victor Osimhen has the most goals by a Galatasaray player in the Champions League this season, with 7 goals.",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.sportsmole.co.uk/football/galatasaray/2025-26/top-scorers.html",
+          "title": "Galatasaray 2025-26 Top Scorers - Football - Sports Mole",
+          "domain": "www.sportsmole.co.uk",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Galatasaray: 2025-26 (Turkish Super Lig) ; 1 · Victor Osimhen. Last Goal: vs. Istanbul Basaksehir (H, Mar 14, 2026) Braces: 1, Hat-tricks: 0 ; 2 · Mauro Icardi.",
+          "tier": "low"
+        },
+        {
+          "url": "https://statbunker.com/competitions/TopGoalScorers?comp_id=527&club_id=119",
+          "title": "Top goal scorers Galatasaray SK UEFA Champions League 23/24",
+          "domain": "statbunker.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Kerem Akturkoglu. 2, - ; Hakim Ziyech. 2, 1 ; Mauro Icardi. 2, 1 ; Wilfred Zaha. 1, 1",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.footboom1.com/en/news/football/1763193601-where-to-watch-liverpool-galatasaray-tv-channel-and-start-time",
+          "title": "Where to Watch Liverpool - Galatasaray: TV Channel and Start",
+          "domain": "www.footboom1.com",
           "source_tools": [
             "duckduckgo_results_json"
           ],
           "relevance_score": null,
-          "snippet": "Apr 17, 2026 · The current inflation rate in Turkey is 30.87%, which is calculated based on CPI (Consumer Price Index) values for the last 12 months ending in March 2026. Read more",
+          "snippet": "Dominik Szoboszlai is Liverpool's top scorer this season. ... Victor Osimhen is Galatasaray's top scorer this season.",
           "tier": "low"
         },
         {
-          "url": "https://worldpopulationreview.com/country-rankings/inflation-rate-by-country",
-          "title": "Inflation Rate by Country 2026 - World Population Review",
-          "domain": "worldpopulationreview.com",
+          "url": "https://www.footboom1.com/en/news/football/1763161338-where-to-watch-galatasaray-atletico-madrid-tv-channel-and-start-time",
+          "title": "Where to Watch Galatasaray - Atletico Madrid: TV Channel and",
+          "domain": "www.footboom1.com",
           "source_tools": [
             "duckduckgo_results_json"
           ],
           "relevance_score": null,
-          "snippet": "Data on inflation rate for 180+ countries, including which countries have the highest inflation rates, which countries have the lowest inflation rates, and definitions of the 3 types of inflation index.",
+          "snippet": "Victor Osimhen is Galatasaray's top scorer this season. ... Julian Alvarez is Atletico Madrid's top scorer this season.",
           "tier": "low"
         },
         {
-          "url": "https://www.turkiyetoday.com/business/turkish-central-bank-raises-2026-inflation-forecast-to-26-amid-iran-war-risks-3219928",
-          "title": "Turkish central bank raises 2026 inflation forecast to 26% ...",
-          "domain": "www.turkiyetoday.com",
+          "url": "https://www.hotrecentnews.com/news/galatasaray-breaks-turkish-record-with-victor/8436",
+          "title": "Galatasaray Breaks Turkish Record with Victor Osimhen Signing -",
+          "domain": "www.hotrecentnews.com",
           "source_tools": [
             "duckduckgo_results_json"
           ],
           "relevance_score": null,
-          "snippet": "3 days ago · The annual inflation rate rose to 32.4% in April, while the annual energy inflation surged by 19 percentage points to 47% over the past two months due to rising oil and natural gas prices. The central bank stated in its report that electricity and natural gas tariffs were revised upward following higher import costs.",
+          "snippet": "Osimhen had a remarkable season at Galatasaray, finishing as the league's top scorer with 26 goals and setting a new record for the highest scoring ...",
           "tier": "low"
         },
         {
-          "url": "https://fred.stlouisfed.org/series/FPCPITOTLZGTUR",
-          "title": "Inflation, consumer prices for Turkey (FPCPITOTLZGTUR) - FRED",
-          "domain": "fred.stlouisfed.org",
+          "url": "https://www.topscorersfootball.com/team/galatasaray",
+          "title": "Top scorers | TopScorersFootball.com",
+          "domain": "www.topscorersfootball.com",
           "source_tools": [
             "duckduckgo_results_json"
           ],
           "relevance_score": null,
-          "snippet": "Apr 15, 2026 · Graph and download economic data for Inflation, consumer prices for Turkey (FPCPITOTLZGTUR) from 1960 to 2024 about Turkey, consumer, CPI, inflation, price index, indexes, and price.",
+          "snippet": "33 players in our database have played for Galatasaray and have been part of a top scorer list during a season, but have not been among the top ...",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.whatahowler.com/blog-201702the-birth-of-metin-oktay-galatasarays-all-time-top-scorer-html/",
+          "title": "The birth of Metin Oktay, Galatasaray’s all-time top scorer",
+          "domain": "www.whatahowler.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "On 2 February 1936, Metin Oktay, Galatasaray’s all-time leading scorer, was born in Izmir, Turkey. ... seasons in which he was their leading scorer ...",
           "tier": "low"
         }
       ],
@@ -1104,521 +607,15 @@
         "tier_breakdown": {
           "high": 0,
           "medium": 0,
-          "low": 7,
-          "prediction": 0
-        },
-        "total_sources": 7
-      },
-      "model_key": "qwen",
-      "original_question": "Turkey inflation rate",
-      "cached_at": "2026-05-20T19:09:01.361600+00:00",
-      "cached_ts": 1779304141.361608
-    },
-    "qwen::what changed about x in the last 6 months": {
-      "answer": "I need more information about what specifically you are referring to as \"X\". Could you please provide details so I can conduct an appropriate search?",
-      "facts": [
-        {
-          "claim_text": "I need more information about what specifically you are referring to as \"X\".",
-          "evidence_urls": [],
-          "source_tools": [],
-          "fact_quality_flags": {
-            "has_source": false,
-            "multi_source": false,
-            "weak_evidence": true,
-            "needs_review": true
-          }
-        },
-        {
-          "claim_text": "Could you please provide details so I can conduct an appropriate search?",
-          "evidence_urls": [],
-          "source_tools": [],
-          "fact_quality_flags": {
-            "has_source": false,
-            "multi_source": false,
-            "weak_evidence": true,
-            "needs_review": true
-          }
-        }
-      ],
-      "sources": [],
-      "trust_signals": {
-        "citation_coverage": 0.0,
-        "avg_sources_per_claim": 0.0,
-        "multi_source_claim_ratio": 0.0,
-        "distinct_domain_count": 0,
-        "source_quality_score": 0.0,
-        "high_tier_ratio": 0.0,
-        "citation_strength": 0.0,
-        "tier_breakdown": {
-          "high": 0,
-          "medium": 0,
-          "low": 0,
-          "prediction": 0
-        },
-        "total_sources": 0
-      },
-      "model_key": "qwen",
-      "original_question": "What changed about X in the last 6 months?",
-      "cached_at": "2026-05-20T19:26:40.762401+00:00",
-      "cached_ts": 1779305200.762408
-    },
-    "qwen::are there any road closures in ankara today": {
-      "answer": "Based on the search results, there are no specific road closures mentioned for Ankara today (2026-05-21). However, it is noted that there may be potential for demonstrations in the city due to May 1st Labor and Solidarity Day, which could lead to temporary road closures or traffic disruptions. For the most accurate and up-to-date information, please check local authorities' announcements.\n\nFor general traffic conditions, you can refer to real-time traffic reports from sources like TomTom Traffic Index.",
-      "facts": [
-        {
-          "claim_text": "Based on the search results, there are no specific road closures mentioned for Ankara today (2026-05-21).",
-          "evidence_urls": [
-            "https://tr.usembassy.gov/routine-message-ongoing-potential-for-demonstrations-u-s-embassy-ankara-april-28-2026/",
-            "https://en.wikipedia.org/wiki/List_of_highways_in_Turkey",
-            "https://turkey.news-pravda.com/en/turkey/2026/04/30/84434.html"
-          ],
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": true,
-            "weak_evidence": false,
-            "needs_review": false
-          }
-        },
-        {
-          "claim_text": "However, it is noted that there may be potential for demonstrations in the city due to May 1st Labor and Solidarity Day, which could lead to temporary road closures or traffic disruptions.",
-          "evidence_urls": [
-            "https://tr.usembassy.gov/routine-message-ongoing-potential-for-demonstrations-u-s-embassy-ankara-april-28-2026/",
-            "https://en.wikipedia.org/wiki/List_of_highways_in_Turkey",
-            "https://turkey.news-pravda.com/en/turkey/2026/04/30/84434.html"
-          ],
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": true,
-            "weak_evidence": false,
-            "needs_review": false
-          }
-        },
-        {
-          "claim_text": "For the most accurate and up-to-date information, please check local authorities' announcements.",
-          "evidence_urls": [
-            "https://en.wikipedia.org/wiki/List_of_highways_in_Turkey",
-            "https://tr.usembassy.gov/routine-message-ongoing-potential-for-demonstrations-u-s-embassy-ankara-april-28-2026/",
-            "https://www.tomtom.com/traffic-index/ankara-traffic/"
-          ],
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": true,
-            "weak_evidence": false,
-            "needs_review": false
-          }
-        },
-        {
-          "claim_text": "For general traffic conditions, you can refer to real-time traffic reports from sources like TomTom Traffic Index.",
-          "evidence_urls": [
-            "https://tr.usembassy.gov/routine-message-ongoing-potential-for-demonstrations-u-s-embassy-ankara-april-28-2026/",
-            "https://en.wikipedia.org/wiki/List_of_highways_in_Turkey",
-            "https://www.tomtom.com/traffic-index/ankara-traffic/"
-          ],
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": true,
-            "weak_evidence": false,
-            "needs_review": false
-          }
-        }
-      ],
-      "sources": [
-        {
-          "url": "https://en.wikipedia.org/wiki/List_of_highways_in_Turkey",
-          "title": "List of highways in Turkey - Wikipedia",
-          "domain": "en.wikipedia.org",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "January 18, 2026 - D.750 Zonguldak – Gerede – Ankara – Aksaray – Pozantı – Tarsus · D.850 Ünye – Tokat – Sivas – Malatya – Gaziantep – Kilis (Syria border) D.950 Hopa – Artvin – Erzurum – Bingöl – Diyarbakır – Mardin ... D.915 Of, Trabzon (D010) – Dernekpazarı – Çaykara – Intersection with D050 – Bayburt-Maden, Bayburt – Aşkale (D100) Provincial roads (İl yolu) are under the responsibility of KGM.",
-          "tier": "high"
-        },
-        {
-          "url": "https://tr.usembassy.gov/routine-message-ongoing-potential-for-demonstrations-u-s-embassy-ankara-april-28-2026/",
-          "title": "Routine Message: Ongoing Potential for Demonstrations (U.S. Embassy Ankara, April 28, 2026) - U.S. Embassy & Consulates in Türkiye",
-          "domain": "tr.usembassy.gov",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "3 weeks ago - Routine Message: Ongoing Potential for Demonstrations (U.S. Embassy Ankara, April 28, 2026) ... By U.S. EMBASSY TÜRKİYE ... Event: Demonstrations occur regularly in Türkiye. They may be critical of U.S. foreign policy and involve anti-U.S. rhetoric. Large gatherings may result in enhanced police presence, road closures, and traffic disruptions.",
-          "tier": "high"
-        },
-        {
-          "url": "https://turkey.news-pravda.com/en/turkey/2026/04/30/84434.html",
-          "title": "Ankara Police Directorate announced that if necessary, gradual closures will begin on some main arteries due to May 1st Labor and Solidarity Day - Pravda Turkey",
-          "domain": "turkey.news-pravda.com",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "3 weeks ago - 30.04.2026, 18:45 UTC+3 · Ankara Police Directorate announced that if necessary, gradual closures will begin on some main arteries due to May 1st Labor and Solidarity Day. The section of Anit Street between Turgut Reis Street and Anadolu Square ...",
-          "tier": "low"
-        },
-        {
-          "url": "https://www.tomtom.com/traffic-index/ankara-traffic/",
-          "title": "Ankara traffic report | TomTom Traffic Index",
-          "domain": "www.tomtom.com",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "December 4, 2025 - Free access to live traffic data and TomTom Traffic Index statistics for Ankara. Check out live and typical traffic in Ankara.",
-          "tier": "low"
-        },
-        {
-          "url": "https://www.hurriyetdailynews.com/hundreds-of-village-roads-closed-as-severe-snowstorm-grips-rural-turkiye-217258",
-          "title": "Hundreds of village roads closed as severe snowstorm grips rural Türkiye - Türkiye News",
-          "domain": "www.hurriyetdailynews.com",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "December 28, 2025 - A brutal winter wave sweeping in from Russia has paralyzed life across the rural parts of eastern and central Türkiye, burying hundreds of roads under heavy snow and leaving remote communities isolated as temperatures plummet.",
-          "tier": "low"
-        },
-        {
-          "url": "https://www.usatoday.com/story/news/2026/05/08/i-285-partial-closure-starts-tonight-in-atlanta-take-other-routes/89991557007/",
-          "title": "Closure of I-285 section in Atlanta postponed due to weather, GDOT says - USA Today",
-          "domain": "www.usatoday.com",
-          "source_tools": [
-            "tavily_search_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "The project will likely be rescheduled for another time as the city tries to fit in roadwork before the rush of visitors for the FIFA 2026 World Cup in June.",
-          "tier": "low"
-        },
-        {
-          "url": "https://www.norwichairport.co.uk/loganair-celebrates-launch-of-new-norwich-route-on-liberation-day/",
-          "title": "Loganair celebrates launch of new Norwich route on Liberation Day - Norwich Airport",
-          "domain": "www.norwichairport.co.uk",
-          "source_tools": [
-            "tavily_search_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "Skip to content",
-          "tier": "low"
-        },
-        {
-          "url": "https://www.manilatimes.net/2026/05/08/tmt-newswire/pr-newswire/autoliv-to-discontinue-manufacturing-operations-in-turkiye/2339282",
-          "title": "Autoliv to Discontinue Manufacturing Operations in Türkiye - The Manila Times",
-          "domain": "www.manilatimes.net",
-          "source_tools": [
-            "tavily_search_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "By PR Newswire",
-          "tier": "low"
-        }
-      ],
-      "trust_signals": {
-        "citation_coverage": 1.0,
-        "avg_sources_per_claim": 3.0,
-        "multi_source_claim_ratio": 1.0,
-        "distinct_domain_count": 8,
-        "source_quality_score": 0.512,
-        "high_tier_ratio": 0.25,
-        "citation_strength": 1.0,
-        "tier_breakdown": {
-          "high": 2,
-          "medium": 0,
-          "low": 6,
+          "low": 8,
           "prediction": 0
         },
         "total_sources": 8
       },
-      "model_key": "qwen",
-      "original_question": "Are there any road closures in Ankara today?",
-      "cached_at": "2026-05-20T23:20:10.533937+00:00",
-      "cached_ts": 1779319210.533944
-    },
-    "qwen::what changed in windows 11 in the last 3 updates": {
-      "answer": "Based on the recent updates for Windows 11:\n\n- **Taskbar and Start Menu Customization**: The latest update reintroduced Windows 10-style taskbar and Start Menu customization options. This change is expected to roll out in the coming weeks for versions 24H2, 25H2, and 26H1.\n  \n- **Renaming of Recommendation Area**: The recommendation area has been renamed to \"Recent,\" keeping newly installed apps visible and refining which files appear in that section. This update is also part of the ongoing rollout.\n\n- **KB5089549 Update Issues**: There have been reports of installation issues with KB5089549, a recent update for Windows 11. However, Microsoft has provided a solution by allowing users to download this update via the official Media Creation Tool for USB installs.\n\nThese updates are part of the ongoing improvements and changes in Windows 11 as it continues to evolve based on user feedback and technological advancements.\n\n- **KB5089549 Update Details**: This update, released on April 14, 2026, has faced some installation issues but can now be downloaded for USB installs using the official Microsoft Media Creation Tool. (Source: [Neowin](https://www.neowin.net/news/windows-11-kb5089549-can-now-be-downloaded-for-usb-installs-using-official-microsoft-tool/))\n\nFor more detailed information, you can refer to the following sources:\n- TechPowerUp: [Microsoft Brings Back Windows 10-Style Taskbar and Start Menu Customization in Windows 11](https://www.techpowerup.com/349132/microsoft-brings-back-windows-10-style-taskbar-and-start-menu-customization-in-windows-11/)\n- Neowin: [Windows 11 KB5089549 reportedly failing to install, slowing internet down on certain systems](https://www.neowin.net/news/windows-11-kb5089549-reportedly-failing-to-install-slowing-internet-down-on-certain-systems/) and [Windows 11 KB5089549 can now be downloaded for USB installs using official Microsoft tool](https://www.neowin.net/news/windows-11-kb5089549-can-now-be-downloaded-for-usb-installs-using-official-microsoft-tool/)\n\nThese sources provide detailed insights into the recent changes and updates in Windows 11.",
-      "facts": [
-        {
-          "claim_text": "Based on the recent updates for Windows 11:  - **Taskbar and Start Menu Customization**: The latest update reintroduced Windows 10-style taskbar and Start Menu customization options.",
-          "evidence_urls": [
-            "https://en.wikipedia.org/wiki/Windows_11_version_history",
-            "https://www.techpowerup.com/349132/microsoft-brings-back-windows-10-style-taskbar-and-start-menu-customization-in-windows-11",
-            "https://www.windowscentral.com/microsoft/windows-11/5-things-you-need-to-know-about-changes-coming-to-windows-update-on-windows-11"
-          ],
-          "source_tools": [
-            "duckduckgo_results_json",
-            "tavily_search_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": true,
-            "weak_evidence": false,
-            "needs_review": false
-          }
-        },
-        {
-          "claim_text": "This change is expected to roll out in the coming weeks for versions 24H2, 25H2, and 26H1.",
-          "evidence_urls": [
-            "https://www.techpowerup.com/349132/microsoft-brings-back-windows-10-style-taskbar-and-start-menu-customization-in-windows-11",
-            "https://en.wikipedia.org/wiki/Windows_11_version_history",
-            "https://www.windowscentral.com/microsoft/windows-11/11-big-windows-11-changes-in-april-2026-you-need-to-know-right-now"
-          ],
-          "source_tools": [
-            "duckduckgo_results_json",
-            "tavily_search_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": true,
-            "weak_evidence": false,
-            "needs_review": false
-          }
-        },
-        {
-          "claim_text": "- **Renaming of Recommendation Area**: The recommendation area has been renamed to \"Recent,\" keeping newly installed apps visible and refining which files appear in that section.",
-          "evidence_urls": [
-            "https://www.techpowerup.com/349132/microsoft-brings-back-windows-10-style-taskbar-and-start-menu-customization-in-windows-11",
-            "https://en.wikipedia.org/wiki/Windows_11_version_history",
-            "https://www.bleepingcomputer.com/news/microsoft/windows-11-kb5083631-update-released-with-34-changes-and-fixes/"
-          ],
-          "source_tools": [
-            "duckduckgo_results_json",
-            "tavily_search_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": true,
-            "weak_evidence": false,
-            "needs_review": false
-          }
-        },
-        {
-          "claim_text": "This update is also part of the ongoing rollout.",
-          "evidence_urls": [
-            "https://en.wikipedia.org/wiki/Windows_11_version_history",
-            "https://learn.microsoft.com/en-us/windows/release-health/windows11-release-information",
-            "https://www.windowscentral.com/microsoft/windows-11/5-things-you-need-to-know-about-changes-coming-to-windows-update-on-windows-11"
-          ],
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": true,
-            "weak_evidence": false,
-            "needs_review": false
-          }
-        },
-        {
-          "claim_text": "- **KB5089549 Update Issues**: There have been reports of installation issues with KB5089549, a recent update for Windows 11.",
-          "evidence_urls": [
-            "https://en.wikipedia.org/wiki/Windows_11_version_history",
-            "https://www.neowin.net/news/windows-11-kb5089549-reportedly-failing-to-install-slowing-internet-down-on-certain-systems/",
-            "https://learn.microsoft.com/en-us/windows/release-health/windows11-release-information"
-          ],
-          "source_tools": [
-            "duckduckgo_results_json",
-            "tavily_search_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": true,
-            "weak_evidence": false,
-            "needs_review": false
-          }
-        },
-        {
-          "claim_text": "However, Microsoft has provided a solution by allowing users to download this update via the official Media Creation Tool for USB installs.",
-          "evidence_urls": [
-            "https://en.wikipedia.org/wiki/Windows_11_version_history",
-            "https://www.neowin.net/news/windows-11-kb5089549-can-now-be-downloaded-for-usb-installs-using-official-microsoft-tool/",
-            "https://www.neowin.net/news/windows-11-kb5089549-reportedly-failing-to-install-slowing-internet-down-on-certain-systems/"
-          ],
-          "source_tools": [
-            "duckduckgo_results_json",
-            "tavily_search_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": true,
-            "weak_evidence": false,
-            "needs_review": false
-          }
-        },
-        {
-          "claim_text": "These updates are part of the ongoing improvements and changes in Windows 11 as it continues to evolve based on user feedback and technological advancements.",
-          "evidence_urls": [
-            "https://en.wikipedia.org/wiki/Windows_11_version_history",
-            "https://www.techpowerup.com/349132/microsoft-brings-back-windows-10-style-taskbar-and-start-menu-customization-in-windows-11",
-            "https://www.neowin.net/news/windows-11-kb5089549-reportedly-failing-to-install-slowing-internet-down-on-certain-systems/"
-          ],
-          "source_tools": [
-            "duckduckgo_results_json",
-            "tavily_search_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": true,
-            "weak_evidence": false,
-            "needs_review": false
-          }
-        },
-        {
-          "claim_text": "- **KB5089549 Update Details**: This update, released on April 14, 2026, has faced some installation issues but can now be downloaded for USB installs using the official Microsoft Media Creation Tool.",
-          "evidence_urls": [
-            "https://learn.microsoft.com/en-us/windows/release-health/windows11-release-information",
-            "https://www.windowscentral.com/microsoft/windows-11/11-big-windows-11-changes-in-april-2026-you-need-to-know-right-now",
-            "https://en.wikipedia.org/wiki/Windows_11_version_history"
-          ],
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": true,
-            "weak_evidence": false,
-            "needs_review": false
-          }
-        },
-        {
-          "claim_text": "(Source: [Neowin](https://www.neowin.net/news/windows-11-kb5089549-can-now-be-downloaded-for-usb-installs-using-official-microsoft-tool/))  For more detailed information, you can refer to the following sources: - TechPowerUp: [Microsoft Brings Back Windows 10-Style Taskbar and Start Menu Customization in Windows 11](https://www.techpowerup.com/349132/microsoft-brings-back-windows-10-style-taskbar-and-start-menu-customization-in-windows-11/) - Neowin: [Windows 11 KB5089549 reportedly failing to install, slowing internet down on certain systems](https://www.neowin.net/news/windows-11-kb5089549-reportedly-failing-to-install-slowing-internet-down-on-certain-systems/) and [Windows 11 KB5089549 can now be downloaded for USB installs using official Microsoft tool](https://www.neowin.net/news/windows-11-kb5089549-can-now-be-downloaded-for-usb-installs-using-official-microsoft-tool/)  These sources provide detailed insights into the recent changes and updates in Windows 11.",
-          "evidence_urls": [
-            "https://en.wikipedia.org/wiki/Windows_11_version_history",
-            "https://www.techpowerup.com/349132/microsoft-brings-back-windows-10-style-taskbar-and-start-menu-customization-in-windows-11",
-            "https://www.neowin.net/news/windows-11-kb5089549-reportedly-failing-to-install-slowing-internet-down-on-certain-systems/"
-          ],
-          "source_tools": [
-            "duckduckgo_results_json",
-            "tavily_search_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": true,
-            "weak_evidence": false,
-            "needs_review": false
-          }
-        }
-      ],
-      "sources": [
-        {
-          "url": "https://en.wikipedia.org/wiki/Windows_11_version_history",
-          "title": "Windows 11 version history - Wikipedia",
-          "domain": "en.wikipedia.org",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "2 days ago - Five component updates were released for this version–\"Moment 1\" with build 22621.675 on October 18, 2022, \"Moment 2\" with build 22621.1344 on February 28, 2023, \"Moment 3\" with build 22621.1778 on May 24, 2023, \"Moment 4\" with build 22621.2361 on September 26, 2023, and \"Moment 5\" with build ...",
-          "tier": "high"
-        },
-        {
-          "url": "https://learn.microsoft.com/en-us/windows/release-health/windows11-release-information",
-          "title": "Windows 11 - release information | Microsoft Learn",
-          "domain": "learn.microsoft.com",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "April 14, 2026 - This version is not offered as an in-place update from 24H2 or 25H2 on existing devices. (All dates are listed in ISO 8601 format: YYYY-MM-DD) ... 1 Windows 11 Enterprise LTSC 2024 edition does not have extended support. It will reach end of updates (also known as end of servicing) on 2029-10-09.",
-          "tier": "low"
-        },
-        {
-          "url": "https://www.windowscentral.com/microsoft/windows-11/5-things-you-need-to-know-about-changes-coming-to-windows-update-on-windows-11",
-          "title": "Windows 11 is changing how Windows Update works — here are the 5 things Microsoft says will matter most",
-          "domain": "www.windowscentral.com",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "2 weeks ago - Finally, as part of the effort to make the updates a little less annoying, Windows 11 now allows you to skip system updates during the Out-of-box Experience (OOBE). ... One thing to note here is that if you skip updates, the computer won't download the latest drivers, features, and security patches until either you manually trigger a download or the system resumes updating automatica",
-          "tier": "low"
-        },
-        {
-          "url": "https://www.bleepingcomputer.com/news/microsoft/windows-11-kb5083631-update-released-with-34-changes-and-fixes/",
-          "title": "Windows 11 KB5083631 update released with 34 changes and fixes",
-          "domain": "www.bleepingcomputer.com",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "3 weeks ago - Microsoft has released the KB5083631 ... 34 changes, such as a new Xbox mode for Windows PCs, enhanced security and performance for batch files, and performance improvements for launching startup apps....",
-          "tier": "low"
-        },
-        {
-          "url": "https://www.windowscentral.com/microsoft/windows-11/11-big-windows-11-changes-in-april-2026-you-need-to-know-right-now",
-          "title": "We’ve tested the April 2026 Windows 11 update, and its 11 improvements genuinely make the OS feel better | Windows Central",
-          "domain": "www.windowscentral.com",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "3 weeks ago - Windows 11’s April 2026 update delivers 11 improvements focused on performance, polish, and everyday usability. (Image credit: Future | Edited with Gemini) ... As April is coming to an end, it's now the right time to review the new changes and features that Microsoft made available for Windows 11 through the Windows Insider Program during the second half of the month.",
-          "tier": "low"
-        },
-        {
-          "url": "https://www.techpowerup.com/349132/microsoft-brings-back-windows-10-style-taskbar-and-start-menu-customization-in-windows-11",
-          "title": "Microsoft Brings Back Windows 10-Style Taskbar and Start Menu Customization in Windows 11 - TechPowerUp",
-          "domain": "www.techpowerup.com",
-          "source_tools": [
-            "tavily_search_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "elsewhere in Windows. At the same time, the company is trying to make the recommendation area more useful by renaming it to Recent, keeping newly installed apps visible, and refining which files appear in that section.These changes are rolling out in the coming weeks for Windows Insiders, meaning that regular Windows 11 users on versions 24H2, 25H2, and 26H1 will experience them in about a month o",
-          "tier": "low"
-        },
-        {
-          "url": "https://www.neowin.net/news/windows-11-kb5089549-reportedly-failing-to-install-slowing-internet-down-on-certain-systems/",
-          "title": "Windows 11 KB5089549 reportedly failing to install, slowing internet down on certain systems - Neowin",
-          "domain": "www.neowin.net",
-          "source_tools": [
-            "tavily_search_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "Yesterday Microsoft released its newest Patch Tuesday updates (KB5087544 on Windows 10 and KB5089549 on Windows 11). However the latter could be having installation issues on certain PCs as reported by users. These affected users say that the update is stubborn as it just wouldn't install even after trying several times. It is slightly unfortunate considering Microsoft just announced a major Windo",
-          "tier": "low"
-        },
-        {
-          "url": "https://www.neowin.net/news/windows-11-kb5089549-can-now-be-downloaded-for-usb-installs-using-official-microsoft-tool/",
-          "title": "Windows 11 KB5089549 can now be downloaded for USB installs using official Microsoft tool - Neowin",
-          "domain": "www.neowin.net",
-          "source_tools": [
-            "tavily_search_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "DEALS",
-          "tier": "low"
-        }
-      ],
-      "trust_signals": {
-        "citation_coverage": 1.0,
-        "avg_sources_per_claim": 3.0,
-        "multi_source_claim_ratio": 1.0,
-        "distinct_domain_count": 6,
-        "source_quality_score": 0.431,
-        "high_tier_ratio": 0.125,
-        "citation_strength": 1.0,
-        "tier_breakdown": {
-          "high": 1,
-          "medium": 0,
-          "low": 7,
-          "prediction": 0
-        },
-        "total_sources": 8
-      },
-      "model_key": "qwen",
-      "original_question": "What changed in Windows 11 in the last 3 updates?",
-      "cached_at": "2026-05-20T23:23:40.968123+00:00",
-      "cached_ts": 1779319420.968129
+      "model_key": "llama",
+      "original_question": "Galatasaray top scorer this season.",
+      "cached_at": "2026-05-21T00:16:44.536125+00:00",
+      "cached_ts": 1779322604.536131
     }
   }
 }

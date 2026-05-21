@@ -143,15 +143,61 @@ def normalize_sources(tool_messages: list[dict[str, str]]) -> list["SourceEntry"
     return list(by_url.values())
 
 
+_SOURCES_SECTION_RE = re.compile(
+    r"(?:^|\n)\s*(?:#{1,6}\s*)?"
+    r"(?:\*\*)?"
+    r"(?:Sources?|References?|Citations?|See\s+also|Read\s+more|Further\s+reading)"
+    r"(?:\*\*)?"
+    r"\s*:?\s*\n[\s\S]*$",
+    re.IGNORECASE,
+)
+
+_MARKDOWN_LINK_RE = re.compile(r"\[[^\]]*\]\([^)]*\)")
+_BARE_URL_RE = re.compile(r"https?://\S+")
+_LIST_BULLET_RE = re.compile(r"^\s*[-*•]\s+", re.MULTILINE)
+_NON_CLAIM_PREFIX_RE = re.compile(
+    r"^\s*(?:Sources?|References?|Citations?|Source|Citation|See\s+also|Read\s+more)\s*:",
+    re.IGNORECASE,
+)
+
+
+def _strip_sources_section(text: str) -> str:
+    """Remove a trailing 'Sources:' / 'References:' block — it's metadata,
+    not a factual claim, and confuses the sentence splitter."""
+    return _SOURCES_SECTION_RE.sub("", text or "").strip()
+
+
+def _is_non_claim(sentence: str) -> bool:
+    """True when a sentence is markdown noise (a sources header, a bare
+    link line, or a bullet whose body is just a markdown link)."""
+    s = (sentence or "").strip()
+    if not s:
+        return True
+    if _NON_CLAIM_PREFIX_RE.match(s):
+        return True
+    # Strip away link markup and list bullets; what remains should be prose.
+    residual = _MARKDOWN_LINK_RE.sub("", s)
+    residual = _BARE_URL_RE.sub("", residual)
+    residual = _LIST_BULLET_RE.sub("", residual)
+    residual = re.sub(r"[\s,\-:*•]+", "", residual)
+    # Fewer than ~8 non-link characters → almost certainly not a claim.
+    if len(residual) < 8:
+        return True
+    return False
+
+
 def _extract_claims_from_answer(answer_text: str, sources: list["SourceEntry"]) -> list[dict[str, Any]]:
     """Split the answer into sentences and map each to its best-scoring sources."""
+    cleaned_answer = _strip_sources_section(answer_text or "")
     sentences = [
         sentence.strip()
-        for sentence in re.split(r"(?<=[\.\!\?])\s+", answer_text or "")
+        for sentence in re.split(r"(?<=[\.\!\?])\s+|\n+", cleaned_answer)
         if sentence.strip()
     ]
     claims = []
     for sentence in sentences:
+        if _is_non_claim(sentence):
+            continue
         scored = [
             (source.url, _score_source_for_claim(sentence, source))
             for source in sources

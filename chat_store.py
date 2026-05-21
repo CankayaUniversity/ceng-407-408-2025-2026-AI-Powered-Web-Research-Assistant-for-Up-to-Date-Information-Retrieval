@@ -171,3 +171,12 @@ def delete_chat(chat_id: str) -> bool:
             return False
         _write(data)
         return True
+
+
+def delete_all() -> int:
+    with _lock:
+        data = _read()
+        count = len(data["chats"])
+        data["chats"] = []
+        _write(data)
+        return count
