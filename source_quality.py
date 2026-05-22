@@ -44,6 +44,11 @@ MEDIUM_TIER_DOMAINS = {
     "as.com", "lequipe.fr", "sport.es", "tuttosport.com",
     "sportingnews.com", "theathletic.com", "footballitalia.net",
     "fourfourtwo.com", "talksport.com",
+    # Turkish sports
+    "trtspor.com.tr", "fotomac.com.tr", "mackolik.com", "ajansspor.com",
+    "sporx.com", "fanatik.com.tr", "ntvspor.net",
+    # Live scores (topic-relevant even if not "official")
+    "livescore.com", "sofascore.com", "flashscore.com", "transfermarkt.com",
     # Mainstream news
     "cnn.com", "nbcnews.com", "cbsnews.com", "abcnews.go.com",
     "bloomberg.com", "axios.com", "politico.com",

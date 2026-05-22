@@ -20,7 +20,12 @@ from config import (
     DUCKDUCKGO_MAX_RESULTS,
     TAVILY_MAX_RESULTS,
 )
-from source_quality import classify_source, sort_results
+from source_quality import classify_source, sort_results, tier_weight
+from source_relevance import (
+    filter_by_relevance,
+    relevance_score,
+    sort_by_relevance_then_tier,
+)
 
 
 _tavily_underlying = None
@@ -231,8 +236,28 @@ def _clean_content(text: str, max_len: int = 800) -> str:
     return cleaned
 
 
-def _annotate_tavily_items(items: list[dict]) -> list[dict]:
-    sorted_items = sort_results(items)
+def _prepare_search_items(items: list[dict], query: str) -> list[dict]:
+    """Filter off-topic hits, then rank by relevance before domain tier."""
+    filtered = filter_by_relevance(query, items)
+    if not filtered:
+        # Avoid empty context — fall back to best raw hits
+        filtered = [dict(it) for it in items[: max(TAVILY_MAX_RESULTS, 3)]]
+        for it in filtered:
+            it["_relevance_score"] = relevance_score(
+                query,
+                str(it.get("title") or ""),
+                str(it.get("content") or it.get("snippet") or ""),
+                str(it.get("url") or ""),
+            )
+
+    ranked = sort_by_relevance_then_tier(
+        query, filtered, tier_weight, classify_source
+    )
+    return ranked
+
+
+def _annotate_tavily_items(items: list[dict], query: str) -> list[dict]:
+    sorted_items = _prepare_search_items(items, query)
     annotated = []
     for item in sorted_items:
         url = item.get("url", "") or ""
@@ -348,7 +373,9 @@ def _format_results_for_llm(items: list[dict], tavily_answer: str = "") -> str:
         pub_date = _format_published_date(item.get("published_date"))
         date_suffix = f" — {pub_date}" if pub_date else ""
 
-        lines.append(f"RESULT {idx} — TIER: {tier} — {domain}{date_suffix}")
+        rel = item.get("_relevance_score")
+        rel_suffix = f" — RELEVANCE: {rel:.2f}" if isinstance(rel, (int, float)) else ""
+        lines.append(f"RESULT {idx} — TIER: {tier}{rel_suffix} — {domain}{date_suffix}")
         lines.append(f"TITLE: {title}")
         lines.append(f"URL: {url}")
         if content:
@@ -431,7 +458,7 @@ def tavily_search_results_json(query: str) -> str:
         logger.info("Tavily news-mode query (days=%d): %r — got %d results",
                     NEWS_MODE_DAYS, q, len(items))
 
-    annotated = _annotate_tavily_items(items)
+    annotated = _annotate_tavily_items(items, q)
     return _format_results_for_llm(annotated, tavily_answer=tavily_answer)
 
 
@@ -450,8 +477,7 @@ def duckduckgo_results_json(query: str) -> str:
     items = _parse_ddg_segments(raw_str)
     if not items:
         return raw_str[:2000]
-    items = sort_results(items)
-    # Normalize DDG items to the same shape as Tavily, then use the same formatter.
+    # Normalize DDG items to the same shape as Tavily, then relevance-filter + rank.
     normalized = []
     for it in items:
         cleaned_snippet = _clean_content(it.get("snippet", ""), max_len=500)
@@ -459,9 +485,14 @@ def duckduckgo_results_json(query: str) -> str:
             "url": it.get("url", ""),
             "title": it.get("title", ""),
             "content": cleaned_snippet,
-            "_source_tier": classify_source(it.get("url", ""), it.get("title", ""), cleaned_snippet),
+            "snippet": cleaned_snippet,
         })
-    return _format_results_for_llm(normalized)
+    prepared = _prepare_search_items(normalized, query.strip())
+    for it in prepared:
+        it["_source_tier"] = classify_source(
+            it.get("url", ""), it.get("title", ""), it.get("content", "")
+        )
+    return _format_results_for_llm(prepared)
 
 
 duckduckgo_results_json.__doc__ = _SEARCH_TOOL_DOC

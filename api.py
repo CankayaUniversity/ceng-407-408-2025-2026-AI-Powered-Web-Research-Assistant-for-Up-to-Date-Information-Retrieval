@@ -394,6 +394,7 @@ async def ask_agent_stream(
                 extract_claims,
                 final_answer,
                 tool_messages_collected,
+                question,
             )
 
             turn_payload = {
@@ -489,7 +490,7 @@ def ask_agent(question: str, model: str | None = None):
             for message in result["messages"]
             if message.type == "tool"
         ]
-        extraction = extract_claims(final_answer, tool_messages)
+        extraction = extract_claims(final_answer, tool_messages, question)
         logger.info("trust_signals: %s", extraction["trust_signals"])
 
         return {

@@ -11,6 +11,7 @@ from typing import Any
 from urllib.parse import urlparse
 
 from source_quality import classify_source, tier_weight
+from source_relevance import MIN_RELEVANCE_SCORE, relevance_score
 
 
 @dataclass
@@ -217,8 +218,24 @@ def _claim_citation_strength(evidence_urls: list[str], url_to_source: dict[str, 
     return max(weights) if weights else 0.0
 
 
-def extract_claims(answer_text: str, tool_messages: list[dict[str, str]]) -> dict[str, Any]:
+def extract_claims(
+    answer_text: str,
+    tool_messages: list[dict[str, str]],
+    question: str | None = None,
+) -> dict[str, Any]:
     sources = normalize_sources(tool_messages)
+    if question:
+        sources = [
+            s
+            for s in sources
+            if relevance_score(
+                question,
+                s.title,
+                s.snippet,
+                s.url,
+            )
+            >= MIN_RELEVANCE_SCORE
+        ]
     raw_claims = _extract_claims_from_answer(answer_text, sources)
 
     url_to_source = {source.url: source for source in sources}
