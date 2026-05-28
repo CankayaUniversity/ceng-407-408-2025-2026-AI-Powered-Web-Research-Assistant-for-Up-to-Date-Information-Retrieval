@@ -3,3 +3,6 @@ __pycache__/
 *.pyc
 .env
 .env.*
+settings.json
+cache.json
+chats.json

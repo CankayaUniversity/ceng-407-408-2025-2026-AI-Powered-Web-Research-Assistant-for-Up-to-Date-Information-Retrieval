@@ -1,0 +1,935 @@
+{
+  "entries": {
+    "llama::what is the result of game fenerbahçe eyüpspor played last week": {
+      "answer": "FINAL ANSWER:\n\n* Fenerbahçe Eyüpspor'ın geçen hafta oynadığı maça ilişkin bilgi bulunamadı. (Kaynak metninde doğrulanamadı.)\n* Al-Nassr FC, Damac FC'ye karşı 5-2 galip geldi.\n\nKaynaklar:\n1. https://www.espn.com/soccer/story/_/id/48617925/alvaro-arbeloa-confirms-real-madrid-departure-trophyless-season\n2. https://www.foxsports.com/soccer/saudi-pro-league-al-nassr-fc-vs-damac-fc-may-21-2026-game-boxscore-645223",
+      "facts": [
+        {
+          "claim_text": "FINAL ANSWER:",
+          "evidence_urls": [
+            "https://www.foxsports.com/soccer/saudi-pro-league-al-nassr-fc-vs-damac-fc-may-21-2026-game-boxscore-645223",
+            "https://www.espn.com/soccer/story/_/id/48617925/alvaro-arbeloa-confirms-real-madrid-departure-trophyless-season"
+          ],
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false,
+            "numeric_mismatch": false
+          }
+        },
+        {
+          "claim_text": "* Fenerbahçe Eyüpspor'ın geçen hafta oynadığı maça ilişkin bilgi bulunamadı.",
+          "evidence_urls": [
+            "https://www.espn.com/soccer/story/_/id/48617925/alvaro-arbeloa-confirms-real-madrid-departure-trophyless-season"
+          ],
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": false,
+            "weak_evidence": true,
+            "needs_review": true,
+            "numeric_mismatch": false
+          }
+        },
+        {
+          "claim_text": "(Kaynak metninde doğrulanamadı.)",
+          "evidence_urls": [
+            "https://www.espn.com/soccer/story/_/id/48617925/alvaro-arbeloa-confirms-real-madrid-departure-trophyless-season"
+          ],
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": false,
+            "weak_evidence": true,
+            "needs_review": true,
+            "numeric_mismatch": false
+          }
+        },
+        {
+          "claim_text": "* Al-Nassr FC, Damac FC'ye karşı 5-2 galip geldi.",
+          "evidence_urls": [
+            "https://www.foxsports.com/soccer/saudi-pro-league-al-nassr-fc-vs-damac-fc-may-21-2026-game-boxscore-645223",
+            "https://www.espn.com/soccer/story/_/id/48617925/alvaro-arbeloa-confirms-real-madrid-departure-trophyless-season"
+          ],
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false,
+            "numeric_mismatch": false
+          }
+        },
+        {
+          "claim_text": "Kaynaklar:",
+          "evidence_urls": [
+            "https://www.espn.com/soccer/story/_/id/48617925/alvaro-arbeloa-confirms-real-madrid-departure-trophyless-season"
+          ],
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": false,
+            "weak_evidence": true,
+            "needs_review": true,
+            "numeric_mismatch": false
+          }
+        }
+      ],
+      "sources": [
+        {
+          "url": "https://www.espn.com/soccer/story/_/id/48617925/alvaro-arbeloa-confirms-real-madrid-departure-trophyless-season",
+          "title": "Álvaro Arbeloa confirms Real Madrid departure after trophyless season - ESPN",
+          "domain": "www.espn.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "2025-26 Liga BBVA MX, 1st Leg",
+          "tier": "medium"
+        },
+        {
+          "url": "https://www.foxsports.com/soccer/saudi-pro-league-al-nassr-fc-vs-damac-fc-may-21-2026-game-boxscore-645223",
+          "title": "Al-Nassr FC vs. Damac FC - Final Score - May 21, 2026 - FOX Sports",
+          "domain": "www.foxsports.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "5",
+          "tier": "low"
+        }
+      ],
+      "trust_signals": {
+        "citation_coverage": 1.0,
+        "avg_sources_per_claim": 1.4,
+        "multi_source_claim_ratio": 0.4,
+        "distinct_domain_count": 2,
+        "source_quality_score": 0.5,
+        "high_tier_ratio": 0.0,
+        "citation_strength": 0.65,
+        "tier_breakdown": {
+          "high": 0,
+          "medium": 1,
+          "low": 1,
+          "prediction": 0
+        },
+        "total_sources": 2
+      },
+      "model_key": "llama",
+      "original_question": "what is the result of game Fenerbahçe Eyüpspor played last week?",
+      "cached_at": "2026-05-22T19:06:12.623987+00:00",
+      "cached_ts": 1779476772.623999
+    },
+    "llama::what is the result of fenerbahçe eyüpspor played last week": {
+      "answer": "Fenerbahçe defeated Eyüpspor with a score of 3-0 in their Turkish Super Lig match on May 17, 2026.",
+      "facts": [
+        {
+          "claim_text": "Fenerbahçe defeated Eyüpspor with a score of 3-0 in their Turkish Super Lig match on May 17, 2026.",
+          "evidence_urls": [
+            "https://www.premierleague.com/en/video/4664126",
+            "https://www.livescore.com/en/football/team/fenerbahe/4452/overview/",
+            "https://www.sofascore.com/football/team/fenerbahce/3052"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        }
+      ],
+      "sources": [
+        {
+          "url": "https://www.premierleague.com/en/video/4664126",
+          "title": "Everything you need to know about FPL GW38 in 100 seconds - Premier League",
+          "domain": "www.premierleague.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "© PREMIER LEAGUE 2026",
+          "tier": "high"
+        },
+        {
+          "url": "https://www.livescore.com/en/football/team/fenerbahe/4452/overview/",
+          "title": "Fenerbahçe Scores & Latest Results Today | LiveScore",
+          "domain": "www.livescore.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "April 21, 2026 - Fenerbahçe scores with the latest results, fixtures and tables. View up-to-date results live as they happen.",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.sofascore.com/football/team/fenerbahce/3052",
+          "title": "Fenerbahçe live score, schedule & player stats | Sofascore",
+          "domain": "www.sofascore.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "1 month ago - Fenerbahçe top scorers list is updated live during every match. You can click on players from the roster above and see available personal information such as nationality, date of birth, height, preferred foot, position, player value, transfer history etc. For today’s football schedule and results visit our football live score page.",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.flashscore.com/team/fenerbahce/rDhoZR1l/",
+          "title": "Fenerbahce live scores, results, fixtures, Fenerbahce v Esenler Erokspor live | Basketball, Turkey",
+          "domain": "www.flashscore.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "5 hours ago - Fenerbahce page on Flashscore.com offers livescore, results, standings and match details.",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.sofascore.com/basketball/team/fenerbahce-beko/3514",
+          "title": "Fenerbahçe Beko live scores & schedule | Sofascore",
+          "domain": "www.sofascore.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "4 hours ago - Fenerbahçe Beko performance and form graph is a Sofascore unique algorithm that we are generating from the team's last 10 matches, statistics, detailed analysis and our own knowledge. This graph may help predict future Fenerbahçe Beko games. For today’s basketball games and results visit our basketball live score page.",
+          "tier": "low"
+        }
+      ],
+      "trust_signals": {
+        "citation_coverage": 1.0,
+        "avg_sources_per_claim": 3.0,
+        "multi_source_claim_ratio": 1.0,
+        "distinct_domain_count": 4,
+        "source_quality_score": 0.48,
+        "high_tier_ratio": 0.2,
+        "citation_strength": 1.0,
+        "tier_breakdown": {
+          "high": 1,
+          "medium": 0,
+          "low": 4,
+          "prediction": 0
+        },
+        "total_sources": 5
+      },
+      "model_key": "llama",
+      "original_question": "what is the result of Fenerbahçe Eyüpspor played last week ?",
+      "cached_at": "2026-05-22T19:09:16.139980+00:00",
+      "cached_ts": 1779476956.139991
+    },
+    "llama::what is the result of the game fenerbahce eyüpspor": {
+      "answer": "Fenerbahçe lost 1-2 to Eyüpspor. Fred scored the goal for Eyüpspor. The match was part of the Trendyol Süper Lig.",
+      "facts": [
+        {
+          "claim_text": "Fenerbahçe lost 1-2 to Eyüpspor.",
+          "evidence_urls": [
+            "https://www.flashscore.com/match/football/eyupspor-276zKCgt/fenerbahce-MsbmracL",
+            "https://x.com/soccer_turkish/status/2056080763586498748",
+            "https://www.youtube.com/watch?v=ITsopqjXflw"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "Fred scored the goal for Eyüpspor.",
+          "evidence_urls": [
+            "https://x.com/soccer_turkish/status/2056080763586498748",
+            "https://www.flashscore.com/match/football/eyupspor-276zKCgt/fenerbahce-MsbmracL"
+          ],
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "The match was part of the Trendyol Süper Lig.",
+          "evidence_urls": [
+            "https://www.flashscore.com/match/football/eyupspor-276zKCgt/fenerbahce-MsbmracL",
+            "https://www.fenerbahce.org/haberler/futbol/2026/3/fenerbahce-3-2-samsunspor",
+            "https://spor.haber7.com/fenerbahce/haber/3623214-derbiyi-3-0-kaybeden-fenerbahce-ilki-yasadi"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        }
+      ],
+      "sources": [
+        {
+          "url": "https://www.flashscore.com/match/football/eyupspor-276zKCgt/fenerbahce-MsbmracL",
+          "title": "Fenerbahce v Eyupspor 17/05/2026 | Football - Flashscore.com",
+          "domain": "www.flashscore.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Follow Fenerbahce v Eyupspor 17/05/2026 match information, Fenerbahce latest results, news, highlights and Fenerbahce v Eyupspor H2H statistics!",
+          "tier": "medium"
+        },
+        {
+          "url": "https://x.com/soccer_turkish/status/2056080763586498748",
+          "title": "Turkish Football Soccer",
+          "domain": "x.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Fenerbahce 1-2 Eyüpspor Fenerbahce reduced to score 1-2 by Fred. Brazilian midfielder maintains his scorer role. ⚽️Legowski ⏱️",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=ITsopqjXflw",
+          "title": "YouTube | Fenerbahçe, 23 Yaşındaki İngiliz Sol Bek, Archie Brown İle...",
+          "domain": "www.youtube.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "SON DAKİKA | Fenerbahçe, 23 Yaşındaki İngiliz Sol Bek, Archie Brown İle Anlaşma Sağladı.Youtube Kanalımıza Abone Olmak İçin: https://www.youtube.com/@fenerb...",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.fenerbahce.org/haberler/futbol/2026/3/fenerbahce-3-2-samsunspor",
+          "title": "Fenerbahçe Futbol Takımı Haberleri ve Son... - Fenerbahçe Spor...",
+          "domain": "www.fenerbahce.org",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Fenerbahçemiz, Trendyol Süper Lig'in 25. hafta maçında konuk ettiği Samsunspor’u iki kere geriye düştüğü maçta 3-2 mağlup etti ve puanını.",
+          "tier": "low"
+        },
+        {
+          "url": "https://spor.haber7.com/fenerbahce/haber/3623214-derbiyi-3-0-kaybeden-fenerbahce-ilki-yasadi",
+          "title": "Derbiyi 3-0 Kaybeden Fenerbahçe İlki Yaşadı",
+          "domain": "spor.haber7.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Tüm Spor - Trendyol Süper Lig’in 31. haftasında deplasmanda Galatasaray’a 3-0 mağlup olan Fenerbahçe, bu sezon ilk kez derbi kaybetti.",
+          "tier": "low"
+        }
+      ],
+      "trust_signals": {
+        "citation_coverage": 1.0,
+        "avg_sources_per_claim": 2.6666666666666665,
+        "multi_source_claim_ratio": 1.0,
+        "distinct_domain_count": 5,
+        "source_quality_score": 0.41,
+        "high_tier_ratio": 0.0,
+        "citation_strength": 0.65,
+        "tier_breakdown": {
+          "high": 0,
+          "medium": 1,
+          "low": 4,
+          "prediction": 0
+        },
+        "total_sources": 5
+      },
+      "model_key": "llama",
+      "original_question": "what is the result of the game Fenerbahce Eyüpspor",
+      "cached_at": "2026-05-22T19:14:57.674214+00:00",
+      "cached_ts": 1779477297.674235
+    },
+    "llama::fenerbahçe eyüpspor last week game result": {
+      "answer": "The result of the match between Fenerbahçe and Eyüpspor on May 17, 2026, was a 3-3 draw.",
+      "facts": [
+        {
+          "claim_text": "The result of the match between Fenerbahçe and Eyüpspor on May 17, 2026, was a 3-3 draw.",
+          "evidence_urls": [
+            "https://corner-stats.com/fenerbahce-eyupspor-17-05-2026/super-lig-turkey/match/632413",
+            "https://en.haberler.com/eyupspor-stayed-in-the-league-with-a-goal-scored-2255386/",
+            "https://www.sofascore.com/football/team/fenerbahce/3052"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        }
+      ],
+      "sources": [
+        {
+          "url": "https://corner-stats.com/fenerbahce-eyupspor-17-05-2026/super-lig-turkey/match/632413",
+          "title": "17/05/2026 Fenerbahce - Eyüpspor. Game result: ? : ?",
+          "domain": "corner-stats.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "6 days ago - Result of ➤ Fenerbahce - Eyüpspor 17/05/2026. Score on: ✔ goals, ✔ corners, ✔ red and yellow cards and all other game statistics",
+          "tier": "low"
+        },
+        {
+          "url": "https://en.haberler.com/eyupspor-stayed-in-the-league-with-a-goal-scored-2255386/",
+          "title": "Eyüpspor stayed in the league with a goal scored in the last minutes against Fenerbahçe.",
+          "domain": "en.haberler.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "5 days ago - No further goals were scored in the remainder of the match. With this result, Fenerbahçe finished the league in second place with 74 points and earned the right to participate in the Champions League qualifiers next season.",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.sofascore.com/football/team/fenerbahce/3052",
+          "title": "Fenerbahçe live score, schedule & player stats | Sofascore",
+          "domain": "www.sofascore.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "1 month ago - Fenerbahçe live scores, players, season schedule and today’s results are available on Sofascore.",
+          "tier": "medium"
+        },
+        {
+          "url": "https://beinsports.com.tr/haber/fenerbahce-ikas-eyupspor-2",
+          "title": "GENİŞ ÖZET | Fenerbahçe 3 3 ikas Eyüpspor | beIN SPORTS Türkiye - beinsports.com.tr/",
+          "domain": "beinsports.com.tr",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Trendyol Süper Lig'in 34. ve son haftasında Fenerbahçe ile ikas Eyüpspor 3-3 berabere kaldı. Published 4 days ago",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.hurriyet.com.tr/sporarena/fenerbahce-3-3-eyupspor-super-lig-maci-ozeti-43175557",
+          "title": "Fenerbahçe 3-3 Eyüpspor (Süper Lig maçı özeti) - Futbol Haberleri",
+          "domain": "www.hurriyet.com.tr",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "5 days ago - Fenerbahçe, Süper Lig son hafta maçında Eyüpspor ile 3-3 berabere kaldı. Bu sonuçla birlikte Eyüpspor ligde kaldı.",
+          "tier": "low"
+        }
+      ],
+      "trust_signals": {
+        "citation_coverage": 1.0,
+        "avg_sources_per_claim": 3.0,
+        "multi_source_claim_ratio": 1.0,
+        "distinct_domain_count": 5,
+        "source_quality_score": 0.41,
+        "high_tier_ratio": 0.0,
+        "citation_strength": 0.65,
+        "tier_breakdown": {
+          "high": 0,
+          "medium": 1,
+          "low": 4,
+          "prediction": 0
+        },
+        "total_sources": 5
+      },
+      "model_key": "llama",
+      "original_question": "Fenerbahçe Eyüpspor last week game result",
+      "cached_at": "2026-05-22T19:18:00.395550+00:00",
+      "cached_ts": 1779477480.395561
+    },
+    "llama::who is the ceo of google 2026": {
+      "answer": "Based on the search results, the current CEO of Google in 2026 is Sundar Pichai.",
+      "facts": [
+        {
+          "claim_text": "Based on the search results, the current CEO of Google in 2026 is Sundar Pichai.",
+          "evidence_urls": [
+            "https://www.theverge.com/tech/933415/google-io-2026-biggest-announcements-ai-gemini",
+            "https://tech.yahoo.com/general/live/google-io-2026-live-gemini-ai-android-17-android-xr-updates-and-more-135626963.html",
+            "https://blog.google/innovation-and-ai/technology/ai/io-2026-dialogues-recap/"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        }
+      ],
+      "sources": [
+        {
+          "url": "https://blog.google/innovation-and-ai/technology/ai/io-2026-dialogues-recap/",
+          "title": "Google I/O 2026: Highlights from the Dialogues Stage",
+          "domain": "blog.google",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Science: Google DeepMind CEO Demis Hassabis sat down with Axios’ Mike Allen to highlight AI's role in solving complex scientific problems.",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.donanimhaber.com/google-deepmind-ceo-tekilligin-eteklerinde-olabiliriz--205955",
+          "title": "Google DeepMind CEO: “Tekilliğin Eteklerinde Olabiliriz”",
+          "domain": "www.donanimhaber.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Google I/O 2026 etkinliğinin kapanış konuşmasında Hassabis, insanlığın “tekilliğin eteklerinde” olabileceğini söyledi",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.androidheadlines.com/2026/05/eric-schmidt-graduation-speech-ai-backlash-booed-gen-z.html",
+          "title": "Gen Z Graduates Boo Former Google CEO Over AI Impact Speech",
+          "domain": "www.androidheadlines.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "For former Google CEO Eric Schmidt, that dream became a very loud reality at the University of Arizona’s 2026 commencement ceremony.",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.theverge.com/tech/933415/google-io-2026-biggest-announcements-ai-gemini",
+          "title": "The 13 Biggest Announcements at Google I/O 2026 | The Verge",
+          "domain": "www.theverge.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Google’s I/O 2026 keynote today was once again full of AI-related announcements including a new family of Gemini 3.5 AI models, new features for Search and Gmail, and updates about...",
+          "tier": "medium"
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=5puu3kN9l7c",
+          "title": "Google CEO Sundar Pichai and the Future of AI | The Circuit - YouTube",
+          "domain": "www.youtube.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Google & Alphabet CEO Sundar Pichai sits down exclusively with Bloomberg Originals Host & Executive Producer Emily Chang to discuss the future of search, reb...",
+          "tier": "low"
+        },
+        {
+          "url": "https://tech.yahoo.com/general/live/google-io-2026-live-gemini-ai-android-17-android-xr-updates-and-more-135626963.html",
+          "title": "Google I/O 2026 live: Gemini AI, Android 17, Android XR updates and more - Yahoo Tech",
+          "domain": "tech.yahoo.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "# Sundar on stage",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.cnet.com/news-live/google-io-2026-live-news-updates/",
+          "title": "Google I/O 2026 Live Updates: Latest News on Android 17 and Gemini - CNET",
+          "domain": "www.cnet.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Live",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.cnet.com/tech/services-and-software/google-i-o-2026-ai-releases-over-the-past-year/",
+          "title": "Google I/O 2026: Every AI Drop Since Last Year - CNET",
+          "domain": "www.cnet.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Google's recent smart glasses show the company has come a long way since its failed Google Glass project in 2013. The company has long been teasing its Android XR tech, and it's worked with Samsung on its Galaxy XR mixed reality headset. It's given it the foundation it needs to build out its own Gemini-infused headsets and glasses. We're expecting to learn more about Google's plans for smart glass",
+          "tier": "low"
+        }
+      ],
+      "trust_signals": {
+        "citation_coverage": 1.0,
+        "avg_sources_per_claim": 3.0,
+        "multi_source_claim_ratio": 1.0,
+        "distinct_domain_count": 7,
+        "source_quality_score": 0.387,
+        "high_tier_ratio": 0.0,
+        "citation_strength": 0.65,
+        "tier_breakdown": {
+          "high": 0,
+          "medium": 1,
+          "low": 7,
+          "prediction": 0
+        },
+        "total_sources": 8
+      },
+      "model_key": "llama",
+      "original_question": "Who is the CEO of Google 2026 ?",
+      "cached_at": "2026-05-22T19:23:31.211472+00:00",
+      "cached_ts": 1779477811.211482
+    },
+    "llama::what is the currency of bitcoin now": {
+      "answer": "Based on the search results, the current price of Bitcoin is $80,380.73 as of May 9, 2026, according to Bitget.",
+      "facts": [
+        {
+          "claim_text": "Based on the search results, the current price of Bitcoin is $80,380.73 as of May 9, 2026, according to Bitget.",
+          "evidence_urls": [
+            "https://coinmarketcap.com/currencies/bitcoin/",
+            "https://www.tradingview.com/symbols/BTCUSD/",
+            "https://www.coingecko.com/en/coins/bitcoin"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        }
+      ],
+      "sources": [
+        {
+          "url": "https://coinmarketcap.com/currencies/bitcoin/",
+          "title": "Bitcoin Price Today, BTC to USD Live Price, Marketcap and Chart",
+          "domain": "coinmarketcap.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Mining Bitcoins can be very profitable for miners, depending on the current hash rate and the price of Bitcoin.Bitcoin is the first decentralized, peer-to-peer digital currency.",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.xe.com/currencyconverter/convert/?Amount=1&From=BTC&To=USD",
+          "title": "1 BTC to USD - Bitcoins to US Dollars Exchange Rate",
+          "domain": "www.xe.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Get the latest 1 Bitcoin to US Dollar rate for FREE with the original Universal Currency Converter.The average was 71,271.09 with 2.22% volatility.",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.coingecko.com/en/coins/bitcoin",
+          "title": "Bitcoin Price: BTC/USD Live Price Chart, Market Cap & News Today",
+          "domain": "www.coingecko.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Track the latest Bitcoin price, market cap, trading volume, news and more with CoinGecko's live BTC/USD price chart and popular cryptocurrency price tracker.",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.tradingview.com/symbols/BTCUSD/",
+          "title": "BTC USD — Bitcoin Price and Chart | TradingView",
+          "domain": "www.tradingview.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "The current circulating supply of Bitcoin (BTC) is 20.03 M USD.",
+          "tier": "low"
+        },
+        {
+          "url": "https://tr.investing.com/crypto/bitcoin",
+          "title": "Bitcoin Fiyat | BTC Coin - Investing.com",
+          "domain": "tr.investing.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Canlı Bitcoin fiyatları (81.265,4), piyasa yorumları, grafikleri ve işlem hacmi.",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.stocktitan.net/sec-filings/LMFA/8-k-lm-funding-america-inc-reports-material-event-893d05942924.html",
+          "title": "LM Funding America (NASDAQ: LMFA) details April Bitcoin output and $25.3M BTC treasury value - Stock Titan",
+          "domain": "www.stocktitan.net",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "LM Funding continues to operate as a Bitcoin-focused treasury and mining company, with April production of 9.4 BTC and total holdings of 334.0 BTC. An energized hashrate of 0.79 EH/s spread over 7,508 machines indicates a relatively stable operating footprint between March and April.",
+          "tier": "low"
+        },
+        {
+          "url": "https://ng.investing.com/news/stock-market-news/lm-funding-reports-april-bitcoin-mining-output-of-94-btc-93CH-2498042",
+          "title": "LM Funding reports April bitcoin mining output of 9.4 BTC By Investing.com - Investing.com Nigeria",
+          "domain": "ng.investing.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "# LM Funding reports April bitcoin mining output of 9.4 BTC",
+          "tier": "low"
+        }
+      ],
+      "trust_signals": {
+        "citation_coverage": 1.0,
+        "avg_sources_per_claim": 3.0,
+        "multi_source_claim_ratio": 1.0,
+        "distinct_domain_count": 7,
+        "source_quality_score": 0.35,
+        "high_tier_ratio": 0.0,
+        "citation_strength": 0.35,
+        "tier_breakdown": {
+          "high": 0,
+          "medium": 0,
+          "low": 7,
+          "prediction": 0
+        },
+        "total_sources": 7
+      },
+      "model_key": "llama",
+      "original_question": "What is the currency of Bitcoin now ?",
+      "cached_at": "2026-05-22T19:26:23.640981+00:00",
+      "cached_ts": 1779477983.640991
+    },
+    "llama::who founded openai": {
+      "answer": "The founders of OpenAI are:\n\n* Sam Altman\n* Greg Brockman\n* Ilya Sutskever\n* Elon Musk\n\nNote: The information is based on the search results provided and may not be up-to-date or accurate as of the current date (2026-05-22).",
+      "facts": [
+        {
+          "claim_text": "The founders of OpenAI are:",
+          "evidence_urls": [
+            "https://observer.com/2024/07/openai-founders-career",
+            "https://en.wikipedia.org/wiki/OpenAI",
+            "https://www.reuters.com/sustainability/boards-policy-regulation/openai-co-founder-discloses-nearly-30-billion-stake-financial-ties-altman-2026-05-04/"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "* Sam Altman",
+          "evidence_urls": [
+            "https://www.reuters.com/sustainability/boards-policy-regulation/openai-co-founder-discloses-nearly-30-billion-stake-financial-ties-altman-2026-05-04/",
+            "https://en.wikipedia.org/wiki/Sam_Altman",
+            "https://www.britannica.com/money/OpenAI"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "* Greg Brockman",
+          "evidence_urls": [
+            "https://en.wikipedia.org/wiki/OpenAI",
+            "https://www.reuters.com/sustainability/boards-policy-regulation/openai-co-founder-discloses-nearly-30-billion-stake-financial-ties-altman-2026-05-04/",
+            "https://www.britannica.com/money/OpenAI"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "* Ilya Sutskever",
+          "evidence_urls": [
+            "https://www.britannica.com/money/OpenAI",
+            "https://observer.com/2024/07/openai-founders-career",
+            "https://en.wikipedia.org/wiki/OpenAI"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "* Elon Musk",
+          "evidence_urls": [
+            "https://www.britannica.com/money/OpenAI",
+            "https://en.wikipedia.org/wiki/OpenAI",
+            "https://www.reuters.com/sustainability/boards-policy-regulation/openai-co-founder-discloses-nearly-30-billion-stake-financial-ties-altman-2026-05-04/"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "Note: The information is based on the search results provided and may not be up-to-date or accurate as of the current date (2026-05-22).",
+          "evidence_urls": [
+            "https://www.clay.com/dossier/openai-ceo",
+            "https://en.wikipedia.org/wiki/OpenAI",
+            "https://www.britannica.com/money/OpenAI"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        }
+      ],
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/OpenAI",
+          "title": "OpenAI - Wikipedia",
+          "domain": "en.wikipedia.org",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "7 hours ago - President and co-founder: Greg Brockman, former CTO, 3rd employee of Stripe · Chief Scientist Officer: Jakub Pachocki, former Director of Research at OpenAI",
+          "tier": "high"
+        },
+        {
+          "url": "https://www.reuters.com/sustainability/boards-policy-regulation/openai-co-founder-discloses-nearly-30-billion-stake-financial-ties-altman-2026-05-04/",
+          "title": "OpenAI co-founder discloses nearly $30 billion stake, financial ties to Altman | Reuters",
+          "domain": "www.reuters.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "2 weeks ago - OpenAI's co-founder and president, Greg Brockman, on Monday disclosed deeper financial ties to CEO Sam Altman than previously known as well as a stake in the ChatGPT maker worth almost $30 billion.",
+          "tier": "high"
+        },
+        {
+          "url": "https://techcrunch.com/2026/05/19/openai-co-founder-andrej-karpathy-joins-anthropics-pre-training-team/",
+          "title": "OpenAI co-founder Andrej Karpathy joins Anthropic's pre-training team | TechCrunch",
+          "domain": "techcrunch.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "3 days ago - Andrej Karpathy, the AI researcher who co-founded and formerly worked at OpenAI and previously led AI at Tesla, has joined Anthropic. “I’ve joined Anthropic,” Karpathy posted on X Tuesday.",
+          "tier": "medium"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Sam_Altman",
+          "title": "Sam Altman - Wikipedia",
+          "domain": "en.wikipedia.org",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "8 hours ago - Altman co-founded OpenAI in 2015 and became its CEO in 2019, a role that made him a prominent figure of the AI boom. He supervised the launch of ChatGPT in November 2022. In 2023, he was ousted by the organization's board of directors for not being \"consistently candid\".",
+          "tier": "high"
+        },
+        {
+          "url": "https://www.britannica.com/money/OpenAI",
+          "title": "OpenAI | ChatGPT, Sam Altman, Microsoft, & History | Britannica Money",
+          "domain": "www.britannica.com",
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "4 days ago - Founded in 2015 by Sam Altman, Greg Brockman, Ilya Sutskever, and Elon Musk, the company began as a nonprofit research lab before evolving into a hybrid structure and, by 2025, a public benefit corporation overseen by the nonprofit OpenAI Foundation.",
+          "tier": "high"
+        },
+        {
+          "url": "https://observer.com/2024/07/openai-founders-career",
+          "title": "Only 4 of OpenAI's 11 Founders Are Still With the Company—Where ...",
+          "domain": "observer.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "At the time of OpenAI’s founding, Altman juggled his duties as co-chair of the company and as the president of the startup accelerator Y Combinator. He was introduced to fellow co-founders Altman, Sutskever, Schulman and Karpathy at a get-together in Napa, Calif., where the group discussed their thoughts on A.G.I. Zaremba spent his early years at OpenAI leading its robotics efforts, which notably ",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.clay.com/dossier/openai-ceo",
+          "title": "Who is the CEO of OpenAI in 2026? Sam Altman's Bio - Clay",
+          "domain": "www.clay.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Sync targeted ad audiences to Linkedin, Meta, and Google. Centralize your first and third party data sources in Clay. Sam Altman is an influential entrepreneur and investor, currently serving as the CEO of OpenAI, a leading artificial intelligence research organization. With a background that includes founding Loopt and holding the position of president at Y Combinator, Altman has played a signifi",
+          "tier": "low"
+        }
+      ],
+      "trust_signals": {
+        "citation_coverage": 1.0,
+        "avg_sources_per_claim": 3.0,
+        "multi_source_claim_ratio": 1.0,
+        "distinct_domain_count": 6,
+        "source_quality_score": 0.764,
+        "high_tier_ratio": 0.571,
+        "citation_strength": 1.0,
+        "tier_breakdown": {
+          "high": 4,
+          "medium": 1,
+          "low": 2,
+          "prediction": 0
+        },
+        "total_sources": 7
+      },
+      "model_key": "llama",
+      "original_question": "Who founded openai",
+      "cached_at": "2026-05-22T19:30:09.984751+00:00",
+      "cached_ts": 1779478209.984762
+    }
+  }
+}
