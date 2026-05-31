@@ -160,6 +160,29 @@ _NON_CLAIM_PREFIX_RE = re.compile(
     r"^\s*(?:Sources?|References?|Citations?|Source|Citation|See\s+also|Read\s+more)\s*:",
     re.IGNORECASE,
 )
+# Generic advice / CTAs / tool meta — not verifiable factual claims.
+_NON_FACTUAL_CLAIM_RES = (
+    re.compile(
+        r"^\s*(?:please\s+)?(?:contact|reach out to|check with|verify with|confirm with|consult)\b",
+        re.IGNORECASE,
+    ),
+    re.compile(r"\bfor more (?:details|information|info)\b", re.IGNORECASE),
+    re.compile(r"\b(?:it is|it's) recommended to\b", re.IGNORECASE),
+    re.compile(r"^\s*(?:\*\*)?(?:note|disclaimer)(?:\*\*)?\s*:", re.IGNORECASE),
+    re.compile(
+        r"\b(?:double[- ]check|cross[- ]check).*\b(?:official|primary)\b",
+        re.IGNORECASE,
+    ),
+    re.compile(r"\b(?:tavily|duckduckgo)\b", re.IGNORECASE),
+    re.compile(r"\bbased on (?:the )?search results\b", re.IGNORECASE),
+    re.compile(r"\bsubject to change as new data becomes available\b", re.IGNORECASE),
+    re.compile(r"\b(?:verify|confirm) (?:with|using) (?:official|primary) sources\b", re.IGNORECASE),
+)
+
+_META_NOTE_BLOCK_RE = re.compile(
+    r"(?:^|\n)\s*(?:\*\*)?(?:note|disclaimer)(?:\*\*)?\s*:[\s\S]*$",
+    re.IGNORECASE,
+)
 
 
 def _strip_sources_section(text: str) -> str:
@@ -168,13 +191,63 @@ def _strip_sources_section(text: str) -> str:
     return _SOURCES_SECTION_RE.sub("", text or "").strip()
 
 
+def filter_facts(facts: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Drop meta/advisory sentences that should not appear as extracted facts."""
+    return [
+        fact
+        for fact in facts
+        if not _is_non_claim(str(fact.get("claim_text", "")))
+    ]
+
+
+def coerce_message_content(content: object) -> str:
+    """Normalize LangChain message content (str or block list) to plain text."""
+    if content is None:
+        return ""
+    if isinstance(content, str):
+        return content
+    if isinstance(content, list):
+        parts: list[str] = []
+        for block in content:
+            if isinstance(block, dict):
+                text = block.get("text") or block.get("content") or ""
+                if text:
+                    parts.append(str(text))
+            elif block:
+                parts.append(str(block))
+        return "\n".join(parts)
+    return str(content)
+
+
+def sanitize_answer(text: str) -> str:
+    """Remove trailing Note/Disclaimer blocks and tool-meta sentences from the answer."""
+    if not isinstance(text, str):
+        text = coerce_message_content(text)
+    cleaned = _strip_sources_section(text or "")
+    cleaned = _META_NOTE_BLOCK_RE.sub("", cleaned).strip()
+    sentences = [
+        sentence.strip()
+        for sentence in re.split(r"(?<=[\.\!\?])\s+|\n+", cleaned)
+        if sentence.strip()
+    ]
+    kept = [sentence for sentence in sentences if not _is_non_claim(sentence)]
+    result = " ".join(kept).strip()
+    # If every sentence was classified as meta/noise but prose remained after
+    # stripping Sources/Note blocks, keep that prose rather than an empty UI.
+    if not result and cleaned.strip():
+        return cleaned.strip()
+    return result
+
+
 def _is_non_claim(sentence: str) -> bool:
     """True when a sentence is markdown noise (a sources header, a bare
-    link line, or a bullet whose body is just a markdown link)."""
+    link line, a bullet whose body is just a markdown link, or generic advice)."""
     s = (sentence or "").strip()
     if not s:
         return True
     if _NON_CLAIM_PREFIX_RE.match(s):
+        return True
+    if any(pattern.search(s) for pattern in _NON_FACTUAL_CLAIM_RES):
         return True
     # Strip away link markup and list bullets; what remains should be prose.
     residual = _MARKDOWN_LINK_RE.sub("", s)
@@ -189,7 +262,7 @@ def _is_non_claim(sentence: str) -> bool:
 
 def _extract_claims_from_answer(answer_text: str, sources: list["SourceEntry"]) -> list[dict[str, Any]]:
     """Split the answer into sentences and map each to its best-scoring sources."""
-    cleaned_answer = _strip_sources_section(answer_text or "")
+    cleaned_answer = sanitize_answer(answer_text)
     sentences = [
         sentence.strip()
         for sentence in re.split(r"(?<=[\.\!\?])\s+|\n+", cleaned_answer)
@@ -290,14 +363,29 @@ def extract_claims(
     per_claim_strengths = [_claim_citation_strength(fact.evidence_urls, url_to_source) for fact in facts]
     citation_strength = (sum(per_claim_strengths) / len(per_claim_strengths)) if per_claim_strengths else 0.0
 
+    citation_coverage = (cited_claims / total_claims) if total_claims else 0.0
+    multi_source_claim_ratio = (multi_source_claims / total_claims) if total_claims else 0.0
+    source_quality_score_r = round(source_quality_score, 3)
+    citation_strength_r = round(citation_strength, 3)
+
+    # Composite 0–1 score for UI summary (weights emphasize sources + citations).
+    answer_trust_score = round(
+        0.30 * source_quality_score_r
+        + 0.30 * citation_strength_r
+        + 0.25 * citation_coverage
+        + 0.15 * multi_source_claim_ratio,
+        3,
+    )
+
     trust_signals = {
-        "citation_coverage": (cited_claims / total_claims) if total_claims else 0.0,
+        "answer_trust_score": answer_trust_score,
+        "citation_coverage": citation_coverage,
         "avg_sources_per_claim": (source_count_sum / total_claims) if total_claims else 0.0,
-        "multi_source_claim_ratio": (multi_source_claims / total_claims) if total_claims else 0.0,
+        "multi_source_claim_ratio": multi_source_claim_ratio,
         "distinct_domain_count": len(distinct_domains),
-        "source_quality_score": round(source_quality_score, 3),
+        "source_quality_score": source_quality_score_r,
         "high_tier_ratio": round(high_tier_ratio, 3),
-        "citation_strength": round(citation_strength, 3),
+        "citation_strength": citation_strength_r,
         "tier_breakdown": {
             "high": high_count,
             "medium": medium_count,

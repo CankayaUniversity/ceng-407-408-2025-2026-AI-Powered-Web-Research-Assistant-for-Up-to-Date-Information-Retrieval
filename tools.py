@@ -23,6 +23,7 @@ from config import (
 from source_quality import classify_source, sort_results, tier_weight
 from source_relevance import (
     filter_by_relevance,
+    is_text_relevant_to_query,
     relevance_score,
     sort_by_relevance_then_tier,
 )
@@ -240,15 +241,7 @@ def _prepare_search_items(items: list[dict], query: str) -> list[dict]:
     """Filter off-topic hits, then rank by relevance before domain tier."""
     filtered = filter_by_relevance(query, items)
     if not filtered:
-        # Avoid empty context — fall back to best raw hits
-        filtered = [dict(it) for it in items[: max(TAVILY_MAX_RESULTS, 3)]]
-        for it in filtered:
-            it["_relevance_score"] = relevance_score(
-                query,
-                str(it.get("title") or ""),
-                str(it.get("content") or it.get("snippet") or ""),
-                str(it.get("url") or ""),
-            )
+        return []
 
     ranked = sort_by_relevance_then_tier(
         query, filtered, tier_weight, classify_source
@@ -351,8 +344,9 @@ def _format_results_for_llm(items: list[dict], tavily_answer: str = "") -> str:
     """
     useful = [it for it in items if (it.get("_source_tier") or "low") != "prediction"]
     if not useful and not tavily_answer:
-        return ("No usable results — only prediction / betting / preview sites came back. "
-                "Try a different search query (e.g. add 'final score', 'result', or the date).")
+        return ("No relevant results for this query. "
+                "Do not answer from unrelated topics. "
+                "Say you could not find information that directly matches what was asked.")
 
     lines = []
     if tavily_answer and tavily_answer.strip():
@@ -418,6 +412,12 @@ contains the data you need. Titles like "Bournemouth 1-0 Manchester City (05/19)
 or "Apple Q4 2024: $94.9B revenue" directly state the answer. Do NOT respond
 with "the search results did not confirm this" when the answer is in the title.
 
+RELEVANCE — CRITICAL:
+Each result may show RELEVANCE: 0.XX. Ignore any result that does not mention
+the user's main subject (person, team, product, org). Same city or country
+alone is NOT enough. Do not use off-topic results (e.g. NATO summit when the
+user asked about a DJ). If no relevant results remain, say nothing was found.
+
 Call exactly like: {"query": "your search question as a plain string"}.
 """
 
@@ -454,6 +454,8 @@ def tavily_search_results_json(query: str) -> str:
     if not isinstance(items, list):
         items = []
     tavily_answer = response.get("answer") or ""
+    if tavily_answer and not is_text_relevant_to_query(q, tavily_answer):
+        tavily_answer = ""
     if time_sensitive:
         logger.info("Tavily news-mode query (days=%d): %r — got %d results",
                     NEWS_MODE_DAYS, q, len(items))

@@ -21,7 +21,12 @@ from config import (
     MODEL_REGISTRY,
     load_environment,
 )
-from fact_extraction import extract_claims
+from fact_extraction import (
+    coerce_message_content,
+    extract_claims,
+    filter_facts,
+    sanitize_answer,
+)
 
 TOOL_LOG_PREVIEW_CHARS = 2000
 
@@ -73,6 +78,10 @@ class TitleUpdate(BaseModel):
     title: str
 
 
+class ChatCreate(BaseModel):
+    question: str | None = None
+
+
 @app.get("/")
 def home():
     return FileResponse(STATIC_DIR / "index.html")
@@ -98,6 +107,13 @@ def api_list_chats(q: str | None = None):
     if q:
         return {"chats": chat_store.search_chats(q)}
     return {"chats": chat_store.list_chats()}
+
+
+@app.post("/api/chats")
+def api_create_chat(body: ChatCreate | None = None):
+    payload = body or ChatCreate()
+    chat = chat_store.create_chat(payload.question)
+    return chat
 
 
 @app.get("/api/chats/{chat_id}")
@@ -242,12 +258,14 @@ async def ask_agent_stream(
             if not has_memory and not regenerate and cache_ttl > 0:
                 cached = cache_store.get(model_key, question, cache_ttl)
                 if cached:
+                    cached_answer = sanitize_answer(cached.get("answer", ""))
+                    cached_facts = filter_facts(cached.get("facts", []))
                     saved_chat = chat_store.append_turn(
                         resolved_chat_id,
                         {
                             "question": question,
-                            "answer": cached.get("answer", ""),
-                            "facts": cached.get("facts", []),
+                            "answer": cached_answer,
+                            "facts": cached_facts,
                             "sources": cached.get("sources", []),
                             "trust_signals": cached.get("trust_signals", {}),
                             "model": model_key,
@@ -269,8 +287,8 @@ async def ask_agent_stream(
                             "chat_title": (saved_chat or {}).get("title", ""),
                             "model": model_key,
                             "from_cache": True,
-                            "answer": cached.get("answer", ""),
-                            "facts": cached.get("facts", []),
+                            "answer": cached_answer,
+                            "facts": cached_facts,
                             "sources": cached.get("sources", []),
                             "trust_signals": cached.get("trust_signals", {}),
                         },
@@ -379,7 +397,14 @@ async def ask_agent_stream(
                                 },
                             )
                         elif message_type == "ai" and getattr(message, "content", None):
-                            final_answer = message.content
+                            raw_answer = coerce_message_content(message.content)
+                            final_answer = sanitize_answer(raw_answer)
+                            if not final_answer.strip() and raw_answer.strip():
+                                logger.warning(
+                                    "Sanitizer emptied model answer (chat=%s); using raw text",
+                                    resolved_chat_id,
+                                )
+                                final_answer = raw_answer.strip()
                             yield _sse("answer", {"text": final_answer})
 
             if await request.is_disconnected():
@@ -484,7 +509,10 @@ def ask_agent(question: str, model: str | None = None):
                 logger.info("  result[%s]: %s%s", message.name, preview, truncated)
 
         # Keep newlines so markdown formatting in the answer survives.
-        final_answer = result["messages"][-1].content
+        raw_answer = coerce_message_content(result["messages"][-1].content)
+        final_answer = sanitize_answer(raw_answer)
+        if not final_answer.strip() and raw_answer.strip():
+            final_answer = raw_answer.strip()
         tool_messages = [
             {"name": message.name, "content": str(message.content)}
             for message in result["messages"]

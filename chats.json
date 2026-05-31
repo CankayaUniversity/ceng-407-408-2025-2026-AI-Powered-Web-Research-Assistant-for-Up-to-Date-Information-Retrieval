@@ -259,612 +259,11 @@
       ]
     },
     {
-      "id": "2cac81e575d0",
-      "title": "Who founded OpenAI, when, and where is its headquarters?",
-      "created_at": "2026-05-21T12:53:26.791628+00:00",
-      "updated_at": "2026-05-22T19:28:24.131147+00:00",
-      "turns": [
-        {
-          "question": "Who founded OpenAI, when, and where is its headquarters?",
-          "answer": "Based on the search results, I can answer your question as follows:\n\n* The founders of OpenAI include Sam Altman, Ilya Sutskever, Wojciech Zaremba, and Greg Brockman. Elon Musk was initially a co-founder but later distanced himself from the organization.\n* The group aims to advance artificial intelligence research.\n\nAs for the founding date and location, it is not explicitly mentioned in the search results provided. However, based on general knowledge, OpenAI was founded in 2015 by Sam Altman, Ilya Sutskever, Wojciech Zaremba, and Greg Brockman, with Elon Musk as an initial co-founder.\n\nOpenAI's headquarters is located in San Francisco, California.\n\nNote: The search results provided are from 2024 and 2026, so the information may not be up-to-date.",
-          "facts": [
-            {
-              "claim_text": "Based on the search results, I can answer your question as follows:",
-              "evidence_urls": [],
-              "source_tools": [],
-              "fact_quality_flags": {
-                "has_source": false,
-                "multi_source": false,
-                "weak_evidence": true,
-                "needs_review": true
-              }
-            },
-            {
-              "claim_text": "* The founders of OpenAI include Sam Altman, Ilya Sutskever, Wojciech Zaremba, and Greg Brockman.",
-              "evidence_urls": [
-                "https://observer.com/2024/07/openai-founders-career",
-                "https://www.reddit.com/r/OpenAI/comments/1m80e9g/the_11_cofounders_of_openai_in_2025",
-                "https://www.youtube.com/watch?v=ZugX7a99dLk"
-              ],
-              "source_tools": [
-                "tavily_search_results_json"
-              ],
-              "fact_quality_flags": {
-                "has_source": true,
-                "multi_source": true,
-                "weak_evidence": false,
-                "needs_review": false
-              }
-            },
-            {
-              "claim_text": "Elon Musk was initially a co-founder but later distanced himself from the organization.",
-              "evidence_urls": [
-                "https://observer.com/2024/07/openai-founders-career",
-                "https://www.reddit.com/r/OpenAI/comments/1m80e9g/the_11_cofounders_of_openai_in_2025",
-                "https://www.youtube.com/watch?v=ZugX7a99dLk"
-              ],
-              "source_tools": [
-                "tavily_search_results_json"
-              ],
-              "fact_quality_flags": {
-                "has_source": true,
-                "multi_source": true,
-                "weak_evidence": false,
-                "needs_review": false
-              }
-            },
-            {
-              "claim_text": "* The group aims to advance artificial intelligence research.",
-              "evidence_urls": [
-                "https://observer.com/2024/07/openai-founders-career"
-              ],
-              "source_tools": [
-                "tavily_search_results_json"
-              ],
-              "fact_quality_flags": {
-                "has_source": true,
-                "multi_source": false,
-                "weak_evidence": true,
-                "needs_review": true
-              }
-            },
-            {
-              "claim_text": "As for the founding date and location, it is not explicitly mentioned in the search results provided.",
-              "evidence_urls": [
-                "https://observer.com/2024/07/openai-founders-career"
-              ],
-              "source_tools": [
-                "tavily_search_results_json"
-              ],
-              "fact_quality_flags": {
-                "has_source": true,
-                "multi_source": false,
-                "weak_evidence": true,
-                "needs_review": true
-              }
-            },
-            {
-              "claim_text": "However, based on general knowledge, OpenAI was founded in 2015 by Sam Altman, Ilya Sutskever, Wojciech Zaremba, and Greg Brockman, with Elon Musk as an initial co-founder.",
-              "evidence_urls": [
-                "https://observer.com/2024/07/openai-founders-career",
-                "https://www.reddit.com/r/OpenAI/comments/1m80e9g/the_11_cofounders_of_openai_in_2025",
-                "https://www.youtube.com/watch?v=ZugX7a99dLk"
-              ],
-              "source_tools": [
-                "tavily_search_results_json"
-              ],
-              "fact_quality_flags": {
-                "has_source": true,
-                "multi_source": true,
-                "weak_evidence": false,
-                "needs_review": false
-              }
-            },
-            {
-              "claim_text": "OpenAI's headquarters is located in San Francisco, California.",
-              "evidence_urls": [
-                "https://observer.com/2024/07/openai-founders-career",
-                "https://www.reddit.com/r/OpenAI/comments/1m80e9g/the_11_cofounders_of_openai_in_2025",
-                "https://www.youtube.com/watch?v=ZugX7a99dLk"
-              ],
-              "source_tools": [
-                "tavily_search_results_json"
-              ],
-              "fact_quality_flags": {
-                "has_source": true,
-                "multi_source": true,
-                "weak_evidence": false,
-                "needs_review": false
-              }
-            },
-            {
-              "claim_text": "Note: The search results provided are from 2024 and 2026, so the information may not be up-to-date.",
-              "evidence_urls": [],
-              "source_tools": [],
-              "fact_quality_flags": {
-                "has_source": false,
-                "multi_source": false,
-                "weak_evidence": true,
-                "needs_review": true
-              }
-            }
-          ],
-          "sources": [
-            {
-              "url": "https://observer.com/2024/07/openai-founders-career",
-              "title": "Nearly 8 Years Later, Where are OpenAI’s 11 Founding Members Today? | Observer",
-              "domain": "observer.com",
-              "source_tools": [
-                "tavily_search_results_json"
-              ],
-              "relevance_score": null,
-              "snippet": "At the time of OpenAI’s founding, Altman juggled his duties as co-chair of the company and as the president of the startup accelerator Y Combinator. He was introduced to fellow co-founders Altman, Sutskever, Schulman and Karpathy at a get-together in Napa, Calif., where the group discussed their thoughts on A.G.I. Zaremba spent his early years at OpenAI leading its robotics efforts, which notably ",
-              "tier": "low"
-            },
-            {
-              "url": "https://www.reddit.com/r/OpenAI/comments/1m80e9g/the_11_cofounders_of_openai_in_2025",
-              "title": "The 11 co-founders of OpenAI in 2025 - Reddit",
-              "domain": "www.reddit.com",
-              "source_tools": [
-                "tavily_search_results_json"
-              ],
-              "relevance_score": null,
-              "snippet": "Interesting thing about Wojciech Zaremba , he was in the middle of his PhD project (supervised by Yann LeCun) when he became cofounder of OpenAI",
-              "tier": "low"
-            },
-            {
-              "url": "https://www.youtube.com/watch?v=ZugX7a99dLk",
-              "title": "OpenAI founder admits AI isn’t working",
-              "domain": "www.youtube.com",
-              "source_tools": [
-                "tavily_search_results_json"
-              ],
-              "relevance_score": null,
-              "snippet": "OpenAI founder admits AI isn’t working",
-              "tier": "low"
-            }
-          ],
-          "trust_signals": {
-            "citation_coverage": 0.75,
-            "avg_sources_per_claim": 1.75,
-            "multi_source_claim_ratio": 0.5,
-            "distinct_domain_count": 3,
-            "source_quality_score": 0.35,
-            "high_tier_ratio": 0.0,
-            "citation_strength": 0.262,
-            "tier_breakdown": {
-              "high": 0,
-              "medium": 0,
-              "low": 3,
-              "prediction": 0
-            },
-            "total_sources": 3
-          },
-          "model": "llama",
-          "from_cache": false,
-          "regenerated": false,
-          "timestamp": "2026-05-21T12:55:38.089741+00:00"
-        },
-        {
-          "question": "why he distanced himself from the organization ?",
-          "answer": "To answer this question, I will follow the rules:\n\n1. CHECKLIST: The user asked one question.\n2. SHALLOW SEARCH FOR SIMPLE FACTS: Since the question is not about a short, simple fact, I will proceed to use the web search tools.\n3. MANDATORY TOOL ORDER FOR FACTUAL/WEB QUESTIONS:\n   - First call 'tavily_search_results_json' with a focused search query.\n   - Then call 'duckduckgo_results_json' with the same query.\n\nHere is the JSON for the function calls:\n\n{\"name\": \"tavily_search_results_json\", \"parameters\": {\"query\": \"OpenAI Elon Musk distanced himself from organization\"}} \n{\"name\": \"duckduckgo_results_json\", \"parameters\": {\"query\": \"OpenAI Elon Musk distanced himself from organization\"}}",
-          "facts": [
-            {
-              "claim_text": "To answer this question, I will follow the rules:",
-              "evidence_urls": [],
-              "source_tools": [],
-              "fact_quality_flags": {
-                "has_source": false,
-                "multi_source": false,
-                "weak_evidence": true,
-                "needs_review": true
-              }
-            },
-            {
-              "claim_text": "CHECKLIST: The user asked one question.",
-              "evidence_urls": [],
-              "source_tools": [],
-              "fact_quality_flags": {
-                "has_source": false,
-                "multi_source": false,
-                "weak_evidence": true,
-                "needs_review": true
-              }
-            },
-            {
-              "claim_text": "SHALLOW SEARCH FOR SIMPLE FACTS: Since the question is not about a short, simple fact, I will proceed to use the web search tools.",
-              "evidence_urls": [],
-              "source_tools": [],
-              "fact_quality_flags": {
-                "has_source": false,
-                "multi_source": false,
-                "weak_evidence": true,
-                "needs_review": true
-              }
-            },
-            {
-              "claim_text": "MANDATORY TOOL ORDER FOR FACTUAL/WEB QUESTIONS:",
-              "evidence_urls": [],
-              "source_tools": [],
-              "fact_quality_flags": {
-                "has_source": false,
-                "multi_source": false,
-                "weak_evidence": true,
-                "needs_review": true
-              }
-            },
-            {
-              "claim_text": "- First call 'tavily_search_results_json' with a focused search query.",
-              "evidence_urls": [],
-              "source_tools": [],
-              "fact_quality_flags": {
-                "has_source": false,
-                "multi_source": false,
-                "weak_evidence": true,
-                "needs_review": true
-              }
-            },
-            {
-              "claim_text": "- Then call 'duckduckgo_results_json' with the same query.",
-              "evidence_urls": [],
-              "source_tools": [],
-              "fact_quality_flags": {
-                "has_source": false,
-                "multi_source": false,
-                "weak_evidence": true,
-                "needs_review": true
-              }
-            },
-            {
-              "claim_text": "Here is the JSON for the function calls:",
-              "evidence_urls": [],
-              "source_tools": [],
-              "fact_quality_flags": {
-                "has_source": false,
-                "multi_source": false,
-                "weak_evidence": true,
-                "needs_review": true
-              }
-            },
-            {
-              "claim_text": "{\"name\": \"tavily_search_results_json\", \"parameters\": {\"query\": \"OpenAI Elon Musk distanced himself from organization\"}}",
-              "evidence_urls": [],
-              "source_tools": [],
-              "fact_quality_flags": {
-                "has_source": false,
-                "multi_source": false,
-                "weak_evidence": true,
-                "needs_review": true
-              }
-            },
-            {
-              "claim_text": "{\"name\": \"duckduckgo_results_json\", \"parameters\": {\"query\": \"OpenAI Elon Musk distanced himself from organization\"}}",
-              "evidence_urls": [],
-              "source_tools": [],
-              "fact_quality_flags": {
-                "has_source": false,
-                "multi_source": false,
-                "weak_evidence": true,
-                "needs_review": true
-              }
-            }
-          ],
-          "sources": [],
-          "trust_signals": {
-            "citation_coverage": 0.0,
-            "avg_sources_per_claim": 0.0,
-            "multi_source_claim_ratio": 0.0,
-            "distinct_domain_count": 0,
-            "source_quality_score": 0.0,
-            "high_tier_ratio": 0.0,
-            "citation_strength": 0.0,
-            "tier_breakdown": {
-              "high": 0,
-              "medium": 0,
-              "low": 0,
-              "prediction": 0
-            },
-            "total_sources": 0
-          },
-          "model": "llama",
-          "from_cache": false,
-          "regenerated": false,
-          "timestamp": "2026-05-22T19:28:24.131138+00:00"
-        }
-      ]
-    },
-    {
       "id": "1bc0c31d11a8",
       "title": "what is the result of the football game Fenerbahçe-Eyüpspor played last week?",
       "created_at": "2026-05-21T13:01:20.890076+00:00",
       "updated_at": "2026-05-21T13:01:20.890153+00:00",
       "turns": []
-    },
-    {
-      "id": "198d34d859df",
-      "title": "Fenerbahçe Eyüpspor last week game result",
-      "created_at": "2026-05-22T19:17:13.140389+00:00",
-      "updated_at": "2026-05-22T19:21:27.121200+00:00",
-      "turns": [
-        {
-          "question": "Fenerbahçe Eyüpspor last week game result",
-          "answer": "The result of the match between Fenerbahçe and Eyüpspor on May 17, 2026, was a 3-3 draw.",
-          "facts": [
-            {
-              "claim_text": "The result of the match between Fenerbahçe and Eyüpspor on May 17, 2026, was a 3-3 draw.",
-              "evidence_urls": [
-                "https://corner-stats.com/fenerbahce-eyupspor-17-05-2026/super-lig-turkey/match/632413",
-                "https://en.haberler.com/eyupspor-stayed-in-the-league-with-a-goal-scored-2255386/",
-                "https://www.sofascore.com/football/team/fenerbahce/3052"
-              ],
-              "source_tools": [
-                "duckduckgo_results_json"
-              ],
-              "fact_quality_flags": {
-                "has_source": true,
-                "multi_source": true,
-                "weak_evidence": false,
-                "needs_review": false
-              }
-            }
-          ],
-          "sources": [
-            {
-              "url": "https://corner-stats.com/fenerbahce-eyupspor-17-05-2026/super-lig-turkey/match/632413",
-              "title": "17/05/2026 Fenerbahce - Eyüpspor. Game result: ? : ?",
-              "domain": "corner-stats.com",
-              "source_tools": [
-                "duckduckgo_results_json"
-              ],
-              "relevance_score": null,
-              "snippet": "6 days ago - Result of ➤ Fenerbahce - Eyüpspor 17/05/2026. Score on: ✔ goals, ✔ corners, ✔ red and yellow cards and all other game statistics",
-              "tier": "low"
-            },
-            {
-              "url": "https://en.haberler.com/eyupspor-stayed-in-the-league-with-a-goal-scored-2255386/",
-              "title": "Eyüpspor stayed in the league with a goal scored in the last minutes against Fenerbahçe.",
-              "domain": "en.haberler.com",
-              "source_tools": [
-                "duckduckgo_results_json"
-              ],
-              "relevance_score": null,
-              "snippet": "5 days ago - No further goals were scored in the remainder of the match. With this result, Fenerbahçe finished the league in second place with 74 points and earned the right to participate in the Champions League qualifiers next season.",
-              "tier": "low"
-            },
-            {
-              "url": "https://www.sofascore.com/football/team/fenerbahce/3052",
-              "title": "Fenerbahçe live score, schedule & player stats | Sofascore",
-              "domain": "www.sofascore.com",
-              "source_tools": [
-                "duckduckgo_results_json"
-              ],
-              "relevance_score": null,
-              "snippet": "1 month ago - Fenerbahçe live scores, players, season schedule and today’s results are available on Sofascore.",
-              "tier": "medium"
-            },
-            {
-              "url": "https://beinsports.com.tr/haber/fenerbahce-ikas-eyupspor-2",
-              "title": "GENİŞ ÖZET | Fenerbahçe 3 3 ikas Eyüpspor | beIN SPORTS Türkiye - beinsports.com.tr/",
-              "domain": "beinsports.com.tr",
-              "source_tools": [
-                "duckduckgo_results_json"
-              ],
-              "relevance_score": null,
-              "snippet": "Trendyol Süper Lig'in 34. ve son haftasında Fenerbahçe ile ikas Eyüpspor 3-3 berabere kaldı. Published 4 days ago",
-              "tier": "low"
-            },
-            {
-              "url": "https://www.hurriyet.com.tr/sporarena/fenerbahce-3-3-eyupspor-super-lig-maci-ozeti-43175557",
-              "title": "Fenerbahçe 3-3 Eyüpspor (Süper Lig maçı özeti) - Futbol Haberleri",
-              "domain": "www.hurriyet.com.tr",
-              "source_tools": [
-                "duckduckgo_results_json"
-              ],
-              "relevance_score": null,
-              "snippet": "5 days ago - Fenerbahçe, Süper Lig son hafta maçında Eyüpspor ile 3-3 berabere kaldı. Bu sonuçla birlikte Eyüpspor ligde kaldı.",
-              "tier": "low"
-            }
-          ],
-          "trust_signals": {
-            "citation_coverage": 1.0,
-            "avg_sources_per_claim": 3.0,
-            "multi_source_claim_ratio": 1.0,
-            "distinct_domain_count": 5,
-            "source_quality_score": 0.41,
-            "high_tier_ratio": 0.0,
-            "citation_strength": 0.65,
-            "tier_breakdown": {
-              "high": 0,
-              "medium": 1,
-              "low": 4,
-              "prediction": 0
-            },
-            "total_sources": 5
-          },
-          "model": "llama",
-          "from_cache": false,
-          "regenerated": false,
-          "timestamp": "2026-05-22T19:18:00.392886+00:00"
-        },
-        {
-          "question": "which country elected Elon Musk as president?",
-          "answer": "Elon Musk has not been elected president of any country. He has met with politicians from multiple countries but has not held a presidential office. His political activities have been widely reported.\n\nNote: The provided results do not mention Elon Musk being elected as the president of any country.",
-          "facts": [
-            {
-              "claim_text": "Elon Musk has not been elected president of any country.",
-              "evidence_urls": [
-                "https://en.wikipedia.org/wiki/Political_activities_of_Elon_Musk",
-                "https://en.wikipedia.org/wiki/Elon_Musk",
-                "https://en.wikipedia.org/wiki/Views_of_Elon_Musk"
-              ],
-              "source_tools": [
-                "duckduckgo_results_json",
-                "tavily_search_results_json"
-              ],
-              "fact_quality_flags": {
-                "has_source": true,
-                "multi_source": false,
-                "weak_evidence": false,
-                "needs_review": false
-              }
-            },
-            {
-              "claim_text": "He has met with politicians from multiple countries but has not held a presidential office.",
-              "evidence_urls": [
-                "https://en.wikipedia.org/wiki/Political_activities_of_Elon_Musk",
-                "https://en.wikipedia.org/wiki/Elon_Musk",
-                "https://en.wikipedia.org/wiki/Views_of_Elon_Musk"
-              ],
-              "source_tools": [
-                "duckduckgo_results_json",
-                "tavily_search_results_json"
-              ],
-              "fact_quality_flags": {
-                "has_source": true,
-                "multi_source": false,
-                "weak_evidence": false,
-                "needs_review": false
-              }
-            },
-            {
-              "claim_text": "His political activities have been widely reported.",
-              "evidence_urls": [
-                "https://en.wikipedia.org/wiki/Political_activities_of_Elon_Musk",
-                "https://en.wikipedia.org/wiki/Elon_Musk",
-                "https://en.wikipedia.org/wiki/Views_of_Elon_Musk"
-              ],
-              "source_tools": [
-                "duckduckgo_results_json",
-                "tavily_search_results_json"
-              ],
-              "fact_quality_flags": {
-                "has_source": true,
-                "multi_source": false,
-                "weak_evidence": false,
-                "needs_review": false
-              }
-            },
-            {
-              "claim_text": "Note: The provided results do not mention Elon Musk being elected as the president of any country.",
-              "evidence_urls": [
-                "https://en.wikipedia.org/wiki/Political_activities_of_Elon_Musk",
-                "https://en.wikipedia.org/wiki/Elon_Musk",
-                "https://en.wikipedia.org/wiki/Views_of_Elon_Musk"
-              ],
-              "source_tools": [
-                "duckduckgo_results_json",
-                "tavily_search_results_json"
-              ],
-              "fact_quality_flags": {
-                "has_source": true,
-                "multi_source": false,
-                "weak_evidence": false,
-                "needs_review": false
-              }
-            }
-          ],
-          "sources": [
-            {
-              "url": "https://en.as.com/latest_news/could-elon-musk-run-for-president-given-that-he-was-not-born-in-the-us-heres-what-the-law-says-n/",
-              "title": "Could Elon Musk run for president, given that he was not born in the US? Here’s what the law says - AS USA",
-              "domain": "en.as.com",
-              "source_tools": [
-                "duckduckgo_results_json"
-              ],
-              "relevance_score": null,
-              "snippet": "July 6, 2025 - No. Elon Musk cannot be the President of the United States, given that the US Constitution makes clear that to be eligible, one must be born in the country.",
-              "tier": "medium"
-            },
-            {
-              "url": "https://en.wikipedia.org/wiki/Political_activities_of_Elon_Musk",
-              "title": "Political activities of Elon Musk - Wikipedia",
-              "domain": "en.wikipedia.org",
-              "source_tools": [
-                "duckduckgo_results_json",
-                "tavily_search_results_json"
-              ],
-              "relevance_score": null,
-              "snippet": "1 week ago - Musk played a significant role in the 2024 United States presidential election by establishing a political action committee (PAC) in support of Donald Trump for his campaign, making him the election's largest donor with over US$277 million.",
-              "tier": "high"
-            },
-            {
-              "url": "https://en.wikipedia.org/wiki/Elon_Musk",
-              "title": "Elon Musk - Wikipedia",
-              "domain": "en.wikipedia.org",
-              "source_tools": [
-                "duckduckgo_results_json"
-              ],
-              "relevance_score": null,
-              "snippet": "12 hours ago - Musk is a supporter of global far-right politics, figures, and political parties. He was the largest donor in the 2024 U.S. presidential election, where he supported Donald Trump. After Trump was inaugurated as president in January 2025, Musk served as Senior Advisor to the President and as the de facto head of the Department of Government Efficiency (DOGE).",
-              "tier": "high"
-            },
-            {
-              "url": "https://en.wikipedia.org/wiki/Views_of_Elon_Musk",
-              "title": "Views of Elon Musk - Wikipedia",
-              "domain": "en.wikipedia.org",
-              "source_tools": [
-                "duckduckgo_results_json"
-              ],
-              "relevance_score": null,
-              "snippet": "3 weeks ago - Having criticized and feuded with Donald Trump, Musk supported Trump for the 2024 United States presidential election as the largest financial contributor to his campaign. Soon after, by appointment of Trump, Musk was given \"special government ...",
-              "tier": "high"
-            },
-            {
-              "url": "https://simple.wikipedia.org/wiki/Elon_Musk",
-              "title": "Elon Musk - Simple English Wikipedia, the free encyclopedia",
-              "domain": "simple.wikipedia.org",
-              "source_tools": [
-                "duckduckgo_results_json"
-              ],
-              "relevance_score": null,
-              "snippet": "February 16, 2026 - However, Musk later stated it was a Roman salute, which was also used by fascist dictator Benito Mussolini. On May 28, 2025, Musk announced that he would leave the Trump Administration as planned when the special government employee's 130 day deadline expired. He officially left DOGE during a joint Oval Office press conference with President Trump on May 30, 2025. He has critic",
-              "tier": "high"
-            },
-            {
-              "url": "https://www.dw.com/en/elon-musk-supports-trump-2025-election/a-70724719",
-              "title": "Elon Musk: World's richest man a year after endorsing Trump",
-              "domain": "www.dw.com",
-              "source_tools": [
-                "tavily_search_results_json"
-              ],
-              "relevance_score": null,
-              "snippet": "The world's richest man backed US President Donald Trump's successful campaign with his funds and high profile. Even after his falling out",
-              "tier": "medium"
-            },
-            {
-              "url": "https://www.cnn.com/2024/10/25/tech/elon-musk-political-meetings-influence-dg",
-              "title": "Elon Musk has met with politicians from at least 13 different countries: Here’s what he has talked about | CNN Business",
-              "domain": "www.cnn.com",
-              "source_tools": [
-                "tavily_search_results_json"
-              ],
-              "relevance_score": null,
-              "snippet": "# Elon Musk has met with politicians from at least 13 different countries: Here’s what he has talked about. Known topics of conversation ranged from business opportunities for Musk’s companies to elections and policy issues such as trade, energy, education and population management, according to a CNN review of Musk’s meetings, calls and conversations with political figures around the world since ",
-              "tier": "medium"
-            }
-          ],
-          "trust_signals": {
-            "citation_coverage": 1.0,
-            "avg_sources_per_claim": 3.0,
-            "multi_source_claim_ratio": 0.0,
-            "distinct_domain_count": 5,
-            "source_quality_score": 0.85,
-            "high_tier_ratio": 0.571,
-            "citation_strength": 1.0,
-            "tier_breakdown": {
-              "high": 4,
-              "medium": 3,
-              "low": 0,
-              "prediction": 0
-            },
-            "total_sources": 7
-          },
-          "model": "llama",
-          "from_cache": false,
-          "regenerated": false,
-          "timestamp": "2026-05-22T19:21:27.121189+00:00"
-        }
-      ]
     },
     {
       "id": "c5cd9c11c052",
@@ -1559,6 +958,2087 @@
           "from_cache": false,
           "regenerated": false,
           "timestamp": "2026-05-22T19:32:18.607389+00:00"
+        }
+      ]
+    },
+    {
+      "id": "f0f9048fff89",
+      "title": "How AI affected the job market by today?",
+      "created_at": "2026-05-30T22:16:37.743008+00:00",
+      "updated_at": "2026-05-30T22:20:19.155810+00:00",
+      "turns": [
+        {
+          "question": "How AI affected the job market by today?",
+          "answer": "AI is significantly impacting the job market in 2026, with both positive and negative effects projected for the coming years. According to various reports: **Job Displacement vs. Creation**: The World Economic Forum’s Future of Jobs Report 2025 predicts that by 2030, AI will create 170 million jobs while displacing 92 million, resulting in a net growth of 78 million jobs. **Company Strategies**: Companies are adopting different strategies. Some may focus on cutting headcount to optimize tasks without redesigning operating models, while others might redesign work and selectively reduce headcount but also redeploy talent and build new capabilities. **Resilient Job Market**: A JPMorgan executive argues that AI will create a more resilient job market than predicted, countering fears of a jobs wipeout. This suggests that the impact of AI on employment is complex and multifaceted. **Job Loss Concerns**: There are concerns about job losses, particularly in areas where AI can automate tasks. A Goldman Sachs survey projects 26,000 jobs lost each month in the United States due to AI advancement, which has sparked fears among some workers. **Mixed Reactions Among Young Workers**: Many young people entering the job market are reacting with growing anxiety rather than excitement about the impact of AI on their future employment prospects. Overall, while there is a mix of optimism and concern regarding the role of AI in shaping the job market, it appears that both job displacement and creation will continue to be significant factors.",
+          "facts": [
+            {
+              "claim_text": "AI is significantly impacting the job market in 2026, with both positive and negative effects projected for the coming years.",
+              "evidence_urls": [
+                "https://www.nexford.edu/insights/how-will-ai-affect-jobs",
+                "https://www.forbes.com/sites/moorinsights/2026/05/19/microsoft-work-trend-index-2026-shows-ai-productivity-is-not-enough/",
+                "https://www.businessinsider.com/ai-jobs-layoffs-economy-outlook-labor-market-software-jpmorgan-2026-5"
+              ],
+              "source_tools": [
+                "duckduckgo_results_json",
+                "tavily_search_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": true,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            },
+            {
+              "claim_text": "According to various reports: **Job Displacement vs.",
+              "evidence_urls": [
+                "https://www.nexford.edu/insights/how-will-ai-affect-jobs",
+                "https://www.technologyreview.com/2026/05/26/1137855/a-reality-check-on-the-ai-jobs-hysteria/",
+                "https://www.forbes.com/sites/moorinsights/2026/05/19/microsoft-work-trend-index-2026-shows-ai-productivity-is-not-enough/"
+              ],
+              "source_tools": [
+                "duckduckgo_results_json",
+                "tavily_search_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": true,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            },
+            {
+              "claim_text": "Creation**: The World Economic Forum’s Future of Jobs Report 2025 predicts that by 2030, AI will create 170 million jobs while displacing 92 million, resulting in a net growth of 78 million jobs.",
+              "evidence_urls": [
+                "https://www.nexford.edu/insights/how-will-ai-affect-jobs",
+                "https://www.forbes.com/sites/moorinsights/2026/05/19/microsoft-work-trend-index-2026-shows-ai-productivity-is-not-enough/",
+                "https://www.businessinsider.com/ai-jobs-layoffs-economy-outlook-labor-market-software-jpmorgan-2026-5"
+              ],
+              "source_tools": [
+                "duckduckgo_results_json",
+                "tavily_search_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": true,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            },
+            {
+              "claim_text": "**Company Strategies**: Companies are adopting different strategies.",
+              "evidence_urls": [
+                "https://www.nexford.edu/insights/how-will-ai-affect-jobs",
+                "https://www.forbes.com/sites/moorinsights/2026/05/19/microsoft-work-trend-index-2026-shows-ai-productivity-is-not-enough/",
+                "https://www.businessinsider.com/ai-jobs-layoffs-economy-outlook-labor-market-software-jpmorgan-2026-5"
+              ],
+              "source_tools": [
+                "duckduckgo_results_json",
+                "tavily_search_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": true,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            },
+            {
+              "claim_text": "Some may focus on cutting headcount to optimize tasks without redesigning operating models, while others might redesign work and selectively reduce headcount but also redeploy talent and build new capabilities.",
+              "evidence_urls": [
+                "https://www.forbes.com/sites/moorinsights/2026/05/19/microsoft-work-trend-index-2026-shows-ai-productivity-is-not-enough/",
+                "https://www.nexford.edu/insights/how-will-ai-affect-jobs",
+                "https://www.businessinsider.com/ai-jobs-layoffs-economy-outlook-labor-market-software-jpmorgan-2026-5"
+              ],
+              "source_tools": [
+                "duckduckgo_results_json",
+                "tavily_search_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": true,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            },
+            {
+              "claim_text": "**Resilient Job Market**: A JPMorgan executive argues that AI will create a more resilient job market than predicted, countering fears of a jobs wipeout.",
+              "evidence_urls": [
+                "https://www.businessinsider.com/ai-jobs-layoffs-economy-outlook-labor-market-software-jpmorgan-2026-5",
+                "https://www.nexford.edu/insights/how-will-ai-affect-jobs",
+                "https://www.forbes.com/sites/moorinsights/2026/05/19/microsoft-work-trend-index-2026-shows-ai-productivity-is-not-enough/"
+              ],
+              "source_tools": [
+                "duckduckgo_results_json",
+                "tavily_search_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": true,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            },
+            {
+              "claim_text": "This suggests that the impact of AI on employment is complex and multifaceted.",
+              "evidence_urls": [
+                "https://www.nexford.edu/insights/how-will-ai-affect-jobs",
+                "https://www.forbes.com/sites/moorinsights/2026/05/19/microsoft-work-trend-index-2026-shows-ai-productivity-is-not-enough/",
+                "https://www.businessinsider.com/ai-jobs-layoffs-economy-outlook-labor-market-software-jpmorgan-2026-5"
+              ],
+              "source_tools": [
+                "duckduckgo_results_json",
+                "tavily_search_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": true,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            },
+            {
+              "claim_text": "**Job Loss Concerns**: There are concerns about job losses, particularly in areas where AI can automate tasks.",
+              "evidence_urls": [
+                "https://www.nexford.edu/insights/how-will-ai-affect-jobs",
+                "https://www.forbes.com/sites/moorinsights/2026/05/19/microsoft-work-trend-index-2026-shows-ai-productivity-is-not-enough/",
+                "https://www.businessinsider.com/ai-jobs-layoffs-economy-outlook-labor-market-software-jpmorgan-2026-5"
+              ],
+              "source_tools": [
+                "duckduckgo_results_json",
+                "tavily_search_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": true,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            },
+            {
+              "claim_text": "A Goldman Sachs survey projects 26,000 jobs lost each month in the United States due to AI advancement, which has sparked fears among some workers.",
+              "evidence_urls": [
+                "https://www.nexford.edu/insights/how-will-ai-affect-jobs",
+                "https://www.forbes.com/sites/moorinsights/2026/05/19/microsoft-work-trend-index-2026-shows-ai-productivity-is-not-enough/",
+                "https://www.businessinsider.com/ai-jobs-layoffs-economy-outlook-labor-market-software-jpmorgan-2026-5"
+              ],
+              "source_tools": [
+                "duckduckgo_results_json",
+                "tavily_search_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": true,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            },
+            {
+              "claim_text": "**Mixed Reactions Among Young Workers**: Many young people entering the job market are reacting with growing anxiety rather than excitement about the impact of AI on their future employment prospects.",
+              "evidence_urls": [
+                "https://www.caironews.net/news/279064362/ai-boom-sparks-unease-among-young-workers-entering-the-job-market",
+                "https://www.nexford.edu/insights/how-will-ai-affect-jobs",
+                "https://www.businessinsider.com/ai-jobs-layoffs-economy-outlook-labor-market-software-jpmorgan-2026-5"
+              ],
+              "source_tools": [
+                "duckduckgo_results_json",
+                "tavily_search_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": true,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            },
+            {
+              "claim_text": "Overall, while there is a mix of optimism and concern regarding the role of AI in shaping the job market, it appears that both job displacement and creation will continue to be significant factors.",
+              "evidence_urls": [
+                "https://www.nexford.edu/insights/how-will-ai-affect-jobs",
+                "https://www.forbes.com/sites/moorinsights/2026/05/19/microsoft-work-trend-index-2026-shows-ai-productivity-is-not-enough/",
+                "https://www.businessinsider.com/ai-jobs-layoffs-economy-outlook-labor-market-software-jpmorgan-2026-5"
+              ],
+              "source_tools": [
+                "duckduckgo_results_json",
+                "tavily_search_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": true,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            }
+          ],
+          "sources": [
+            {
+              "url": "https://www.nexford.edu/insights/how-will-ai-affect-jobs",
+              "title": "How Will Artificial Intelligence Affect Jobs 2026-2030",
+              "domain": "www.nexford.edu",
+              "source_tools": [
+                "duckduckgo_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "Here are the most likely jobs that artificial intelligence will affect from 2026-2030This means that ai will not replace those that perform them in the open labor market.",
+              "tier": "high"
+            },
+            {
+              "url": "https://www.jobillico.com/blog/en/how-the-ai-driven-job-market-is-affecting-new-grads/",
+              "title": "How the AI-Driven Job Market Is Affecting New Grads",
+              "domain": "www.jobillico.com",
+              "source_tools": [
+                "duckduckgo_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "As with any other era-changing innovation, there are always two groups of people — those who believe AI will positively transform the job market and those who think AI-driven markets will disruptively increase human layoffs.",
+              "tier": "low"
+            },
+            {
+              "url": "https://www.technologyreview.com/2026/05/26/1137855/a-reality-check-on-the-ai-jobs-hysteria/",
+              "title": "A Reality Check on the AI Jobs Hysteria | MIT Technology Review",
+              "domain": "www.technologyreview.com",
+              "source_tools": [
+                "duckduckgo_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "Analysis of how AI will affect jobs typically begins with identifying so-called exposure of various occupations to the technology.",
+              "tier": "low"
+            },
+            {
+              "url": "https://www.caironews.net/news/279064362/ai-boom-sparks-unease-among-young-workers-entering-the-job-market",
+              "title": "AI boom sparks unease among young workers entering the job market",
+              "domain": "www.caironews.net",
+              "source_tools": [
+                "duckduckgo_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "Artificial intelligence is transforming workplaces around the world, but many young people entering the job market are reacting with growing anxiety rather than excitement.",
+              "tier": "low"
+            },
+            {
+              "url": "https://www.youtube.com/watch?v=UclrVWafRAI",
+              "title": "YouTube | The AI Safety Expert: These Are The Only 5 Jobs That Will...",
+              "domain": "www.youtube.com",
+              "source_tools": [
+                "duckduckgo_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "WARNING: AI could end humanity, and we’re completely unprepared. Dr. Roman Yampolskiy reveals how AI will take 99% of jobs, why Sam Altman is ignoring safety...",
+              "tier": "low"
+            },
+            {
+              "url": "https://www.forbes.com/sites/moorinsights/2026/05/19/microsoft-work-trend-index-2026-shows-ai-productivity-is-not-enough/",
+              "title": "Microsoft Work Trend Index 2026 Shows AI Productivity Is Not Enough - Forbes",
+              "domain": "www.forbes.com",
+              "source_tools": [
+                "tavily_search_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "AI is already affecting jobs. The question is whether that shift becomes a blunt cost-reduction exercise or a redesign of work, skills, roles and organizational capacity. Companies that optimize tasks without redesigning operating models will likely focus on cutting headcount. Companies that redesign work may selectively reduce headcount in certain areas, but they are also far more likely to redep",
+              "tier": "medium"
+            },
+            {
+              "url": "https://www.businessinsider.com/ai-jobs-layoffs-economy-outlook-labor-market-software-jpmorgan-2026-5",
+              "title": "A JPMorgan exec explains why AI will create a more resilient job market than doomsayers predict - Business Insider",
+              "domain": "www.businessinsider.com",
+              "source_tools": [
+                "tavily_search_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "Subscribe Newsletters",
+              "tier": "medium"
+            },
+            {
+              "url": "https://www.gulte.com/trends/413448/ai-costs-surge-companies-rethink-job-cuts",
+              "title": "AI Costs Surge: Companies Rethink Job Cuts? - Gulte",
+              "domain": "www.gulte.com",
+              "source_tools": [
+                "tavily_search_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "## Gulte Movie News And Politics",
+              "tier": "low"
+            }
+          ],
+          "trust_signals": {
+            "citation_coverage": 1.0,
+            "avg_sources_per_claim": 3.0,
+            "multi_source_claim_ratio": 1.0,
+            "distinct_domain_count": 8,
+            "source_quality_score": 0.506,
+            "high_tier_ratio": 0.125,
+            "citation_strength": 1.0,
+            "tier_breakdown": {
+              "high": 1,
+              "medium": 2,
+              "low": 5,
+              "prediction": 0
+            },
+            "total_sources": 8
+          },
+          "model": "qwen",
+          "from_cache": false,
+          "regenerated": false,
+          "timestamp": "2026-05-30T22:20:19.155797+00:00"
+        }
+      ]
+    },
+    {
+      "id": "8cb47379d2fd",
+      "title": "whats the differences between Llama 3.1 and 3.2",
+      "created_at": "2026-05-30T22:21:55.018448+00:00",
+      "updated_at": "2026-05-30T22:22:49.852929+00:00",
+      "turns": [
+        {
+          "question": "whats the differences between Llama 3.1 and 3.2",
+          "answer": "*   **Multimodal capabilities**: LLaMA 3.2 is designed for multimodal tasks, adding vision capabilities, while LLaMA 3.1 focuses on advanced NLP tasks. *   **Parameter count**: LLaMA 3.2 has a larger 90B parameter count compared to LLaMA 3.1's 70B. *   **Optimization for real-time AI applications**: LLaMA 3.2 is optimized for on-device performance and real-time AI applications, targeting mobile devices, edge computing, and lightweight hardware. *   **Similar benchmarks**: Despite the differences, both models have similar benchmarks due to their shared architecture. *   **Key difference in vision capabilities**: The addition of a vision adapter in LLaMA 3.2 improves performance in image-related tasks. Overall, LLaMA 3.1 is optimized for textual intelligence, while LLaMA 3.2 extends capability into multimodal cognition and resource-efficient deployment.",
+          "facts": [
+            {
+              "claim_text": "*   **Multimodal capabilities**: LLaMA 3.2 is designed for multimodal tasks, adding vision capabilities, while LLaMA 3.1 focuses on advanced NLP tasks.",
+              "evidence_urls": [
+                "https://medium.com/@getbind/the-evolution-of-llama-models-a-comprehensive-comparison-of-llama-3-3-1-and-3-2-c46681f51bc6",
+                "https://www.edenai.co/post/llama-3-1-vs-llama-3-2",
+                "https://ultraaiguide.com/llama-3-2-vs-llama-3-1-comparison/"
+              ],
+              "source_tools": [
+                "duckduckgo_results_json",
+                "tavily_search_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": true,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            },
+            {
+              "claim_text": "*   **Parameter count**: LLaMA 3.2 has a larger 90B parameter count compared to LLaMA 3.1's 70B.",
+              "evidence_urls": [
+                "https://www.hyperstack.cloud/blog/thought-leadership/what-is-meta-llama-3-3-70b-features-use-cases-more",
+                "https://rankllms.com/compare/llama-3-1-vs-3-2/",
+                "https://www.edenai.co/post/llama-3-1-vs-llama-3-2"
+              ],
+              "source_tools": [
+                "duckduckgo_results_json",
+                "tavily_search_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": true,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            },
+            {
+              "claim_text": "*   **Optimization for real-time AI applications**: LLaMA 3.2 is optimized for on-device performance and real-time AI applications, targeting mobile devices, edge computing, and lightweight hardware.",
+              "evidence_urls": [
+                "https://rankllms.com/compare/llama-3-1-vs-3-2/",
+                "https://rankllms.com/compare/llama-3-1-8b-vs-llama-3-2-3b/",
+                "https://www.edenai.co/post/llama-3-1-vs-llama-3-2"
+              ],
+              "source_tools": [
+                "duckduckgo_results_json",
+                "tavily_search_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": true,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            },
+            {
+              "claim_text": "*   **Similar benchmarks**: Despite the differences, both models have similar benchmarks due to their shared architecture.",
+              "evidence_urls": [
+                "https://www.edenai.co/post/llama-3-1-vs-llama-3-2",
+                "https://rankllms.com/compare/llama-3-1-vs-3-2/",
+                "https://ultraaiguide.com/llama-3-2-vs-llama-3-1-comparison/"
+              ],
+              "source_tools": [
+                "duckduckgo_results_json",
+                "tavily_search_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": true,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            },
+            {
+              "claim_text": "*   **Key difference in vision capabilities**: The addition of a vision adapter in LLaMA 3.2 improves performance in image-related tasks.",
+              "evidence_urls": [
+                "https://www.edenai.co/post/llama-3-1-vs-llama-3-2",
+                "https://rankllms.com/compare/llama-3-1-vs-3-2/",
+                "https://www.hyperstack.cloud/blog/thought-leadership/what-is-meta-llama-3-3-70b-features-use-cases-more"
+              ],
+              "source_tools": [
+                "duckduckgo_results_json",
+                "tavily_search_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": true,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            },
+            {
+              "claim_text": "Overall, LLaMA 3.1 is optimized for textual intelligence, while LLaMA 3.2 extends capability into multimodal cognition and resource-efficient deployment.",
+              "evidence_urls": [
+                "https://ultraaiguide.com/llama-3-2-vs-llama-3-1-comparison/",
+                "https://rankllms.com/compare/llama-3-1-vs-3-2/",
+                "https://www.edenai.co/post/llama-3-1-vs-llama-3-2"
+              ],
+              "source_tools": [
+                "duckduckgo_results_json",
+                "tavily_search_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": true,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            }
+          ],
+          "sources": [
+            {
+              "url": "https://rankllms.com/compare/llama-3-1-vs-3-2/",
+              "title": "Llama 3.1 Vs 3.2 – Key Differences - Rankllms.com",
+              "domain": "rankllms.com",
+              "source_tools": [
+                "duckduckgo_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "July 9, 2025 - Announced at Meta Connect 2024, Llama 3.2 is optimized for on-device performance and real-time AI applications. It targets mobile devices, edge computing, and lightweight hardware.",
+              "tier": "low"
+            },
+            {
+              "url": "https://www.edenai.co/post/llama-3-1-vs-llama-3-2",
+              "title": "Llama 3.1 vs Llama 3.2 | Eden AI",
+              "domain": "www.edenai.co",
+              "source_tools": [
+                "duckduckgo_results_json",
+                "tavily_search_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "1 week ago - LLaMA 3.1 and 3.2 have similar benchmarks because LLaMA 3.2 is built on the same core architecture as LLaMA 3.1. The key difference is the addition of a vision adapter in LLaMA 3.2 for multimodal tasks, which improves performance in image-related ...",
+              "tier": "low"
+            },
+            {
+              "url": "https://ultraaiguide.com/llama-3-2-vs-llama-3-1-comparison/",
+              "title": "“LLaMA 3.2 vs 3.1: Features, Benchmarks & Surprising Insights”",
+              "domain": "ultraaiguide.com",
+              "source_tools": [
+                "duckduckgo_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "February 16, 2026 - Llama 3.1 optimizes textual intelligence. Llama 3.2 extends capability into multimodal cognition and resource-efficient deployment.",
+              "tier": "low"
+            },
+            {
+              "url": "https://rankllms.com/compare/llama-3-1-8b-vs-llama-3-2-3b/",
+              "title": "Llama 3.1 8B vs Llama 3.2 3B – Which Meta Model Is Better?",
+              "domain": "rankllms.com",
+              "source_tools": [
+                "duckduckgo_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "July 9, 2025 - With significant improvements over Llama 2, it has become a favorite among developers looking for high performance without relying on 70B-scale models at Affordable cost. The newer Llama 3.2 3B is designed for lightweight environments.",
+              "tier": "low"
+            },
+            {
+              "url": "https://www.hyperstack.cloud/blog/thought-leadership/what-is-meta-llama-3-3-70b-features-use-cases-more",
+              "title": "What You Need to Know About Meta Llama 3.3 70B",
+              "domain": "www.hyperstack.cloud",
+              "source_tools": [
+                "duckduckgo_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "December 15, 2025 - Llama 3.3 delivers superior performance at a lower cost compared to Llama 3.1 70B and Llama 3.2 90B, especially in instruction-following tasks.",
+              "tier": "low"
+            },
+            {
+              "url": "https://ultraaiguide.com/llama-3-2-vs-llama-3-1-comparison",
+              "title": "“LLaMA 3.2 vs 3.1: Features, Benchmarks & Surprising Insights”",
+              "domain": "ultraaiguide.com",
+              "source_tools": [
+                "tavily_search_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "Where Llama 3.1 maximizes depth, Llama 3.2 maximizes adaptability. Llama 3.2 vs Llama 3.1 Direct Feature Comparison. Feature, Llama 3.1, Llama",
+              "tier": "low"
+            },
+            {
+              "url": "https://medium.com/@getbind/the-evolution-of-llama-models-a-comprehensive-comparison-of-llama-3-3-1-and-3-2-c46681f51bc6",
+              "title": "A Comprehensive Comparison of Llama 3, 3.1, and 3.2 | by Bind AI",
+              "domain": "medium.com",
+              "source_tools": [
+                "tavily_search_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "Llama 3 is for standard NLP tasks; whereas Llama 3.1 is for advanced reasoning and context management. Llama 3.2 is multimodal in capabilities,",
+              "tier": "low"
+            }
+          ],
+          "trust_signals": {
+            "citation_coverage": 1.0,
+            "avg_sources_per_claim": 3.0,
+            "multi_source_claim_ratio": 1.0,
+            "distinct_domain_count": 5,
+            "source_quality_score": 0.35,
+            "high_tier_ratio": 0.0,
+            "citation_strength": 0.35,
+            "tier_breakdown": {
+              "high": 0,
+              "medium": 0,
+              "low": 7,
+              "prediction": 0
+            },
+            "total_sources": 7
+          },
+          "model": "llama32",
+          "from_cache": false,
+          "regenerated": false,
+          "timestamp": "2026-05-30T22:22:49.852919+00:00"
+        }
+      ]
+    },
+    {
+      "id": "e38c51760b1d",
+      "title": "christ avantgarde event in ankara turkey?",
+      "created_at": "2026-05-30T23:00:56.560805+00:00",
+      "updated_at": "2026-05-30T23:04:29.205179+00:00",
+      "turns": [
+        {
+          "question": "christ avantgarde event in ankara turkey?",
+          "answer": "I could not find any information on a recent Christ avantgarde event in Ankara, Turkey in 2026.",
+          "facts": [
+            {
+              "claim_text": "I could not find any information on a recent Christ avantgarde event in Ankara, Turkey in 2026.",
+              "evidence_urls": [],
+              "source_tools": [],
+              "fact_quality_flags": {
+                "has_source": false,
+                "multi_source": false,
+                "weak_evidence": true,
+                "needs_review": true
+              }
+            }
+          ],
+          "sources": [],
+          "trust_signals": {
+            "citation_coverage": 0.0,
+            "avg_sources_per_claim": 0.0,
+            "multi_source_claim_ratio": 0.0,
+            "distinct_domain_count": 0,
+            "source_quality_score": 0.0,
+            "high_tier_ratio": 0.0,
+            "citation_strength": 0.0,
+            "tier_breakdown": {
+              "high": 0,
+              "medium": 0,
+              "low": 0,
+              "prediction": 0
+            },
+            "total_sources": 0
+          },
+          "model": "llama32",
+          "from_cache": false,
+          "regenerated": false,
+          "timestamp": "2026-05-30T23:01:36.470489+00:00"
+        },
+        {
+          "question": "christ avantgarde event in ankara turkey?",
+          "answer": "Chris Avantgarde will perform at CerModern in Ankara, Turkey on June 13, 2026, at 6:00 PM. Tickets are available on Bubilet and Spotify. This event is part of his Flexanima presentation.",
+          "facts": [
+            {
+              "claim_text": "Chris Avantgarde will perform at CerModern in Ankara, Turkey on June 13, 2026, at 6:00 PM.",
+              "evidence_urls": [
+                "https://www.instagram.com/reel/DYM3Wyxpg3m",
+                "https://biletino.com/en/performer/inuhe2ltebaxmyloortwc4temu-chris-avantgarde",
+                "https://www.instagram.com/p/DYzlysPI5ZY"
+              ],
+              "source_tools": [
+                "tavily_search_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": true,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            },
+            {
+              "claim_text": "Tickets are available on Bubilet and Spotify.",
+              "evidence_urls": [
+                "https://www.instagram.com/reel/DYM3Wyxpg3m",
+                "https://biletino.com/en/performer/inuhe2ltebaxmyloortwc4temu-chris-avantgarde"
+              ],
+              "source_tools": [
+                "tavily_search_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": true,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            },
+            {
+              "claim_text": "This event is part of his Flexanima presentation.",
+              "evidence_urls": [
+                "https://www.instagram.com/reel/DYM3Wyxpg3m",
+                "https://biletino.com/en/performer/inuhe2ltebaxmyloortwc4temu-chris-avantgarde",
+                "https://www.instagram.com/p/DYzlysPI5ZY"
+              ],
+              "source_tools": [
+                "tavily_search_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": true,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            }
+          ],
+          "sources": [
+            {
+              "url": "https://www.brownpapertickets.com/event/5305757",
+              "title": "Rotting Christ, Borknagar, Weald and Woe",
+              "domain": "www.brownpapertickets.com",
+              "source_tools": [
+                "duckduckgo_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "ROTTING CHRIST was formed in 1987 with the original line-up Sakis (vocals, guitar), Jim (bass), Themis (drums) incorporating a roaring mixture of ...",
+              "tier": "low"
+            },
+            {
+              "url": "https://www.instagram.com/reel/DYM3Wyxpg3m",
+              "title": "Instagram",
+              "domain": "www.instagram.com",
+              "source_tools": [
+                "tavily_search_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "Sign up for Instagram to stay in the loop. Chris Avantgarde is coming to the Cermodern Ankara stage on June 13 with his powerful melodies and hypnotic set! Tickets are available on the Bubilet website! Chris Avantgarde will take the stage at CerModern Ankara on June 13 with his Flexanima presentation! Tickets go on sale tomorrow at 12:00 on bubilet.com! Only 14 days left until an unforgettable nig",
+              "tier": "low"
+            },
+            {
+              "url": "https://biletino.com/en/performer/inuhe2ltebaxmyloortwc4temu-chris-avantgarde",
+              "title": "Chris Avantgarde Tickets | Biletino",
+              "domain": "biletino.com",
+              "source_tools": [
+                "tavily_search_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "# Chris Avantgarde. No results found matching your query. Chris Avantgarde - The GALLIARD Cove House. ### Chris Avantgarde | Sommer Klein. ### Chris Avantgarde - Volkswagen Arena. Bliss Out | CerModern Ankara 3 Eylül 2023. Chris Avantgarde & Roman Kyn | Set In Bodrum. ### Infinitum Music Festival. ### Voice of Asterion. ## Would you like to publish an event of your own? #### Enter your e-mail addr",
+              "tier": "low"
+            },
+            {
+              "url": "https://www.instagram.com/p/DYzlysPI5ZY",
+              "title": "CHRIS AVANTGARDE* 13 Haziran'da CerModern Ankara'da ...",
+              "domain": "www.instagram.com",
+              "source_tools": [
+                "tavily_search_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "*CHRIS AVANTGARDE* 13 Haziran'da CerModern Ankara'da Flexanima sunumuyla sahne alacak!",
+              "tier": "low"
+            }
+          ],
+          "trust_signals": {
+            "citation_coverage": 1.0,
+            "avg_sources_per_claim": 2.6666666666666665,
+            "multi_source_claim_ratio": 1.0,
+            "distinct_domain_count": 3,
+            "source_quality_score": 0.35,
+            "high_tier_ratio": 0.0,
+            "citation_strength": 0.35,
+            "tier_breakdown": {
+              "high": 0,
+              "medium": 0,
+              "low": 4,
+              "prediction": 0
+            },
+            "total_sources": 4
+          },
+          "model": "llama",
+          "from_cache": false,
+          "regenerated": false,
+          "timestamp": "2026-05-30T23:04:29.205169+00:00"
+        }
+      ]
+    },
+    {
+      "id": "a58bb8722378",
+      "title": "Did coffee increase lifespan according to recent studies?",
+      "created_at": "2026-05-30T23:05:19.431136+00:00",
+      "updated_at": "2026-05-30T23:46:50.340187+00:00",
+      "turns": [
+        {
+          "question": "Did coffee increase lifespan according to recent studies?",
+          "answer": "In fact, some studies suggest that coffee may have health benefits, such as improving blood vessel function and reducing the risk of hypertension. However, one study found that individuals with very high blood pressure who drank two or more cups of coffee a day had double the risk of dying from cardiovascular disease compared to non-drinkers. Therefore, while moderate coffee consumption does not appear to increase the risk of hypertension, those with very high blood pressure should avoid coffee.",
+          "facts": [
+            {
+              "claim_text": "In fact, some studies suggest that coffee may have health benefits, such as improving blood vessel function and reducing the risk of hypertension.",
+              "evidence_urls": [
+                "https://blogs.timesofisrael.com/from-lab-to-life-coffees-health-benefits/",
+                "https://scitechdaily.com/tea-or-coffee-your-daily-choice-could-affect-osteoporosis-risk/"
+              ],
+              "source_tools": [
+                "tavily_search_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": true,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            },
+            {
+              "claim_text": "However, one study found that individuals with very high blood pressure who drank two or more cups of coffee a day had double the risk of dying from cardiovascular disease compared to non-drinkers.",
+              "evidence_urls": [
+                "https://blogs.timesofisrael.com/from-lab-to-life-coffees-health-benefits/",
+                "https://scitechdaily.com/tea-or-coffee-your-daily-choice-could-affect-osteoporosis-risk/",
+                "https://www.powerofpositivity.com/coffee-living-longer-life/"
+              ],
+              "source_tools": [
+                "duckduckgo_results_json",
+                "tavily_search_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": true,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            },
+            {
+              "claim_text": "Therefore, while moderate coffee consumption does not appear to increase the risk of hypertension, those with very high blood pressure should avoid coffee.",
+              "evidence_urls": [
+                "https://blogs.timesofisrael.com/from-lab-to-life-coffees-health-benefits/",
+                "https://scitechdaily.com/tea-or-coffee-your-daily-choice-could-affect-osteoporosis-risk/",
+                "https://www.powerofpositivity.com/coffee-living-longer-life/"
+              ],
+              "source_tools": [
+                "duckduckgo_results_json",
+                "tavily_search_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": true,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            }
+          ],
+          "sources": [
+            {
+              "url": "https://www.powerofpositivity.com/coffee-living-longer-life/",
+              "title": "Researchers Reveal Drinking Coffee Links to Living Longer",
+              "domain": "www.powerofpositivity.com",
+              "source_tools": [
+                "duckduckgo_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "Coffee stimulates the central nervous system, helping fight drowsiness and increase focus.Final Thoughts on Study Linking Coffee to a Longer Lifespan.",
+              "tier": "low"
+            },
+            {
+              "url": "https://blogs.timesofisrael.com/from-lab-to-life-coffees-health-benefits/",
+              "title": "From Lab to Life: Coffee’s Health Benefits - The Times of Israel",
+              "domain": "blogs.timesofisrael.com",
+              "source_tools": [
+                "tavily_search_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "Apparently not. Science Daily (May 17) reports on research that reveals the health benefits of coffee. \\ “…large studies involving hundreds of thousands of people found no strong evidence that moderate coffee drinking increases the risk of developing hypertension. In fact, coffee also contains natural compounds that may help blood vessels function better.”",
+              "tier": "low"
+            },
+            {
+              "url": "https://scitechdaily.com/tea-or-coffee-your-daily-choice-could-affect-osteoporosis-risk/",
+              "title": "Tea or Coffee? Your Daily Choice Could Affect Osteoporosis Risk - SciTechDaily",
+              "domain": "scitechdaily.com",
+              "source_tools": [
+                "tavily_search_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "Scientists have debated caffeine’s effects on bones for decades. Some earlier studies linked high coffee consumption to increased fracture risk, while others found little or no impact. Researchers say part of the confusion may come from differences in diet, calcium intake, genetics, and lifestyle factors such as exercise and alcohol use.",
+              "tier": "low"
+            }
+          ],
+          "trust_signals": {
+            "citation_coverage": 1.0,
+            "avg_sources_per_claim": 2.6666666666666665,
+            "multi_source_claim_ratio": 1.0,
+            "distinct_domain_count": 3,
+            "source_quality_score": 0.35,
+            "high_tier_ratio": 0.0,
+            "citation_strength": 0.35,
+            "tier_breakdown": {
+              "high": 0,
+              "medium": 0,
+              "low": 3,
+              "prediction": 0
+            },
+            "total_sources": 3
+          },
+          "model": "llama",
+          "from_cache": false,
+          "regenerated": false,
+          "timestamp": "2026-05-30T23:06:32.836703+00:00"
+        },
+        {
+          "question": "Did coffee increase lifespan according to recent studies?",
+          "answer": "Based on recent studies: - **Moderate Coffee Consumption**: Several studies suggest that moderate coffee consumption (up to about 3 to 4 cups a day) does not increase the risk of developing hypertension. In fact, it may help blood vessels function better and potentially add years to your life. - **Very High Blood Pressure**: A separate Japanese study found that individuals with very high blood pressure who drank two or more cups of coffee daily had double the risk of dying from cardiovascular disease compared to non-drinkers. Therefore, while moderate coffee consumption may not increase lifespan, it is important for those with very high blood pressure to avoid heavy coffee intake. For a comprehensive understanding, you can refer to the following sources: These studies indicate that the relationship between coffee and lifespan is complex, with benefits for moderate consumption but potential risks for those with specific health conditions.",
+          "facts": [
+            {
+              "claim_text": "Based on recent studies: - **Moderate Coffee Consumption**: Several studies suggest that moderate coffee consumption (up to about 3 to 4 cups a day) does not increase the risk of developing hypertension.",
+              "evidence_urls": [
+                "https://blogs.timesofisrael.com/from-lab-to-life-coffees-health-benefits/",
+                "https://www.medicalnewstoday.com/articles/roundup-coffee-and-longevity-3-studies-explore-how-coffee-may-benefit-healthy-aging"
+              ],
+              "source_tools": [
+                "duckduckgo_results_json",
+                "tavily_search_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": true,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            },
+            {
+              "claim_text": "In fact, it may help blood vessels function better and potentially add years to your life.",
+              "evidence_urls": [
+                "https://blogs.timesofisrael.com/from-lab-to-life-coffees-health-benefits/",
+                "https://www.medicalnewstoday.com/articles/roundup-coffee-and-longevity-3-studies-explore-how-coffee-may-benefit-healthy-aging"
+              ],
+              "source_tools": [
+                "duckduckgo_results_json",
+                "tavily_search_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": true,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            },
+            {
+              "claim_text": "- **Very High Blood Pressure**: A separate Japanese study found that individuals with very high blood pressure who drank two or more cups of coffee daily had double the risk of dying from cardiovascular disease compared to non-drinkers.",
+              "evidence_urls": [
+                "https://www.medicalnewstoday.com/articles/roundup-coffee-and-longevity-3-studies-explore-how-coffee-may-benefit-healthy-aging",
+                "https://blogs.timesofisrael.com/from-lab-to-life-coffees-health-benefits/"
+              ],
+              "source_tools": [
+                "duckduckgo_results_json",
+                "tavily_search_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": true,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            },
+            {
+              "claim_text": "Therefore, while moderate coffee consumption may not increase lifespan, it is important for those with very high blood pressure to avoid heavy coffee intake.",
+              "evidence_urls": [
+                "https://blogs.timesofisrael.com/from-lab-to-life-coffees-health-benefits/",
+                "https://www.medicalnewstoday.com/articles/roundup-coffee-and-longevity-3-studies-explore-how-coffee-may-benefit-healthy-aging"
+              ],
+              "source_tools": [
+                "duckduckgo_results_json",
+                "tavily_search_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": true,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            },
+            {
+              "claim_text": "For a comprehensive understanding, you can refer to the following sources: These studies indicate that the relationship between coffee and lifespan is complex, with benefits for moderate consumption but potential risks for those with specific health conditions.",
+              "evidence_urls": [
+                "https://blogs.timesofisrael.com/from-lab-to-life-coffees-health-benefits/",
+                "https://www.medicalnewstoday.com/articles/roundup-coffee-and-longevity-3-studies-explore-how-coffee-may-benefit-healthy-aging"
+              ],
+              "source_tools": [
+                "duckduckgo_results_json",
+                "tavily_search_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": true,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            }
+          ],
+          "sources": [
+            {
+              "url": "https://www.medicalnewstoday.com/articles/roundup-coffee-and-longevity-3-studies-explore-how-coffee-may-benefit-healthy-aging",
+              "title": "How much coffee should you drink for a long, healthy life?",
+              "domain": "www.medicalnewstoday.com",
+              "source_tools": [
+                "duckduckgo_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "January 1, 2026 - Image credit: Darren Muir/Stocksy ... chronic disease risk. A study suggests that consuming 3 to 4 cups of coffee daily could increase lifespan and may add 5 extra years of life....",
+              "tier": "low"
+            },
+            {
+              "url": "https://blogs.timesofisrael.com/from-lab-to-life-coffees-health-benefits/",
+              "title": "From Lab to Life: Coffee’s Health Benefits - The Times of Israel",
+              "domain": "blogs.timesofisrael.com",
+              "source_tools": [
+                "tavily_search_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "Apparently not. Science Daily (May 17) reports on research that reveals the health benefits of coffee. \\ “…large studies involving hundreds of thousands of people found no strong evidence that moderate coffee drinking increases the risk of developing hypertension. In fact, coffee also contains natural compounds that may help blood vessels function better.”",
+              "tier": "low"
+            }
+          ],
+          "trust_signals": {
+            "citation_coverage": 1.0,
+            "avg_sources_per_claim": 2.0,
+            "multi_source_claim_ratio": 1.0,
+            "distinct_domain_count": 2,
+            "source_quality_score": 0.35,
+            "high_tier_ratio": 0.0,
+            "citation_strength": 0.35,
+            "tier_breakdown": {
+              "high": 0,
+              "medium": 0,
+              "low": 2,
+              "prediction": 0
+            },
+            "total_sources": 2
+          },
+          "model": "qwen",
+          "from_cache": false,
+          "regenerated": false,
+          "timestamp": "2026-05-30T23:46:50.340179+00:00"
+        }
+      ]
+    },
+    {
+      "id": "d79f905dd9bc",
+      "title": "Latest developments about EU AI Act enforcement timeline.",
+      "created_at": "2026-05-30T23:55:34.288568+00:00",
+      "updated_at": "2026-05-30T23:57:40.205592+00:00",
+      "turns": [
+        {
+          "question": "Latest developments about EU AI Act enforcement timeline.",
+          "answer": "The EU AI Act enforcement timeline has been delayed. The original deadline for full enforcement was August 2026, but it has been pushed back to late 2027 and 2028 for high-risk AI systems. This delay aims to boost competitiveness and resolve technical bottlenecks. Additionally, each Member State must establish at least one AI regulatory sandbox at the national level by 2 August 2026, as per Article 57 of the EU AI Act.",
+          "facts": [
+            {
+              "claim_text": "The EU AI Act enforcement timeline has been delayed.",
+              "evidence_urls": [],
+              "source_tools": [],
+              "fact_quality_flags": {
+                "has_source": false,
+                "multi_source": false,
+                "weak_evidence": true,
+                "needs_review": true
+              }
+            },
+            {
+              "claim_text": "The original deadline for full enforcement was August 2026, but it has been pushed back to late 2027 and 2028 for high-risk AI systems.",
+              "evidence_urls": [
+                "https://artificialintelligenceact.eu/"
+              ],
+              "source_tools": [
+                "duckduckgo_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": false,
+                "weak_evidence": true,
+                "needs_review": true
+              }
+            },
+            {
+              "claim_text": "This delay aims to boost competitiveness and resolve technical bottlenecks.",
+              "evidence_urls": [],
+              "source_tools": [],
+              "fact_quality_flags": {
+                "has_source": false,
+                "multi_source": false,
+                "weak_evidence": true,
+                "needs_review": true
+              }
+            },
+            {
+              "claim_text": "Additionally, each Member State must establish at least one AI regulatory sandbox at the national level by 2 August 2026, as per Article 57 of the EU AI Act.",
+              "evidence_urls": [
+                "https://artificialintelligenceact.eu/"
+              ],
+              "source_tools": [
+                "duckduckgo_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": false,
+                "weak_evidence": true,
+                "needs_review": true
+              }
+            }
+          ],
+          "sources": [
+            {
+              "url": "https://artificialintelligenceact.eu/",
+              "title": "Up-To-Date Developments and Analyses of the EU AI Act",
+              "domain": "artificialintelligenceact.eu",
+              "source_tools": [
+                "duckduckgo_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "AI regulatory sandboxes are an important part of the implementation of the EU AI Act. According to Article 57 of the AI Act, each Member State must establish at least one AI regulatory sandbox at the national level by 2 August 2026.",
+              "tier": "low"
+            }
+          ],
+          "trust_signals": {
+            "citation_coverage": 0.5,
+            "avg_sources_per_claim": 0.5,
+            "multi_source_claim_ratio": 0.0,
+            "distinct_domain_count": 1,
+            "source_quality_score": 0.35,
+            "high_tier_ratio": 0.0,
+            "citation_strength": 0.175,
+            "tier_breakdown": {
+              "high": 0,
+              "medium": 0,
+              "low": 1,
+              "prediction": 0
+            },
+            "total_sources": 1
+          },
+          "model": "llama",
+          "from_cache": false,
+          "regenerated": false,
+          "timestamp": "2026-05-30T23:57:40.205582+00:00"
+        }
+      ]
+    },
+    {
+      "id": "4d0df93a0e39",
+      "title": "Fenerbahçe's league championship number ?",
+      "created_at": "2026-05-31T00:16:17.044341+00:00",
+      "updated_at": "2026-05-31T00:17:07.982733+00:00",
+      "turns": [
+        {
+          "question": "Fenerbahçe's league championship number ?",
+          "answer": "Fenerbahçe has won the Turkish national championship 28 times, including 19 titles in the Süper Lig. Their first league championship was in 1933, and they last won the Süper Lig in 2022-23.",
+          "facts": [
+            {
+              "claim_text": "Fenerbahçe has won the Turkish national championship 28 times, including 19 titles in the Süper Lig.",
+              "evidence_urls": [
+                "https://en.wikipedia.org/wiki/Fenerbahçe_S.K._(football)",
+                "https://baike.baidu.com/en/item/Fenerbah%C3%A7e%20Spor%20Kul%C3%BCb%C3%BC/1462519",
+                "https://www.transfermarkt.com/jumplist/erfolge/verein/36"
+              ],
+              "source_tools": [
+                "duckduckgo_results_json",
+                "tavily_search_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": true,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            },
+            {
+              "claim_text": "Their first league championship was in 1933, and they last won the Süper Lig in 2022-23.",
+              "evidence_urls": [
+                "https://www.uefa.com/uefachampionsleague/history/clubs/52692--fenerbahce",
+                "https://en.wikipedia.org/wiki/Fenerbahçe_S.K._(football)",
+                "https://www.uefa.com/uefaeuropaleague/clubs/52692--fenerbahce/standings/"
+              ],
+              "source_tools": [
+                "duckduckgo_results_json",
+                "tavily_search_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": true,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            }
+          ],
+          "sources": [
+            {
+              "url": "https://en.wikipedia.org/wiki/Fenerbahçe_S.K._(football)",
+              "title": "Fenerbahçe S.K. (Football) - Wikipedia",
+              "domain": "en.wikipedia.org",
+              "source_tools": [
+                "duckduckgo_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "Fenerbahçe won the championship 6 times in 1937, 1940, 1943, 1945, 1946 and 1950, and became the team that achieved the most victories in the Turkish National Division.He was a four-time league champion with Fenerbahçe and scored 162 goals in 330 matches.",
+              "tier": "high"
+            },
+            {
+              "url": "https://www.uefa.com/uefaeuropaleague/clubs/52692--fenerbahce/standings/",
+              "title": "Fenerbahçe | League Phase Table | UEFA.com",
+              "domain": "www.uefa.com",
+              "source_tools": [
+                "duckduckgo_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "Find out all you need to know about the clubs competing to win the UEFA Europa League 2024/2025.",
+              "tier": "high"
+            },
+            {
+              "url": "https://www.sofascore.com/tr/football/team/fenerbahce/3052",
+              "title": "Fenerbahçe İstanbul Canlı Skoru, Takvimi ve Oyuncu İstatistikleri",
+              "domain": "www.sofascore.com",
+              "source_tools": [
+                "duckduckgo_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "UEFA Champions League UEFA Champions League.Bazı Fenerbahçe İstanbul maçlarının gollerini ve haberlerini içeren öne çıkan videolarımız olabilir.",
+              "tier": "medium"
+            },
+            {
+              "url": "https://baike.baidu.com/en/item/Fenerbah%C3%A7e%20Spor%20Kul%C3%BCb%C3%BC/1462519",
+              "title": "Fenerbahçe Spor Kulübü（a Turkish professional football club ...",
+              "domain": "baike.baidu.com",
+              "source_tools": [
+                "tavily_search_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "Including the national league championship in the 1949-50 season, Fenerbahçe's number of top-flight league titles reached nine. 8. In 1959, the inaugural",
+              "tier": "low"
+            },
+            {
+              "url": "https://www.fenerbahce.org/28-championships",
+              "title": "28 Championships - Fenerbahçe Spor Kulübü - Fenerbahce.org",
+              "domain": "www.fenerbahce.org",
+              "source_tools": [
+                "tavily_search_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "",
+              "tier": "low"
+            },
+            {
+              "url": "https://www.uefa.com/uefachampionsleague/history/clubs/52692--fenerbahce",
+              "title": "Fenerbahçe | History | UEFA Champions League | UEFA.com",
+              "domain": "www.uefa.com",
+              "source_tools": [
+                "tavily_search_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "Champions League Official Live football scores & Fantasy. UEFA.com works better on other browsers. For the best possible experience, we recommend using Chrome, Firefox or Microsoft Edge. # Fenerbahçe History. ## Matches played. 2025/26 P W D L Play-offs 4 1 1 2. 2024/25 P W D L Third qualifying round 4 2 1 1. 2022/23 P W D L Second qualifying round 2 0 2 0. 2008/09 P W D L Group stage 10 2 3 4. 20",
+              "tier": "high"
+            },
+            {
+              "url": "https://www.transfermarkt.com/jumplist/erfolge/verein/36",
+              "title": "Fenerbahce - Club achievements | Transfermarkt",
+              "domain": "www.transfermarkt.com",
+              "source_tools": [
+                "tavily_search_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "# Fenerbahce. ## Info. ## 19x Turkish Champion. ## 7x Turkish cup winner. ## 10x Turkish Super Cup winner. ## 1x Balkan Cup Winner. ## All titles. | 25/26 | Europa League Participant | Europa League Participant |. | 25/26 | TFF Süper Kupa | Turkish Super Cup winner |. | 23/24 | Conference League participant | Conference League participant |. | 22/23 | Türkiye Kupasi | Turkish cup winner |. | 13/14",
+              "tier": "medium"
+            }
+          ],
+          "trust_signals": {
+            "citation_coverage": 1.0,
+            "avg_sources_per_claim": 3.0,
+            "multi_source_claim_ratio": 1.0,
+            "distinct_domain_count": 6,
+            "source_quality_score": 0.714,
+            "high_tier_ratio": 0.429,
+            "citation_strength": 1.0,
+            "tier_breakdown": {
+              "high": 3,
+              "medium": 2,
+              "low": 2,
+              "prediction": 0
+            },
+            "total_sources": 7
+          },
+          "model": "llama",
+          "from_cache": false,
+          "regenerated": false,
+          "timestamp": "2026-05-31T00:17:07.982724+00:00"
+        }
+      ]
+    },
+    {
+      "id": "c99814fde440",
+      "title": "What is Türkiye's inflation rate this year?",
+      "created_at": "2026-05-31T00:19:35.205893+00:00",
+      "updated_at": "2026-05-31T00:20:37.907095+00:00",
+      "turns": [
+        {
+          "question": "What is Türkiye's inflation rate this year?",
+          "answer": "This information can be found on reputable sources such as tradingeconomics.com and inflationtool.com.",
+          "facts": [
+            {
+              "claim_text": "This information can be found on reputable sources such as tradingeconomics.com and inflationtool.com.",
+              "evidence_urls": [],
+              "source_tools": [],
+              "fact_quality_flags": {
+                "has_source": false,
+                "multi_source": false,
+                "weak_evidence": true,
+                "needs_review": true
+              }
+            }
+          ],
+          "sources": [
+            {
+              "url": "https://www.kitco.com/news/off-the-wire/2026-05-21/euro-zone-growth-set-slow-2026-middle-east-conflict-fuels-inflation",
+              "title": "Euro zone growth set to slow in 2026 as Middle East conflict fuels inflation - KITCO",
+              "domain": "www.kitco.com",
+              "source_tools": [
+                "tavily_search_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "The EU executive also raised its forecasts for inflation to 3.0% in 2026 from a previous 1.9% and ​to 2.3% in 2027 from 2.0%, reinforcing the case for a rise in European Central Bank interest rates.",
+              "tier": "low"
+            },
+            {
+              "url": "https://finance.yahoo.com/markets/stocks/articles/stock-market-investors-got-final-091300206.html",
+              "title": "Stock Market Investors Got a Final Warning From Fed Chair Jerome Powell. History Says This Will Happen Next. - Yahoo Finance",
+              "domain": "finance.yahoo.com",
+              "source_tools": [
+                "tavily_search_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "\"The economic outlook remains highly uncertain, and the conflict in the Middle East has added to this uncertainty,\" Powell said. \"In the near term, higher energy prices will push up overall inflation. Beyond that, the scope and duration of potential effects on the economy remain unclear.\" Powell also ruled out the possibility of rate cuts for the foreseeable future.",
+              "tier": "low"
+            },
+            {
+              "url": "https://tradingeconomics.com/turkey/inflation-cpi",
+              "title": "Turkey Inflation Rate",
+              "domain": "tradingeconomics.com",
+              "source_tools": [
+                "duckduckgo_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "Inflation Rate in Turkey increased to 32.37 percent in April from 30.87 percent in March of 2026.",
+              "tier": "low"
+            },
+            {
+              "url": "https://www.inflationtool.com/rates/turkey",
+              "title": "Turkey Inflation Rate - 2026",
+              "domain": "www.inflationtool.com",
+              "source_tools": [
+                "duckduckgo_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "The current inflation rate in Turkey is 30.87%, which is calculated based on CPI (Consumer Price Index) values for the last 12 months ending in March 2026.",
+              "tier": "low"
+            },
+            {
+              "url": "https://www.officialdata.org/turkey/inflation",
+              "title": "Turkey Inflation Calculator: World Bank Data, 1956-2026 (TRY)",
+              "domain": "www.officialdata.org",
+              "source_tools": [
+                "duckduckgo_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "The lira had an average inflation rate of 29.43% per year between 1956 and today, producing a cumulative price increase of 6,948,876,400.02%.",
+              "tier": "low"
+            },
+            {
+              "url": "https://tr.tradingview.com/symbols/ECONOMICS-TRIRYY/",
+              "title": "Turkey Inflation Rate YoY (ECONOMICS:TRIRYY) — Geçmiş Veriler...",
+              "domain": "tr.tradingview.com",
+              "source_tools": [
+                "duckduckgo_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "Ücretsiz ekonomik veriler, göstergeler ve istatistikler. Turkey Inflation Rate YoY sağlayan ECONOMICS.",
+              "tier": "low"
+            }
+          ],
+          "trust_signals": {
+            "citation_coverage": 0.0,
+            "avg_sources_per_claim": 0.0,
+            "multi_source_claim_ratio": 0.0,
+            "distinct_domain_count": 6,
+            "source_quality_score": 0.35,
+            "high_tier_ratio": 0.0,
+            "citation_strength": 0.0,
+            "tier_breakdown": {
+              "high": 0,
+              "medium": 0,
+              "low": 6,
+              "prediction": 0
+            },
+            "total_sources": 6
+          },
+          "model": "llama",
+          "from_cache": false,
+          "regenerated": false,
+          "timestamp": "2026-05-31T00:20:37.907087+00:00"
+        }
+      ]
+    },
+    {
+      "id": "7784133f21f3",
+      "title": "What is Türkiye's inflation rate this year?",
+      "created_at": "2026-05-31T13:24:38.948135+00:00",
+      "updated_at": "2026-05-31T13:26:50.561948+00:00",
+      "turns": [
+        {
+          "question": "What is Türkiye's inflation rate this year?",
+          "answer": "Based on the recent data and reports: - The European Commission forecasts euro zone inflation at 3.0% for 2026, which could influence Türkiye's inflation rate due to its economic ties with Europe. - The Central Bank of the Republic of Türkiye (CBRT) raised its year-end inflation forecast for 2026 to 26%, citing price pressures from the Iran conflict and energy market disruptions. They project a decrease in inflation to 15% by the end of 2027. While specific data on Turkey's current inflation rate is not directly provided, the CBRT's latest projections indicate an expected inflation rate of around 26% for the end of 2026. For more precise and up-to-date information, you may want to check the official website of the Central Bank of the Republic of Türkiye or financial news outlets that provide real-time economic updates.",
+          "facts": [
+            {
+              "claim_text": "Based on the recent data and reports: - The European Commission forecasts euro zone inflation at 3.0% for 2026, which could influence Türkiye's inflation rate due to its economic ties with Europe.",
+              "evidence_urls": [
+                "https://www.kitco.com/news/off-the-wire/2026-05-21/euro-zone-growth-set-slow-2026-middle-east-conflict-fuels-inflation",
+                "https://www.inflationtool.com/rates/turkey",
+                "https://www.tcmb.gov.tr/wps/wcm/connect/en/tcmb+en/main+menu/publications/reports/inflation+report/2026/inflation+report+2026+-+i"
+              ],
+              "source_tools": [
+                "duckduckgo_results_json",
+                "tavily_search_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": true,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            },
+            {
+              "claim_text": "- The Central Bank of the Republic of Türkiye (CBRT) raised its year-end inflation forecast for 2026 to 26%, citing price pressures from the Iran conflict and energy market disruptions.",
+              "evidence_urls": [
+                "https://www.turkiyetoday.com/business/turkish-central-bank-raises-2026-inflation-forecast-to-26-amid-iran-war-risks-3219928",
+                "https://www.kitco.com/news/off-the-wire/2026-05-21/euro-zone-growth-set-slow-2026-middle-east-conflict-fuels-inflation",
+                "https://www.tcmb.gov.tr/wps/wcm/connect/en/tcmb+en/main+menu/publications/reports/inflation+report/2026/inflation+report+2026+-+i"
+              ],
+              "source_tools": [
+                "duckduckgo_results_json",
+                "tavily_search_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": true,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            },
+            {
+              "claim_text": "They project a decrease in inflation to 15% by the end of 2027.",
+              "evidence_urls": [
+                "https://www.turkiyetoday.com/business/turkish-central-bank-raises-2026-inflation-forecast-to-26-amid-iran-war-risks-3219928",
+                "https://www.kitco.com/news/off-the-wire/2026-05-21/euro-zone-growth-set-slow-2026-middle-east-conflict-fuels-inflation",
+                "https://www.inflationtool.com/rates/turkey"
+              ],
+              "source_tools": [
+                "duckduckgo_results_json",
+                "tavily_search_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": true,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            },
+            {
+              "claim_text": "While specific data on Turkey's current inflation rate is not directly provided, the CBRT's latest projections indicate an expected inflation rate of around 26% for the end of 2026.",
+              "evidence_urls": [
+                "https://www.inflationtool.com/rates/turkey",
+                "https://www.tcmb.gov.tr/wps/wcm/connect/en/tcmb+en/main+menu/publications/reports/inflation+report/2026/inflation+report+2026+-+i",
+                "https://www.turkiyetoday.com/business/turkish-central-bank-raises-2026-inflation-forecast-to-26-amid-iran-war-risks-3219928"
+              ],
+              "source_tools": [
+                "duckduckgo_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": true,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            },
+            {
+              "claim_text": "For more precise and up-to-date information, you may want to check the official website of the Central Bank of the Republic of Türkiye or financial news outlets that provide real-time economic updates.",
+              "evidence_urls": [
+                "https://www.turkiyetoday.com/business/turkish-central-bank-raises-2026-inflation-forecast-to-26-amid-iran-war-risks-3219928",
+                "https://www.tcmb.gov.tr/wps/wcm/connect/en/tcmb+en/main+menu/publications/reports/inflation+report/2026/inflation+report+2026+-+i",
+                "https://www.kitco.com/news/off-the-wire/2026-05-21/euro-zone-growth-set-slow-2026-middle-east-conflict-fuels-inflation"
+              ],
+              "source_tools": [
+                "duckduckgo_results_json",
+                "tavily_search_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": true,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            }
+          ],
+          "sources": [
+            {
+              "url": "https://www.inflationtool.com/rates/turkey",
+              "title": "Turkey Inflation Rate - 2026",
+              "domain": "www.inflationtool.com",
+              "source_tools": [
+                "duckduckgo_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "Current inflation rate in Turkey, based on the Consumer Price Index. Year-over-year and month-over-month values. Chart and historical data.",
+              "tier": "low"
+            },
+            {
+              "url": "https://www.tcmb.gov.tr/wps/wcm/connect/en/tcmb+en/main+menu/publications/reports/inflation+report/2026/inflation+report+2026+-+i",
+              "title": "Inflation Report 2026 - I (February 12, 2026) - TCMB",
+              "domain": "www.tcmb.gov.tr",
+              "source_tools": [
+                "duckduckgo_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "The Central Bank of the Republic of Turkey is responsible for the monetary and exchange rate policies in Turkey. The primary objective of the Bank is to achieve price stability.",
+              "tier": "low"
+            },
+            {
+              "url": "https://www.turkiyetoday.com/business/turkish-central-bank-raises-2026-inflation-forecast-to-26-amid-iran-war-risks-3219928",
+              "title": "Turkish central bank raises 2026 inflation forecast to 26% amid Iran ...",
+              "domain": "www.turkiyetoday.com",
+              "source_tools": [
+                "duckduckgo_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "T he Central Bank of the Republic of Türkiye (CBRT) raised its year-end inflation forecast for 2026 to 26% from 18% in its second inflation report, citing mounting price pressures triggered by the Iran war and disruptions tied to energy markets around the Strait of Hormuz, Governor Fatih Karahan announced on Thursday. The central bank projected inflation would fall to 15% by the end of 2027 ...",
+              "tier": "low"
+            },
+            {
+              "url": "https://www.kitco.com/news/off-the-wire/2026-05-21/euro-zone-growth-set-slow-2026-middle-east-conflict-fuels-inflation",
+              "title": "Euro zone growth set to slow in 2026 as Middle East conflict fuels inflation - KITCO",
+              "domain": "www.kitco.com",
+              "source_tools": [
+                "tavily_search_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "The EU executive also raised its forecasts for inflation to 3.0% in 2026 from a previous 1.9% and ​to 2.3% in 2027 from 2.0%, reinforcing the case for a rise in European Central Bank interest rates.",
+              "tier": "low"
+            },
+            {
+              "url": "https://finance.yahoo.com/markets/stocks/articles/stock-market-investors-got-final-091300206.html",
+              "title": "Stock Market Investors Got a Final Warning From Fed Chair Jerome Powell. History Says This Will Happen Next. - Yahoo Finance",
+              "domain": "finance.yahoo.com",
+              "source_tools": [
+                "tavily_search_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "\"The economic outlook remains highly uncertain, and the conflict in the Middle East has added to this uncertainty,\" Powell said. \"In the near term, higher energy prices will push up overall inflation. Beyond that, the scope and duration of potential effects on the economy remain unclear.\" Powell also ruled out the possibility of rate cuts for the foreseeable future.",
+              "tier": "low"
+            }
+          ],
+          "trust_signals": {
+            "citation_coverage": 1.0,
+            "avg_sources_per_claim": 3.0,
+            "multi_source_claim_ratio": 1.0,
+            "distinct_domain_count": 5,
+            "source_quality_score": 0.35,
+            "high_tier_ratio": 0.0,
+            "citation_strength": 0.35,
+            "tier_breakdown": {
+              "high": 0,
+              "medium": 0,
+              "low": 5,
+              "prediction": 0
+            },
+            "total_sources": 5
+          },
+          "model": "qwen",
+          "from_cache": false,
+          "regenerated": false,
+          "timestamp": "2026-05-31T13:26:50.561933+00:00"
+        }
+      ]
+    },
+    {
+      "id": "8775b172937d",
+      "title": "When was JFK assassinated?",
+      "created_at": "2026-05-31T15:46:55.879210+00:00",
+      "updated_at": "2026-05-31T15:48:28.721307+00:00",
+      "turns": [
+        {
+          "question": "When was JFK assassinated?",
+          "answer": "Kennedy was assassinated on November 22, 1963.",
+          "facts": [
+            {
+              "claim_text": "Kennedy was assassinated on November 22, 1963.",
+              "evidence_urls": [
+                "https://en.wikipedia.org/wiki/John_F._Kennedy",
+                "https://www.youtube.com/watch?v=H4pfi-rTDk4",
+                "https://millercenter.org/president/kennedy/death-of-the-president"
+              ],
+              "source_tools": [
+                "duckduckgo_results_json",
+                "tavily_search_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": true,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            }
+          ],
+          "sources": [
+            {
+              "url": "https://www.youtube.com/watch?v=H4pfi-rTDk4",
+              "title": "JFK was assassinated on Nov. 22, 1963 - YouTube",
+              "domain": "www.youtube.com",
+              "source_tools": [
+                "tavily_search_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "Comments · Secret Service Agent Vividly Recalls President Kennedy's Assassination | Clint Hill · Tennessee 2003 Cold Case Solved — arrest shocks",
+              "tier": "low"
+            },
+            {
+              "url": "https://www.jfklibrary.org/learn/about-jfk/jfk-in-history/november-22-1963-death-of-the-president",
+              "title": "November 22, 1963: Death of the President | JFK Library",
+              "domain": "www.jfklibrary.org",
+              "source_tools": [
+                "tavily_search_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "November 22, 1963: Death of the President · Campaigning in Texas · Morning in Fort Worth · On to Dallas · The Assassination · The President's Funeral · Aftermath.",
+              "tier": "low"
+            },
+            {
+              "url": "https://millercenter.org/president/kennedy/death-of-the-president",
+              "title": "John F. Kennedy: Death of a President | Miller Center",
+              "domain": "millercenter.org",
+              "source_tools": [
+                "tavily_search_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "Kennedy: Death of a President. On November 22, 1963, President Kennedy and the First Lady journeyed to Dallas on a campaign trip. CLICK TO WATCH Barbara Perry discussing Rose Kennedy's reaction to JFK's assassination. Barbara Perry discussing Rose Kennedy's reaction to JFK's assassination. Ruby was tried and convicted of murder in Oswald's death. Although it concluded that two of Oswald’s three sh",
+              "tier": "low"
+            },
+            {
+              "url": "https://en.wikipedia.org/wiki/John_F._Kennedy",
+              "title": "John F. Kennedy - Wikipedia",
+              "domain": "en.wikipedia.org",
+              "source_tools": [
+                "duckduckgo_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "6 days ago - John Fitzgerald Kennedy (May 29, 1917 – November 22, 1963), also known as JFK, was the 35th president of the United States, serving from 1961 until his assassination in 1963. He was the youngest person elected president, at 43 years.",
+              "tier": "high"
+            }
+          ],
+          "trust_signals": {
+            "citation_coverage": 1.0,
+            "avg_sources_per_claim": 3.0,
+            "multi_source_claim_ratio": 1.0,
+            "distinct_domain_count": 4,
+            "source_quality_score": 0.512,
+            "high_tier_ratio": 0.25,
+            "citation_strength": 1.0,
+            "tier_breakdown": {
+              "high": 1,
+              "medium": 0,
+              "low": 3,
+              "prediction": 0
+            },
+            "total_sources": 4
+          },
+          "model": "llama",
+          "from_cache": false,
+          "regenerated": false,
+          "timestamp": "2026-05-31T15:48:28.721299+00:00"
+        }
+      ]
+    },
+    {
+      "id": "da8ea7fbcc4e",
+      "title": "What is the current Bitcoin price?",
+      "created_at": "2026-05-31T15:51:42.678715+00:00",
+      "updated_at": "2026-05-31T15:52:13.402974+00:00",
+      "turns": [
+        {
+          "question": "What is the current Bitcoin price?",
+          "answer": "I could not find a matching event or fact for the current price of Bitcoin.",
+          "facts": [
+            {
+              "claim_text": "I could not find a matching event or fact for the current price of Bitcoin.",
+              "evidence_urls": [
+                "https://finance.yahoo.com/quote/BTC-USD/chart/"
+              ],
+              "source_tools": [
+                "duckduckgo_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": false,
+                "weak_evidence": true,
+                "needs_review": true
+              }
+            }
+          ],
+          "sources": [
+            {
+              "url": "https://finance.yahoo.com/quote/BTC-USD/chart/",
+              "title": "Bitcoin USD (BTC-USD) Interactive Price Chart - Yahoo Finance",
+              "domain": "finance.yahoo.com",
+              "source_tools": [
+                "duckduckgo_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "Interactive Chart for Bitcoin USD (BTC-USD), analyze all the data with a huge range of indicators.May 20, 2026, 12:00 PM EDT.",
+              "tier": "low"
+            }
+          ],
+          "trust_signals": {
+            "citation_coverage": 1.0,
+            "avg_sources_per_claim": 1.0,
+            "multi_source_claim_ratio": 0.0,
+            "distinct_domain_count": 1,
+            "source_quality_score": 0.35,
+            "high_tier_ratio": 0.0,
+            "citation_strength": 0.35,
+            "tier_breakdown": {
+              "high": 0,
+              "medium": 0,
+              "low": 1,
+              "prediction": 0
+            },
+            "total_sources": 1
+          },
+          "model": "llama",
+          "from_cache": false,
+          "regenerated": false,
+          "timestamp": "2026-05-31T15:52:13.402963+00:00"
+        }
+      ]
+    },
+    {
+      "id": "9a29b9ff6930",
+      "title": "What is the latest NASA mission news this week?”",
+      "created_at": "2026-05-31T16:00:35.269970+00:00",
+      "updated_at": "2026-05-31T16:01:50.485811+00:00",
+      "turns": [
+        {
+          "question": "What is the latest NASA mission news this week?”",
+          "answer": "NASA's latest mission news this week includes the ongoing testing of the X-59 quiet supersonic research aircraft for the Quesst mission, as well as progress on the Artemis missions, including the Artemis II lunar fly-by mission that flew on April 1, 2026. Additionally, NASA has announced preliminary plans for the Artemis III mission, which is planned for late 2027.",
+          "facts": [
+            {
+              "claim_text": "NASA's latest mission news this week includes the ongoing testing of the X-59 quiet supersonic research aircraft for the Quesst mission, as well as progress on the Artemis missions, including the Artemis II lunar fly-by mission that flew on April 1, 2026.",
+              "evidence_urls": [
+                "https://www.nasa.gov/2026-news-releases/",
+                "https://www.nasa.gov/gallery/expedition-74-image-gallery/page/10/",
+                "https://www.nasa.gov/image-article/going-low-and-slow-in-testing/"
+              ],
+              "source_tools": [
+                "duckduckgo_results_json",
+                "tavily_search_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": false,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            },
+            {
+              "claim_text": "Additionally, NASA has announced preliminary plans for the Artemis III mission, which is planned for late 2027.",
+              "evidence_urls": [
+                "https://www.nasa.gov/gallery/expedition-74-image-gallery/page/10/",
+                "https://www.nasa.gov/2026-news-releases/",
+                "https://www.nasa.gov/image-article/going-low-and-slow-in-testing/"
+              ],
+              "source_tools": [
+                "duckduckgo_results_json",
+                "tavily_search_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": false,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            }
+          ],
+          "sources": [
+            {
+              "url": "https://www.nasa.gov/gallery/expedition-74-image-gallery/page/10/",
+              "title": "Expedition 74 Image Gallery - NASA (.gov)",
+              "domain": "www.nasa.gov",
+              "source_tools": [
+                "tavily_search_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "jsc2026e005916 (Feb. 6, 2026) --- Four crew members representing NASA's SpaceX Crew-12 mission to the International Space Station wave to...",
+              "tier": "high"
+            },
+            {
+              "url": "https://www.nasa.gov/image-article/going-low-and-slow-in-testing/",
+              "title": "Going Low and Slow in Testing - NASA (.gov)",
+              "domain": "www.nasa.gov",
+              "source_tools": [
+                "tavily_search_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "article 1 week ago",
+              "tier": "high"
+            },
+            {
+              "url": "https://www.nasa.gov/2026-news-releases/",
+              "title": "2026 News Releases - NASA",
+              "domain": "www.nasa.gov",
+              "source_tools": [
+                "duckduckgo_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "April 28, 2026 - As part of NASA’s SpaceX Crew-13 mission, four crew members from three space agencies will launch no earlier than mid-September to the International Space Station for a long-duration science expedition.",
+              "tier": "high"
+            }
+          ],
+          "trust_signals": {
+            "citation_coverage": 1.0,
+            "avg_sources_per_claim": 3.0,
+            "multi_source_claim_ratio": 0.0,
+            "distinct_domain_count": 1,
+            "source_quality_score": 1.0,
+            "high_tier_ratio": 1.0,
+            "citation_strength": 1.0,
+            "tier_breakdown": {
+              "high": 3,
+              "medium": 0,
+              "low": 0,
+              "prediction": 0
+            },
+            "total_sources": 3
+          },
+          "model": "llama",
+          "from_cache": false,
+          "regenerated": false,
+          "timestamp": "2026-05-31T16:01:50.485802+00:00"
+        }
+      ]
+    },
+    {
+      "id": "c5ed57700f88",
+      "title": "What is the global population now?",
+      "created_at": "2026-05-31T16:02:59.926843+00:00",
+      "updated_at": "2026-05-31T16:03:39.179367+00:00",
+      "turns": [
+        {
+          "question": "What is the global population now?",
+          "answer": "The global population in 2026 is projected to be around 8.3 billion.",
+          "facts": [
+            {
+              "claim_text": "The global population in 2026 is projected to be around 8.3 billion.",
+              "evidence_urls": [
+                "https://nypost.com/2026/05/26/science/humanity-headed-for-population-collapse-by-2064-if-environmental-chaos-spiral-new-study-warns/",
+                "https://countrymeters.info/en/World",
+                "https://www.newsweek.com/global-population-crash-low-birth-rates-scenario-science-11999396"
+              ],
+              "source_tools": [
+                "duckduckgo_results_json",
+                "tavily_search_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": true,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            }
+          ],
+          "sources": [
+            {
+              "url": "https://www.newsweek.com/global-population-crash-low-birth-rates-scenario-science-11999396",
+              "title": "Scientists Map Out Scenario of Global Population Crash by 2064 - Newsweek",
+              "domain": "www.newsweek.com",
+              "source_tools": [
+                "tavily_search_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "NewsPoliticsTechFact CheckSports",
+              "tier": "low"
+            },
+            {
+              "url": "https://nypost.com/2026/05/26/science/humanity-headed-for-population-collapse-by-2064-if-environmental-chaos-spiral-new-study-warns/",
+              "title": "Human population could collapse and be cut in half in just 40 years, doomsday study reveals - New York Post",
+              "domain": "nypost.com",
+              "source_tools": [
+                "tavily_search_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "The model also takes a fresh look at the infamous 1969 “doomsday” theory, which suggested humanity’s population could spiral uncontrollably toward mathematical infinity before ending in global collapse on Friday, Nov. 13, 2026.",
+              "tier": "low"
+            },
+            {
+              "url": "https://countrymeters.info/en/World",
+              "title": "World Population 2026 — Live Counter, Demographics, Religion...",
+              "domain": "countrymeters.info",
+              "source_tools": [
+                "duckduckgo_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "The median age of the global population is estimated to be 31 years in 2025.According to our estimations, daily change rates of world population in 2026 will be the following",
+              "tier": "low"
+            }
+          ],
+          "trust_signals": {
+            "citation_coverage": 1.0,
+            "avg_sources_per_claim": 3.0,
+            "multi_source_claim_ratio": 1.0,
+            "distinct_domain_count": 3,
+            "source_quality_score": 0.35,
+            "high_tier_ratio": 0.0,
+            "citation_strength": 0.35,
+            "tier_breakdown": {
+              "high": 0,
+              "medium": 0,
+              "low": 3,
+              "prediction": 0
+            },
+            "total_sources": 3
+          },
+          "model": "llama",
+          "from_cache": false,
+          "regenerated": false,
+          "timestamp": "2026-05-31T16:03:39.179358+00:00"
+        }
+      ]
+    },
+    {
+      "id": "f3077bd526b7",
+      "title": "“Who is the CEO of NVIDIA in 2026?”",
+      "created_at": "2026-05-31T16:04:25.530205+00:00",
+      "updated_at": "2026-05-31T16:05:11.530887+00:00",
+      "turns": [
+        {
+          "question": "“Who is the CEO of NVIDIA in 2026?”",
+          "answer": "The current CEO of NVIDIA in 2026 is Jensen Huang.",
+          "facts": [
+            {
+              "claim_text": "The current CEO of NVIDIA in 2026 is Jensen Huang.",
+              "evidence_urls": [
+                "https://www.reuters.com/world/asia-pacific/nvidia-ceo-says-taiwan-is-epicentre-ai-revolution-2026-05-27/",
+                "https://www.cnbc.com/2026/03/16/nvidia-gtc-2026-ceo-jensen-huang-keynote-blackwell-vera-rubin.html",
+                "https://en.wikipedia.org/wiki/Jensen_Huang"
+              ],
+              "source_tools": [
+                "duckduckgo_results_json"
+              ],
+              "fact_quality_flags": {
+                "has_source": true,
+                "multi_source": true,
+                "weak_evidence": false,
+                "needs_review": false
+              }
+            }
+          ],
+          "sources": [
+            {
+              "url": "https://www.reuters.com/world/asia-pacific/nvidia-ceo-says-taiwan-is-epicentre-ai-revolution-2026-05-27/",
+              "title": "Nvidia to spend $150 billion a year in Taiwan, 'epicentre' of AI revolution, says CEO | Reuters",
+              "domain": "www.reuters.com",
+              "source_tools": [
+                "duckduckgo_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "4 days ago - [1/3]Nvidia CEO Jensen Huang delivers a speech at the Constellation All-Employee Celebration in Taipei, Taiwan May 27, 2026.",
+              "tier": "high"
+            },
+            {
+              "url": "https://www.cnbc.com/2026/03/16/nvidia-gtc-2026-ceo-jensen-huang-keynote-blackwell-vera-rubin.html",
+              "title": "Nvidia GTC 2026: CEO Jensen Huang sees $1 trillion in orders for Blackwell and Vera Rubin through '27",
+              "domain": "www.cnbc.com",
+              "source_tools": [
+                "duckduckgo_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "March 20, 2026 - At Nvidia's annual developer conference, CEO Jensen Huang said he sees $1 trillion in orders for Blackwell and Vera Rubin systems through 2027 · The company has been expecting growth in 2026 to exceed what was included in its projection last ...",
+              "tier": "medium"
+            },
+            {
+              "url": "https://en.wikipedia.org/wiki/Jensen_Huang",
+              "title": "Jensen Huang - Wikipedia",
+              "domain": "en.wikipedia.org",
+              "source_tools": [
+                "duckduckgo_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "1 day ago - Jen-Hsun \"Jensen\" Huang (Chinese: 黃仁勳; Wade–Giles: Huáng Jén-hsūn; Tâi-lô: N̂g Jîn-hun; born February 17, 1963) is a Taiwanese and American business executive and electrical engineer who is the founder, president, and CEO of Nvidia, the world's most valuable company.",
+              "tier": "high"
+            },
+            {
+              "url": "https://www.cnbc.com/2026/05/21/cnbc-excerpts-nvidia-ceo-jensen-huang-speaks-with-cnbcs-sara-eisen-following-release-of-nvidias-q1-results-.html",
+              "title": "CNBC Excerpts: Nvidia CEO Jensen Huang Speaks with CNBC’s Sara Eisen Following Release of Nvidia’s Q1 Results - CNBC",
+              "domain": "www.cnbc.com",
+              "source_tools": [
+                "tavily_search_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "WATCH LIVE",
+              "tier": "medium"
+            },
+            {
+              "url": "https://techcrunch.com/2026/05/20/jensen-huang-says-hes-found-a-brand-new-200b-market-for-nvidia/",
+              "title": "Jensen Huang says he’s found a ‘brand new’ $200B market for Nvidia - TechCrunch",
+              "domain": "techcrunch.com",
+              "source_tools": [
+                "tavily_search_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "Julie Bort",
+              "tier": "medium"
+            }
+          ],
+          "trust_signals": {
+            "citation_coverage": 1.0,
+            "avg_sources_per_claim": 3.0,
+            "multi_source_claim_ratio": 1.0,
+            "distinct_domain_count": 4,
+            "source_quality_score": 0.79,
+            "high_tier_ratio": 0.4,
+            "citation_strength": 1.0,
+            "tier_breakdown": {
+              "high": 2,
+              "medium": 3,
+              "low": 0,
+              "prediction": 0
+            },
+            "total_sources": 5
+          },
+          "model": "llama",
+          "from_cache": false,
+          "regenerated": false,
+          "timestamp": "2026-05-31T16:05:11.530876+00:00"
+        }
+      ]
+    },
+    {
+      "id": "118518d4e406",
+      "title": "What is Türkiye's inflation rate this year?",
+      "created_at": "2026-05-31T16:23:34.027538+00:00",
+      "updated_at": "2026-05-31T16:23:34.072662+00:00",
+      "turns": [
+        {
+          "question": "What is Türkiye's inflation rate this year?",
+          "answer": "This information can be found on reputable sources such as tradingeconomics.com and inflationtool.com.",
+          "facts": [
+            {
+              "claim_text": "This information can be found on reputable sources such as tradingeconomics.com and inflationtool.com.",
+              "evidence_urls": [],
+              "source_tools": [],
+              "fact_quality_flags": {
+                "has_source": false,
+                "multi_source": false,
+                "weak_evidence": true,
+                "needs_review": true
+              }
+            }
+          ],
+          "sources": [
+            {
+              "url": "https://www.kitco.com/news/off-the-wire/2026-05-21/euro-zone-growth-set-slow-2026-middle-east-conflict-fuels-inflation",
+              "title": "Euro zone growth set to slow in 2026 as Middle East conflict fuels inflation - KITCO",
+              "domain": "www.kitco.com",
+              "source_tools": [
+                "tavily_search_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "The EU executive also raised its forecasts for inflation to 3.0% in 2026 from a previous 1.9% and ​to 2.3% in 2027 from 2.0%, reinforcing the case for a rise in European Central Bank interest rates.",
+              "tier": "low"
+            },
+            {
+              "url": "https://finance.yahoo.com/markets/stocks/articles/stock-market-investors-got-final-091300206.html",
+              "title": "Stock Market Investors Got a Final Warning From Fed Chair Jerome Powell. History Says This Will Happen Next. - Yahoo Finance",
+              "domain": "finance.yahoo.com",
+              "source_tools": [
+                "tavily_search_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "\"The economic outlook remains highly uncertain, and the conflict in the Middle East has added to this uncertainty,\" Powell said. \"In the near term, higher energy prices will push up overall inflation. Beyond that, the scope and duration of potential effects on the economy remain unclear.\" Powell also ruled out the possibility of rate cuts for the foreseeable future.",
+              "tier": "low"
+            },
+            {
+              "url": "https://tradingeconomics.com/turkey/inflation-cpi",
+              "title": "Turkey Inflation Rate",
+              "domain": "tradingeconomics.com",
+              "source_tools": [
+                "duckduckgo_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "Inflation Rate in Turkey increased to 32.37 percent in April from 30.87 percent in March of 2026.",
+              "tier": "low"
+            },
+            {
+              "url": "https://www.inflationtool.com/rates/turkey",
+              "title": "Turkey Inflation Rate - 2026",
+              "domain": "www.inflationtool.com",
+              "source_tools": [
+                "duckduckgo_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "The current inflation rate in Turkey is 30.87%, which is calculated based on CPI (Consumer Price Index) values for the last 12 months ending in March 2026.",
+              "tier": "low"
+            },
+            {
+              "url": "https://www.officialdata.org/turkey/inflation",
+              "title": "Turkey Inflation Calculator: World Bank Data, 1956-2026 (TRY)",
+              "domain": "www.officialdata.org",
+              "source_tools": [
+                "duckduckgo_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "The lira had an average inflation rate of 29.43% per year between 1956 and today, producing a cumulative price increase of 6,948,876,400.02%.",
+              "tier": "low"
+            },
+            {
+              "url": "https://tr.tradingview.com/symbols/ECONOMICS-TRIRYY/",
+              "title": "Turkey Inflation Rate YoY (ECONOMICS:TRIRYY) — Geçmiş Veriler...",
+              "domain": "tr.tradingview.com",
+              "source_tools": [
+                "duckduckgo_results_json"
+              ],
+              "relevance_score": null,
+              "snippet": "Ücretsiz ekonomik veriler, göstergeler ve istatistikler. Turkey Inflation Rate YoY sağlayan ECONOMICS.",
+              "tier": "low"
+            }
+          ],
+          "trust_signals": {
+            "citation_coverage": 0.0,
+            "avg_sources_per_claim": 0.0,
+            "multi_source_claim_ratio": 0.0,
+            "distinct_domain_count": 6,
+            "source_quality_score": 0.35,
+            "high_tier_ratio": 0.0,
+            "citation_strength": 0.0,
+            "tier_breakdown": {
+              "high": 0,
+              "medium": 0,
+              "low": 6,
+              "prediction": 0
+            },
+            "total_sources": 6
+          },
+          "model": "llama",
+          "from_cache": true,
+          "timestamp": "2026-05-31T16:23:34.072654+00:00"
         }
       ]
     }

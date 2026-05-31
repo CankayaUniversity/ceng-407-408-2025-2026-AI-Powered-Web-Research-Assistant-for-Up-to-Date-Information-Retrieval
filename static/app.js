@@ -27,6 +27,10 @@ let searchDebounce = null;
 let selectedModel = localStorage.getItem('selectedModel') || 'llama';
 let activeTraceSpinner = null;
 let activeTraceLabel = null;
+/** @type {Map<string, { es: EventSource, question: string, traceSpinner: HTMLElement|null, traceLabel: HTMLElement|null, statusLabel: string }>} */
+const researchSessions = new Map();
+/** @type {Map<string, HTMLElement[]>} */
+const conversationSnapshots = new Map();
 
 const MODEL_LABELS = {
   llama: 'Llama 3.1',
@@ -59,15 +63,95 @@ function setSubmitMode(mode) {
   }
 }
 
-function stopResearch() {
-  if (activeSource) {
-    activeSource.close();
-    activeSource = null;
-  }
-  isAsking = false;
-  setStatus(null, 'Online');
+function isViewedChatResearching() {
+  return activeChatId != null && researchSessions.has(activeChatId);
+}
 
-  // Update trace BEFORE setSubmitMode clears the refs
+function backgroundResearchCount() {
+  let n = 0;
+  researchSessions.forEach((_, id) => {
+    if (id !== activeChatId) n += 1;
+  });
+  return n;
+}
+
+function snapshotConversation(chatId) {
+  if (!chatId) return;
+  const nodes = [];
+  [...conversation.children].forEach((child) => {
+    if (child !== emptyState) nodes.push(child);
+  });
+  if (nodes.length) conversationSnapshots.set(chatId, nodes);
+  else conversationSnapshots.delete(chatId);
+}
+
+function restoreConversationFromSnapshot(chatId) {
+  const nodes = conversationSnapshots.get(chatId);
+  if (!nodes || !nodes.length) return false;
+  clearConversation();
+  hideEmptyState();
+  nodes.forEach((node) => conversation.appendChild(node));
+  return true;
+}
+
+function bindComposerToViewedChat() {
+  if (isViewedChatResearching()) {
+    const session = researchSessions.get(activeChatId);
+    isAsking = true;
+    activeSource = session ? session.es : null;
+    activeTraceSpinner = session ? session.traceSpinner : null;
+    activeTraceLabel = session ? session.traceLabel : null;
+    setSubmitMode('stop');
+    setStatus('thinking', session?.statusLabel || 'Researching');
+  } else {
+    isAsking = false;
+    activeSource = null;
+    activeTraceSpinner = null;
+    activeTraceLabel = null;
+    setSubmitMode('send');
+    const bg = backgroundResearchCount();
+    if (bg > 0) {
+      setStatus('thinking', `${bg} researching`);
+    } else {
+      setStatus(null, 'Online');
+    }
+  }
+}
+
+async function createChatOnServer(question) {
+  const res = await fetch('/api/chats', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ question }),
+  });
+  if (!res.ok) throw new Error('Failed to create chat');
+  return res.json();
+}
+
+function upsertChatSummary(chat, question) {
+  const turns = chat.turns || [];
+  const lastQ = turns.length ? turns[turns.length - 1].question : question || '';
+  const summary = {
+    id: chat.id,
+    title: chat.title || 'Untitled',
+    created_at: chat.created_at,
+    updated_at: chat.updated_at,
+    turn_count: turns.length,
+    preview: lastQ.length > 100 ? lastQ.slice(0, 100).trim() + '…' : lastQ,
+  };
+  cachedChats = cachedChats.filter((c) => c.id !== chat.id);
+  cachedChats.unshift(summary);
+  renderChatList();
+}
+
+function stopResearch() {
+  if (!activeChatId || !researchSessions.has(activeChatId)) return;
+  const session = researchSessions.get(activeChatId);
+  session.aborted = true;
+  if (session?.es) session.es.close();
+  researchSessions.delete(activeChatId);
+  renderChatList();
+
   if (activeTraceSpinner) {
     const stopIcon = el(
       'span',
@@ -82,14 +166,14 @@ function stopResearch() {
     activeTraceLabel = null;
   }
 
-  setSubmitMode('send');
+  bindComposerToViewedChat();
 }
 
 // Single click handler — routes to stop or submit based on isAsking.
 // Button is type="button" so it NEVER auto-submits the form. We own the flow.
 function handleSubmitClick(e) {
   if (e) e.preventDefault();
-  if (isAsking) {
+  if (isViewedChatResearching()) {
     stopResearch();
     return;
   }
@@ -128,7 +212,7 @@ document.addEventListener('keydown', (e) => {
     closeTrustExplainer();
     return;
   }
-  if (isAsking) {
+  if (isViewedChatResearching()) {
     e.preventDefault();
     stopResearch();
   }
@@ -205,6 +289,7 @@ function showEmptyState() {
   deleteChatBtn.hidden = true;
   activeChatId = null;
   highlightActiveChat();
+  bindComposerToViewedChat();
 }
 
 function hideEmptyState() {
@@ -336,10 +421,12 @@ function renderChatList() {
     const item = el('div', 'chat-item');
     item.dataset.chatId = chat.id;
     if (chat.id === activeChatId) item.classList.add('active');
+    if (researchSessions.has(chat.id)) item.classList.add('researching');
 
     item.appendChild(txt('div', 'chat-item-title', chat.title || 'Untitled'));
     const metaParts = [];
-    if (chat.turn_count) metaParts.push(`${chat.turn_count} turn${chat.turn_count > 1 ? 's' : ''}`);
+    if (researchSessions.has(chat.id)) metaParts.push('Researching…');
+    else if (chat.turn_count) metaParts.push(`${chat.turn_count} turn${chat.turn_count > 1 ? 's' : ''}`);
     if (chat.updated_at) metaParts.push(relativeTime(chat.updated_at));
     item.appendChild(txt('div', 'chat-item-meta', metaParts.join(' · ')));
 
@@ -367,7 +454,11 @@ function highlightActiveChat() {
 }
 
 async function openChat(chatId) {
-  if (isAsking) return;
+  if (chatId === activeChatId) {
+    if (isMobile()) closeSidebar();
+    return;
+  }
+  if (activeChatId) snapshotConversation(activeChatId);
   try {
     const res = await fetch(`/api/chats/${chatId}`);
     if (!res.ok) throw new Error('Failed to load chat');
@@ -375,21 +466,24 @@ async function openChat(chatId) {
     activeChatId = chat.id;
     highlightActiveChat();
     clearConversation();
-    hideEmptyState();
-    headerTitle.textContent = chat.title || 'Deep Research';
-    deleteChatBtn.hidden = false;
 
-    (chat.turns || []).forEach((turn) => renderHistoricalTurn(turn));
-    // Attach a regenerate button to the most recent rendered turn.
-    const turnEls = conversation.querySelectorAll('.turn');
-    if (turnEls.length && chat.turns && chat.turns.length) {
-      const lastTurnEl = turnEls[turnEls.length - 1];
-      const lastTurn = chat.turns[chat.turns.length - 1];
-      const agentBlock = lastTurnEl.querySelector('.agent-block');
-      if (lastTurn && lastTurn.question && agentBlock) {
-        agentBlock.appendChild(buildRegenerateButton(lastTurn.question, lastTurn.model));
+    if (!restoreConversationFromSnapshot(chatId)) {
+      hideEmptyState();
+      (chat.turns || []).forEach((turn) => renderHistoricalTurn(turn));
+      const turnEls = conversation.querySelectorAll('.turn');
+      if (turnEls.length && chat.turns && chat.turns.length) {
+        const lastTurnEl = turnEls[turnEls.length - 1];
+        const lastTurn = chat.turns[chat.turns.length - 1];
+        const agentBlock = lastTurnEl.querySelector('.agent-block');
+        if (lastTurn && lastTurn.question && agentBlock && !researchSessions.has(chatId)) {
+          agentBlock.appendChild(buildRegenerateButton(lastTurn.question, lastTurn.model));
+        }
       }
     }
+
+    headerTitle.textContent = chat.title || 'Deep Research';
+    deleteChatBtn.hidden = false;
+    bindComposerToViewedChat();
     if (isMobile()) closeSidebar();
     scrollToBottom();
   } catch (err) {
@@ -406,10 +500,15 @@ async function deleteChat(chatId, title) {
     danger: true,
   });
   if (!confirmed) return;
+  const session = researchSessions.get(chatId);
+  if (session?.es) session.es.close();
+  researchSessions.delete(chatId);
+  conversationSnapshots.delete(chatId);
   try {
     const res = await fetch(`/api/chats/${chatId}`, { method: 'DELETE' });
     if (!res.ok) throw new Error('Failed to delete chat');
     if (chatId === activeChatId) showEmptyState();
+    else bindComposerToViewedChat();
     await loadChats(searchInput.value.trim());
   } catch (err) {
     console.error(err);
@@ -441,10 +540,11 @@ searchClear.addEventListener('click', () => {
 /* ----------------- new chat / suggestions ----------------- */
 
 newChatBtn.addEventListener('click', () => {
-  if (isAsking) stopResearch();
+  if (activeChatId) snapshotConversation(activeChatId);
   showEmptyState();
   input.value = '';
   autosizeInput();
+  bindComposerToViewedChat();
   if (isMobile()) closeSidebar();
   input.focus();
 });
@@ -469,7 +569,7 @@ input.addEventListener('keydown', (event) => {
 
 form.addEventListener('submit', (event) => {
   event.preventDefault();
-  if (isAsking) return;
+  if (isViewedChatResearching()) return;
   const question = input.value.trim();
   if (!question) return;
   startResearch(question);
@@ -495,7 +595,7 @@ function buildRegenerateButton(question, lastModelKey) {
   btn.dataset.question = question || '';
   btn.dataset.lastModel = lastModelKey || selectedModel || 'llama';
   btn.addEventListener('click', async () => {
-    if (btn.disabled || isAsking) return;
+    if (btn.disabled || isViewedChatResearching()) return;
     const choice = await pickModel(btn.dataset.lastModel);
     if (!choice) return;
     regenerateLastTurn(btn.dataset.question, choice);
@@ -508,7 +608,7 @@ function removeAllRegenerateButtons() {
 }
 
 function regenerateLastTurn(question, modelKey) {
-  if (isAsking) return;
+  if (isViewedChatResearching()) return;
   if (!question || !question.trim()) return;
   // Append-as-new-turn semantics: do NOT remove the previous turn, do NOT
   // pass regenerate=true to the backend. The new attempt is rendered as a
@@ -1525,35 +1625,92 @@ function buildFactsList(facts) {
   return list;
 }
 
-function buildTrustCard(label, value, ratio) {
-  const card = el('div', 'trust-card');
-  card.appendChild(txt('div', 'trust-label', label));
-  card.appendChild(txt('div', 'trust-value', value));
+const TRUST_SCORE_WEIGHTS = {
+  source_quality: 0.3,
+  citation_strength: 0.3,
+  citation_coverage: 0.25,
+  multi_source: 0.15,
+};
+
+function computeAnswerTrustScore(signals) {
+  if (!signals) return { score: 0, pct: 0, tier: 'low', label: 'Low' };
+  if (typeof signals.answer_trust_score === 'number') {
+    const score = Math.max(0, Math.min(1, signals.answer_trust_score));
+    return { score, pct: Math.round(score * 100), ...trustScoreMeta(score) };
+  }
+  const sq = signals.source_quality_score || 0;
+  const strength = signals.citation_strength || 0;
+  const coverage = signals.citation_coverage || 0;
+  const multi = signals.multi_source_claim_ratio || 0;
+  const score = Math.max(
+    0,
+    Math.min(
+      1,
+      TRUST_SCORE_WEIGHTS.source_quality * sq
+        + TRUST_SCORE_WEIGHTS.citation_strength * strength
+        + TRUST_SCORE_WEIGHTS.citation_coverage * coverage
+        + TRUST_SCORE_WEIGHTS.multi_source * multi
+    )
+  );
+  return { score, pct: Math.round(score * 100), ...trustScoreMeta(score) };
+}
+
+function trustScoreMeta(score) {
+  if (score >= 0.75) return { tier: 'strong', label: 'Strong' };
+  if (score >= 0.55) return { tier: 'moderate', label: 'Moderate' };
+  if (score >= 0.35) return { tier: 'limited', label: 'Limited' };
+  return { tier: 'low', label: 'Low' };
+}
+
+function buildTrustBar(ratio, extraClass) {
   const bar = el('div', 'trust-bar');
-  const fill = el('div', 'trust-bar-fill');
+  const fill = el('div', 'trust-bar-fill' + (extraClass ? ` ${extraClass}` : ''));
   const clamped = Math.max(0, Math.min(1, ratio));
   requestAnimationFrame(() => {
     fill.style.width = clamped * 100 + '%';
   });
   bar.appendChild(fill);
-  card.appendChild(bar);
+  return bar;
+}
+
+function buildTrustCard(label, value, ratio) {
+  const card = el('div', 'trust-card');
+  card.appendChild(txt('div', 'trust-label', label));
+  card.appendChild(txt('div', 'trust-value', value));
+  card.appendChild(buildTrustBar(ratio));
   return card;
 }
 
-function buildTrustGrid(signals) {
-  const wrap = el('div', 'trust-wrap');
+function buildTrustTierBreakdown(signals) {
+  const breakdown = signals.tier_breakdown;
+  if (!breakdown) return null;
+  const row = el('div', 'tier-breakdown');
+  [
+    { key: 'high', label: 'High', cls: 'tier-high' },
+    { key: 'medium', label: 'Medium', cls: 'tier-medium' },
+    { key: 'low', label: 'Low', cls: 'tier-low' },
+    { key: 'prediction', label: 'Prediction', cls: 'tier-prediction' },
+  ].forEach(({ key, label, cls }) => {
+    const count = breakdown[key] || 0;
+    if (count === 0) return;
+    const chip = el('span', `tier-chip ${cls}`);
+    chip.innerHTML = `<span class="tier-chip-dot"></span>${count} ${label}`;
+    row.appendChild(chip);
+  });
+  if (signals.total_sources) {
+    row.appendChild(
+      txt('span', 'tier-total', `${signals.total_sources} source${signals.total_sources !== 1 ? 's' : ''} retrieved`)
+    );
+  }
+  return row.children.length ? row : null;
+}
 
+function buildTrustBreakdownGrid(signals) {
   const grid = el('div', 'trust-grid');
-
-  // Source quality: weighted average tier of all retrieved sources (high=1.0 … prediction=0.02)
   const sqScore = signals.source_quality_score || 0;
   grid.appendChild(buildTrustCard('Source quality', Math.round(sqScore * 100) + '%', sqScore));
-
-  // Citation strength: how authoritative are the sources backing each claim
   const strength = signals.citation_strength || 0;
   grid.appendChild(buildTrustCard('Citation strength', Math.round(strength * 100) + '%', strength));
-
-  // What fraction of claims have at least one source
   grid.appendChild(
     buildTrustCard(
       'Citation coverage',
@@ -1561,8 +1718,6 @@ function buildTrustGrid(signals) {
       signals.citation_coverage || 0
     )
   );
-
-  // What fraction of claims are backed by ≥2 independent domains
   grid.appendChild(
     buildTrustCard(
       'Multi-source claims',
@@ -1570,30 +1725,52 @@ function buildTrustGrid(signals) {
       signals.multi_source_claim_ratio || 0
     )
   );
+  return grid;
+}
 
-  wrap.appendChild(grid);
+function buildTrustSummary(signals) {
+  const meta = computeAnswerTrustScore(signals);
+  const card = el('div', `trust-summary trust-summary-${meta.tier}`);
+  const head = el('div', 'trust-summary-head');
+  const scoreEl = el('div', 'trust-summary-score');
+  scoreEl.appendChild(txt('span', 'trust-summary-pct', String(meta.pct)));
+  scoreEl.appendChild(txt('span', 'trust-summary-pct-suffix', '%'));
+  head.appendChild(scoreEl);
+  const textCol = el('div', 'trust-summary-text');
+  textCol.appendChild(txt('div', 'trust-summary-title', 'Answer reliability'));
+  textCol.appendChild(txt('div', 'trust-summary-label', meta.label));
+  head.appendChild(textCol);
+  card.appendChild(head);
+  card.appendChild(buildTrustBar(meta.score, 'trust-bar-summary'));
+  card.appendChild(
+    txt(
+      'p',
+      'trust-summary-hint',
+      'Weighted score from source tiers and how well claims match retrieved sources.'
+    )
+  );
+  return card;
+}
 
-  // Tier breakdown row
-  const breakdown = signals.tier_breakdown;
-  if (breakdown) {
-    const row = el('div', 'tier-breakdown');
-    [
-      { key: 'high',       label: 'High',       cls: 'tier-high' },
-      { key: 'medium',     label: 'Medium',     cls: 'tier-medium' },
-      { key: 'low',        label: 'Low',        cls: 'tier-low' },
-      { key: 'prediction', label: 'Prediction', cls: 'tier-prediction' },
-    ].forEach(({ key, label, cls }) => {
-      const count = (breakdown[key] || 0);
-      if (count === 0) return;   // hide zero-count tiers to save space
-      const chip = el('span', `tier-chip ${cls}`);
-      chip.innerHTML = `<span class="tier-chip-dot"></span>${count} ${label}`;
-      row.appendChild(chip);
-    });
-    if (signals.total_sources) {
-      row.appendChild(txt('span', 'tier-total', `${signals.total_sources} source${signals.total_sources !== 1 ? 's' : ''} retrieved`));
-    }
-    wrap.appendChild(row);
+function buildTrustPanel(signals, sources, facts) {
+  const wrap = el('div', 'trust-wrap');
+  wrap.appendChild(buildTrustSummary(signals));
+
+  const details = el('details', 'trust-details');
+  const summary = el('summary', 'trust-details-summary');
+  summary.appendChild(txt('span', 'trust-details-label', 'Signal breakdown'));
+  summary.appendChild(txt('span', 'trust-details-hint', '4 metrics'));
+  details.appendChild(summary);
+
+  const body = el('div', 'trust-details-body');
+  body.appendChild(buildTrustBreakdownGrid(signals));
+  const tierRow = buildTrustTierBreakdown(signals);
+  if (tierRow) body.appendChild(tierRow);
+  if (signals && Array.isArray(sources) && Array.isArray(facts)) {
+    body.appendChild(buildTrustActions(signals, sources, facts));
   }
+  details.appendChild(body);
+  wrap.appendChild(details);
 
   return wrap;
 }
@@ -1615,12 +1792,12 @@ function renderHistoricalTurn(turn) {
     agentBlock.appendChild(buildSection('Extracted facts', turn.facts.length, buildFactsList(turn.facts)));
   }
   if (turn.trust_signals) {
+    const trustMeta = computeAnswerTrustScore(turn.trust_signals);
     agentBlock.appendChild(
       buildSection(
-        'Trust signals',
-        null,
-        buildTrustGrid(turn.trust_signals),
-        buildTrustActions(turn.trust_signals, turn.sources || [], turn.facts || [])
+        'Reliability',
+        trustMeta.pct + '%',
+        buildTrustPanel(turn.trust_signals, turn.sources || [], turn.facts || [])
       )
     );
   }
@@ -1631,19 +1808,38 @@ function renderHistoricalTurn(turn) {
 
 /* ----------------- streaming ----------------- */
 
-function startResearch(question, options) {
+async function startResearch(question, options) {
   const opts = options || {};
   const modelOverride = opts.modelOverride || null;
   const isRegenerate = !!modelOverride;
   const modelForRequest = modelOverride || selectedModel;
-  isAsking = true;
-  setSubmitMode('stop');
+  const statusLabel = isRegenerate ? 'Regenerating' : 'Researching';
+
+  let targetChatId = activeChatId;
+  if (!targetChatId) {
+    try {
+      const chat = await createChatOnServer(question);
+      targetChatId = chat.id;
+      activeChatId = targetChatId;
+      upsertChatSummary(chat, question);
+      hideEmptyState();
+      clearConversation();
+      headerTitle.textContent = chat.title || 'Deep Research';
+      deleteChatBtn.hidden = false;
+      highlightActiveChat();
+    } catch (err) {
+      console.error(err);
+      return;
+    }
+  } else if (researchSessions.has(targetChatId)) {
+    return;
+  }
+
   if (!isRegenerate) {
     input.value = '';
     autosizeInput();
   }
   removeAllRegenerateButtons();
-  setStatus('thinking', isRegenerate ? 'Regenerating' : 'Researching');
   hideEmptyState();
 
   const turn = el('div', 'turn');
@@ -1657,10 +1853,8 @@ function startResearch(question, options) {
   const traceHeader = el('div', 'trace-header');
   const traceTitle = el('div', 'trace-title');
   const spinner = el('span', 'trace-spinner');
-  activeTraceSpinner = spinner;
-  traceTitle.appendChild(spinner);
   const traceLabel = txt('span', null, 'Planning research…');
-  activeTraceLabel = traceLabel;
+  traceTitle.appendChild(spinner);
   traceTitle.appendChild(traceLabel);
   traceHeader.appendChild(traceTitle);
   const chevron = el(
@@ -1676,22 +1870,49 @@ function startResearch(question, options) {
   agentBlock.appendChild(trace);
 
   conversation.appendChild(turn);
-  scrollToBottom();
+  conversationSnapshots.set(targetChatId, [...conversation.children].filter((c) => c !== emptyState));
+
+  const session = {
+    es: null,
+    question,
+    traceSpinner: spinner,
+    traceLabel,
+    statusLabel,
+  };
+  researchSessions.set(targetChatId, session);
+  renderChatList();
+  bindComposerToViewedChat();
 
   const params = new URLSearchParams({ question, model: modelForRequest });
-  if (activeChatId) params.set('chat_id', activeChatId);
-  // Regenerate-as-new-turn intentionally does NOT set regenerate=true —
-  // the backend should treat it as a normal appended turn (separate cache key,
-  // its own row in chat history), preserving the previous attempt.
+  params.set('chat_id', targetChatId);
   const url = `/ask_agent_stream?${params.toString()}`;
 
   const es = new EventSource(url);
-  activeSource = es;
+  session.es = es;
   const startTime = Date.now();
   const pendingTools = new Map();
   let streamedFromCache = false;
   let streamedMemoryTurns = 0;
   let streamedModel = modelForRequest;
+
+  function scrollIfViewing() {
+    if (activeChatId === targetChatId) scrollToBottom();
+  }
+
+  function removeSessionSpinner() {
+    if (session.traceSpinner) {
+      session.traceSpinner.remove();
+      session.traceSpinner = null;
+    }
+    if (activeChatId === targetChatId) activeTraceSpinner = null;
+  }
+
+  function finishSession({ error } = {}) {
+    researchSessions.delete(targetChatId);
+    conversationSnapshots.delete(targetChatId);
+    loadChats(searchInput.value.trim()).then(() => bindComposerToViewedChat());
+    if (error && activeChatId === targetChatId) setStatus('error', 'Error');
+  }
 
   function ensureBadges() {
     if (badgesEl) {
@@ -1714,9 +1935,8 @@ function startResearch(question, options) {
 
   es.addEventListener('start', (event) => {
     const data = JSON.parse(event.data);
-    if (data.chat_id) {
-      activeChatId = data.chat_id;
-      headerTitle.textContent = data.question || 'Deep Research';
+    if (activeChatId === targetChatId) {
+      headerTitle.textContent = data.question || headerTitle.textContent;
       deleteChatBtn.hidden = false;
     }
     streamedModel = data.model || selectedModel;
@@ -1725,13 +1945,13 @@ function startResearch(question, options) {
     traceLabel.textContent = streamedMemoryTurns > 0
       ? 'Planning with conversation context…'
       : 'Planning research…';
+    renderChatList();
   });
 
-  es.addEventListener('cached', (event) => {
-    const data = JSON.parse(event.data);
+  es.addEventListener('cached', () => {
     streamedFromCache = true;
     ensureBadges();
-    if (activeTraceSpinner) { activeTraceSpinner.remove(); activeTraceSpinner = null; }
+    removeSessionSpinner();
     const icon = el(
       'span',
       'trace-cache-icon',
@@ -1763,7 +1983,7 @@ function startResearch(question, options) {
     if (data.id) pendingTools.set(data.id, step);
     pendingTools.set(data.name + ':last', step);
     traceLabel.textContent = `Running ${data.name}…`;
-    scrollToBottom();
+    scrollIfViewing();
   });
 
   es.addEventListener('tool_result', (event) => {
@@ -1773,7 +1993,7 @@ function startResearch(question, options) {
     const result = txt('div', 'trace-step-result', `${data.length.toLocaleString()} characters returned`);
     if (step) step.appendChild(result);
     else traceBody.appendChild(result);
-    scrollToBottom();
+    scrollIfViewing();
   });
 
   es.addEventListener('answer', (event) => {
@@ -1788,7 +2008,7 @@ function startResearch(question, options) {
     } else {
       answerCard.textContent = data.text || '';
     }
-    scrollToBottom();
+    scrollIfViewing();
   });
 
   es.addEventListener('extracting', () => {
@@ -1800,7 +2020,7 @@ function startResearch(question, options) {
     const elapsed = ((Date.now() - startTime) / 1000).toFixed(streamedFromCache ? 2 : 1);
 
     if (!streamedFromCache) {
-      if (activeTraceSpinner) { activeTraceSpinner.remove(); activeTraceSpinner = null; }
+      removeSessionSpinner();
       const check = el(
         'span',
         'trace-check',
@@ -1832,48 +2052,45 @@ function startResearch(question, options) {
       agentBlock.appendChild(buildSection('Extracted facts', data.facts.length, buildFactsList(data.facts)));
     }
     if (data.trust_signals) {
+      const trustMeta = computeAnswerTrustScore(data.trust_signals);
       agentBlock.appendChild(
         buildSection(
-          'Trust signals',
-          null,
-          buildTrustGrid(data.trust_signals),
-          buildTrustActions(data.trust_signals, data.sources || [], data.facts || [])
+          'Reliability',
+          trustMeta.pct + '%',
+          buildTrustPanel(data.trust_signals, data.sources || [], data.facts || [])
         )
       );
     }
 
-    if (data.chat_title) headerTitle.textContent = data.chat_title;
-    scrollToBottom();
+    if (data.chat_title && activeChatId === targetChatId) {
+      headerTitle.textContent = data.chat_title;
+    }
+    scrollIfViewing();
   });
 
   es.addEventListener('done', () => {
     es.close();
-    activeSource = null;
-    isAsking = false;
-    setSubmitMode('send');
-    setStatus(null, 'Online');
-    loadChats(searchInput.value.trim());
-    input.focus();
-    // Stamp a regenerate button on the just-completed turn.
-    removeAllRegenerateButtons();
-    agentBlock.appendChild(buildRegenerateButton(question, streamedModel));
+    finishSession();
+    if (activeChatId === targetChatId) {
+      removeAllRegenerateButtons();
+      agentBlock.appendChild(buildRegenerateButton(question, streamedModel));
+      input.focus();
+    }
   });
 
   es.addEventListener('error', (event) => {
+    if (session.aborted) return;
     let message = 'Connection error or agent failure.';
     try {
       if (event.data) message = JSON.parse(event.data).message || message;
     } catch {}
-    if (activeTraceSpinner) { activeTraceSpinner.remove(); activeTraceSpinner = null; }
-    if (activeTraceLabel) { activeTraceLabel.textContent = 'Failed'; activeTraceLabel = null; }
+    removeSessionSpinner();
+    traceLabel.textContent = 'Failed';
     const banner = txt('div', 'error-banner', message);
     agentBlock.appendChild(banner);
     es.close();
-    activeSource = null;
-    isAsking = false;
-    setSubmitMode('send');
-    setStatus('error', 'Error');
-    scrollToBottom();
+    finishSession({ error: true });
+    scrollIfViewing();
   });
 }
 

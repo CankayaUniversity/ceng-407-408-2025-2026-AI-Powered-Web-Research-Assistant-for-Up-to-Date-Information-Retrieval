@@ -13,6 +13,18 @@ import unicodedata
 # Minimum score to keep a result in agent context and UI sources (0–1).
 MIN_RELEVANCE_SCORE = 0.22
 
+_LOCATION_TOKENS = frozenset({
+    "ankara", "turkey", "turkiye", "istanbul", "izmir", "antalya", "bursa",
+    "london", "paris", "berlin", "madrid", "rome", "tokyo", "dubai",
+    "america", "states", "kingdom", "germany", "france", "canada",
+})
+
+_EVENT_TYPE_TOKENS = frozenset({
+    "event", "events", "concert", "concerts", "show", "shows", "performance",
+    "performances", "gig", "gigs", "tour", "festival", "festivals",
+    "summit", "conference", "match", "game", "games",
+})
+
 _QUERY_STOPWORDS = frozenset({
     "the", "and", "for", "with", "from", "that", "this", "what", "when", "where",
     "which", "how", "who", "why", "about", "latest", "current", "recent",
@@ -72,6 +84,33 @@ def query_tokens(query: str) -> set[str]:
     return tokens
 
 
+def split_query_tokens(query: str) -> tuple[set[str], set[str]]:
+    """Split query tokens into subject (must match) vs context (location/event type).
+
+    For "Chris Avantgarde event in Ankara", subject = {chris, avantgarde} and
+    context = {event, ankara}. A NATO summit page may mention Ankara/event but
+    must not pass unless it also mentions the subject tokens.
+    """
+    tokens = query_tokens(query)
+    context = tokens & (_LOCATION_TOKENS | _EVENT_TYPE_TOKENS)
+    salient = tokens - context
+    if not salient:
+        return tokens, context
+    return salient, context
+
+
+def is_text_relevant_to_query(query: str, text: str) -> bool:
+    """True when text mentions the query's subject tokens (not just location/event words)."""
+    salient, _context = split_query_tokens(query)
+    if not salient:
+        return True
+    hay = _normalize_text(text or "")
+    if not hay.strip():
+        return False
+    salient_hits = sum(1 for token in salient if token in hay)
+    return salient_hits >= max(1, len(salient) // 2)
+
+
 def relevance_score(
     query: str,
     title: str = "",
@@ -91,6 +130,16 @@ def relevance_score(
 
     hits = sum(1 for t in tokens if t in hay)
     score = hits / max(len(tokens), 1)
+
+    salient, _context = split_query_tokens(query)
+    if salient:
+        salient_hits = sum(1 for t in salient if t in hay)
+        if salient_hits == 0:
+            return 0.0
+        salient_ratio = salient_hits / max(len(salient), 1)
+        if salient_ratio < 0.5:
+            return round(min(0.12, score * 0.1), 3)
+        score = score * (0.25 + 0.75 * salient_ratio)
 
     # Strong token match — boost
     if hits >= 2 and hits >= len(tokens) * 0.5:

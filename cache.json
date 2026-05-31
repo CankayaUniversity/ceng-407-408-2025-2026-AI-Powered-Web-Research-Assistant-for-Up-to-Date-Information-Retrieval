@@ -1,145 +1,14 @@
 {
   "entries": {
-    "llama::what is the result of game fenerbahçe eyüpspor played last week": {
-      "answer": "FINAL ANSWER:\n\n* Fenerbahçe Eyüpspor'ın geçen hafta oynadığı maça ilişkin bilgi bulunamadı. (Kaynak metninde doğrulanamadı.)\n* Al-Nassr FC, Damac FC'ye karşı 5-2 galip geldi.\n\nKaynaklar:\n1. https://www.espn.com/soccer/story/_/id/48617925/alvaro-arbeloa-confirms-real-madrid-departure-trophyless-season\n2. https://www.foxsports.com/soccer/saudi-pro-league-al-nassr-fc-vs-damac-fc-may-21-2026-game-boxscore-645223",
+    "llama::is there any chris avantgarde event in ankara turkey": {
+      "answer": "Chris Avantgarde will perform at CerModern in Ankara, Turkey on June 13, 2026, at 6:00 PM. Tickets are available. Contact the promoter for more details.\n\nNote: The information is based on the search results provided by Tavily and DuckDuckGo, and it's recommended to verify the details with the promoter or official sources for confirmation.",
       "facts": [
         {
-          "claim_text": "FINAL ANSWER:",
+          "claim_text": "Chris Avantgarde will perform at CerModern in Ankara, Turkey on June 13, 2026, at 6:00 PM.",
           "evidence_urls": [
-            "https://www.foxsports.com/soccer/saudi-pro-league-al-nassr-fc-vs-damac-fc-may-21-2026-game-boxscore-645223",
-            "https://www.espn.com/soccer/story/_/id/48617925/alvaro-arbeloa-confirms-real-madrid-departure-trophyless-season"
-          ],
-          "source_tools": [
-            "tavily_search_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": true,
-            "weak_evidence": false,
-            "needs_review": false,
-            "numeric_mismatch": false
-          }
-        },
-        {
-          "claim_text": "* Fenerbahçe Eyüpspor'ın geçen hafta oynadığı maça ilişkin bilgi bulunamadı.",
-          "evidence_urls": [
-            "https://www.espn.com/soccer/story/_/id/48617925/alvaro-arbeloa-confirms-real-madrid-departure-trophyless-season"
-          ],
-          "source_tools": [
-            "tavily_search_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": false,
-            "weak_evidence": true,
-            "needs_review": true,
-            "numeric_mismatch": false
-          }
-        },
-        {
-          "claim_text": "(Kaynak metninde doğrulanamadı.)",
-          "evidence_urls": [
-            "https://www.espn.com/soccer/story/_/id/48617925/alvaro-arbeloa-confirms-real-madrid-departure-trophyless-season"
-          ],
-          "source_tools": [
-            "tavily_search_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": false,
-            "weak_evidence": true,
-            "needs_review": true,
-            "numeric_mismatch": false
-          }
-        },
-        {
-          "claim_text": "* Al-Nassr FC, Damac FC'ye karşı 5-2 galip geldi.",
-          "evidence_urls": [
-            "https://www.foxsports.com/soccer/saudi-pro-league-al-nassr-fc-vs-damac-fc-may-21-2026-game-boxscore-645223",
-            "https://www.espn.com/soccer/story/_/id/48617925/alvaro-arbeloa-confirms-real-madrid-departure-trophyless-season"
-          ],
-          "source_tools": [
-            "tavily_search_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": true,
-            "weak_evidence": false,
-            "needs_review": false,
-            "numeric_mismatch": false
-          }
-        },
-        {
-          "claim_text": "Kaynaklar:",
-          "evidence_urls": [
-            "https://www.espn.com/soccer/story/_/id/48617925/alvaro-arbeloa-confirms-real-madrid-departure-trophyless-season"
-          ],
-          "source_tools": [
-            "tavily_search_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": false,
-            "weak_evidence": true,
-            "needs_review": true,
-            "numeric_mismatch": false
-          }
-        }
-      ],
-      "sources": [
-        {
-          "url": "https://www.espn.com/soccer/story/_/id/48617925/alvaro-arbeloa-confirms-real-madrid-departure-trophyless-season",
-          "title": "Álvaro Arbeloa confirms Real Madrid departure after trophyless season - ESPN",
-          "domain": "www.espn.com",
-          "source_tools": [
-            "tavily_search_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "2025-26 Liga BBVA MX, 1st Leg",
-          "tier": "medium"
-        },
-        {
-          "url": "https://www.foxsports.com/soccer/saudi-pro-league-al-nassr-fc-vs-damac-fc-may-21-2026-game-boxscore-645223",
-          "title": "Al-Nassr FC vs. Damac FC - Final Score - May 21, 2026 - FOX Sports",
-          "domain": "www.foxsports.com",
-          "source_tools": [
-            "tavily_search_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "5",
-          "tier": "low"
-        }
-      ],
-      "trust_signals": {
-        "citation_coverage": 1.0,
-        "avg_sources_per_claim": 1.4,
-        "multi_source_claim_ratio": 0.4,
-        "distinct_domain_count": 2,
-        "source_quality_score": 0.5,
-        "high_tier_ratio": 0.0,
-        "citation_strength": 0.65,
-        "tier_breakdown": {
-          "high": 0,
-          "medium": 1,
-          "low": 1,
-          "prediction": 0
-        },
-        "total_sources": 2
-      },
-      "model_key": "llama",
-      "original_question": "what is the result of game Fenerbahçe Eyüpspor played last week?",
-      "cached_at": "2026-05-22T19:06:12.623987+00:00",
-      "cached_ts": 1779476772.623999
-    },
-    "llama::what is the result of fenerbahçe eyüpspor played last week": {
-      "answer": "Fenerbahçe defeated Eyüpspor with a score of 3-0 in their Turkish Super Lig match on May 17, 2026.",
-      "facts": [
-        {
-          "claim_text": "Fenerbahçe defeated Eyüpspor with a score of 3-0 in their Turkish Super Lig match on May 17, 2026.",
-          "evidence_urls": [
-            "https://www.premierleague.com/en/video/4664126",
-            "https://www.livescore.com/en/football/team/fenerbahe/4452/overview/",
-            "https://www.sofascore.com/football/team/fenerbahce/3052"
+            "https://open.spotify.com/concert/3TzKyS9eGdLHmCiwIcthCm",
+            "https://www.chiefdelphi.com/t/istanbul-regional-seasons-earliest-event/515215",
+            "https://en.wikipedia.org/wiki/Anyma"
           ],
           "source_tools": [
             "duckduckgo_results_json",
@@ -151,95 +20,168 @@
             "weak_evidence": false,
             "needs_review": false
           }
+        },
+        {
+          "claim_text": "Tickets are available.",
+          "evidence_urls": [
+            "https://www.jambase.com/band/chris-avantgarde",
+            "https://open.spotify.com/concert/3TzKyS9eGdLHmCiwIcthCm",
+            "https://en.wikipedia.org/wiki/Anyma"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "Contact the promoter for more details.",
+          "evidence_urls": [
+            "https://ra.co/events/2444190",
+            "https://en.wikipedia.org/wiki/Anyma",
+            "https://www.jambase.com/band/chris-avantgarde"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "Note: The information is based on the search results provided by Tavily and DuckDuckGo, and it's recommended to verify the details with the promoter or official sources for confirmation.",
+          "evidence_urls": [
+            "https://en.wikipedia.org/wiki/Anyma"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": false,
+            "weak_evidence": true,
+            "needs_review": true
+          }
         }
       ],
       "sources": [
         {
-          "url": "https://www.premierleague.com/en/video/4664126",
-          "title": "Everything you need to know about FPL GW38 in 100 seconds - Premier League",
-          "domain": "www.premierleague.com",
+          "url": "https://en.wikipedia.org/wiki/Anyma",
+          "title": "Anyma - Wikipedia",
+          "domain": "en.wikipedia.org",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "3 days ago - The project's first full-length album, Genesys, was released on 11 August 2023. It consisted of 14 tracks and featured guest artists such as Grimes, Sevdaliza, Chris Avantgarde, Rebūke, and CamelPhat.",
+          "tier": "high"
+        },
+        {
+          "url": "https://www.chiefdelphi.com/t/istanbul-regional-seasons-earliest-event/515215",
+          "title": "Istanbul Regional, Season's Earliest Event - Regional Competitions - Chief Delphi",
+          "domain": "www.chiefdelphi.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "February 28, 2026 - Istanbul Regional returns for its 8th run as REBUILT’s season opener, with a thrilling team pool! Starting off with returning Turkish teams, we’ve got 2025’s Bosphorus Regional champion and 2024 Milstein winner 9483. Two teams from the winning alliance of last year’s Ankara regional, 6436 and 9029, will also be competing here in Istanbul.",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.jambase.com/band/chris-avantgarde",
+          "title": "Chris Avantgarde Tickets, 2025 Tour Dates, and More",
+          "domain": "www.jambase.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "November 17, 2025 - Find tickets for Chris Avantgarde concerts near you on JamBase. Browse all 2025 tour dates, tour history, and more.",
+          "tier": "low"
+        },
+        {
+          "url": "https://abroadtravelingabroad.com/ankara-a-fifty-year-lookback-and-now/",
+          "title": "Ankara: A Fifty Year Lookback and Now - A Broad Traveling Abroad",
+          "domain": "abroadtravelingabroad.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "November 19, 2025 - Ankara has grown up — taller, shinier, busier. The skyline sparkles with glass towers, and the metro glides smoothly beneath streets that once echoed with tram bells. There are hip cafés in every neighborhood now, and students fill them with laptops, opinions on a new world order and Turkey’s place in it.",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.instagram.com/reel/DYM3Wyxpg3m",
+          "title": "Chris Avantgarde is coming to the Cermodern Ankara stage on June ...",
+          "domain": "www.instagram.com",
           "source_tools": [
             "tavily_search_results_json"
           ],
           "relevance_score": null,
-          "snippet": "© PREMIER LEAGUE 2026",
-          "tier": "high"
-        },
-        {
-          "url": "https://www.livescore.com/en/football/team/fenerbahe/4452/overview/",
-          "title": "Fenerbahçe Scores & Latest Results Today | LiveScore",
-          "domain": "www.livescore.com",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "April 21, 2026 - Fenerbahçe scores with the latest results, fixtures and tables. View up-to-date results live as they happen.",
+          "snippet": "Adriatique's Xfuture show prensted by @temacc event in Istanbul ... Ankara, Turkey · defragged_sessions. Frakture",
           "tier": "low"
         },
         {
-          "url": "https://www.sofascore.com/football/team/fenerbahce/3052",
-          "title": "Fenerbahçe live score, schedule & player stats | Sofascore",
-          "domain": "www.sofascore.com",
+          "url": "https://ra.co/events/2444190",
+          "title": "Chris Avantgarde - Cermodern - Resident Advisor",
+          "domain": "ra.co",
           "source_tools": [
-            "duckduckgo_results_json"
+            "tavily_search_results_json"
           ],
           "relevance_score": null,
-          "snippet": "1 month ago - Fenerbahçe top scorers list is updated live during every match. You can click on players from the roster above and see available personal information such as nationality, date of birth, height, preferred foot, position, player value, transfer history etc. For today’s football schedule and results visit our football live score page.",
+          "snippet": "Chris Avantgarde, Flexanima sunumuyla 13 Haziran'da CerModern Ankara sahnesinde! ... Do you have a question about the event? Contact the promoter.",
           "tier": "low"
         },
         {
-          "url": "https://www.flashscore.com/team/fenerbahce/rDhoZR1l/",
-          "title": "Fenerbahce live scores, results, fixtures, Fenerbahce v Esenler Erokspor live | Basketball, Turkey",
-          "domain": "www.flashscore.com",
+          "url": "https://open.spotify.com/concert/3TzKyS9eGdLHmCiwIcthCm",
+          "title": "Chris Avantgarde - CerModern, Ankara - Spotify",
+          "domain": "open.spotify.com",
           "source_tools": [
-            "duckduckgo_results_json"
+            "tavily_search_results_json"
           ],
           "relevance_score": null,
-          "snippet": "5 hours ago - Fenerbahce page on Flashscore.com offers livescore, results, standings and match details.",
-          "tier": "low"
-        },
-        {
-          "url": "https://www.sofascore.com/basketball/team/fenerbahce-beko/3514",
-          "title": "Fenerbahçe Beko live scores & schedule | Sofascore",
-          "domain": "www.sofascore.com",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "4 hours ago - Fenerbahçe Beko performance and form graph is a Sofascore unique algorithm that we are generating from the team's last 10 matches, statistics, detailed analysis and our own knowledge. This graph may help predict future Fenerbahçe Beko games. For today’s basketball games and results visit our basketball live score page.",
+          "snippet": "Find tickets for Chris Avantgarde at CerModern in Ankara on 6/13/2026 at 6:00 PM.",
           "tier": "low"
         }
       ],
       "trust_signals": {
         "citation_coverage": 1.0,
-        "avg_sources_per_claim": 3.0,
-        "multi_source_claim_ratio": 1.0,
-        "distinct_domain_count": 4,
-        "source_quality_score": 0.48,
-        "high_tier_ratio": 0.2,
+        "avg_sources_per_claim": 2.5,
+        "multi_source_claim_ratio": 0.75,
+        "distinct_domain_count": 7,
+        "source_quality_score": 0.443,
+        "high_tier_ratio": 0.143,
         "citation_strength": 1.0,
         "tier_breakdown": {
           "high": 1,
           "medium": 0,
-          "low": 4,
+          "low": 6,
           "prediction": 0
         },
-        "total_sources": 5
+        "total_sources": 7
       },
       "model_key": "llama",
-      "original_question": "what is the result of Fenerbahçe Eyüpspor played last week ?",
-      "cached_at": "2026-05-22T19:09:16.139980+00:00",
-      "cached_ts": 1779476956.139991
+      "original_question": "Is there any Chris Avantgarde event in Ankara Turkey?",
+      "cached_at": "2026-05-30T22:01:12.242734+00:00",
+      "cached_ts": 1780178472.242748
     },
-    "llama::what is the result of the game fenerbahce eyüpspor": {
-      "answer": "Fenerbahçe lost 1-2 to Eyüpspor. Fred scored the goal for Eyüpspor. The match was part of the Trendyol Süper Lig.",
+    "llama::is there any chris avantgarde event in ankara turkey and how much is it": {
+      "answer": "Chris Avantgarde will perform at CerModern in Ankara, Turkey on June 13, 2026, at 6:00 PM. Tickets are available through various ticketing websites such as Bubilet and Biletino. Contact the promoter for more details.",
       "facts": [
         {
-          "claim_text": "Fenerbahçe lost 1-2 to Eyüpspor.",
+          "claim_text": "Chris Avantgarde will perform at CerModern in Ankara, Turkey on June 13, 2026, at 6:00 PM.",
           "evidence_urls": [
-            "https://www.flashscore.com/match/football/eyupspor-276zKCgt/fenerbahce-MsbmracL",
-            "https://x.com/soccer_turkish/status/2056080763586498748",
-            "https://www.youtube.com/watch?v=ITsopqjXflw"
+            "https://open.spotify.com/concert/3TzKyS9eGdLHmCiwIcthCm",
+            "https://www.festivalveetkinlik.com/etkinlik-haberleri/chris-avantgarde-cermodern-ankara-20260613/",
+            "https://www.instagram.com/reel/DYM3Wyxpg3m"
           ],
           "source_tools": [
             "duckduckgo_results_json",
@@ -253,27 +195,11 @@
           }
         },
         {
-          "claim_text": "Fred scored the goal for Eyüpspor.",
+          "claim_text": "Tickets are available through various ticketing websites such as Bubilet and Biletino.",
           "evidence_urls": [
-            "https://x.com/soccer_turkish/status/2056080763586498748",
-            "https://www.flashscore.com/match/football/eyupspor-276zKCgt/fenerbahce-MsbmracL"
-          ],
-          "source_tools": [
-            "tavily_search_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": true,
-            "weak_evidence": false,
-            "needs_review": false
-          }
-        },
-        {
-          "claim_text": "The match was part of the Trendyol Süper Lig.",
-          "evidence_urls": [
-            "https://www.flashscore.com/match/football/eyupspor-276zKCgt/fenerbahce-MsbmracL",
-            "https://www.fenerbahce.org/haberler/futbol/2026/3/fenerbahce-3-2-samsunspor",
-            "https://spor.haber7.com/fenerbahce/haber/3623214-derbiyi-3-0-kaybeden-fenerbahce-ilki-yasadi"
+            "https://biletino.com/en/performer/inuhe2ltebaxmyloortwc4temu-chris-avantgarde/",
+            "https://open.spotify.com/concert/3TzKyS9eGdLHmCiwIcthCm",
+            "https://www.bubilet.com.tr/ankara/etkinlik/chris-avantgarde-cermodern"
           ],
           "source_tools": [
             "duckduckgo_results_json",
@@ -285,422 +211,106 @@
             "weak_evidence": false,
             "needs_review": false
           }
-        }
-      ],
-      "sources": [
-        {
-          "url": "https://www.flashscore.com/match/football/eyupspor-276zKCgt/fenerbahce-MsbmracL",
-          "title": "Fenerbahce v Eyupspor 17/05/2026 | Football - Flashscore.com",
-          "domain": "www.flashscore.com",
-          "source_tools": [
-            "tavily_search_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "Follow Fenerbahce v Eyupspor 17/05/2026 match information, Fenerbahce latest results, news, highlights and Fenerbahce v Eyupspor H2H statistics!",
-          "tier": "medium"
         },
         {
-          "url": "https://x.com/soccer_turkish/status/2056080763586498748",
-          "title": "Turkish Football Soccer",
-          "domain": "x.com",
-          "source_tools": [
-            "tavily_search_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "Fenerbahce 1-2 Eyüpspor Fenerbahce reduced to score 1-2 by Fred. Brazilian midfielder maintains his scorer role. ⚽️Legowski ⏱️",
-          "tier": "low"
-        },
-        {
-          "url": "https://www.youtube.com/watch?v=ITsopqjXflw",
-          "title": "YouTube | Fenerbahçe, 23 Yaşındaki İngiliz Sol Bek, Archie Brown İle...",
-          "domain": "www.youtube.com",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "SON DAKİKA | Fenerbahçe, 23 Yaşındaki İngiliz Sol Bek, Archie Brown İle Anlaşma Sağladı.Youtube Kanalımıza Abone Olmak İçin: https://www.youtube.com/@fenerb...",
-          "tier": "low"
-        },
-        {
-          "url": "https://www.fenerbahce.org/haberler/futbol/2026/3/fenerbahce-3-2-samsunspor",
-          "title": "Fenerbahçe Futbol Takımı Haberleri ve Son... - Fenerbahçe Spor...",
-          "domain": "www.fenerbahce.org",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "Fenerbahçemiz, Trendyol Süper Lig'in 25. hafta maçında konuk ettiği Samsunspor’u iki kere geriye düştüğü maçta 3-2 mağlup etti ve puanını.",
-          "tier": "low"
-        },
-        {
-          "url": "https://spor.haber7.com/fenerbahce/haber/3623214-derbiyi-3-0-kaybeden-fenerbahce-ilki-yasadi",
-          "title": "Derbiyi 3-0 Kaybeden Fenerbahçe İlki Yaşadı",
-          "domain": "spor.haber7.com",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "Tüm Spor - Trendyol Süper Lig’in 31. haftasında deplasmanda Galatasaray’a 3-0 mağlup olan Fenerbahçe, bu sezon ilk kez derbi kaybetti.",
-          "tier": "low"
-        }
-      ],
-      "trust_signals": {
-        "citation_coverage": 1.0,
-        "avg_sources_per_claim": 2.6666666666666665,
-        "multi_source_claim_ratio": 1.0,
-        "distinct_domain_count": 5,
-        "source_quality_score": 0.41,
-        "high_tier_ratio": 0.0,
-        "citation_strength": 0.65,
-        "tier_breakdown": {
-          "high": 0,
-          "medium": 1,
-          "low": 4,
-          "prediction": 0
-        },
-        "total_sources": 5
-      },
-      "model_key": "llama",
-      "original_question": "what is the result of the game Fenerbahce Eyüpspor",
-      "cached_at": "2026-05-22T19:14:57.674214+00:00",
-      "cached_ts": 1779477297.674235
-    },
-    "llama::fenerbahçe eyüpspor last week game result": {
-      "answer": "The result of the match between Fenerbahçe and Eyüpspor on May 17, 2026, was a 3-3 draw.",
-      "facts": [
-        {
-          "claim_text": "The result of the match between Fenerbahçe and Eyüpspor on May 17, 2026, was a 3-3 draw.",
+          "claim_text": "Contact the promoter for more details.",
           "evidence_urls": [
-            "https://corner-stats.com/fenerbahce-eyupspor-17-05-2026/super-lig-turkey/match/632413",
-            "https://en.haberler.com/eyupspor-stayed-in-the-league-with-a-goal-scored-2255386/",
-            "https://www.sofascore.com/football/team/fenerbahce/3052"
+            "https://ra.co/events/2444190"
           ],
           "source_tools": [
-            "duckduckgo_results_json"
+            "tavily_search_results_json"
           ],
           "fact_quality_flags": {
             "has_source": true,
-            "multi_source": true,
-            "weak_evidence": false,
-            "needs_review": false
+            "multi_source": false,
+            "weak_evidence": true,
+            "needs_review": true
           }
         }
       ],
       "sources": [
         {
-          "url": "https://corner-stats.com/fenerbahce-eyupspor-17-05-2026/super-lig-turkey/match/632413",
-          "title": "17/05/2026 Fenerbahce - Eyüpspor. Game result: ? : ?",
-          "domain": "corner-stats.com",
+          "url": "https://www.instagram.com/reel/DYM3Wyxpg3m",
+          "title": "Chris Avantgarde is coming to the Cermodern Ankara stage on June ...",
+          "domain": "www.instagram.com",
           "source_tools": [
-            "duckduckgo_results_json"
+            "tavily_search_results_json"
           ],
           "relevance_score": null,
-          "snippet": "6 days ago - Result of ➤ Fenerbahce - Eyüpspor 17/05/2026. Score on: ✔ goals, ✔ corners, ✔ red and yellow cards and all other game statistics",
+          "snippet": "Adriatique's Xfuture show prensted by @temacc event in Istanbul ... Ankara, Turkey · defragged_sessions. Frakture",
           "tier": "low"
         },
         {
-          "url": "https://en.haberler.com/eyupspor-stayed-in-the-league-with-a-goal-scored-2255386/",
-          "title": "Eyüpspor stayed in the league with a goal scored in the last minutes against Fenerbahçe.",
-          "domain": "en.haberler.com",
+          "url": "https://ra.co/events/2444190",
+          "title": "Chris Avantgarde - Cermodern - Resident Advisor",
+          "domain": "ra.co",
           "source_tools": [
-            "duckduckgo_results_json"
+            "tavily_search_results_json"
           ],
           "relevance_score": null,
-          "snippet": "5 days ago - No further goals were scored in the remainder of the match. With this result, Fenerbahçe finished the league in second place with 74 points and earned the right to participate in the Champions League qualifiers next season.",
+          "snippet": "Chris Avantgarde, Flexanima sunumuyla 13 Haziran'da CerModern Ankara sahnesinde! ... Do you have a question about the event? Contact the promoter.",
           "tier": "low"
         },
         {
-          "url": "https://www.sofascore.com/football/team/fenerbahce/3052",
-          "title": "Fenerbahçe live score, schedule & player stats | Sofascore",
-          "domain": "www.sofascore.com",
+          "url": "https://open.spotify.com/concert/3TzKyS9eGdLHmCiwIcthCm",
+          "title": "Chris Avantgarde - CerModern, Ankara - Spotify",
+          "domain": "open.spotify.com",
           "source_tools": [
-            "duckduckgo_results_json"
+            "tavily_search_results_json"
           ],
           "relevance_score": null,
-          "snippet": "1 month ago - Fenerbahçe live scores, players, season schedule and today’s results are available on Sofascore.",
-          "tier": "medium"
-        },
-        {
-          "url": "https://beinsports.com.tr/haber/fenerbahce-ikas-eyupspor-2",
-          "title": "GENİŞ ÖZET | Fenerbahçe 3 3 ikas Eyüpspor | beIN SPORTS Türkiye - beinsports.com.tr/",
-          "domain": "beinsports.com.tr",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "Trendyol Süper Lig'in 34. ve son haftasında Fenerbahçe ile ikas Eyüpspor 3-3 berabere kaldı. Published 4 days ago",
+          "snippet": "Find tickets for Chris Avantgarde at CerModern in Ankara on 6/13/2026 at 6:00 PM.",
           "tier": "low"
         },
         {
-          "url": "https://www.hurriyet.com.tr/sporarena/fenerbahce-3-3-eyupspor-super-lig-maci-ozeti-43175557",
-          "title": "Fenerbahçe 3-3 Eyüpspor (Süper Lig maçı özeti) - Futbol Haberleri",
-          "domain": "www.hurriyet.com.tr",
+          "url": "https://www.bubilet.com.tr/ankara/etkinlik/chris-avantgarde-cermodern",
+          "title": "Chris Avantgarde | Cermodern Ankara biletleri | Bubilet",
+          "domain": "www.bubilet.com.tr",
           "source_tools": [
             "duckduckgo_results_json"
           ],
           "relevance_score": null,
-          "snippet": "5 days ago - Fenerbahçe, Süper Lig son hafta maçında Eyüpspor ile 3-3 berabere kaldı. Bu sonuçla birlikte Eyüpspor ligde kaldı.",
+          "snippet": "Chris Avantgarde, Flexanima sunumuyla 13 Haziran’da CerModern Ankara sahnesinde!",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.festivalveetkinlik.com/etkinlik-haberleri/chris-avantgarde-cermodern-ankara-20260613/",
+          "title": "Türkiye etkinlik takviminde Chris Avantgarde | Cermodern Ankara",
+          "domain": "www.festivalveetkinlik.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "May 8, 2026 · Etkinlik ne zaman ve nerede? Chris Avantgarde | Cermodern Ankara, 13 Haziran 2026 tarihinde CerModern adresinde duzenlenecek. Bilet ve katilim ayrintilari resmi baglanti uzerinden takip edilebiliyor.",
+          "tier": "low"
+        },
+        {
+          "url": "https://biletino.com/en/performer/inuhe2ltebaxmyloortwc4temu-chris-avantgarde/",
+          "title": "Chris Avantgarde Tickets | Biletino",
+          "domain": "biletino.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Would you like to publish an event of your own? Biletino is a ticketing website where users can browse, create, promote and sell their events.",
+          "tier": "low"
+        },
+        {
+          "url": "https://bugece.co/en/artist/chris-avantgarde--bee3dd9f",
+          "title": "BUGECE | Chris Avantgarde Etkinlikleri ve Performansları",
+          "domain": "bugece.co",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Chris Avantgarde is one of the prominent names in the Progressive House and Melodic Techno scenes. A producer and DJ frequently featured on Beatport charts, he stands out with his dynamic sets and deep melodic structures.",
           "tier": "low"
         }
       ],
       "trust_signals": {
         "citation_coverage": 1.0,
-        "avg_sources_per_claim": 3.0,
-        "multi_source_claim_ratio": 1.0,
-        "distinct_domain_count": 5,
-        "source_quality_score": 0.41,
-        "high_tier_ratio": 0.0,
-        "citation_strength": 0.65,
-        "tier_breakdown": {
-          "high": 0,
-          "medium": 1,
-          "low": 4,
-          "prediction": 0
-        },
-        "total_sources": 5
-      },
-      "model_key": "llama",
-      "original_question": "Fenerbahçe Eyüpspor last week game result",
-      "cached_at": "2026-05-22T19:18:00.395550+00:00",
-      "cached_ts": 1779477480.395561
-    },
-    "llama::who is the ceo of google 2026": {
-      "answer": "Based on the search results, the current CEO of Google in 2026 is Sundar Pichai.",
-      "facts": [
-        {
-          "claim_text": "Based on the search results, the current CEO of Google in 2026 is Sundar Pichai.",
-          "evidence_urls": [
-            "https://www.theverge.com/tech/933415/google-io-2026-biggest-announcements-ai-gemini",
-            "https://tech.yahoo.com/general/live/google-io-2026-live-gemini-ai-android-17-android-xr-updates-and-more-135626963.html",
-            "https://blog.google/innovation-and-ai/technology/ai/io-2026-dialogues-recap/"
-          ],
-          "source_tools": [
-            "duckduckgo_results_json",
-            "tavily_search_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": true,
-            "weak_evidence": false,
-            "needs_review": false
-          }
-        }
-      ],
-      "sources": [
-        {
-          "url": "https://blog.google/innovation-and-ai/technology/ai/io-2026-dialogues-recap/",
-          "title": "Google I/O 2026: Highlights from the Dialogues Stage",
-          "domain": "blog.google",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "Science: Google DeepMind CEO Demis Hassabis sat down with Axios’ Mike Allen to highlight AI's role in solving complex scientific problems.",
-          "tier": "low"
-        },
-        {
-          "url": "https://www.donanimhaber.com/google-deepmind-ceo-tekilligin-eteklerinde-olabiliriz--205955",
-          "title": "Google DeepMind CEO: “Tekilliğin Eteklerinde Olabiliriz”",
-          "domain": "www.donanimhaber.com",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "Google I/O 2026 etkinliğinin kapanış konuşmasında Hassabis, insanlığın “tekilliğin eteklerinde” olabileceğini söyledi",
-          "tier": "low"
-        },
-        {
-          "url": "https://www.androidheadlines.com/2026/05/eric-schmidt-graduation-speech-ai-backlash-booed-gen-z.html",
-          "title": "Gen Z Graduates Boo Former Google CEO Over AI Impact Speech",
-          "domain": "www.androidheadlines.com",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "For former Google CEO Eric Schmidt, that dream became a very loud reality at the University of Arizona’s 2026 commencement ceremony.",
-          "tier": "low"
-        },
-        {
-          "url": "https://www.theverge.com/tech/933415/google-io-2026-biggest-announcements-ai-gemini",
-          "title": "The 13 Biggest Announcements at Google I/O 2026 | The Verge",
-          "domain": "www.theverge.com",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "Google’s I/O 2026 keynote today was once again full of AI-related announcements including a new family of Gemini 3.5 AI models, new features for Search and Gmail, and updates about...",
-          "tier": "medium"
-        },
-        {
-          "url": "https://www.youtube.com/watch?v=5puu3kN9l7c",
-          "title": "Google CEO Sundar Pichai and the Future of AI | The Circuit - YouTube",
-          "domain": "www.youtube.com",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "Google & Alphabet CEO Sundar Pichai sits down exclusively with Bloomberg Originals Host & Executive Producer Emily Chang to discuss the future of search, reb...",
-          "tier": "low"
-        },
-        {
-          "url": "https://tech.yahoo.com/general/live/google-io-2026-live-gemini-ai-android-17-android-xr-updates-and-more-135626963.html",
-          "title": "Google I/O 2026 live: Gemini AI, Android 17, Android XR updates and more - Yahoo Tech",
-          "domain": "tech.yahoo.com",
-          "source_tools": [
-            "tavily_search_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "# Sundar on stage",
-          "tier": "low"
-        },
-        {
-          "url": "https://www.cnet.com/news-live/google-io-2026-live-news-updates/",
-          "title": "Google I/O 2026 Live Updates: Latest News on Android 17 and Gemini - CNET",
-          "domain": "www.cnet.com",
-          "source_tools": [
-            "tavily_search_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "Live",
-          "tier": "low"
-        },
-        {
-          "url": "https://www.cnet.com/tech/services-and-software/google-i-o-2026-ai-releases-over-the-past-year/",
-          "title": "Google I/O 2026: Every AI Drop Since Last Year - CNET",
-          "domain": "www.cnet.com",
-          "source_tools": [
-            "tavily_search_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "Google's recent smart glasses show the company has come a long way since its failed Google Glass project in 2013. The company has long been teasing its Android XR tech, and it's worked with Samsung on its Galaxy XR mixed reality headset. It's given it the foundation it needs to build out its own Gemini-infused headsets and glasses. We're expecting to learn more about Google's plans for smart glass",
-          "tier": "low"
-        }
-      ],
-      "trust_signals": {
-        "citation_coverage": 1.0,
-        "avg_sources_per_claim": 3.0,
-        "multi_source_claim_ratio": 1.0,
-        "distinct_domain_count": 7,
-        "source_quality_score": 0.387,
-        "high_tier_ratio": 0.0,
-        "citation_strength": 0.65,
-        "tier_breakdown": {
-          "high": 0,
-          "medium": 1,
-          "low": 7,
-          "prediction": 0
-        },
-        "total_sources": 8
-      },
-      "model_key": "llama",
-      "original_question": "Who is the CEO of Google 2026 ?",
-      "cached_at": "2026-05-22T19:23:31.211472+00:00",
-      "cached_ts": 1779477811.211482
-    },
-    "llama::what is the currency of bitcoin now": {
-      "answer": "Based on the search results, the current price of Bitcoin is $80,380.73 as of May 9, 2026, according to Bitget.",
-      "facts": [
-        {
-          "claim_text": "Based on the search results, the current price of Bitcoin is $80,380.73 as of May 9, 2026, according to Bitget.",
-          "evidence_urls": [
-            "https://coinmarketcap.com/currencies/bitcoin/",
-            "https://www.tradingview.com/symbols/BTCUSD/",
-            "https://www.coingecko.com/en/coins/bitcoin"
-          ],
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "fact_quality_flags": {
-            "has_source": true,
-            "multi_source": true,
-            "weak_evidence": false,
-            "needs_review": false
-          }
-        }
-      ],
-      "sources": [
-        {
-          "url": "https://coinmarketcap.com/currencies/bitcoin/",
-          "title": "Bitcoin Price Today, BTC to USD Live Price, Marketcap and Chart",
-          "domain": "coinmarketcap.com",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "Mining Bitcoins can be very profitable for miners, depending on the current hash rate and the price of Bitcoin.Bitcoin is the first decentralized, peer-to-peer digital currency.",
-          "tier": "low"
-        },
-        {
-          "url": "https://www.xe.com/currencyconverter/convert/?Amount=1&From=BTC&To=USD",
-          "title": "1 BTC to USD - Bitcoins to US Dollars Exchange Rate",
-          "domain": "www.xe.com",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "Get the latest 1 Bitcoin to US Dollar rate for FREE with the original Universal Currency Converter.The average was 71,271.09 with 2.22% volatility.",
-          "tier": "low"
-        },
-        {
-          "url": "https://www.coingecko.com/en/coins/bitcoin",
-          "title": "Bitcoin Price: BTC/USD Live Price Chart, Market Cap & News Today",
-          "domain": "www.coingecko.com",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "Track the latest Bitcoin price, market cap, trading volume, news and more with CoinGecko's live BTC/USD price chart and popular cryptocurrency price tracker.",
-          "tier": "low"
-        },
-        {
-          "url": "https://www.tradingview.com/symbols/BTCUSD/",
-          "title": "BTC USD — Bitcoin Price and Chart | TradingView",
-          "domain": "www.tradingview.com",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "The current circulating supply of Bitcoin (BTC) is 20.03 M USD.",
-          "tier": "low"
-        },
-        {
-          "url": "https://tr.investing.com/crypto/bitcoin",
-          "title": "Bitcoin Fiyat | BTC Coin - Investing.com",
-          "domain": "tr.investing.com",
-          "source_tools": [
-            "duckduckgo_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "Canlı Bitcoin fiyatları (81.265,4), piyasa yorumları, grafikleri ve işlem hacmi.",
-          "tier": "low"
-        },
-        {
-          "url": "https://www.stocktitan.net/sec-filings/LMFA/8-k-lm-funding-america-inc-reports-material-event-893d05942924.html",
-          "title": "LM Funding America (NASDAQ: LMFA) details April Bitcoin output and $25.3M BTC treasury value - Stock Titan",
-          "domain": "www.stocktitan.net",
-          "source_tools": [
-            "tavily_search_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "LM Funding continues to operate as a Bitcoin-focused treasury and mining company, with April production of 9.4 BTC and total holdings of 334.0 BTC. An energized hashrate of 0.79 EH/s spread over 7,508 machines indicates a relatively stable operating footprint between March and April.",
-          "tier": "low"
-        },
-        {
-          "url": "https://ng.investing.com/news/stock-market-news/lm-funding-reports-april-bitcoin-mining-output-of-94-btc-93CH-2498042",
-          "title": "LM Funding reports April bitcoin mining output of 9.4 BTC By Investing.com - Investing.com Nigeria",
-          "domain": "ng.investing.com",
-          "source_tools": [
-            "tavily_search_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "# LM Funding reports April bitcoin mining output of 9.4 BTC",
-          "tier": "low"
-        }
-      ],
-      "trust_signals": {
-        "citation_coverage": 1.0,
-        "avg_sources_per_claim": 3.0,
-        "multi_source_claim_ratio": 1.0,
+        "avg_sources_per_claim": 2.3333333333333335,
+        "multi_source_claim_ratio": 0.6666666666666666,
         "distinct_domain_count": 7,
         "source_quality_score": 0.35,
         "high_tier_ratio": 0.0,
@@ -714,19 +324,19 @@
         "total_sources": 7
       },
       "model_key": "llama",
-      "original_question": "What is the currency of Bitcoin now ?",
-      "cached_at": "2026-05-22T19:26:23.640981+00:00",
-      "cached_ts": 1779477983.640991
+      "original_question": "is there any chris avantgarde event in ankara turkey and how much is it ?",
+      "cached_at": "2026-05-30T22:05:44.790440+00:00",
+      "cached_ts": 1780178744.790449
     },
-    "llama::who founded openai": {
-      "answer": "The founders of OpenAI are:\n\n* Sam Altman\n* Greg Brockman\n* Ilya Sutskever\n* Elon Musk\n\nNote: The information is based on the search results provided and may not be up-to-date or accurate as of the current date (2026-05-22).",
+    "llama::how did the ai affected job market by today": {
+      "answer": "By 2026, AI is projected to displace thousands of jobs each month in the United States, with Goldman Sachs reporting 26,000 monthly job losses due to AI advancements. However, the impact of AI on the job market is not solely negative; it also presents opportunities for job creation. The World Economic Forum’s Future of Jobs Report 2025 projects a net growth of 78 million jobs by 2030, with 170 million jobs created and 92 million displaced. Companies that redesign their operating models to integrate AI are more likely to redeploy talent and build new capabilities rather than solely cutting headcount. Despite the potential for job displacement, 86% of C-suite leaders plan to increase AI investment, indicating a shift towards leveraging AI for productivity rather than just cost reduction.\n\nNote: The information provided is based on the search results from Tavily and DuckDuckGo, which are subject to change as new data becomes available.",
       "facts": [
         {
-          "claim_text": "The founders of OpenAI are:",
+          "claim_text": "By 2026, AI is projected to displace thousands of jobs each month in the United States, with Goldman Sachs reporting 26,000 monthly job losses due to AI advancements.",
           "evidence_urls": [
-            "https://observer.com/2024/07/openai-founders-career",
-            "https://en.wikipedia.org/wiki/OpenAI",
-            "https://www.reuters.com/sustainability/boards-policy-regulation/openai-co-founder-discloses-nearly-30-billion-stake-financial-ties-altman-2026-05-04/"
+            "https://www.nexford.edu/insights/how-will-ai-affect-jobs",
+            "https://www.forbes.com/sites/moorinsights/2026/05/19/microsoft-work-trend-index-2026-shows-ai-productivity-is-not-enough/",
+            "https://www.goldmansachs.com/insights/articles/how-will-ai-affect-the-us-labor-market"
           ],
           "source_tools": [
             "duckduckgo_results_json",
@@ -740,11 +350,11 @@
           }
         },
         {
-          "claim_text": "* Sam Altman",
+          "claim_text": "However, the impact of AI on the job market is not solely negative; it also presents opportunities for job creation.",
           "evidence_urls": [
-            "https://www.reuters.com/sustainability/boards-policy-regulation/openai-co-founder-discloses-nearly-30-billion-stake-financial-ties-altman-2026-05-04/",
-            "https://en.wikipedia.org/wiki/Sam_Altman",
-            "https://www.britannica.com/money/OpenAI"
+            "https://www.nexford.edu/insights/how-will-ai-affect-jobs",
+            "https://www.forbes.com/sites/moorinsights/2026/05/19/microsoft-work-trend-index-2026-shows-ai-productivity-is-not-enough/",
+            "https://hbr.org/2026/03/research-how-ai-is-changing-the-labor-market"
           ],
           "source_tools": [
             "duckduckgo_results_json",
@@ -758,11 +368,10 @@
           }
         },
         {
-          "claim_text": "* Greg Brockman",
+          "claim_text": "The World Economic Forum’s Future of Jobs Report 2025 projects a net growth of 78 million jobs by 2030, with 170 million jobs created and 92 million displaced.",
           "evidence_urls": [
-            "https://en.wikipedia.org/wiki/OpenAI",
-            "https://www.reuters.com/sustainability/boards-policy-regulation/openai-co-founder-discloses-nearly-30-billion-stake-financial-ties-altman-2026-05-04/",
-            "https://www.britannica.com/money/OpenAI"
+            "https://www.nexford.edu/insights/how-will-ai-affect-jobs",
+            "https://www.forbes.com/sites/moorinsights/2026/05/19/microsoft-work-trend-index-2026-shows-ai-productivity-is-not-enough/"
           ],
           "source_tools": [
             "duckduckgo_results_json",
@@ -776,11 +385,11 @@
           }
         },
         {
-          "claim_text": "* Ilya Sutskever",
+          "claim_text": "Companies that redesign their operating models to integrate AI are more likely to redeploy talent and build new capabilities rather than solely cutting headcount.",
           "evidence_urls": [
-            "https://www.britannica.com/money/OpenAI",
-            "https://observer.com/2024/07/openai-founders-career",
-            "https://en.wikipedia.org/wiki/OpenAI"
+            "https://www.forbes.com/sites/moorinsights/2026/05/19/microsoft-work-trend-index-2026-shows-ai-productivity-is-not-enough/",
+            "https://www.nexford.edu/insights/how-will-ai-affect-jobs",
+            "https://www.bcg.com/publications/2026/ai-will-reshape-more-jobs-than-it-replaces"
           ],
           "source_tools": [
             "duckduckgo_results_json",
@@ -794,11 +403,11 @@
           }
         },
         {
-          "claim_text": "* Elon Musk",
+          "claim_text": "Despite the potential for job displacement, 86% of C-suite leaders plan to increase AI investment, indicating a shift towards leveraging AI for productivity rather than just cost reduction.",
           "evidence_urls": [
-            "https://www.britannica.com/money/OpenAI",
-            "https://en.wikipedia.org/wiki/OpenAI",
-            "https://www.reuters.com/sustainability/boards-policy-regulation/openai-co-founder-discloses-nearly-30-billion-stake-financial-ties-altman-2026-05-04/"
+            "https://www.nexford.edu/insights/how-will-ai-affect-jobs",
+            "https://www.forbes.com/sites/moorinsights/2026/05/19/microsoft-work-trend-index-2026-shows-ai-productivity-is-not-enough/",
+            "https://gloat.com/blog/ai-workforce-trends/"
           ],
           "source_tools": [
             "duckduckgo_results_json",
@@ -812,11 +421,10 @@
           }
         },
         {
-          "claim_text": "Note: The information is based on the search results provided and may not be up-to-date or accurate as of the current date (2026-05-22).",
+          "claim_text": "Note: The information provided is based on the search results from Tavily and DuckDuckGo, which are subject to change as new data becomes available.",
           "evidence_urls": [
-            "https://www.clay.com/dossier/openai-ceo",
-            "https://en.wikipedia.org/wiki/OpenAI",
-            "https://www.britannica.com/money/OpenAI"
+            "https://www.nexford.edu/insights/how-will-ai-affect-jobs",
+            "https://www.forbes.com/sites/moorinsights/2026/05/19/microsoft-work-trend-index-2026-shows-ai-productivity-is-not-enough/"
           ],
           "source_tools": [
             "duckduckgo_results_json",
@@ -832,81 +440,1288 @@
       ],
       "sources": [
         {
-          "url": "https://en.wikipedia.org/wiki/OpenAI",
-          "title": "OpenAI - Wikipedia",
-          "domain": "en.wikipedia.org",
+          "url": "https://www.goldmansachs.com/insights/articles/how-will-ai-affect-the-us-labor-market",
+          "title": "How Will AI Affect the US Labor Market? | Goldman Sachs",
+          "domain": "www.goldmansachs.com",
           "source_tools": [
             "duckduckgo_results_json"
           ],
           "relevance_score": null,
-          "snippet": "7 hours ago - President and co-founder: Greg Brockman, former CTO, 3rd employee of Stripe · Chief Scientist Officer: Jakub Pachocki, former Director of Research at OpenAI",
+          "snippet": "March 18, 2026 - “If we see some job losses pulled forward, that sets stage for potential underperformance relative to our forecast, and that may lead the Federal Reserve to cut rates.” Entry-level workers in their 20s and 30s, coming into the knowledge ...",
+          "tier": "low"
+        },
+        {
+          "url": "https://hbr.org/2026/03/research-how-ai-is-changing-the-labor-market",
+          "title": "Research: How AI Is Changing the Labor Market",
+          "domain": "hbr.org",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "March 4, 2026 - A new study sheds some early light on how the new technology has impacted the U.S. market: in it, researchers find evidence that generative AI is reshaping, not uniformly erasing, white-collar work.",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.nexford.edu/insights/how-will-ai-affect-jobs",
+          "title": "How will Artificial Intelligence Affect Jobs 2026-2030 | Nexford University",
+          "domain": "www.nexford.edu",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "April 6, 2026 - Researchers from the University ... says that According to an MIT and Boston University report, AI will replace as many as two million manufacturing workers by 2026....",
           "tier": "high"
         },
         {
-          "url": "https://www.reuters.com/sustainability/boards-policy-regulation/openai-co-founder-discloses-nearly-30-billion-stake-financial-ties-altman-2026-05-04/",
-          "title": "OpenAI co-founder discloses nearly $30 billion stake, financial ties to Altman | Reuters",
-          "domain": "www.reuters.com",
+          "url": "https://gloat.com/blog/ai-workforce-trends/",
+          "title": "AI Workforce Trends 2026 (Q2 Update) | Gloat",
+          "domain": "gloat.com",
           "source_tools": [
             "duckduckgo_results_json"
           ],
           "relevance_score": null,
-          "snippet": "2 weeks ago - OpenAI's co-founder and president, Greg Brockman, on Monday disclosed deeper financial ties to CEO Sam Altman than previously known as well as a stake in the ChatGPT maker worth almost $30 billion.",
-          "tier": "high"
+          "snippet": "1 week ago - The Stanford HAI 2026 AI Index found that AI-related skills now appear in 2.5% of all US job postings, a 297% increase over the past decade. Think about what that means for your workforce planning: the demand signal for AI fluency is growing ...",
+          "tier": "low"
         },
         {
-          "url": "https://techcrunch.com/2026/05/19/openai-co-founder-andrej-karpathy-joins-anthropics-pre-training-team/",
-          "title": "OpenAI co-founder Andrej Karpathy joins Anthropic's pre-training team | TechCrunch",
-          "domain": "techcrunch.com",
+          "url": "https://www.bcg.com/publications/2026/ai-will-reshape-more-jobs-than-it-replaces",
+          "title": "AI Will Reshape More Jobs Than It Replaces | BCG",
+          "domain": "www.bcg.com",
           "source_tools": [
             "duckduckgo_results_json"
           ],
           "relevance_score": null,
-          "snippet": "3 days ago - Andrej Karpathy, the AI researcher who co-founded and formerly worked at OpenAI and previously led AI at Tesla, has joined Anthropic. “I’ve joined Anthropic,” Karpathy posted on X Tuesday.",
+          "snippet": "April 15, 2026 - Discover why task automation doesn’t equal job loss—most roles will remain but change substantially, reshaping how employees work and what companies expect.",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.forbes.com/sites/moorinsights/2026/05/19/microsoft-work-trend-index-2026-shows-ai-productivity-is-not-enough/",
+          "title": "Microsoft Work Trend Index 2026 Shows AI Productivity Is Not Enough - Forbes",
+          "domain": "www.forbes.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "AI is already affecting jobs. The question is whether that shift becomes a blunt cost-reduction exercise or a redesign of work, skills, roles and organizational capacity. Companies that optimize tasks without redesigning operating models will likely focus on cutting headcount. Companies that redesign work may selectively reduce headcount in certain areas, but they are also far more likely to redep",
           "tier": "medium"
         },
         {
-          "url": "https://en.wikipedia.org/wiki/Sam_Altman",
-          "title": "Sam Altman - Wikipedia",
-          "domain": "en.wikipedia.org",
+          "url": "https://www.gulte.com/trends/413448/ai-costs-surge-companies-rethink-job-cuts",
+          "title": "AI Costs Surge: Companies Rethink Job Cuts? - Gulte",
+          "domain": "www.gulte.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "## Gulte Movie News And Politics",
+          "tier": "low"
+        }
+      ],
+      "trust_signals": {
+        "citation_coverage": 1.0,
+        "avg_sources_per_claim": 2.6666666666666665,
+        "multi_source_claim_ratio": 1.0,
+        "distinct_domain_count": 7,
+        "source_quality_score": 0.486,
+        "high_tier_ratio": 0.143,
+        "citation_strength": 1.0,
+        "tier_breakdown": {
+          "high": 1,
+          "medium": 1,
+          "low": 5,
+          "prediction": 0
+        },
+        "total_sources": 7
+      },
+      "model_key": "llama",
+      "original_question": "How did the AI affected job market by today?",
+      "cached_at": "2026-05-30T22:11:30.788220+00:00",
+      "cached_ts": 1780179090.78823
+    },
+    "qwen::how ai affected the job market by today": {
+      "answer": "AI is significantly impacting the job market in 2026, with both positive and negative effects projected for the coming years. According to various reports: **Job Displacement vs. Creation**: The World Economic Forum’s Future of Jobs Report 2025 predicts that by 2030, AI will create 170 million jobs while displacing 92 million, resulting in a net growth of 78 million jobs. **Company Strategies**: Companies are adopting different strategies. Some may focus on cutting headcount to optimize tasks without redesigning operating models, while others might redesign work and selectively reduce headcount but also redeploy talent and build new capabilities. **Resilient Job Market**: A JPMorgan executive argues that AI will create a more resilient job market than predicted, countering fears of a jobs wipeout. This suggests that the impact of AI on employment is complex and multifaceted. **Job Loss Concerns**: There are concerns about job losses, particularly in areas where AI can automate tasks. A Goldman Sachs survey projects 26,000 jobs lost each month in the United States due to AI advancement, which has sparked fears among some workers. **Mixed Reactions Among Young Workers**: Many young people entering the job market are reacting with growing anxiety rather than excitement about the impact of AI on their future employment prospects. Overall, while there is a mix of optimism and concern regarding the role of AI in shaping the job market, it appears that both job displacement and creation will continue to be significant factors.",
+      "facts": [
+        {
+          "claim_text": "AI is significantly impacting the job market in 2026, with both positive and negative effects projected for the coming years.",
+          "evidence_urls": [
+            "https://www.nexford.edu/insights/how-will-ai-affect-jobs",
+            "https://www.forbes.com/sites/moorinsights/2026/05/19/microsoft-work-trend-index-2026-shows-ai-productivity-is-not-enough/",
+            "https://www.businessinsider.com/ai-jobs-layoffs-economy-outlook-labor-market-software-jpmorgan-2026-5"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "According to various reports: **Job Displacement vs.",
+          "evidence_urls": [
+            "https://www.nexford.edu/insights/how-will-ai-affect-jobs",
+            "https://www.technologyreview.com/2026/05/26/1137855/a-reality-check-on-the-ai-jobs-hysteria/",
+            "https://www.forbes.com/sites/moorinsights/2026/05/19/microsoft-work-trend-index-2026-shows-ai-productivity-is-not-enough/"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "Creation**: The World Economic Forum’s Future of Jobs Report 2025 predicts that by 2030, AI will create 170 million jobs while displacing 92 million, resulting in a net growth of 78 million jobs.",
+          "evidence_urls": [
+            "https://www.nexford.edu/insights/how-will-ai-affect-jobs",
+            "https://www.forbes.com/sites/moorinsights/2026/05/19/microsoft-work-trend-index-2026-shows-ai-productivity-is-not-enough/",
+            "https://www.businessinsider.com/ai-jobs-layoffs-economy-outlook-labor-market-software-jpmorgan-2026-5"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "**Company Strategies**: Companies are adopting different strategies.",
+          "evidence_urls": [
+            "https://www.nexford.edu/insights/how-will-ai-affect-jobs",
+            "https://www.forbes.com/sites/moorinsights/2026/05/19/microsoft-work-trend-index-2026-shows-ai-productivity-is-not-enough/",
+            "https://www.businessinsider.com/ai-jobs-layoffs-economy-outlook-labor-market-software-jpmorgan-2026-5"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "Some may focus on cutting headcount to optimize tasks without redesigning operating models, while others might redesign work and selectively reduce headcount but also redeploy talent and build new capabilities.",
+          "evidence_urls": [
+            "https://www.forbes.com/sites/moorinsights/2026/05/19/microsoft-work-trend-index-2026-shows-ai-productivity-is-not-enough/",
+            "https://www.nexford.edu/insights/how-will-ai-affect-jobs",
+            "https://www.businessinsider.com/ai-jobs-layoffs-economy-outlook-labor-market-software-jpmorgan-2026-5"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "**Resilient Job Market**: A JPMorgan executive argues that AI will create a more resilient job market than predicted, countering fears of a jobs wipeout.",
+          "evidence_urls": [
+            "https://www.businessinsider.com/ai-jobs-layoffs-economy-outlook-labor-market-software-jpmorgan-2026-5",
+            "https://www.nexford.edu/insights/how-will-ai-affect-jobs",
+            "https://www.forbes.com/sites/moorinsights/2026/05/19/microsoft-work-trend-index-2026-shows-ai-productivity-is-not-enough/"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "This suggests that the impact of AI on employment is complex and multifaceted.",
+          "evidence_urls": [
+            "https://www.nexford.edu/insights/how-will-ai-affect-jobs",
+            "https://www.forbes.com/sites/moorinsights/2026/05/19/microsoft-work-trend-index-2026-shows-ai-productivity-is-not-enough/",
+            "https://www.businessinsider.com/ai-jobs-layoffs-economy-outlook-labor-market-software-jpmorgan-2026-5"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "**Job Loss Concerns**: There are concerns about job losses, particularly in areas where AI can automate tasks.",
+          "evidence_urls": [
+            "https://www.nexford.edu/insights/how-will-ai-affect-jobs",
+            "https://www.forbes.com/sites/moorinsights/2026/05/19/microsoft-work-trend-index-2026-shows-ai-productivity-is-not-enough/",
+            "https://www.businessinsider.com/ai-jobs-layoffs-economy-outlook-labor-market-software-jpmorgan-2026-5"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "A Goldman Sachs survey projects 26,000 jobs lost each month in the United States due to AI advancement, which has sparked fears among some workers.",
+          "evidence_urls": [
+            "https://www.nexford.edu/insights/how-will-ai-affect-jobs",
+            "https://www.forbes.com/sites/moorinsights/2026/05/19/microsoft-work-trend-index-2026-shows-ai-productivity-is-not-enough/",
+            "https://www.businessinsider.com/ai-jobs-layoffs-economy-outlook-labor-market-software-jpmorgan-2026-5"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "**Mixed Reactions Among Young Workers**: Many young people entering the job market are reacting with growing anxiety rather than excitement about the impact of AI on their future employment prospects.",
+          "evidence_urls": [
+            "https://www.caironews.net/news/279064362/ai-boom-sparks-unease-among-young-workers-entering-the-job-market",
+            "https://www.nexford.edu/insights/how-will-ai-affect-jobs",
+            "https://www.businessinsider.com/ai-jobs-layoffs-economy-outlook-labor-market-software-jpmorgan-2026-5"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "Overall, while there is a mix of optimism and concern regarding the role of AI in shaping the job market, it appears that both job displacement and creation will continue to be significant factors.",
+          "evidence_urls": [
+            "https://www.nexford.edu/insights/how-will-ai-affect-jobs",
+            "https://www.forbes.com/sites/moorinsights/2026/05/19/microsoft-work-trend-index-2026-shows-ai-productivity-is-not-enough/",
+            "https://www.businessinsider.com/ai-jobs-layoffs-economy-outlook-labor-market-software-jpmorgan-2026-5"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        }
+      ],
+      "sources": [
+        {
+          "url": "https://www.nexford.edu/insights/how-will-ai-affect-jobs",
+          "title": "How Will Artificial Intelligence Affect Jobs 2026-2030",
+          "domain": "www.nexford.edu",
           "source_tools": [
             "duckduckgo_results_json"
           ],
           "relevance_score": null,
-          "snippet": "8 hours ago - Altman co-founded OpenAI in 2015 and became its CEO in 2019, a role that made him a prominent figure of the AI boom. He supervised the launch of ChatGPT in November 2022. In 2023, he was ousted by the organization's board of directors for not being \"consistently candid\".",
+          "snippet": "Here are the most likely jobs that artificial intelligence will affect from 2026-2030This means that ai will not replace those that perform them in the open labor market.",
           "tier": "high"
         },
         {
-          "url": "https://www.britannica.com/money/OpenAI",
-          "title": "OpenAI | ChatGPT, Sam Altman, Microsoft, & History | Britannica Money",
-          "domain": "www.britannica.com",
+          "url": "https://www.jobillico.com/blog/en/how-the-ai-driven-job-market-is-affecting-new-grads/",
+          "title": "How the AI-Driven Job Market Is Affecting New Grads",
+          "domain": "www.jobillico.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "As with any other era-changing innovation, there are always two groups of people — those who believe AI will positively transform the job market and those who think AI-driven markets will disruptively increase human layoffs.",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.technologyreview.com/2026/05/26/1137855/a-reality-check-on-the-ai-jobs-hysteria/",
+          "title": "A Reality Check on the AI Jobs Hysteria | MIT Technology Review",
+          "domain": "www.technologyreview.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Analysis of how AI will affect jobs typically begins with identifying so-called exposure of various occupations to the technology.",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.caironews.net/news/279064362/ai-boom-sparks-unease-among-young-workers-entering-the-job-market",
+          "title": "AI boom sparks unease among young workers entering the job market",
+          "domain": "www.caironews.net",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Artificial intelligence is transforming workplaces around the world, but many young people entering the job market are reacting with growing anxiety rather than excitement.",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=UclrVWafRAI",
+          "title": "YouTube | The AI Safety Expert: These Are The Only 5 Jobs That Will...",
+          "domain": "www.youtube.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "WARNING: AI could end humanity, and we’re completely unprepared. Dr. Roman Yampolskiy reveals how AI will take 99% of jobs, why Sam Altman is ignoring safety...",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.forbes.com/sites/moorinsights/2026/05/19/microsoft-work-trend-index-2026-shows-ai-productivity-is-not-enough/",
+          "title": "Microsoft Work Trend Index 2026 Shows AI Productivity Is Not Enough - Forbes",
+          "domain": "www.forbes.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "AI is already affecting jobs. The question is whether that shift becomes a blunt cost-reduction exercise or a redesign of work, skills, roles and organizational capacity. Companies that optimize tasks without redesigning operating models will likely focus on cutting headcount. Companies that redesign work may selectively reduce headcount in certain areas, but they are also far more likely to redep",
+          "tier": "medium"
+        },
+        {
+          "url": "https://www.businessinsider.com/ai-jobs-layoffs-economy-outlook-labor-market-software-jpmorgan-2026-5",
+          "title": "A JPMorgan exec explains why AI will create a more resilient job market than doomsayers predict - Business Insider",
+          "domain": "www.businessinsider.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Subscribe Newsletters",
+          "tier": "medium"
+        },
+        {
+          "url": "https://www.gulte.com/trends/413448/ai-costs-surge-companies-rethink-job-cuts",
+          "title": "AI Costs Surge: Companies Rethink Job Cuts? - Gulte",
+          "domain": "www.gulte.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "## Gulte Movie News And Politics",
+          "tier": "low"
+        }
+      ],
+      "trust_signals": {
+        "citation_coverage": 1.0,
+        "avg_sources_per_claim": 3.0,
+        "multi_source_claim_ratio": 1.0,
+        "distinct_domain_count": 8,
+        "source_quality_score": 0.506,
+        "high_tier_ratio": 0.125,
+        "citation_strength": 1.0,
+        "tier_breakdown": {
+          "high": 1,
+          "medium": 2,
+          "low": 5,
+          "prediction": 0
+        },
+        "total_sources": 8
+      },
+      "model_key": "qwen",
+      "original_question": "How AI affected the job market by today?",
+      "cached_at": "2026-05-30T22:20:19.477490+00:00",
+      "cached_ts": 1780179619.477529
+    },
+    "llama32::whats the differences between llama 3 1 and 3 2": {
+      "answer": "*   **Multimodal capabilities**: LLaMA 3.2 is designed for multimodal tasks, adding vision capabilities, while LLaMA 3.1 focuses on advanced NLP tasks. *   **Parameter count**: LLaMA 3.2 has a larger 90B parameter count compared to LLaMA 3.1's 70B. *   **Optimization for real-time AI applications**: LLaMA 3.2 is optimized for on-device performance and real-time AI applications, targeting mobile devices, edge computing, and lightweight hardware. *   **Similar benchmarks**: Despite the differences, both models have similar benchmarks due to their shared architecture. *   **Key difference in vision capabilities**: The addition of a vision adapter in LLaMA 3.2 improves performance in image-related tasks. Overall, LLaMA 3.1 is optimized for textual intelligence, while LLaMA 3.2 extends capability into multimodal cognition and resource-efficient deployment.",
+      "facts": [
+        {
+          "claim_text": "*   **Multimodal capabilities**: LLaMA 3.2 is designed for multimodal tasks, adding vision capabilities, while LLaMA 3.1 focuses on advanced NLP tasks.",
+          "evidence_urls": [
+            "https://medium.com/@getbind/the-evolution-of-llama-models-a-comprehensive-comparison-of-llama-3-3-1-and-3-2-c46681f51bc6",
+            "https://www.edenai.co/post/llama-3-1-vs-llama-3-2",
+            "https://ultraaiguide.com/llama-3-2-vs-llama-3-1-comparison/"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "*   **Parameter count**: LLaMA 3.2 has a larger 90B parameter count compared to LLaMA 3.1's 70B.",
+          "evidence_urls": [
+            "https://www.hyperstack.cloud/blog/thought-leadership/what-is-meta-llama-3-3-70b-features-use-cases-more",
+            "https://rankllms.com/compare/llama-3-1-vs-3-2/",
+            "https://www.edenai.co/post/llama-3-1-vs-llama-3-2"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "*   **Optimization for real-time AI applications**: LLaMA 3.2 is optimized for on-device performance and real-time AI applications, targeting mobile devices, edge computing, and lightweight hardware.",
+          "evidence_urls": [
+            "https://rankllms.com/compare/llama-3-1-vs-3-2/",
+            "https://rankllms.com/compare/llama-3-1-8b-vs-llama-3-2-3b/",
+            "https://www.edenai.co/post/llama-3-1-vs-llama-3-2"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "*   **Similar benchmarks**: Despite the differences, both models have similar benchmarks due to their shared architecture.",
+          "evidence_urls": [
+            "https://www.edenai.co/post/llama-3-1-vs-llama-3-2",
+            "https://rankllms.com/compare/llama-3-1-vs-3-2/",
+            "https://ultraaiguide.com/llama-3-2-vs-llama-3-1-comparison/"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "*   **Key difference in vision capabilities**: The addition of a vision adapter in LLaMA 3.2 improves performance in image-related tasks.",
+          "evidence_urls": [
+            "https://www.edenai.co/post/llama-3-1-vs-llama-3-2",
+            "https://rankllms.com/compare/llama-3-1-vs-3-2/",
+            "https://www.hyperstack.cloud/blog/thought-leadership/what-is-meta-llama-3-3-70b-features-use-cases-more"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "Overall, LLaMA 3.1 is optimized for textual intelligence, while LLaMA 3.2 extends capability into multimodal cognition and resource-efficient deployment.",
+          "evidence_urls": [
+            "https://ultraaiguide.com/llama-3-2-vs-llama-3-1-comparison/",
+            "https://rankllms.com/compare/llama-3-1-vs-3-2/",
+            "https://www.edenai.co/post/llama-3-1-vs-llama-3-2"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        }
+      ],
+      "sources": [
+        {
+          "url": "https://rankllms.com/compare/llama-3-1-vs-3-2/",
+          "title": "Llama 3.1 Vs 3.2 – Key Differences - Rankllms.com",
+          "domain": "rankllms.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "July 9, 2025 - Announced at Meta Connect 2024, Llama 3.2 is optimized for on-device performance and real-time AI applications. It targets mobile devices, edge computing, and lightweight hardware.",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.edenai.co/post/llama-3-1-vs-llama-3-2",
+          "title": "Llama 3.1 vs Llama 3.2 | Eden AI",
+          "domain": "www.edenai.co",
           "source_tools": [
             "duckduckgo_results_json",
             "tavily_search_results_json"
           ],
           "relevance_score": null,
-          "snippet": "4 days ago - Founded in 2015 by Sam Altman, Greg Brockman, Ilya Sutskever, and Elon Musk, the company began as a nonprofit research lab before evolving into a hybrid structure and, by 2025, a public benefit corporation overseen by the nonprofit OpenAI Foundation.",
-          "tier": "high"
-        },
-        {
-          "url": "https://observer.com/2024/07/openai-founders-career",
-          "title": "Only 4 of OpenAI's 11 Founders Are Still With the Company—Where ...",
-          "domain": "observer.com",
-          "source_tools": [
-            "tavily_search_results_json"
-          ],
-          "relevance_score": null,
-          "snippet": "At the time of OpenAI’s founding, Altman juggled his duties as co-chair of the company and as the president of the startup accelerator Y Combinator. He was introduced to fellow co-founders Altman, Sutskever, Schulman and Karpathy at a get-together in Napa, Calif., where the group discussed their thoughts on A.G.I. Zaremba spent his early years at OpenAI leading its robotics efforts, which notably ",
+          "snippet": "1 week ago - LLaMA 3.1 and 3.2 have similar benchmarks because LLaMA 3.2 is built on the same core architecture as LLaMA 3.1. The key difference is the addition of a vision adapter in LLaMA 3.2 for multimodal tasks, which improves performance in image-related ...",
           "tier": "low"
         },
         {
-          "url": "https://www.clay.com/dossier/openai-ceo",
-          "title": "Who is the CEO of OpenAI in 2026? Sam Altman's Bio - Clay",
-          "domain": "www.clay.com",
+          "url": "https://ultraaiguide.com/llama-3-2-vs-llama-3-1-comparison/",
+          "title": "“LLaMA 3.2 vs 3.1: Features, Benchmarks & Surprising Insights”",
+          "domain": "ultraaiguide.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "February 16, 2026 - Llama 3.1 optimizes textual intelligence. Llama 3.2 extends capability into multimodal cognition and resource-efficient deployment.",
+          "tier": "low"
+        },
+        {
+          "url": "https://rankllms.com/compare/llama-3-1-8b-vs-llama-3-2-3b/",
+          "title": "Llama 3.1 8B vs Llama 3.2 3B – Which Meta Model Is Better?",
+          "domain": "rankllms.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "July 9, 2025 - With significant improvements over Llama 2, it has become a favorite among developers looking for high performance without relying on 70B-scale models at Affordable cost. The newer Llama 3.2 3B is designed for lightweight environments.",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.hyperstack.cloud/blog/thought-leadership/what-is-meta-llama-3-3-70b-features-use-cases-more",
+          "title": "What You Need to Know About Meta Llama 3.3 70B",
+          "domain": "www.hyperstack.cloud",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "December 15, 2025 - Llama 3.3 delivers superior performance at a lower cost compared to Llama 3.1 70B and Llama 3.2 90B, especially in instruction-following tasks.",
+          "tier": "low"
+        },
+        {
+          "url": "https://ultraaiguide.com/llama-3-2-vs-llama-3-1-comparison",
+          "title": "“LLaMA 3.2 vs 3.1: Features, Benchmarks & Surprising Insights”",
+          "domain": "ultraaiguide.com",
           "source_tools": [
             "tavily_search_results_json"
           ],
           "relevance_score": null,
-          "snippet": "Sync targeted ad audiences to Linkedin, Meta, and Google. Centralize your first and third party data sources in Clay. Sam Altman is an influential entrepreneur and investor, currently serving as the CEO of OpenAI, a leading artificial intelligence research organization. With a background that includes founding Loopt and holding the position of president at Y Combinator, Altman has played a signifi",
+          "snippet": "Where Llama 3.1 maximizes depth, Llama 3.2 maximizes adaptability. Llama 3.2 vs Llama 3.1 Direct Feature Comparison. Feature, Llama 3.1, Llama",
+          "tier": "low"
+        },
+        {
+          "url": "https://medium.com/@getbind/the-evolution-of-llama-models-a-comprehensive-comparison-of-llama-3-3-1-and-3-2-c46681f51bc6",
+          "title": "A Comprehensive Comparison of Llama 3, 3.1, and 3.2 | by Bind AI",
+          "domain": "medium.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Llama 3 is for standard NLP tasks; whereas Llama 3.1 is for advanced reasoning and context management. Llama 3.2 is multimodal in capabilities,",
+          "tier": "low"
+        }
+      ],
+      "trust_signals": {
+        "citation_coverage": 1.0,
+        "avg_sources_per_claim": 3.0,
+        "multi_source_claim_ratio": 1.0,
+        "distinct_domain_count": 5,
+        "source_quality_score": 0.35,
+        "high_tier_ratio": 0.0,
+        "citation_strength": 0.35,
+        "tier_breakdown": {
+          "high": 0,
+          "medium": 0,
+          "low": 7,
+          "prediction": 0
+        },
+        "total_sources": 7
+      },
+      "model_key": "llama32",
+      "original_question": "whats the differences between Llama 3.1 and 3.2",
+      "cached_at": "2026-05-30T22:22:49.859101+00:00",
+      "cached_ts": 1780179769.85911
+    },
+    "llama32::are there chris avantgarde event in ankara turkey": {
+      "answer": "There are Chris Avantgarde events in Ankara, Turkey. The 2026 Ankara NATO Summit is scheduled to be held in Ankara on July 7-8, 2026. Additionally, Chris Avantgarde will perform at World Club Dome 2026, which may take place in Ankara as well.",
+      "facts": [
+        {
+          "claim_text": "There are Chris Avantgarde events in Ankara, Turkey.",
+          "evidence_urls": [
+            "https://en.wikipedia.org/wiki/2026_Ankara_NATO_summit",
+            "https://www.worldclubdome.com/lineup/chris-avantgarde",
+            "https://www.youtube.com/watch?v=MpbZDxx44qE"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "The 2026 Ankara NATO Summit is scheduled to be held in Ankara on July 7-8, 2026.",
+          "evidence_urls": [
+            "https://en.wikipedia.org/wiki/2026_Ankara_NATO_summit",
+            "https://www.worldclubdome.com/lineup/chris-avantgarde"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "Additionally, Chris Avantgarde will perform at World Club Dome 2026, which may take place in Ankara as well.",
+          "evidence_urls": [
+            "https://en.wikipedia.org/wiki/2026_Ankara_NATO_summit",
+            "https://www.worldclubdome.com/lineup/chris-avantgarde",
+            "https://www.youtube.com/watch?v=MpbZDxx44qE"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        }
+      ],
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/2026_Ankara_NATO_summit",
+          "title": "2026 Ankara NATO Summit - Wikipedia",
+          "domain": "en.wikipedia.org",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "The 2026 Ankara Summit is a future meeting of heads of state and heads of government of NATO member states, scheduled to be held in Ankara, Turkey, on 7–8 July 2026.",
+          "tier": "high"
+        },
+        {
+          "url": "https://www.worldclubdome.com/lineup/chris-avantgarde",
+          "title": "Chris Avantgarde | World Club Dome 2026",
+          "domain": "www.worldclubdome.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "lineup. Chris Avantgarde. Chris Avantgarde. Saturday. soundcloud.",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=MpbZDxx44qE",
+          "title": "Anyma & Chris Avantgarde - Consciousness | YouTube",
+          "domain": "www.youtube.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Anyma & Chris Avantgarde - ConsciousnessBuy / Stream: https://lnk.to/_ConsciousnessLeading electronic producers and composers Anyma (from Tale Of Us) and Chr...",
+          "tier": "low"
+        }
+      ],
+      "trust_signals": {
+        "citation_coverage": 1.0,
+        "avg_sources_per_claim": 2.6666666666666665,
+        "multi_source_claim_ratio": 1.0,
+        "distinct_domain_count": 3,
+        "source_quality_score": 0.567,
+        "high_tier_ratio": 0.333,
+        "citation_strength": 1.0,
+        "tier_breakdown": {
+          "high": 1,
+          "medium": 0,
+          "low": 2,
+          "prediction": 0
+        },
+        "total_sources": 3
+      },
+      "model_key": "llama32",
+      "original_question": "are there Chris Avantgarde event in Ankara Turkey?",
+      "cached_at": "2026-05-30T22:23:41.728699+00:00",
+      "cached_ts": 1780179821.728707
+    },
+    "llama32::christ avantgarde event in ankara turkey": {
+      "answer": "I could not find any information on a recent Christ avantgarde event in Ankara, Turkey in 2026.",
+      "facts": [
+        {
+          "claim_text": "I could not find any information on a recent Christ avantgarde event in Ankara, Turkey in 2026.",
+          "evidence_urls": [],
+          "source_tools": [],
+          "fact_quality_flags": {
+            "has_source": false,
+            "multi_source": false,
+            "weak_evidence": true,
+            "needs_review": true
+          }
+        }
+      ],
+      "sources": [],
+      "trust_signals": {
+        "citation_coverage": 0.0,
+        "avg_sources_per_claim": 0.0,
+        "multi_source_claim_ratio": 0.0,
+        "distinct_domain_count": 0,
+        "source_quality_score": 0.0,
+        "high_tier_ratio": 0.0,
+        "citation_strength": 0.0,
+        "tier_breakdown": {
+          "high": 0,
+          "medium": 0,
+          "low": 0,
+          "prediction": 0
+        },
+        "total_sources": 0
+      },
+      "model_key": "llama32",
+      "original_question": "christ avantgarde event in ankara turkey?",
+      "cached_at": "2026-05-30T23:01:36.476888+00:00",
+      "cached_ts": 1780182096.476898
+    },
+    "llama::did coffee increase lifespan according to recent studies": {
+      "answer": "In fact, some studies suggest that coffee may have health benefits, such as improving blood vessel function and reducing the risk of hypertension. However, one study found that individuals with very high blood pressure who drank two or more cups of coffee a day had double the risk of dying from cardiovascular disease compared to non-drinkers. Therefore, while moderate coffee consumption does not appear to increase the risk of hypertension, those with very high blood pressure should avoid coffee.",
+      "facts": [
+        {
+          "claim_text": "In fact, some studies suggest that coffee may have health benefits, such as improving blood vessel function and reducing the risk of hypertension.",
+          "evidence_urls": [
+            "https://blogs.timesofisrael.com/from-lab-to-life-coffees-health-benefits/",
+            "https://scitechdaily.com/tea-or-coffee-your-daily-choice-could-affect-osteoporosis-risk/"
+          ],
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "However, one study found that individuals with very high blood pressure who drank two or more cups of coffee a day had double the risk of dying from cardiovascular disease compared to non-drinkers.",
+          "evidence_urls": [
+            "https://blogs.timesofisrael.com/from-lab-to-life-coffees-health-benefits/",
+            "https://scitechdaily.com/tea-or-coffee-your-daily-choice-could-affect-osteoporosis-risk/",
+            "https://www.powerofpositivity.com/coffee-living-longer-life/"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "Therefore, while moderate coffee consumption does not appear to increase the risk of hypertension, those with very high blood pressure should avoid coffee.",
+          "evidence_urls": [
+            "https://blogs.timesofisrael.com/from-lab-to-life-coffees-health-benefits/",
+            "https://scitechdaily.com/tea-or-coffee-your-daily-choice-could-affect-osteoporosis-risk/",
+            "https://www.powerofpositivity.com/coffee-living-longer-life/"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        }
+      ],
+      "sources": [
+        {
+          "url": "https://www.powerofpositivity.com/coffee-living-longer-life/",
+          "title": "Researchers Reveal Drinking Coffee Links to Living Longer",
+          "domain": "www.powerofpositivity.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Coffee stimulates the central nervous system, helping fight drowsiness and increase focus.Final Thoughts on Study Linking Coffee to a Longer Lifespan.",
+          "tier": "low"
+        },
+        {
+          "url": "https://blogs.timesofisrael.com/from-lab-to-life-coffees-health-benefits/",
+          "title": "From Lab to Life: Coffee’s Health Benefits - The Times of Israel",
+          "domain": "blogs.timesofisrael.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Apparently not. Science Daily (May 17) reports on research that reveals the health benefits of coffee. \\ “…large studies involving hundreds of thousands of people found no strong evidence that moderate coffee drinking increases the risk of developing hypertension. In fact, coffee also contains natural compounds that may help blood vessels function better.”",
+          "tier": "low"
+        },
+        {
+          "url": "https://scitechdaily.com/tea-or-coffee-your-daily-choice-could-affect-osteoporosis-risk/",
+          "title": "Tea or Coffee? Your Daily Choice Could Affect Osteoporosis Risk - SciTechDaily",
+          "domain": "scitechdaily.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Scientists have debated caffeine’s effects on bones for decades. Some earlier studies linked high coffee consumption to increased fracture risk, while others found little or no impact. Researchers say part of the confusion may come from differences in diet, calcium intake, genetics, and lifestyle factors such as exercise and alcohol use.",
+          "tier": "low"
+        }
+      ],
+      "trust_signals": {
+        "citation_coverage": 1.0,
+        "avg_sources_per_claim": 2.6666666666666665,
+        "multi_source_claim_ratio": 1.0,
+        "distinct_domain_count": 3,
+        "source_quality_score": 0.35,
+        "high_tier_ratio": 0.0,
+        "citation_strength": 0.35,
+        "tier_breakdown": {
+          "high": 0,
+          "medium": 0,
+          "low": 3,
+          "prediction": 0
+        },
+        "total_sources": 3
+      },
+      "model_key": "llama",
+      "original_question": "Did coffee increase lifespan according to recent studies?",
+      "cached_at": "2026-05-30T23:06:32.843953+00:00",
+      "cached_ts": 1780182392.843969
+    },
+    "llama::latest developments about eu ai act enforcement timeline": {
+      "answer": "The EU AI Act enforcement timeline has been delayed. The original deadline for full enforcement was August 2026, but it has been pushed back to late 2027 and 2028 for high-risk AI systems. This delay aims to boost competitiveness and resolve technical bottlenecks. Additionally, each Member State must establish at least one AI regulatory sandbox at the national level by 2 August 2026, as per Article 57 of the EU AI Act.",
+      "facts": [
+        {
+          "claim_text": "The EU AI Act enforcement timeline has been delayed.",
+          "evidence_urls": [],
+          "source_tools": [],
+          "fact_quality_flags": {
+            "has_source": false,
+            "multi_source": false,
+            "weak_evidence": true,
+            "needs_review": true
+          }
+        },
+        {
+          "claim_text": "The original deadline for full enforcement was August 2026, but it has been pushed back to late 2027 and 2028 for high-risk AI systems.",
+          "evidence_urls": [
+            "https://artificialintelligenceact.eu/"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": false,
+            "weak_evidence": true,
+            "needs_review": true
+          }
+        },
+        {
+          "claim_text": "This delay aims to boost competitiveness and resolve technical bottlenecks.",
+          "evidence_urls": [],
+          "source_tools": [],
+          "fact_quality_flags": {
+            "has_source": false,
+            "multi_source": false,
+            "weak_evidence": true,
+            "needs_review": true
+          }
+        },
+        {
+          "claim_text": "Additionally, each Member State must establish at least one AI regulatory sandbox at the national level by 2 August 2026, as per Article 57 of the EU AI Act.",
+          "evidence_urls": [
+            "https://artificialintelligenceact.eu/"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": false,
+            "weak_evidence": true,
+            "needs_review": true
+          }
+        }
+      ],
+      "sources": [
+        {
+          "url": "https://artificialintelligenceact.eu/",
+          "title": "Up-To-Date Developments and Analyses of the EU AI Act",
+          "domain": "artificialintelligenceact.eu",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "AI regulatory sandboxes are an important part of the implementation of the EU AI Act. According to Article 57 of the AI Act, each Member State must establish at least one AI regulatory sandbox at the national level by 2 August 2026.",
+          "tier": "low"
+        }
+      ],
+      "trust_signals": {
+        "citation_coverage": 0.5,
+        "avg_sources_per_claim": 0.5,
+        "multi_source_claim_ratio": 0.0,
+        "distinct_domain_count": 1,
+        "source_quality_score": 0.35,
+        "high_tier_ratio": 0.0,
+        "citation_strength": 0.175,
+        "tier_breakdown": {
+          "high": 0,
+          "medium": 0,
+          "low": 1,
+          "prediction": 0
+        },
+        "total_sources": 1
+      },
+      "model_key": "llama",
+      "original_question": "Latest developments about EU AI Act enforcement timeline.",
+      "cached_at": "2026-05-30T23:57:40.212882+00:00",
+      "cached_ts": 1780185460.212896
+    },
+    "llama::whats the result of champions league final today": {
+      "answer": "The result of the Champions League final today (May 30, 2026) was not provided as the question was asked after the event took place. The 2026 UEFA Champions League final will be played between Paris Saint-Germain (PSG), the defending champions, and Arsenal. The match is scheduled to take place at Puskás Aréna in Budapest, Hungary, with kickoff set for 6 p.m. in central Europe. According to various sources, including Wikipedia and UEFA.com, PSG has been the reigning champion since 2025, and this will be their first final appearance since 2018. Arsenal is aiming to win its first European title. The teams have a mix of experienced players, with PSG featuring Ousmane Dembélé, Khvicha Kvaratskhelia, and Désiré Doué, while Arsenal has Bukayo Saka, Declan Rice, and other talented players. Unfortunately, I couldn't find any information about the actual result of the match.",
+      "facts": [
+        {
+          "claim_text": "The result of the Champions League final today (May 30, 2026) was not provided as the question was asked after the event took place.",
+          "evidence_urls": [
+            "https://en.wikipedia.org/wiki/2026_UEFA_Champions_League_final",
+            "https://www.uefa.com/uefachampionsleague/news/029a-1df98e9a78ca-1acaca3c53b0-1000--2026-uefa-champions-league-final-where-is-it-who-is-involv/",
+            "https://www.nytimes.com/athletic/7288733/2026/05/30/champions-league-final-explained-arsenal-psg/"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "The 2026 UEFA Champions League final will be played between Paris Saint-Germain (PSG), the defending champions, and Arsenal.",
+          "evidence_urls": [
+            "https://en.wikipedia.org/wiki/2026_UEFA_Champions_League_final",
+            "https://apnews.com/live/champions-league-final-2026-paris-saint-germain-arsenal-updates",
+            "https://www.nytimes.com/athletic/7288733/2026/05/30/champions-league-final-explained-arsenal-psg/"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "The match is scheduled to take place at Puskás Aréna in Budapest, Hungary, with kickoff set for 6 p.m.",
+          "evidence_urls": [
+            "https://en.wikipedia.org/wiki/2026_UEFA_Champions_League_final",
+            "https://apnews.com/live/champions-league-final-2026-paris-saint-germain-arsenal-updates",
+            "https://www.uefa.com/uefachampionsleague/news/029a-1df98e9a78ca-1acaca3c53b0-1000--2026-uefa-champions-league-final-where-is-it-who-is-involv/"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "in central Europe.",
+          "evidence_urls": [
+            "https://www.uefa.com/uefachampionsleague/news/029a-1df98e9a78ca-1acaca3c53b0-1000--2026-uefa-champions-league-final-where-is-it-who-is-involv/",
+            "https://en.wikipedia.org/wiki/2026_UEFA_Champions_League_final",
+            "https://www.nytimes.com/athletic/7288733/2026/05/30/champions-league-final-explained-arsenal-psg/"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "According to various sources, including Wikipedia and UEFA.com, PSG has been the reigning champion since 2025, and this will be their first final appearance since 2018.",
+          "evidence_urls": [
+            "https://en.wikipedia.org/wiki/2026_UEFA_Champions_League_final",
+            "https://www.uefa.com/uefachampionsleague/news/029a-1df98e9a78ca-1acaca3c53b0-1000--2026-uefa-champions-league-final-where-is-it-who-is-involv/",
+            "https://www.nytimes.com/athletic/7288733/2026/05/30/champions-league-final-explained-arsenal-psg/"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "Arsenal is aiming to win its first European title.",
+          "evidence_urls": [
+            "https://en.wikipedia.org/wiki/2026_UEFA_Champions_League_final",
+            "https://apnews.com/live/champions-league-final-2026-paris-saint-germain-arsenal-updates",
+            "https://www.nytimes.com/athletic/7288733/2026/05/30/champions-league-final-explained-arsenal-psg/"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "The teams have a mix of experienced players, with PSG featuring Ousmane Dembélé, Khvicha Kvaratskhelia, and Désiré Doué, while Arsenal has Bukayo Saka, Declan Rice, and other talented players.",
+          "evidence_urls": [
+            "https://apnews.com/live/champions-league-final-2026-paris-saint-germain-arsenal-updates",
+            "https://en.wikipedia.org/wiki/2026_UEFA_Champions_League_final",
+            "https://www.nytimes.com/athletic/7288733/2026/05/30/champions-league-final-explained-arsenal-psg/"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "Unfortunately, I couldn't find any information about the actual result of the match.",
+          "evidence_urls": [
+            "https://apnews.com/live/champions-league-final-2026-paris-saint-germain-arsenal-updates",
+            "https://en.wikipedia.org/wiki/2026_UEFA_Champions_League_final",
+            "https://www.uefa.com/uefachampionsleague/news/029a-1df98e9a78ca-1acaca3c53b0-1000--2026-uefa-champions-league-final-where-is-it-who-is-involv/"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        }
+      ],
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/2026_UEFA_Champions_League_final",
+          "title": "2026 UEFA Champions League final - Wikipedia",
+          "domain": "en.wikipedia.org",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "3 hours ago - It will be played at the Puskás Aréna in Budapest, Hungary, on 30 May 2026 between French club Paris Saint-Germain, the defending champions, and English club Arsenal. This will be the first final to include the reigning champions since 2018. The winners will earn the right to play against ...",
+          "tier": "high"
+        },
+        {
+          "url": "https://www.uefa.com/uefachampionsleague/news/029a-1df98e9a78ca-1acaca3c53b0-1000--2026-uefa-champions-league-final-where-is-it-who-is-involv/",
+          "title": "2026 UEFA Champions League final: Where is it, who is involved, how to watch | UEFA Champions League | UEFA.com",
+          "domain": "www.uefa.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "5 hours ago - The 2026 Champions League final is scheduled for Saturday 30 May 2026, marking the conclusion of the 71st season of Europe's elite club competition and the 34th since it was renamed the UEFA Champions League.",
+          "tier": "high"
+        },
+        {
+          "url": "https://www.nytimes.com/athletic/7288733/2026/05/30/champions-league-final-explained-arsenal-psg/",
+          "title": "The 2026 Champions League final explained: Everything you need to know - The Athletic",
+          "domain": "www.nytimes.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "10 hours ago - Paris Saint-Germain and Arsenal meet in the 2026 Champions League final on Saturday - this is everything you need to know",
+          "tier": "high"
+        },
+        {
+          "url": "https://apnews.com/live/champions-league-final-2026-paris-saint-germain-arsenal-updates",
+          "title": "2026 Champions League final live updates: Titleholder Paris Saint-Germain takes on Arsenal - AP News",
+          "domain": "apnews.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Arsenal's Bukayo Saka, left, and Burnley's Maxime Esteve battle for the ball during the English Premier League soccer match between Arsenal and Burnley in London, Monday May 18, 2026. (John Walton/PA via AP)",
+          "tier": "high"
+        },
+        {
+          "url": "https://sports.yahoo.com/articles/night-stars-paris-arsenal-champions-091400340.html",
+          "title": "🏆 Night of the STARS! Paris-Arsenal Champions League final on NOW 🔥 - Yahoo Sports",
+          "domain": "sports.yahoo.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "OneFootball",
+          "tier": "low"
+        }
+      ],
+      "trust_signals": {
+        "citation_coverage": 1.0,
+        "avg_sources_per_claim": 3.0,
+        "multi_source_claim_ratio": 1.0,
+        "distinct_domain_count": 5,
+        "source_quality_score": 0.87,
+        "high_tier_ratio": 0.8,
+        "citation_strength": 1.0,
+        "tier_breakdown": {
+          "high": 4,
+          "medium": 0,
+          "low": 1,
+          "prediction": 0
+        },
+        "total_sources": 5
+      },
+      "model_key": "llama",
+      "original_question": "Whats the result of Champions League final today?",
+      "cached_at": "2026-05-31T00:03:04.660331+00:00",
+      "cached_ts": 1780185784.660343
+    },
+    "llama::turkeys inflation rate by march 2026": {
+      "answer": "Turkey's inflation rate by March 2026 is 30.87% (annual) and 1.94% (monthly).",
+      "facts": [
+        {
+          "claim_text": "Turkey's inflation rate by March 2026 is 30.87% (annual) and 1.94% (monthly).",
+          "evidence_urls": [
+            "https://tradingeconomics.com/turkey/inflation-cpi",
+            "https://businessturkeytoday.com/turkeys-march-inflation-figures-are-out-but-the-gap-raises-questions.html",
+            "https://www.inflationtool.com/rates/turkey"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        }
+      ],
+      "sources": [
+        {
+          "url": "https://tradingeconomics.com/turkey/inflation-cpi",
+          "title": "Turkey Inflation Rate - TRADING ECONOMICS",
+          "domain": "tradingeconomics.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "The annual inflation rate in Turkey eased to 30.87% in March 2026, down from 31.53% in February which was the highest level since October 2025, and below market expectations of 31.4%.",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.inflationtool.com/rates/turkey",
+          "title": "Turkey Inflation Rate - 2026",
+          "domain": "www.inflationtool.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "4 days ago · The graph above shows the annual inflation rates in Turkey covering the previous 10 calendar years, starting in 2016. For additional years, see the historical inflation rates. To calculate cumulative rates between two different periods, you can use the Turkey Inflation Calculator.",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.tcmb.gov.tr/wps/wcm/connect/en/tcmb+en/main+menu/publications/reports/inflation+report/2026/inflation+report+2026+-+i",
+          "title": "Inflation Report 2026 - I (February 12, 2026) - TCMB",
+          "domain": "www.tcmb.gov.tr",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Feb 12, 2026 · The Central Bank of the Republic of Turkey is responsible for the monetary and exchange rate policies in Turkey. The primary objective of the Bank is to achieve price stability.",
+          "tier": "low"
+        },
+        {
+          "url": "https://businessturkeytoday.com/turkeys-march-inflation-figures-are-out-but-the-gap-raises-questions.html",
+          "title": "Turkey Inflation March 2026: TÜİK vs ENAG Data Gap Raises ...",
+          "domain": "businessturkeytoday.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Apr 3, 2026 · Turkey’s official statistics authority has released its inflation figures for March 2026. According to the data, monthly inflation came in at 1.94%, while annual inflation was calculated at 30.87%.",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.kitco.com/news/off-the-wire/2026-05-21/euro-zone-growth-set-slow-2026-middle-east-conflict-fuels-inflation",
+          "title": "Euro zone growth set to slow in 2026 as Middle East conflict fuels inflation - KITCO",
+          "domain": "www.kitco.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "The EU executive also raised its forecasts for inflation to 3.0% in 2026 from a previous 1.9% and ​to 2.3% in 2027 from 2.0%, reinforcing the case for a rise in European Central Bank interest rates.",
+          "tier": "low"
+        },
+        {
+          "url": "https://israel-alma.org/turkeys-military-buildup-and-its-impact-on-the-construction-and-employment-of-syrian-force-april-may-2026/",
+          "title": "Turkey’s Military Buildup and Its Impact on the Construction and Employment of Syrian Force (April / May 2026) - Alma Research and Education Center",
+          "domain": "israel-alma.org",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Meanwhile, an anti-Israel flotilla, intended to generate provocation and to bolster Erdoğan’s image as the “protector of the Palestinians,” set out on May 14 from the coast of Turkey toward the Gaza Strip. The Israeli Navy intercepted dozens of vessels — the bulk of the flotilla — by May 19. The flotilla was organized in part by the Turkish IHH organization, banned as a terrorist organization in I",
           "tier": "low"
         }
       ],
@@ -915,21 +1730,1008 @@
         "avg_sources_per_claim": 3.0,
         "multi_source_claim_ratio": 1.0,
         "distinct_domain_count": 6,
-        "source_quality_score": 0.764,
-        "high_tier_ratio": 0.571,
+        "source_quality_score": 0.35,
+        "high_tier_ratio": 0.0,
+        "citation_strength": 0.35,
+        "tier_breakdown": {
+          "high": 0,
+          "medium": 0,
+          "low": 6,
+          "prediction": 0
+        },
+        "total_sources": 6
+      },
+      "model_key": "llama",
+      "original_question": "turkeys inflation rate by march 2026",
+      "cached_at": "2026-05-31T00:09:33.679915+00:00",
+      "cached_ts": 1780186173.679927
+    },
+    "llama::galatasaray top scorer this season": {
+      "answer": "Unfortunately, I could not find the top scorer for Galatasaray this season in the provided search results. The information available focuses on general team statistics and schedules rather than specific player achievements.",
+      "facts": [
+        {
+          "claim_text": "Unfortunately, I could not find the top scorer for Galatasaray this season in the provided search results.",
+          "evidence_urls": [
+            "https://www.sofascore.com/football/team/galatasaray/3061",
+            "https://www.aiscore.com/team-galatasaray/2ezk96i1ppawkn5",
+            "https://soccer365.net/competitions/723/"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "The information available focuses on general team statistics and schedules rather than specific player achievements.",
+          "evidence_urls": [
+            "https://www.sofascore.com/football/team/galatasaray/3061"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": false,
+            "weak_evidence": true,
+            "needs_review": true
+          }
+        }
+      ],
+      "sources": [
+        {
+          "url": "https://www.sofascore.com/football/team/galatasaray/3061",
+          "title": "Galatasaray Live Score, Schedule & Player Stats | Sofascore",
+          "domain": "www.sofascore.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Galatasaray top scorers list is updated live during every match.For today’s football schedule and results visit our football live score page.",
+          "tier": "medium"
+        },
+        {
+          "url": "https://www.aiscore.com/team-galatasaray/2ezk96i1ppawkn5",
+          "title": "Galatasaray Live Score, 25-26 Fixtures, Results",
+          "domain": "www.aiscore.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "(Galatasaray top scorers/assists list is updated live during every match).",
+          "tier": "low"
+        },
+        {
+          "url": "https://soccer365.net/competitions/723/",
+          "title": "Süper Lig 2025/2026, Football, Türkiye - Table and Standings, Match...",
+          "domain": "soccer365.net",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Trendyol Süper Lig. Season.Winner. Galatasaray. Country. Türkiye. Date. 08.08.2025 - 17.05.2026.",
+          "tier": "low"
+        }
+      ],
+      "trust_signals": {
+        "citation_coverage": 1.0,
+        "avg_sources_per_claim": 2.0,
+        "multi_source_claim_ratio": 0.5,
+        "distinct_domain_count": 3,
+        "source_quality_score": 0.45,
+        "high_tier_ratio": 0.0,
+        "citation_strength": 0.65,
+        "tier_breakdown": {
+          "high": 0,
+          "medium": 1,
+          "low": 2,
+          "prediction": 0
+        },
+        "total_sources": 3
+      },
+      "model_key": "llama",
+      "original_question": "galatasaray top scorer this season ?",
+      "cached_at": "2026-05-31T00:13:05.691420+00:00",
+      "cached_ts": 1780186385.69143
+    },
+    "llama::barcelonas top scorer 2026": {
+      "answer": "Barcelona's top scorer in 2026 is Robert Lewandowski.",
+      "facts": [
+        {
+          "claim_text": "Barcelona's top scorer in 2026 is Robert Lewandowski.",
+          "evidence_urls": [
+            "https://www.goal.com/en-us/team/barcelona/top-players/agh9ifb2mw3ivjusgedj7c3fe",
+            "https://en.wikipedia.org/wiki/List_of_FC_Barcelona_records_and_statistics"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        }
+      ],
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/List_of_FC_Barcelona_records_and_statistics",
+          "title": "List of FC Barcelona records and statistics - Wikipedia",
+          "domain": "en.wikipedia.org",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "3 days ago - Barcelona players that have been ... Luis Suárez (2015–16, 5 goals in 4 games) Munir (2015–16, 5 goals in 5 games) Ferran Torres (2024–25, 6 goals in 5 games) Barcelona players that have been the top scorer of UEFA ...",
+          "tier": "high"
+        },
+        {
+          "url": "https://www.goal.com/en-us/team/barcelona/top-players/agh9ifb2mw3ivjusgedj7c3fe",
+          "title": "Barcelona Top Players - Goals, Assists, Tackles, Clean Sheets and more | Goal.com US",
+          "domain": "www.goal.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "4 days ago - All the stats you need for the Barcelona's top players 2025/2026. Find out who your Barcelona's top players for goals, assists, tackles, clean sheets and more.",
+          "tier": "medium"
+        }
+      ],
+      "trust_signals": {
+        "citation_coverage": 1.0,
+        "avg_sources_per_claim": 2.0,
+        "multi_source_claim_ratio": 1.0,
+        "distinct_domain_count": 2,
+        "source_quality_score": 0.825,
+        "high_tier_ratio": 0.5,
         "citation_strength": 1.0,
         "tier_breakdown": {
-          "high": 4,
+          "high": 1,
           "medium": 1,
+          "low": 0,
+          "prediction": 0
+        },
+        "total_sources": 2
+      },
+      "model_key": "llama",
+      "original_question": "Barcelonas top scorer 2026",
+      "cached_at": "2026-05-31T00:14:44.016327+00:00",
+      "cached_ts": 1780186484.016337
+    },
+    "llama::fenerbahçe s league championship number": {
+      "answer": "Fenerbahçe has won the Turkish national championship 28 times, including 19 titles in the Süper Lig. Their first league championship was in 1933, and they last won the Süper Lig in 2022-23.",
+      "facts": [
+        {
+          "claim_text": "Fenerbahçe has won the Turkish national championship 28 times, including 19 titles in the Süper Lig.",
+          "evidence_urls": [
+            "https://en.wikipedia.org/wiki/Fenerbahçe_S.K._(football)",
+            "https://baike.baidu.com/en/item/Fenerbah%C3%A7e%20Spor%20Kul%C3%BCb%C3%BC/1462519",
+            "https://www.transfermarkt.com/jumplist/erfolge/verein/36"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "Their first league championship was in 1933, and they last won the Süper Lig in 2022-23.",
+          "evidence_urls": [
+            "https://www.uefa.com/uefachampionsleague/history/clubs/52692--fenerbahce",
+            "https://en.wikipedia.org/wiki/Fenerbahçe_S.K._(football)",
+            "https://www.uefa.com/uefaeuropaleague/clubs/52692--fenerbahce/standings/"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        }
+      ],
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Fenerbahçe_S.K._(football)",
+          "title": "Fenerbahçe S.K. (Football) - Wikipedia",
+          "domain": "en.wikipedia.org",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Fenerbahçe won the championship 6 times in 1937, 1940, 1943, 1945, 1946 and 1950, and became the team that achieved the most victories in the Turkish National Division.He was a four-time league champion with Fenerbahçe and scored 162 goals in 330 matches.",
+          "tier": "high"
+        },
+        {
+          "url": "https://www.uefa.com/uefaeuropaleague/clubs/52692--fenerbahce/standings/",
+          "title": "Fenerbahçe | League Phase Table | UEFA.com",
+          "domain": "www.uefa.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Find out all you need to know about the clubs competing to win the UEFA Europa League 2024/2025.",
+          "tier": "high"
+        },
+        {
+          "url": "https://www.sofascore.com/tr/football/team/fenerbahce/3052",
+          "title": "Fenerbahçe İstanbul Canlı Skoru, Takvimi ve Oyuncu İstatistikleri",
+          "domain": "www.sofascore.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "UEFA Champions League UEFA Champions League.Bazı Fenerbahçe İstanbul maçlarının gollerini ve haberlerini içeren öne çıkan videolarımız olabilir.",
+          "tier": "medium"
+        },
+        {
+          "url": "https://baike.baidu.com/en/item/Fenerbah%C3%A7e%20Spor%20Kul%C3%BCb%C3%BC/1462519",
+          "title": "Fenerbahçe Spor Kulübü（a Turkish professional football club ...",
+          "domain": "baike.baidu.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Including the national league championship in the 1949-50 season, Fenerbahçe's number of top-flight league titles reached nine. 8. In 1959, the inaugural",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.fenerbahce.org/28-championships",
+          "title": "28 Championships - Fenerbahçe Spor Kulübü - Fenerbahce.org",
+          "domain": "www.fenerbahce.org",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.uefa.com/uefachampionsleague/history/clubs/52692--fenerbahce",
+          "title": "Fenerbahçe | History | UEFA Champions League | UEFA.com",
+          "domain": "www.uefa.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Champions League Official Live football scores & Fantasy. UEFA.com works better on other browsers. For the best possible experience, we recommend using Chrome, Firefox or Microsoft Edge. # Fenerbahçe History. ## Matches played. 2025/26 P W D L Play-offs 4 1 1 2. 2024/25 P W D L Third qualifying round 4 2 1 1. 2022/23 P W D L Second qualifying round 2 0 2 0. 2008/09 P W D L Group stage 10 2 3 4. 20",
+          "tier": "high"
+        },
+        {
+          "url": "https://www.transfermarkt.com/jumplist/erfolge/verein/36",
+          "title": "Fenerbahce - Club achievements | Transfermarkt",
+          "domain": "www.transfermarkt.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "# Fenerbahce. ## Info. ## 19x Turkish Champion. ## 7x Turkish cup winner. ## 10x Turkish Super Cup winner. ## 1x Balkan Cup Winner. ## All titles. | 25/26 | Europa League Participant | Europa League Participant |. | 25/26 | TFF Süper Kupa | Turkish Super Cup winner |. | 23/24 | Conference League participant | Conference League participant |. | 22/23 | Türkiye Kupasi | Turkish cup winner |. | 13/14",
+          "tier": "medium"
+        }
+      ],
+      "trust_signals": {
+        "citation_coverage": 1.0,
+        "avg_sources_per_claim": 3.0,
+        "multi_source_claim_ratio": 1.0,
+        "distinct_domain_count": 6,
+        "source_quality_score": 0.714,
+        "high_tier_ratio": 0.429,
+        "citation_strength": 1.0,
+        "tier_breakdown": {
+          "high": 3,
+          "medium": 2,
           "low": 2,
           "prediction": 0
         },
         "total_sources": 7
       },
       "model_key": "llama",
-      "original_question": "Who founded openai",
-      "cached_at": "2026-05-22T19:30:09.984751+00:00",
-      "cached_ts": 1779478209.984762
+      "original_question": "Fenerbahçe's league championship number ?",
+      "cached_at": "2026-05-31T00:17:07.990120+00:00",
+      "cached_ts": 1780186627.990136
+    },
+    "llama::what is türkiye s inflation rate this year": {
+      "answer": "This information can be found on reputable sources such as tradingeconomics.com and inflationtool.com.",
+      "facts": [
+        {
+          "claim_text": "This information can be found on reputable sources such as tradingeconomics.com and inflationtool.com.",
+          "evidence_urls": [],
+          "source_tools": [],
+          "fact_quality_flags": {
+            "has_source": false,
+            "multi_source": false,
+            "weak_evidence": true,
+            "needs_review": true
+          }
+        }
+      ],
+      "sources": [
+        {
+          "url": "https://www.kitco.com/news/off-the-wire/2026-05-21/euro-zone-growth-set-slow-2026-middle-east-conflict-fuels-inflation",
+          "title": "Euro zone growth set to slow in 2026 as Middle East conflict fuels inflation - KITCO",
+          "domain": "www.kitco.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "The EU executive also raised its forecasts for inflation to 3.0% in 2026 from a previous 1.9% and ​to 2.3% in 2027 from 2.0%, reinforcing the case for a rise in European Central Bank interest rates.",
+          "tier": "low"
+        },
+        {
+          "url": "https://finance.yahoo.com/markets/stocks/articles/stock-market-investors-got-final-091300206.html",
+          "title": "Stock Market Investors Got a Final Warning From Fed Chair Jerome Powell. History Says This Will Happen Next. - Yahoo Finance",
+          "domain": "finance.yahoo.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "\"The economic outlook remains highly uncertain, and the conflict in the Middle East has added to this uncertainty,\" Powell said. \"In the near term, higher energy prices will push up overall inflation. Beyond that, the scope and duration of potential effects on the economy remain unclear.\" Powell also ruled out the possibility of rate cuts for the foreseeable future.",
+          "tier": "low"
+        },
+        {
+          "url": "https://tradingeconomics.com/turkey/inflation-cpi",
+          "title": "Turkey Inflation Rate",
+          "domain": "tradingeconomics.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Inflation Rate in Turkey increased to 32.37 percent in April from 30.87 percent in March of 2026.",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.inflationtool.com/rates/turkey",
+          "title": "Turkey Inflation Rate - 2026",
+          "domain": "www.inflationtool.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "The current inflation rate in Turkey is 30.87%, which is calculated based on CPI (Consumer Price Index) values for the last 12 months ending in March 2026.",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.officialdata.org/turkey/inflation",
+          "title": "Turkey Inflation Calculator: World Bank Data, 1956-2026 (TRY)",
+          "domain": "www.officialdata.org",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "The lira had an average inflation rate of 29.43% per year between 1956 and today, producing a cumulative price increase of 6,948,876,400.02%.",
+          "tier": "low"
+        },
+        {
+          "url": "https://tr.tradingview.com/symbols/ECONOMICS-TRIRYY/",
+          "title": "Turkey Inflation Rate YoY (ECONOMICS:TRIRYY) — Geçmiş Veriler...",
+          "domain": "tr.tradingview.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Ücretsiz ekonomik veriler, göstergeler ve istatistikler. Turkey Inflation Rate YoY sağlayan ECONOMICS.",
+          "tier": "low"
+        }
+      ],
+      "trust_signals": {
+        "citation_coverage": 0.0,
+        "avg_sources_per_claim": 0.0,
+        "multi_source_claim_ratio": 0.0,
+        "distinct_domain_count": 6,
+        "source_quality_score": 0.35,
+        "high_tier_ratio": 0.0,
+        "citation_strength": 0.0,
+        "tier_breakdown": {
+          "high": 0,
+          "medium": 0,
+          "low": 6,
+          "prediction": 0
+        },
+        "total_sources": 6
+      },
+      "model_key": "llama",
+      "original_question": "What is Türkiye's inflation rate this year?",
+      "cached_at": "2026-05-31T00:20:37.912363+00:00",
+      "cached_ts": 1780186837.912372
+    },
+    "qwen::what is türkiye s inflation rate this year": {
+      "answer": "Based on the recent data and reports: - The European Commission forecasts euro zone inflation at 3.0% for 2026, which could influence Türkiye's inflation rate due to its economic ties with Europe. - The Central Bank of the Republic of Türkiye (CBRT) raised its year-end inflation forecast for 2026 to 26%, citing price pressures from the Iran conflict and energy market disruptions. They project a decrease in inflation to 15% by the end of 2027. While specific data on Turkey's current inflation rate is not directly provided, the CBRT's latest projections indicate an expected inflation rate of around 26% for the end of 2026. For more precise and up-to-date information, you may want to check the official website of the Central Bank of the Republic of Türkiye or financial news outlets that provide real-time economic updates.",
+      "facts": [
+        {
+          "claim_text": "Based on the recent data and reports: - The European Commission forecasts euro zone inflation at 3.0% for 2026, which could influence Türkiye's inflation rate due to its economic ties with Europe.",
+          "evidence_urls": [
+            "https://www.kitco.com/news/off-the-wire/2026-05-21/euro-zone-growth-set-slow-2026-middle-east-conflict-fuels-inflation",
+            "https://www.inflationtool.com/rates/turkey",
+            "https://www.tcmb.gov.tr/wps/wcm/connect/en/tcmb+en/main+menu/publications/reports/inflation+report/2026/inflation+report+2026+-+i"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "- The Central Bank of the Republic of Türkiye (CBRT) raised its year-end inflation forecast for 2026 to 26%, citing price pressures from the Iran conflict and energy market disruptions.",
+          "evidence_urls": [
+            "https://www.turkiyetoday.com/business/turkish-central-bank-raises-2026-inflation-forecast-to-26-amid-iran-war-risks-3219928",
+            "https://www.kitco.com/news/off-the-wire/2026-05-21/euro-zone-growth-set-slow-2026-middle-east-conflict-fuels-inflation",
+            "https://www.tcmb.gov.tr/wps/wcm/connect/en/tcmb+en/main+menu/publications/reports/inflation+report/2026/inflation+report+2026+-+i"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "They project a decrease in inflation to 15% by the end of 2027.",
+          "evidence_urls": [
+            "https://www.turkiyetoday.com/business/turkish-central-bank-raises-2026-inflation-forecast-to-26-amid-iran-war-risks-3219928",
+            "https://www.kitco.com/news/off-the-wire/2026-05-21/euro-zone-growth-set-slow-2026-middle-east-conflict-fuels-inflation",
+            "https://www.inflationtool.com/rates/turkey"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "While specific data on Turkey's current inflation rate is not directly provided, the CBRT's latest projections indicate an expected inflation rate of around 26% for the end of 2026.",
+          "evidence_urls": [
+            "https://www.inflationtool.com/rates/turkey",
+            "https://www.tcmb.gov.tr/wps/wcm/connect/en/tcmb+en/main+menu/publications/reports/inflation+report/2026/inflation+report+2026+-+i",
+            "https://www.turkiyetoday.com/business/turkish-central-bank-raises-2026-inflation-forecast-to-26-amid-iran-war-risks-3219928"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "For more precise and up-to-date information, you may want to check the official website of the Central Bank of the Republic of Türkiye or financial news outlets that provide real-time economic updates.",
+          "evidence_urls": [
+            "https://www.turkiyetoday.com/business/turkish-central-bank-raises-2026-inflation-forecast-to-26-amid-iran-war-risks-3219928",
+            "https://www.tcmb.gov.tr/wps/wcm/connect/en/tcmb+en/main+menu/publications/reports/inflation+report/2026/inflation+report+2026+-+i",
+            "https://www.kitco.com/news/off-the-wire/2026-05-21/euro-zone-growth-set-slow-2026-middle-east-conflict-fuels-inflation"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        }
+      ],
+      "sources": [
+        {
+          "url": "https://www.inflationtool.com/rates/turkey",
+          "title": "Turkey Inflation Rate - 2026",
+          "domain": "www.inflationtool.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Current inflation rate in Turkey, based on the Consumer Price Index. Year-over-year and month-over-month values. Chart and historical data.",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.tcmb.gov.tr/wps/wcm/connect/en/tcmb+en/main+menu/publications/reports/inflation+report/2026/inflation+report+2026+-+i",
+          "title": "Inflation Report 2026 - I (February 12, 2026) - TCMB",
+          "domain": "www.tcmb.gov.tr",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "The Central Bank of the Republic of Turkey is responsible for the monetary and exchange rate policies in Turkey. The primary objective of the Bank is to achieve price stability.",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.turkiyetoday.com/business/turkish-central-bank-raises-2026-inflation-forecast-to-26-amid-iran-war-risks-3219928",
+          "title": "Turkish central bank raises 2026 inflation forecast to 26% amid Iran ...",
+          "domain": "www.turkiyetoday.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "T he Central Bank of the Republic of Türkiye (CBRT) raised its year-end inflation forecast for 2026 to 26% from 18% in its second inflation report, citing mounting price pressures triggered by the Iran war and disruptions tied to energy markets around the Strait of Hormuz, Governor Fatih Karahan announced on Thursday. The central bank projected inflation would fall to 15% by the end of 2027 ...",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.kitco.com/news/off-the-wire/2026-05-21/euro-zone-growth-set-slow-2026-middle-east-conflict-fuels-inflation",
+          "title": "Euro zone growth set to slow in 2026 as Middle East conflict fuels inflation - KITCO",
+          "domain": "www.kitco.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "The EU executive also raised its forecasts for inflation to 3.0% in 2026 from a previous 1.9% and ​to 2.3% in 2027 from 2.0%, reinforcing the case for a rise in European Central Bank interest rates.",
+          "tier": "low"
+        },
+        {
+          "url": "https://finance.yahoo.com/markets/stocks/articles/stock-market-investors-got-final-091300206.html",
+          "title": "Stock Market Investors Got a Final Warning From Fed Chair Jerome Powell. History Says This Will Happen Next. - Yahoo Finance",
+          "domain": "finance.yahoo.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "\"The economic outlook remains highly uncertain, and the conflict in the Middle East has added to this uncertainty,\" Powell said. \"In the near term, higher energy prices will push up overall inflation. Beyond that, the scope and duration of potential effects on the economy remain unclear.\" Powell also ruled out the possibility of rate cuts for the foreseeable future.",
+          "tier": "low"
+        }
+      ],
+      "trust_signals": {
+        "citation_coverage": 1.0,
+        "avg_sources_per_claim": 3.0,
+        "multi_source_claim_ratio": 1.0,
+        "distinct_domain_count": 5,
+        "source_quality_score": 0.35,
+        "high_tier_ratio": 0.0,
+        "citation_strength": 0.35,
+        "tier_breakdown": {
+          "high": 0,
+          "medium": 0,
+          "low": 5,
+          "prediction": 0
+        },
+        "total_sources": 5
+      },
+      "model_key": "qwen",
+      "original_question": "What is Türkiye's inflation rate this year?",
+      "cached_at": "2026-05-31T13:26:50.570711+00:00",
+      "cached_ts": 1780234010.570723
+    },
+    "llama::when was jfk assassinated": {
+      "answer": "Kennedy was assassinated on November 22, 1963.",
+      "facts": [
+        {
+          "claim_text": "Kennedy was assassinated on November 22, 1963.",
+          "evidence_urls": [
+            "https://en.wikipedia.org/wiki/John_F._Kennedy",
+            "https://www.youtube.com/watch?v=H4pfi-rTDk4",
+            "https://millercenter.org/president/kennedy/death-of-the-president"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        }
+      ],
+      "sources": [
+        {
+          "url": "https://www.youtube.com/watch?v=H4pfi-rTDk4",
+          "title": "JFK was assassinated on Nov. 22, 1963 - YouTube",
+          "domain": "www.youtube.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Comments · Secret Service Agent Vividly Recalls President Kennedy's Assassination | Clint Hill · Tennessee 2003 Cold Case Solved — arrest shocks",
+          "tier": "low"
+        },
+        {
+          "url": "https://www.jfklibrary.org/learn/about-jfk/jfk-in-history/november-22-1963-death-of-the-president",
+          "title": "November 22, 1963: Death of the President | JFK Library",
+          "domain": "www.jfklibrary.org",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "November 22, 1963: Death of the President · Campaigning in Texas · Morning in Fort Worth · On to Dallas · The Assassination · The President's Funeral · Aftermath.",
+          "tier": "low"
+        },
+        {
+          "url": "https://millercenter.org/president/kennedy/death-of-the-president",
+          "title": "John F. Kennedy: Death of a President | Miller Center",
+          "domain": "millercenter.org",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Kennedy: Death of a President. On November 22, 1963, President Kennedy and the First Lady journeyed to Dallas on a campaign trip. CLICK TO WATCH Barbara Perry discussing Rose Kennedy's reaction to JFK's assassination. Barbara Perry discussing Rose Kennedy's reaction to JFK's assassination. Ruby was tried and convicted of murder in Oswald's death. Although it concluded that two of Oswald’s three sh",
+          "tier": "low"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/John_F._Kennedy",
+          "title": "John F. Kennedy - Wikipedia",
+          "domain": "en.wikipedia.org",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "6 days ago - John Fitzgerald Kennedy (May 29, 1917 – November 22, 1963), also known as JFK, was the 35th president of the United States, serving from 1961 until his assassination in 1963. He was the youngest person elected president, at 43 years.",
+          "tier": "high"
+        }
+      ],
+      "trust_signals": {
+        "citation_coverage": 1.0,
+        "avg_sources_per_claim": 3.0,
+        "multi_source_claim_ratio": 1.0,
+        "distinct_domain_count": 4,
+        "source_quality_score": 0.512,
+        "high_tier_ratio": 0.25,
+        "citation_strength": 1.0,
+        "tier_breakdown": {
+          "high": 1,
+          "medium": 0,
+          "low": 3,
+          "prediction": 0
+        },
+        "total_sources": 4
+      },
+      "model_key": "llama",
+      "original_question": "When was JFK assassinated?",
+      "cached_at": "2026-05-31T15:48:28.728106+00:00",
+      "cached_ts": 1780242508.728116
+    },
+    "llama::what is the current bitcoin price": {
+      "answer": "I could not find a matching event or fact for the current price of Bitcoin.",
+      "facts": [
+        {
+          "claim_text": "I could not find a matching event or fact for the current price of Bitcoin.",
+          "evidence_urls": [
+            "https://finance.yahoo.com/quote/BTC-USD/chart/"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": false,
+            "weak_evidence": true,
+            "needs_review": true
+          }
+        }
+      ],
+      "sources": [
+        {
+          "url": "https://finance.yahoo.com/quote/BTC-USD/chart/",
+          "title": "Bitcoin USD (BTC-USD) Interactive Price Chart - Yahoo Finance",
+          "domain": "finance.yahoo.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Interactive Chart for Bitcoin USD (BTC-USD), analyze all the data with a huge range of indicators.May 20, 2026, 12:00 PM EDT.",
+          "tier": "low"
+        }
+      ],
+      "trust_signals": {
+        "citation_coverage": 1.0,
+        "avg_sources_per_claim": 1.0,
+        "multi_source_claim_ratio": 0.0,
+        "distinct_domain_count": 1,
+        "source_quality_score": 0.35,
+        "high_tier_ratio": 0.0,
+        "citation_strength": 0.35,
+        "tier_breakdown": {
+          "high": 0,
+          "medium": 0,
+          "low": 1,
+          "prediction": 0
+        },
+        "total_sources": 1
+      },
+      "model_key": "llama",
+      "original_question": "What is the current Bitcoin price?",
+      "cached_at": "2026-05-31T15:52:13.410591+00:00",
+      "cached_ts": 1780242733.410602
+    },
+    "llama::what is the latest nasa mission news this week": {
+      "answer": "NASA's latest mission news this week includes the ongoing testing of the X-59 quiet supersonic research aircraft for the Quesst mission, as well as progress on the Artemis missions, including the Artemis II lunar fly-by mission that flew on April 1, 2026. Additionally, NASA has announced preliminary plans for the Artemis III mission, which is planned for late 2027.",
+      "facts": [
+        {
+          "claim_text": "NASA's latest mission news this week includes the ongoing testing of the X-59 quiet supersonic research aircraft for the Quesst mission, as well as progress on the Artemis missions, including the Artemis II lunar fly-by mission that flew on April 1, 2026.",
+          "evidence_urls": [
+            "https://www.nasa.gov/2026-news-releases/",
+            "https://www.nasa.gov/gallery/expedition-74-image-gallery/page/10/",
+            "https://www.nasa.gov/image-article/going-low-and-slow-in-testing/"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": false,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        },
+        {
+          "claim_text": "Additionally, NASA has announced preliminary plans for the Artemis III mission, which is planned for late 2027.",
+          "evidence_urls": [
+            "https://www.nasa.gov/gallery/expedition-74-image-gallery/page/10/",
+            "https://www.nasa.gov/2026-news-releases/",
+            "https://www.nasa.gov/image-article/going-low-and-slow-in-testing/"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": false,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        }
+      ],
+      "sources": [
+        {
+          "url": "https://www.nasa.gov/gallery/expedition-74-image-gallery/page/10/",
+          "title": "Expedition 74 Image Gallery - NASA (.gov)",
+          "domain": "www.nasa.gov",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "jsc2026e005916 (Feb. 6, 2026) --- Four crew members representing NASA's SpaceX Crew-12 mission to the International Space Station wave to...",
+          "tier": "high"
+        },
+        {
+          "url": "https://www.nasa.gov/image-article/going-low-and-slow-in-testing/",
+          "title": "Going Low and Slow in Testing - NASA (.gov)",
+          "domain": "www.nasa.gov",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "article 1 week ago",
+          "tier": "high"
+        },
+        {
+          "url": "https://www.nasa.gov/2026-news-releases/",
+          "title": "2026 News Releases - NASA",
+          "domain": "www.nasa.gov",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "April 28, 2026 - As part of NASA’s SpaceX Crew-13 mission, four crew members from three space agencies will launch no earlier than mid-September to the International Space Station for a long-duration science expedition.",
+          "tier": "high"
+        }
+      ],
+      "trust_signals": {
+        "citation_coverage": 1.0,
+        "avg_sources_per_claim": 3.0,
+        "multi_source_claim_ratio": 0.0,
+        "distinct_domain_count": 1,
+        "source_quality_score": 1.0,
+        "high_tier_ratio": 1.0,
+        "citation_strength": 1.0,
+        "tier_breakdown": {
+          "high": 3,
+          "medium": 0,
+          "low": 0,
+          "prediction": 0
+        },
+        "total_sources": 3
+      },
+      "model_key": "llama",
+      "original_question": "What is the latest NASA mission news this week?”",
+      "cached_at": "2026-05-31T16:01:50.494627+00:00",
+      "cached_ts": 1780243310.494646
+    },
+    "llama::what is the global population now": {
+      "answer": "The global population in 2026 is projected to be around 8.3 billion.",
+      "facts": [
+        {
+          "claim_text": "The global population in 2026 is projected to be around 8.3 billion.",
+          "evidence_urls": [
+            "https://nypost.com/2026/05/26/science/humanity-headed-for-population-collapse-by-2064-if-environmental-chaos-spiral-new-study-warns/",
+            "https://countrymeters.info/en/World",
+            "https://www.newsweek.com/global-population-crash-low-birth-rates-scenario-science-11999396"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json",
+            "tavily_search_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        }
+      ],
+      "sources": [
+        {
+          "url": "https://www.newsweek.com/global-population-crash-low-birth-rates-scenario-science-11999396",
+          "title": "Scientists Map Out Scenario of Global Population Crash by 2064 - Newsweek",
+          "domain": "www.newsweek.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "NewsPoliticsTechFact CheckSports",
+          "tier": "low"
+        },
+        {
+          "url": "https://nypost.com/2026/05/26/science/humanity-headed-for-population-collapse-by-2064-if-environmental-chaos-spiral-new-study-warns/",
+          "title": "Human population could collapse and be cut in half in just 40 years, doomsday study reveals - New York Post",
+          "domain": "nypost.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "The model also takes a fresh look at the infamous 1969 “doomsday” theory, which suggested humanity’s population could spiral uncontrollably toward mathematical infinity before ending in global collapse on Friday, Nov. 13, 2026.",
+          "tier": "low"
+        },
+        {
+          "url": "https://countrymeters.info/en/World",
+          "title": "World Population 2026 — Live Counter, Demographics, Religion...",
+          "domain": "countrymeters.info",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "The median age of the global population is estimated to be 31 years in 2025.According to our estimations, daily change rates of world population in 2026 will be the following",
+          "tier": "low"
+        }
+      ],
+      "trust_signals": {
+        "citation_coverage": 1.0,
+        "avg_sources_per_claim": 3.0,
+        "multi_source_claim_ratio": 1.0,
+        "distinct_domain_count": 3,
+        "source_quality_score": 0.35,
+        "high_tier_ratio": 0.0,
+        "citation_strength": 0.35,
+        "tier_breakdown": {
+          "high": 0,
+          "medium": 0,
+          "low": 3,
+          "prediction": 0
+        },
+        "total_sources": 3
+      },
+      "model_key": "llama",
+      "original_question": "What is the global population now?",
+      "cached_at": "2026-05-31T16:03:39.187601+00:00",
+      "cached_ts": 1780243419.187615
+    },
+    "llama::who is the ceo of nvidia in 2026": {
+      "answer": "The current CEO of NVIDIA in 2026 is Jensen Huang.",
+      "facts": [
+        {
+          "claim_text": "The current CEO of NVIDIA in 2026 is Jensen Huang.",
+          "evidence_urls": [
+            "https://www.reuters.com/world/asia-pacific/nvidia-ceo-says-taiwan-is-epicentre-ai-revolution-2026-05-27/",
+            "https://www.cnbc.com/2026/03/16/nvidia-gtc-2026-ceo-jensen-huang-keynote-blackwell-vera-rubin.html",
+            "https://en.wikipedia.org/wiki/Jensen_Huang"
+          ],
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "fact_quality_flags": {
+            "has_source": true,
+            "multi_source": true,
+            "weak_evidence": false,
+            "needs_review": false
+          }
+        }
+      ],
+      "sources": [
+        {
+          "url": "https://www.reuters.com/world/asia-pacific/nvidia-ceo-says-taiwan-is-epicentre-ai-revolution-2026-05-27/",
+          "title": "Nvidia to spend $150 billion a year in Taiwan, 'epicentre' of AI revolution, says CEO | Reuters",
+          "domain": "www.reuters.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "4 days ago - [1/3]Nvidia CEO Jensen Huang delivers a speech at the Constellation All-Employee Celebration in Taipei, Taiwan May 27, 2026.",
+          "tier": "high"
+        },
+        {
+          "url": "https://www.cnbc.com/2026/03/16/nvidia-gtc-2026-ceo-jensen-huang-keynote-blackwell-vera-rubin.html",
+          "title": "Nvidia GTC 2026: CEO Jensen Huang sees $1 trillion in orders for Blackwell and Vera Rubin through '27",
+          "domain": "www.cnbc.com",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "March 20, 2026 - At Nvidia's annual developer conference, CEO Jensen Huang said he sees $1 trillion in orders for Blackwell and Vera Rubin systems through 2027 · The company has been expecting growth in 2026 to exceed what was included in its projection last ...",
+          "tier": "medium"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Jensen_Huang",
+          "title": "Jensen Huang - Wikipedia",
+          "domain": "en.wikipedia.org",
+          "source_tools": [
+            "duckduckgo_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "1 day ago - Jen-Hsun \"Jensen\" Huang (Chinese: 黃仁勳; Wade–Giles: Huáng Jén-hsūn; Tâi-lô: N̂g Jîn-hun; born February 17, 1963) is a Taiwanese and American business executive and electrical engineer who is the founder, president, and CEO of Nvidia, the world's most valuable company.",
+          "tier": "high"
+        },
+        {
+          "url": "https://www.cnbc.com/2026/05/21/cnbc-excerpts-nvidia-ceo-jensen-huang-speaks-with-cnbcs-sara-eisen-following-release-of-nvidias-q1-results-.html",
+          "title": "CNBC Excerpts: Nvidia CEO Jensen Huang Speaks with CNBC’s Sara Eisen Following Release of Nvidia’s Q1 Results - CNBC",
+          "domain": "www.cnbc.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "WATCH LIVE",
+          "tier": "medium"
+        },
+        {
+          "url": "https://techcrunch.com/2026/05/20/jensen-huang-says-hes-found-a-brand-new-200b-market-for-nvidia/",
+          "title": "Jensen Huang says he’s found a ‘brand new’ $200B market for Nvidia - TechCrunch",
+          "domain": "techcrunch.com",
+          "source_tools": [
+            "tavily_search_results_json"
+          ],
+          "relevance_score": null,
+          "snippet": "Julie Bort",
+          "tier": "medium"
+        }
+      ],
+      "trust_signals": {
+        "citation_coverage": 1.0,
+        "avg_sources_per_claim": 3.0,
+        "multi_source_claim_ratio": 1.0,
+        "distinct_domain_count": 4,
+        "source_quality_score": 0.79,
+        "high_tier_ratio": 0.4,
+        "citation_strength": 1.0,
+        "tier_breakdown": {
+          "high": 2,
+          "medium": 3,
+          "low": 0,
+          "prediction": 0
+        },
+        "total_sources": 5
+      },
+      "model_key": "llama",
+      "original_question": "“Who is the CEO of NVIDIA in 2026?”",
+      "cached_at": "2026-05-31T16:05:11.540039+00:00",
+      "cached_ts": 1780243511.540052
     }
   }
 }

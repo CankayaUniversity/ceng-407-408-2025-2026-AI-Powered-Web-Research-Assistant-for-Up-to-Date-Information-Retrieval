@@ -22,9 +22,14 @@ HIGH_TIER_DOMAINS = {
     "icc-cricket.com", "atptour.com", "wtatennis.com",
     # Official governments / intergovernmentals
     "un.org", "who.int", "imf.org", "worldbank.org",
-    "europa.eu", "ecb.europa.eu",
+    "europa.eu", "ec.europa.eu", "eurostat.europa.eu", "ecb.europa.eu",
     "nasa.gov", "noaa.gov", "nih.gov", "cdc.gov", "fda.gov",
-    "nist.gov", "energy.gov",
+    "nist.gov", "energy.gov", "census.gov", "bls.gov", "sec.gov", "bea.gov",
+    "data.gov",
+    # Türkiye — resmi istatistik / ekonomi / devlet
+    "tuik.gov.tr", "tcmb.gov.tr", "hmb.gov.tr", "turkiye.gov.tr",
+    "saglik.gov.tr", "meb.gov.tr", "tubitak.gov.tr",
+    "resmigazete.gov.tr",
     # Major newswires
     "reuters.com", "apnews.com", "afp.com",
     # Major newspapers / public broadcasters
@@ -53,6 +58,9 @@ MEDIUM_TIER_DOMAINS = {
     "cnn.com", "nbcnews.com", "cbsnews.com", "abcnews.go.com",
     "bloomberg.com", "axios.com", "politico.com",
     "aljazeera.com", "dw.com", "france24.com",
+    # Türkiye — ajans / ekonomi haber (resmi değil, ama yaygın)
+    "aa.com.tr", "anadoluajansi.com.tr", "bloomberght.com",
+    "dunya.com", "ekonomim.com", "trthaber.com",
     # Tech publications
     "techcrunch.com", "wired.com", "theverge.com", "arstechnica.com",
     "engadget.com", "venturebeat.com", "zdnet.com",
@@ -95,6 +103,23 @@ PREDICTION_TITLE_PATTERNS = (
 )
 PREDICTION_TITLE_RE = re.compile("|".join(PREDICTION_TITLE_PATTERNS), re.IGNORECASE)
 
+# Longest suffixes first so ".gov.uk" is not short-circuited by ".gov" alone.
+HIGH_TIER_SUFFIXES = (
+    ".parliament.uk", ".police.uk", ".nhs.uk", ".ac.uk", ".gov.uk",
+    ".edu.au", ".gov.au",
+    ".gov.tr", ".edu.tr", ".bel.tr", ".k12.tr", ".pol.tr", ".mil.tr",
+    ".gouv.fr", ".gov.de", ".gov.nl", ".gov.se", ".gov.pl", ".gov.it",
+    ".gc.ca", ".gov.ca",
+    ".go.jp", ".go.kr", ".go.id",
+    ".gov.in", ".gov.sg", ".gov.nz", ".gov.br", ".gov.tw", ".gov.hk",
+    ".int",
+    ".edu", ".gov", ".mil",
+)
+
+
+def _has_high_tier_suffix(domain: str) -> bool:
+    return any(domain.endswith(suffix) for suffix in HIGH_TIER_SUFFIXES)
+
 
 def _normalize_domain(url: str) -> str:
     try:
@@ -110,11 +135,15 @@ def _root_domain(domain: str) -> str:
     parts = domain.split(".")
     if len(parts) < 2:
         return domain
-    # Handle common multi-part TLDs (.co.uk, .gov.uk, .com.au, .ac.uk)
-    last_two = ".".join(parts[-2:])
-    if parts[-1] in {"uk", "au", "nz", "jp"} and parts[-2] in {"co", "gov", "ac", "com", "org"} and len(parts) >= 3:
-        return ".".join(parts[-3:])
-    return last_two
+    # Multi-part public suffixes (.co.uk, .gov.uk, .gov.tr, .com.au, …)
+    if len(parts) >= 3:
+        if parts[-1] == "tr" and parts[-2] in {"gov", "edu", "bel", "k12", "pol", "mil", "org", "com", "net"}:
+            return ".".join(parts[-3:])
+        if parts[-1] in {"uk", "au", "nz", "jp", "kr", "tw", "hk", "br", "in", "sg"} and parts[-2] in {
+            "co", "gov", "ac", "com", "org", "go", "edu", "net",
+        }:
+            return ".".join(parts[-3:])
+    return ".".join(parts[-2:])
 
 
 def is_prediction_source(url: str, title: str = "", snippet: str = "") -> bool:
@@ -140,10 +169,11 @@ def classify_source(url: str, title: str = "", snippet: str = "") -> str:
         return "high"
     if domain in MEDIUM_TIER_DOMAINS or root in MEDIUM_TIER_DOMAINS:
         return "medium"
-    # Government / academic top-level domains
-    if domain.endswith((".gov", ".edu", ".mil", ".gov.uk", ".gov.au", ".ac.uk", ".edu.au")):
+    if _has_high_tier_suffix(domain):
         return "high"
-    if domain.endswith(".org") and any(token in domain for token in ("foundation", "institute", "council")):
+    if domain.endswith(".org") and any(
+        token in domain for token in ("foundation", "institute", "council", "museum", "archive")
+    ):
         return "medium"
     return "low"
 
