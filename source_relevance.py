@@ -56,6 +56,19 @@ _DIFFERENT_CLUB_RE = re.compile(
     re.IGNORECASE,
 )
 
+_SUPER_LIG_QUERY_RE = re.compile(
+    r"\b(?:turkish\s+)?s.?per\s+lig\b|\bsuperlig\b|\bturkish\b.*\blig\b",
+    re.IGNORECASE,
+)
+_SUPER_LIG_RESULT_RE = re.compile(
+    r"\b(?:turkish\s+)?s.?per\s+lig\b|\bsuperlig\b|\bturkiye\b|\bturkey\b|\bturkish\b",
+    re.IGNORECASE,
+)
+_OTHER_MAJOR_LEAGUE_RE = re.compile(
+    r"\b(la\s+liga|premier\s+league|bundesliga|serie\s+a|ligue\s+1|champions\s+league)\b",
+    re.IGNORECASE,
+)
+
 
 def _normalize_text(text: str) -> str:
     if not text:
@@ -147,6 +160,15 @@ def relevance_score(
 
     q_norm = _normalize_text(query)
     title_snip = _normalize_text(f"{title} {snippet}")
+
+    # League-specific queries need league-specific evidence. Otherwise generic
+    # "2025/26 top scorer" articles from La Liga etc. can look relevant by
+    # token overlap and pollute the model context.
+    if _SUPER_LIG_QUERY_RE.search(q_norm):
+        if not _SUPER_LIG_RESULT_RE.search(title_snip):
+            return 0.0
+        if _OTHER_MAJOR_LEAGUE_RE.search(title_snip) and "super lig" not in title_snip:
+            score *= 0.05
 
     # Football question + basketball team page
     if _FOOTBALL_QUERY_RE.search(q_norm) and _BASKETBALL_RESULT_RE.search(title_snip):

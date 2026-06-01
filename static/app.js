@@ -715,10 +715,10 @@ function buildTrustExplainerModal() {
       <p>Every answer is scored on four dimensions based on the quality and consistency of the sources the agent retrieved.</p>
     </div>
     <div class="modal-body">
-      <div class="explainer-h3">Source reputation tiers</div>
+      <div class="explainer-h3">Source reliability</div>
       <p class="explainer-intro">
-        Every URL the agent retrieves is classified into one of four reputation tiers.
-        The tier determines the source's weight in the trust score.
+        Every URL the agent retrieves gets a reputation tier plus a 0-1 reliability score.
+        That continuous score is used in the trust score.
       </p>
       <div class="explainer-tier-grid">
         <div class="explainer-tier">
@@ -768,8 +768,8 @@ function buildTrustExplainerModal() {
 
       <div class="explainer-metric">
         <div class="explainer-metric-head">
-          <span class="explainer-metric-name">Source quality</span>
-          <code class="explainer-metric-formula">mean(tier_weight(s) for s in sources)</code>
+          <span class="explainer-metric-name">Source reliability</span>
+          <code class="explainer-metric-formula">mean(reliability_score(s) for s in sources)</code>
         </div>
         <p>The average reputation tier across <strong>all</strong> sources retrieved during research, scaled to 0–100%. If most results came from Wikipedia and Reuters, this is high; if they came from random blogs or betting sites, it drops.</p>
         <p class="why">Why it matters — Tells you whether the answer drew from authoritative references or from low-quality material.</p>
@@ -778,7 +778,7 @@ function buildTrustExplainerModal() {
       <div class="explainer-metric">
         <div class="explainer-metric-head">
           <span class="explainer-metric-name">Citation strength</span>
-          <code class="explainer-metric-formula">mean( max(tier_weight(s) for s in claim.evidence) for claim in claims )</code>
+          <code class="explainer-metric-formula">mean( max(reliability_score(s) for s in claim.evidence) for claim in claims )</code>
         </div>
         <p>For each individual claim, take the highest-tier source backing it. Then average across all claims. Rewards <strong>quality over quantity</strong>.</p>
         <p class="why">Why it matters — A claim backed by one Wikipedia source is more trustworthy than one backed by five unknown blogs. This metric captures that.</p>
@@ -927,24 +927,23 @@ function buildAnswerBreakdownModal(signals, sources, facts) {
 }
 
 function renderSourceQualityBreakdown(signals, sources) {
-  const score   = signals.source_quality_score || 0;
+  const score   = signals.source_reliability_score || signals.source_quality_score || 0;
   const scorePct = Math.round(score * 100);
 
   if (sources.length === 0) {
-    return breakdownEmpty('Source quality', scorePct, 'mean( tier_weight(s) for s in sources )', 'No sources were retrieved for this answer.');
+    return breakdownEmpty('Source reliability', scorePct, 'mean( reliability_score(s) for s in sources )', 'No sources were retrieved for this answer.');
   }
 
-  // Sort: high → medium → low → prediction
-  const sorted = [...sources].sort((a, b) => (TIER_ORDER[a.tier] ?? 99) - (TIER_ORDER[b.tier] ?? 99));
-  const sum = sorted.reduce((acc, s) => acc + tierWeight(s.tier), 0);
+  const sorted = [...sources].sort((a, b) => (Number(b.reliability_score ?? tierWeight(b.tier)) - Number(a.reliability_score ?? tierWeight(a.tier))));
+  const sum = sorted.reduce((acc, s) => acc + Number(s.reliability_score ?? tierWeight(s.tier)), 0);
   const avg = sum / sorted.length;
-  const weightsStr = sorted.map((s) => tierWeight(s.tier).toFixed(2)).join(' + ');
+  const weightsStr = sorted.map((s) => Number(s.reliability_score ?? tierWeight(s.tier)).toFixed(2)).join(' + ');
   const formula = `(${weightsStr}) ÷ ${sorted.length} = ${avg.toFixed(3)}`;
 
   const rows = sorted.map((s) => {
     const tier      = s.tier || 'low';
     const tierLabel = tier.toUpperCase();
-    const weight    = tierWeight(tier).toFixed(2);
+    const weight    = Number(s.reliability_score ?? tierWeight(tier)).toFixed(2);
     const domain    = s.domain || domainOf(s.url || '');
     return `
       <div class="breakdown-row">
@@ -958,9 +957,9 @@ function renderSourceQualityBreakdown(signals, sources) {
 
   return `
     <div class="breakdown-section">
-      ${breakdownHead('Source quality', scorePct)}
+      ${breakdownHead('Source reliability', scorePct)}
       ${breakdownFormula(formula)}
-      <p class="breakdown-explainer">Weighted average across ${sorted.length} retrieved source${sorted.length === 1 ? '' : 's'}, sorted by tier.</p>
+      <p class="breakdown-explainer">Average reliability score across ${sorted.length} retrieved source${sorted.length === 1 ? '' : 's'}, sorted by score.</p>
       <div class="breakdown-rows">${rows}</div>
     </div>
   `;
@@ -971,7 +970,7 @@ function renderCitationStrengthBreakdown(signals, facts, sourceByUrl) {
   const scorePct = Math.round(score * 100);
 
   if (facts.length === 0) {
-    return breakdownEmpty('Citation strength', scorePct, 'mean( max(tier_weight(s)) for s in claim.evidence )', 'No claims were extracted from this answer.');
+    return breakdownEmpty('Citation strength', scorePct, 'mean( max(reliability_score(s)) for s in claim.evidence )', 'No claims were extracted from this answer.');
   }
 
   const perClaim = facts.map((fact) => {
@@ -981,7 +980,7 @@ function renderCitationStrengthBreakdown(signals, facts, sourceByUrl) {
     (fact.evidence_urls || []).forEach((url) => {
       const s = sourceByUrl.get(url);
       if (s) {
-        const w = tierWeight(s.tier);
+        const w = Number(s.reliability_score ?? tierWeight(s.tier));
         if (w > bestWeight) {
           bestWeight = w;
           bestTier = s.tier;
@@ -1578,10 +1577,20 @@ function buildSourcesGrid(sources) {
       const meta = TIER_META[source.tier] || { label: source.tier, cls: 'tier-low' };
       head.appendChild(txt('span', `source-tier-badge ${meta.cls}`, meta.label));
     }
+    if (typeof source.reliability_score === 'number') {
+      head.appendChild(txt('span', 'source-score-badge', Math.round(source.reliability_score * 100) + '%'));
+    }
     card.appendChild(head);
 
     if (source.title) card.appendChild(txt('div', 'source-title', source.title));
     if (source.snippet) card.appendChild(txt('div', 'source-snippet', source.snippet));
+    if (Array.isArray(source.reliability_reasons) && source.reliability_reasons.length) {
+      const reasons = el('div', 'source-reasons');
+      source.reliability_reasons.slice(0, 3).forEach((reason) => {
+        reasons.appendChild(txt('span', 'source-reason', reason));
+      });
+      card.appendChild(reasons);
+    }
 
     if (source.source_tools && source.source_tools.length) {
       const tools = el('div', 'source-tools');
@@ -1638,7 +1647,7 @@ function computeAnswerTrustScore(signals) {
     const score = Math.max(0, Math.min(1, signals.answer_trust_score));
     return { score, pct: Math.round(score * 100), ...trustScoreMeta(score) };
   }
-  const sq = signals.source_quality_score || 0;
+  const sq = signals.source_reliability_score || signals.source_quality_score || 0;
   const strength = signals.citation_strength || 0;
   const coverage = signals.citation_coverage || 0;
   const multi = signals.multi_source_claim_ratio || 0;
@@ -1707,8 +1716,8 @@ function buildTrustTierBreakdown(signals) {
 
 function buildTrustBreakdownGrid(signals) {
   const grid = el('div', 'trust-grid');
-  const sqScore = signals.source_quality_score || 0;
-  grid.appendChild(buildTrustCard('Source quality', Math.round(sqScore * 100) + '%', sqScore));
+  const sqScore = signals.source_reliability_score || signals.source_quality_score || 0;
+  grid.appendChild(buildTrustCard('Source reliability', Math.round(sqScore * 100) + '%', sqScore));
   const strength = signals.citation_strength || 0;
   grid.appendChild(buildTrustCard('Citation strength', Math.round(strength * 100) + '%', strength));
   grid.appendChild(
@@ -1746,7 +1755,7 @@ function buildTrustSummary(signals) {
     txt(
       'p',
       'trust-summary-hint',
-      'Weighted score from source tiers and how well claims match retrieved sources.'
+      'Weighted score from source reliability and how well claims match retrieved sources.'
     )
   );
   return card;
@@ -1963,6 +1972,10 @@ async function startResearch(question, options) {
     trace.classList.add('collapsed');
   });
 
+  es.addEventListener('understanding', () => {
+    traceLabel.textContent = 'Understanding question…';
+  });
+
   es.addEventListener('tool_call', (event) => {
     const data = JSON.parse(event.data);
     const step = el('div', 'trace-step');
@@ -2013,6 +2026,10 @@ async function startResearch(question, options) {
 
   es.addEventListener('extracting', () => {
     traceLabel.textContent = 'Extracting facts & verifying citations…';
+  });
+
+  es.addEventListener('verifying', () => {
+    traceLabel.textContent = 'Critiquing answer against evidence…';
   });
 
   es.addEventListener('final', (event) => {

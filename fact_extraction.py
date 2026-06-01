@@ -2,7 +2,7 @@
 
 Pure-Python — no LLM call. Splits the answer into sentences, scores each
 sentence against retrieved sources via token overlap, date matches, and
-source-tier weight, then assembles continuous trust signals.
+source reliability, then assembles continuous trust signals.
 """
 
 import re
@@ -10,7 +10,7 @@ from dataclasses import asdict, dataclass
 from typing import Any
 from urllib.parse import urlparse
 
-from source_quality import classify_source, tier_weight
+from source_quality import source_reliability
 from source_relevance import MIN_RELEVANCE_SCORE, relevance_score
 
 
@@ -21,6 +21,9 @@ class SourceEntry:
     domain: str
     source_tools: list[str]
     relevance_score: float | None = None
+    reliability_score: float = 0.35
+    reliability_label: str = "Low"
+    reliability_reasons: list[str] | None = None
     snippet: str = ""
     tier: str = "low"
 
@@ -30,12 +33,12 @@ class FactItem:
     claim_text: str
     evidence_urls: list[str]
     source_tools: list[str]
-    fact_quality_flags: dict[str, bool]
+    fact_quality_flags: dict[str, Any]
 
 
 def _safe_domain(url: str) -> str:
     try:
-        return urlparse(url).netloc.lower()
+        return urlparse(url).netloc.lower().removeprefix("www.")
     except Exception:
         return ""
 
@@ -48,7 +51,22 @@ def _claim_tokens(text: str) -> set[str]:
     }
 
 
-_TIER_SCORE_BONUS = {"high": 0.45, "medium": 0.20, "low": 0.0, "prediction": -0.60}
+def _claim_source_overlap(claim_text: str, source: "SourceEntry") -> float:
+    claim_tokens = _claim_tokens(claim_text)
+    if not claim_tokens:
+        return 0.0
+    source_text = f"{source.title} {source.snippet}".lower()
+    overlap_count = sum(1 for token in claim_tokens if token in source_text)
+    return overlap_count / max(len(claim_tokens), 1)
+
+
+def _claim_source_date_match(claim_text: str, source: "SourceEntry") -> bool:
+    claim_dates = set(re.findall(r"\b(?:19|20)\d{2}\b", claim_text))
+    if not claim_dates:
+        return False
+    source_text = f"{source.title} {source.snippet}".lower()
+    source_dates = set(re.findall(r"\b(?:19|20)\d{2}\b", source_text))
+    return bool(claim_dates.intersection(source_dates))
 
 
 def _score_source_for_claim(claim_text: str, source: "SourceEntry") -> float:
@@ -56,18 +74,13 @@ def _score_source_for_claim(claim_text: str, source: "SourceEntry") -> float:
     if not claim_tokens:
         return 0.0
 
-    source_text = f"{source.title} {source.snippet}".lower()
-    overlap_count = sum(1 for token in claim_tokens if token in source_text)
-    token_overlap_score = overlap_count / max(len(claim_tokens), 1)
-
-    claim_dates = set(re.findall(r"\b(?:19|20)\d{2}\b", claim_text))
-    source_dates = set(re.findall(r"\b(?:19|20)\d{2}\b", source_text))
-    date_bonus = 0.35 if claim_dates and claim_dates.intersection(source_dates) else 0.0
+    token_overlap_score = _claim_source_overlap(claim_text, source)
+    date_bonus = 0.35 if _claim_source_date_match(claim_text, source) else 0.0
 
     tavily_bonus = float(source.relevance_score) * 0.25 if source.relevance_score is not None else 0.0
-    tier_bonus = _TIER_SCORE_BONUS.get(source.tier, 0.0)
+    reliability_bonus = max(0.0, min(1.0, source.reliability_score)) * 0.45
 
-    return token_overlap_score + date_bonus + tavily_bonus + tier_bonus
+    return token_overlap_score + date_bonus + tavily_bonus + reliability_bonus
 
 
 def _parse_search_results_text(tool_content: str) -> list[dict[str, Any]]:
@@ -80,15 +93,41 @@ def _parse_search_results_text(tool_content: str) -> list[dict[str, Any]]:
         if line.startswith("RESULT "):
             if current and current.get("url"):
                 items.append(current)
-            current = {"url": "", "title": "", "content": "", "score": None, "_source_tier": "low"}
+            current = {
+                "url": "",
+                "title": "",
+                "content": "",
+                "score": None,
+                "_source_tier": "low",
+                "_source_reliability_score": None,
+                "_source_reliability_reasons": [],
+            }
             tier_match = re.search(r"TIER:\s*(\w+)", line, re.IGNORECASE)
             if tier_match:
                 current["_source_tier"] = tier_match.group(1).lower()
+            rel_match = re.search(r"RELEVANCE:\s*([0-9.]+)", line, re.IGNORECASE)
+            if rel_match:
+                try:
+                    current["score"] = float(rel_match.group(1))
+                except ValueError:
+                    pass
+            reliability_match = re.search(r"RELIABILITY:\s*([0-9.]+)", line, re.IGNORECASE)
+            if reliability_match:
+                try:
+                    current["_source_reliability_score"] = float(reliability_match.group(1))
+                except ValueError:
+                    pass
         elif current is not None:
             if line.startswith("TITLE: "):
                 current["title"] = line[7:].strip()
             elif line.startswith("URL: "):
                 current["url"] = line[5:].strip()
+            elif line.startswith("RELIABILITY_SIGNALS: "):
+                current["_source_reliability_reasons"] = [
+                    part.strip()
+                    for part in line[21:].split(";")
+                    if part.strip()
+                ]
             elif line.startswith("CONTENT: "):
                 body = line[9:].strip()
                 if body.startswith("(empty"):
@@ -125,11 +164,23 @@ def normalize_sources(tool_messages: list[dict[str, str]]) -> list["SourceEntry"
                     existing.relevance_score = float(item["score"])
                 if not existing.snippet and item.get("content"):
                     existing.snippet = str(item["content"])[:400]
+                if not existing.reliability_reasons and item.get("_source_reliability_reasons"):
+                    existing.reliability_reasons = list(item["_source_reliability_reasons"])
                 continue
 
             snippet = str(item.get("content", ""))[:400]
             title = str(item.get("title", "")).strip()
-            tier = item.get("_source_tier") or classify_source(url, title, snippet)
+            reliability = source_reliability(url, title, snippet)
+            tier = item.get("_source_tier") or reliability["tier"]
+            reliability_score = (
+                float(item["_source_reliability_score"])
+                if isinstance(item.get("_source_reliability_score"), (float, int))
+                else float(reliability["score"])
+            )
+            reliability_reasons = (
+                list(item.get("_source_reliability_reasons") or [])
+                or list(reliability["reasons"])
+            )
 
             by_url[url] = SourceEntry(
                 url=url,
@@ -137,6 +188,9 @@ def normalize_sources(tool_messages: list[dict[str, str]]) -> list["SourceEntry"
                 domain=_safe_domain(url),
                 source_tools=[tool_name] if tool_name else [],
                 relevance_score=float(item["score"]) if isinstance(item.get("score"), (float, int)) else None,
+                reliability_score=max(0.0, min(1.0, reliability_score)),
+                reliability_label=str(reliability.get("label") or ""),
+                reliability_reasons=reliability_reasons,
                 snippet=snippet,
                 tier=tier,
             )
@@ -284,10 +338,10 @@ def _extract_claims_from_answer(answer_text: str, sources: list["SourceEntry"]) 
 
 
 def _claim_citation_strength(evidence_urls: list[str], url_to_source: dict[str, "SourceEntry"]) -> float:
-    """Max tier weight of this claim's supporting sources; 0.0 if uncited."""
+    """Max source reliability score of this claim's supporting sources; 0.0 if uncited."""
     if not evidence_urls:
         return 0.0
-    weights = [tier_weight(url_to_source[url].tier) for url in evidence_urls if url in url_to_source]
+    weights = [url_to_source[url].reliability_score for url in evidence_urls if url in url_to_source]
     return max(weights) if weights else 0.0
 
 
@@ -301,11 +355,15 @@ def extract_claims(
         sources = [
             s
             for s in sources
-            if relevance_score(
-                question,
-                s.title,
-                s.snippet,
-                s.url,
+            if (
+                s.relevance_score
+                if isinstance(s.relevance_score, (int, float))
+                else relevance_score(
+                    question,
+                    s.title,
+                    s.snippet,
+                    s.url,
+                )
             )
             >= MIN_RELEVANCE_SCORE
         ]
@@ -350,8 +408,8 @@ def extract_claims(
     source_count_sum = sum(len(fact.evidence_urls) for fact in facts)
     distinct_domains = sorted({source.domain for source in sources if source.domain})
 
-    source_tier_weights = [tier_weight(s.tier) for s in sources]
-    source_quality_score = (sum(source_tier_weights) / len(source_tier_weights)) if source_tier_weights else 0.0
+    source_scores = [s.reliability_score for s in sources]
+    source_quality_score = (sum(source_scores) / len(source_scores)) if source_scores else 0.0
 
     high_count = sum(1 for s in sources if s.tier == "high")
     medium_count = sum(1 for s in sources if s.tier == "medium")
@@ -380,10 +438,12 @@ def extract_claims(
     trust_signals = {
         "answer_trust_score": answer_trust_score,
         "citation_coverage": citation_coverage,
+        "unsupported_claims": total_claims - cited_claims,
         "avg_sources_per_claim": (source_count_sum / total_claims) if total_claims else 0.0,
         "multi_source_claim_ratio": multi_source_claim_ratio,
         "distinct_domain_count": len(distinct_domains),
         "source_quality_score": source_quality_score_r,
+        "source_reliability_score": source_quality_score_r,
         "high_tier_ratio": round(high_tier_ratio, 3),
         "citation_strength": citation_strength_r,
         "tier_breakdown": {

@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Any
 
 CACHE_FILE = Path(__file__).parent / "cache.json"
+CACHE_SCHEMA_VERSION = 9
 _lock = threading.Lock()
 
 _PUNCT_RE = re.compile(r"[^\w\s]+", re.UNICODE)
@@ -82,6 +83,10 @@ def get(model_key: str, question: str, ttl_seconds: int) -> dict[str, Any] | Non
             _prune_expired(data, ttl_seconds)
             _write(data)
             return None
+        if entry.get("cache_schema_version") != CACHE_SCHEMA_VERSION:
+            del data["entries"][key]
+            _write(data)
+            return None
         return entry
 
 
@@ -95,6 +100,7 @@ def put(model_key: str, question: str, payload: dict[str, Any]) -> None:
         entry = dict(payload)
         entry["model_key"] = model_key
         entry["original_question"] = question
+        entry["cache_schema_version"] = CACHE_SCHEMA_VERSION
         entry["cached_at"] = _now_iso()
         entry["cached_ts"] = _now_ts()
         data["entries"][key] = entry

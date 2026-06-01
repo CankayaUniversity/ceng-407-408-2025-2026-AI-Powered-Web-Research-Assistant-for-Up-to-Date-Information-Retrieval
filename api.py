@@ -27,8 +27,20 @@ from fact_extraction import (
     filter_facts,
     sanitize_answer,
 )
+from llm_passes import (
+    rank_answer_from_tool_messages,
+    understanding_context_message,
+    understand_query,
+    verify_answer,
+)
+from rank_utils import requested_rank
+from tools import duckduckgo_results_json, tavily_search_results_json
 
 TOOL_LOG_PREVIEW_CHARS = 2000
+EXACT_RANK_RETRY_TOOLS = (
+    ("tavily_search_results_json", tavily_search_results_json),
+    ("duckduckgo_results_json", duckduckgo_results_json),
+)
 
 
 logging.basicConfig(
@@ -216,6 +228,30 @@ def _today_context_message() -> SystemMessage:
     )
 
 
+def _needs_exact_rank_retry(question: str, tool_messages: list[dict[str, str]]) -> bool:
+    return requested_rank(question) is not None
+
+
+def _run_exact_rank_retry(question: str, tool_messages: list[dict[str, str]]) -> list[dict[str, str]]:
+    """Run exact-question search when the agent lost an explicit rank constraint."""
+    if not _needs_exact_rank_retry(question, tool_messages):
+        return []
+
+    added: list[dict[str, str]] = []
+    for tool_name, tool in EXACT_RANK_RETRY_TOOLS:
+        try:
+            content = str(tool.invoke({"query": question}))
+        except Exception as exc:
+            logger.info("Exact-rank retry failed for %s: %s", tool_name, exc)
+            continue
+        message = {"name": tool_name, "content": content}
+        tool_messages.append(message)
+        added.append(message)
+        if rank_answer_from_tool_messages(question, [message]):
+            break
+    return added
+
+
 @app.get("/ask_agent_stream")
 async def ask_agent_stream(
     request: Request,
@@ -298,8 +334,16 @@ async def ask_agent_stream(
 
             agent = AGENTS[model_key]
             history_messages = _build_history(chat, exclude_last=regenerate)
+            yield _sse("understanding", {})
+            query_understanding = await asyncio.to_thread(
+                understand_query,
+                question,
+                model_info["id"],
+            )
+            understanding_message = understanding_context_message(query_understanding)
             input_messages = (
                 [_today_context_message()]
+                + ([understanding_message] if understanding_message else [])
                 + history_messages
                 + [HumanMessage(content=question)]
             )
@@ -410,6 +454,39 @@ async def ask_agent_stream(
             if await request.is_disconnected():
                 return
 
+            if _needs_exact_rank_retry(question, tool_messages_collected):
+                for tool_name, tool in EXACT_RANK_RETRY_TOOLS:
+                    call_id = f"exact-rank-{tool_name}"
+                    yield _sse(
+                        "tool_call",
+                        {
+                            "id": call_id,
+                            "name": tool_name,
+                            "args": {"query": question},
+                        },
+                    )
+                    try:
+                        content_str = await asyncio.to_thread(tool.invoke, {"query": question})
+                        content_str = str(content_str)
+                    except Exception as exc:
+                        logger.info("Exact-rank retry failed for %s: %s", tool_name, exc)
+                        continue
+                    tool_messages_collected.append({"name": tool_name, "content": content_str})
+                    yield _sse(
+                        "tool_result",
+                        {
+                            "id": call_id,
+                            "name": tool_name,
+                            "preview": content_str[:600],
+                            "length": len(content_str),
+                        },
+                    )
+                    if rank_answer_from_tool_messages(
+                        question,
+                        [{"name": tool_name, "content": content_str}],
+                    ):
+                        break
+
             yield _sse("extracting", {})
 
             # Pass the raw answer (with newlines) so fact_extraction can
@@ -421,6 +498,30 @@ async def ask_agent_stream(
                 tool_messages_collected,
                 question,
             )
+
+            yield _sse("verifying", {})
+            verification = await asyncio.to_thread(
+                verify_answer,
+                question=question,
+                answer=final_answer,
+                model_id=model_info["id"],
+                tool_messages=tool_messages_collected,
+                extraction=extraction,
+                understanding=query_understanding,
+            )
+            verified_answer = verification.get("final_answer") or final_answer
+            if verified_answer != final_answer:
+                final_answer = verified_answer
+                extraction = await asyncio.to_thread(
+                    extract_claims,
+                    final_answer,
+                    tool_messages_collected,
+                    question,
+                )
+                extraction["trust_signals"]["verifier_revised_answer"] = True
+            extraction["trust_signals"]["verifier_status"] = verification.get("status", "skipped")
+            extraction["trust_signals"]["verifier_confidence"] = verification.get("confidence", "unknown")
+            extraction["trust_signals"]["query_understanding"] = query_understanding
 
             turn_payload = {
                 "question": question,
@@ -495,6 +596,10 @@ def ask_agent(question: str, model: str | None = None):
         input_message = {
             "messages": [_today_context_message(), HumanMessage(content=question)]
         }
+        query_understanding = understand_query(question, model_info["id"])
+        understanding_message = understanding_context_message(query_understanding)
+        if understanding_message:
+            input_message["messages"].insert(1, understanding_message)
         result = agent.invoke(input_message)
 
         logger.info("=== agent reasoning trace (%s) ===", model_info["label"])
@@ -518,7 +623,28 @@ def ask_agent(question: str, model: str | None = None):
             for message in result["messages"]
             if message.type == "tool"
         ]
+        added_tool_messages = _run_exact_rank_retry(question, tool_messages)
+        for message in added_tool_messages:
+            preview = message["content"][:TOOL_LOG_PREVIEW_CHARS]
+            truncated = " ...(truncated)" if len(message["content"]) > TOOL_LOG_PREVIEW_CHARS else ""
+            logger.info("  exact-rank result[%s]: %s%s", message["name"], preview, truncated)
         extraction = extract_claims(final_answer, tool_messages, question)
+        verification = verify_answer(
+            question=question,
+            answer=final_answer,
+            model_id=model_info["id"],
+            tool_messages=tool_messages,
+            extraction=extraction,
+            understanding=query_understanding,
+        )
+        verified_answer = verification.get("final_answer") or final_answer
+        if verified_answer != final_answer:
+            final_answer = verified_answer
+            extraction = extract_claims(final_answer, tool_messages, question)
+            extraction["trust_signals"]["verifier_revised_answer"] = True
+        extraction["trust_signals"]["verifier_status"] = verification.get("status", "skipped")
+        extraction["trust_signals"]["verifier_confidence"] = verification.get("confidence", "unknown")
+        extraction["trust_signals"]["query_understanding"] = query_understanding
         logger.info("trust_signals: %s", extraction["trust_signals"])
 
         return {

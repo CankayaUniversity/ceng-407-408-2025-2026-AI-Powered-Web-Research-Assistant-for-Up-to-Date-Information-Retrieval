@@ -1193,13 +1193,8 @@ body {
 }
 .trust-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 10px;
-}
-@media (max-width: 900px) {
-  .trust-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
 }
 .trust-card {
   padding: 14px 16px;
@@ -2127,7 +2122,6 @@ body.modal-open {
 
 /* SOURCE TIER BADGE */
 .source-tier-badge {
-  margin-left: auto;
   font-size: 9.5px;
   font-weight: 600;
   letter-spacing: 0.04em;
@@ -2156,6 +2150,35 @@ body.modal-open {
   background: rgba(244, 124, 124, 0.10);
   border-color: rgba(244, 124, 124, 0.26);
   color: var(--danger);
+}
+.source-score-badge {
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 2px 7px;
+  border-radius: 999px;
+  border: 1px solid rgba(var(--accent-rgb), 0.28);
+  background: rgba(var(--accent-rgb), 0.10);
+  color: var(--accent);
+  flex-shrink: 0;
+}
+.source-reasons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.source-reason {
+  max-width: 100%;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  color: var(--text-faint);
+  font-size: 10.5px;
+  line-height: 1.35;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* COMPOSER */

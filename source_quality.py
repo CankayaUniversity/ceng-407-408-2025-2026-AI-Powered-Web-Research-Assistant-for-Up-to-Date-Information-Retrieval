@@ -1,11 +1,13 @@
-"""Source reputation classification for web search results.
+"""Source reputation and reliability scoring for web search results.
 
 Helps the agent prefer authoritative sources (Wikipedia, official organisation
 sites, major newswires) over prediction/betting/opinion sites that flood
-search results for current-events queries — especially temporal queries like
-"last UCL winner" where prediction articles for the *upcoming* edition often
+search results for current-events queries - especially temporal queries like
+"last UCL winner" where prediction articles for the upcoming edition often
 out-rank actual past-results coverage.
 """
+
+from __future__ import annotations
 
 import re
 from urllib.parse import urlparse
@@ -14,7 +16,7 @@ from urllib.parse import urlparse
 HIGH_TIER_DOMAINS = {
     # Encyclopedias
     "wikipedia.org", "wikidata.org", "britannica.com",
-    # Sports — official governing bodies and leagues
+    # Sports - official governing bodies and leagues
     "uefa.com", "fifa.com", "olympics.com", "olympic.org",
     "premierleague.com", "laliga.com", "bundesliga.com",
     "nba.com", "nfl.com", "mlb.com", "nhl.com",
@@ -26,10 +28,9 @@ HIGH_TIER_DOMAINS = {
     "nasa.gov", "noaa.gov", "nih.gov", "cdc.gov", "fda.gov",
     "nist.gov", "energy.gov", "census.gov", "bls.gov", "sec.gov", "bea.gov",
     "data.gov",
-    # Türkiye — resmi istatistik / ekonomi / devlet
+    # Turkiye - resmi istatistik / ekonomi / devlet
     "tuik.gov.tr", "tcmb.gov.tr", "hmb.gov.tr", "turkiye.gov.tr",
-    "saglik.gov.tr", "meb.gov.tr", "tubitak.gov.tr",
-    "resmigazete.gov.tr",
+    "saglik.gov.tr", "meb.gov.tr", "tubitak.gov.tr", "resmigazete.gov.tr",
     # Major newswires
     "reuters.com", "apnews.com", "afp.com",
     # Major newspapers / public broadcasters
@@ -37,28 +38,39 @@ HIGH_TIER_DOMAINS = {
     "wsj.com", "washingtonpost.com", "ft.com", "economist.com",
     "npr.org", "pbs.org",
     # Tech docs and reference
-    "developer.mozilla.org", "docs.python.org",
+    "developer.mozilla.org", "docs.python.org", "docs.microsoft.com",
+    "learn.microsoft.com", "cloud.google.com", "docs.aws.amazon.com",
+    "developer.apple.com",
+    # Market data / exchanges / securities filings
+    "nasdaq.com", "nyse.com", "sec.gov", "finance.yahoo.com",
+    "markets.businessinsider.com", "tradingview.com",
+    "investor.apple.com", "ir.tesla.com", "ir.aboutamazon.com",
+    "abc.xyz", "investor.microsoft.com", "investor.nvidia.com",
+    "investor.meta.com",
+    # Weather / climate
+    "weather.gov", "metoffice.gov.uk",
     # Peer-reviewed / scientific
     "nature.com", "science.org", "sciencemag.org",
-    "thelancet.com", "nejm.org",
+    "thelancet.com", "nejm.org", "pubmed.ncbi.nlm.nih.gov",
 }
 
 MEDIUM_TIER_DOMAINS = {
-    # Sports news (reasonably reliable, but not official)
-    "espn.com", "skysports.com", "goal.com", "marca.com",
+    # Sports news
+    "espn.com", "espn.co.uk", "skysports.com", "goal.com", "marca.com",
     "as.com", "lequipe.fr", "sport.es", "tuttosport.com",
     "sportingnews.com", "theathletic.com", "footballitalia.net",
-    "fourfourtwo.com", "talksport.com",
+    "fourfourtwo.com", "talksport.com", "worldfootball.net",
+    "statbunker.com", "fbref.com", "soccerway.com", "topscorersfootball.com",
     # Turkish sports
     "trtspor.com.tr", "fotomac.com.tr", "mackolik.com", "ajansspor.com",
     "sporx.com", "fanatik.com.tr", "ntvspor.net",
-    # Live scores (topic-relevant even if not "official")
+    # Live scores
     "livescore.com", "sofascore.com", "flashscore.com", "transfermarkt.com",
     # Mainstream news
     "cnn.com", "nbcnews.com", "cbsnews.com", "abcnews.go.com",
     "bloomberg.com", "axios.com", "politico.com",
     "aljazeera.com", "dw.com", "france24.com",
-    # Türkiye — ajans / ekonomi haber (resmi değil, ama yaygın)
+    # Turkiye - ajans / ekonomi haber
     "aa.com.tr", "anadoluajansi.com.tr", "bloomberght.com",
     "dunya.com", "ekonomim.com", "trthaber.com",
     # Tech publications
@@ -66,20 +78,25 @@ MEDIUM_TIER_DOMAINS = {
     "engadget.com", "venturebeat.com", "zdnet.com",
     # Business / finance
     "forbes.com", "businessinsider.com", "marketwatch.com", "cnbc.com",
+    "stockanalysis.com", "morningstar.com", "investing.com",
+    "barchart.com", "companiesmarketcap.com", "macrotrends.net",
+    # Weather / reference data
+    "weather.com", "accuweather.com", "timeanddate.com",
+    # Official-ish package registries and software references
+    "pypi.org", "npmjs.com", "crates.io", "packagist.org",
+    "mvnrepository.com",
     # Tech Q&A
     "stackoverflow.com", "stackexchange.com",
     # Code hosting / docs
     "github.com", "gitlab.com",
 }
 
-# Domain substring patterns that strongly indicate prediction/betting content
 PREDICTION_DOMAIN_PATTERNS = (
     "odds", "betting", "betfair", "draftkings", "bet365", "fanduel",
     "tipster", "punter", "bookmaker", "pickwatch", "oddschecker",
     "wager", "parlay", "bettingexpert",
 )
 
-# Title/snippet patterns suggesting speculative or preview content
 PREDICTION_TITLE_PATTERNS = (
     r"\bpredictions?\b",
     r"\bodds\b",
@@ -103,7 +120,6 @@ PREDICTION_TITLE_PATTERNS = (
 )
 PREDICTION_TITLE_RE = re.compile("|".join(PREDICTION_TITLE_PATTERNS), re.IGNORECASE)
 
-# Longest suffixes first so ".gov.uk" is not short-circuited by ".gov" alone.
 HIGH_TIER_SUFFIXES = (
     ".parliament.uk", ".police.uk", ".nhs.uk", ".ac.uk", ".gov.uk",
     ".edu.au", ".gov.au",
@@ -114,6 +130,19 @@ HIGH_TIER_SUFFIXES = (
     ".gov.in", ".gov.sg", ".gov.nz", ".gov.br", ".gov.tw", ".gov.hk",
     ".int",
     ".edu", ".gov", ".mil",
+)
+
+SELF_PUBLISHING_HINTS = (
+    "medium.com", "substack.com", "wordpress.com", "blogspot.com",
+    "tumblr.com", "patreon.com",
+)
+UGC_HINTS = ("reddit.com", "quora.com", "answers.com")
+OFFICIAL_WORDS = ("official", "government", "ministry", "department", "statistics", "exchange")
+MARKET_WORDS = ("stock", "quote", "market data", "close", "closing price", "previous close", "nasdaq", "nyse")
+SPARSE_TITLE_RE = re.compile(r"^\s*(?:home|index|untitled|404|loading)\s*$", re.IGNORECASE)
+SPECULATIVE_TEXT_RE = re.compile(
+    r"\b(rumou?r|unconfirmed|reportedly|might|could|expected|forecast|prediction|projected)\b",
+    re.IGNORECASE,
 )
 
 
@@ -135,7 +164,6 @@ def _root_domain(domain: str) -> str:
     parts = domain.split(".")
     if len(parts) < 2:
         return domain
-    # Multi-part public suffixes (.co.uk, .gov.uk, .gov.tr, .com.au, …)
     if len(parts) >= 3:
         if parts[-1] == "tr" and parts[-2] in {"gov", "edu", "bel", "k12", "pol", "mil", "org", "com", "net"}:
             return ".".join(parts[-3:])
@@ -151,20 +179,11 @@ def is_prediction_source(url: str, title: str = "", snippet: str = "") -> bool:
     for pattern in PREDICTION_DOMAIN_PATTERNS:
         if pattern in domain:
             return True
-    haystack = f"{title} {snippet}"[:400]
-    if PREDICTION_TITLE_RE.search(haystack):
-        return True
-    return False
+    haystack = f"{title} {snippet}"[:500]
+    return bool(PREDICTION_TITLE_RE.search(haystack))
 
 
-def classify_source(url: str, title: str = "", snippet: str = "") -> str:
-    """Return reputation tier: 'high', 'medium', 'low', or 'prediction'."""
-    if not url:
-        return "low"
-    if is_prediction_source(url, title, snippet):
-        return "prediction"
-    domain = _normalize_domain(url)
-    root = _root_domain(domain)
+def _base_tier(domain: str, root: str, title: str, snippet: str) -> str:
     if domain in HIGH_TIER_DOMAINS or root in HIGH_TIER_DOMAINS:
         return "high"
     if domain in MEDIUM_TIER_DOMAINS or root in MEDIUM_TIER_DOMAINS:
@@ -175,26 +194,109 @@ def classify_source(url: str, title: str = "", snippet: str = "") -> str:
         token in domain for token in ("foundation", "institute", "council", "museum", "archive")
     ):
         return "medium"
+    text = f"{title} {snippet}".lower()
+    if domain.endswith(".com") and any(word in text for word in MARKET_WORDS):
+        return "medium"
     return "low"
 
 
+def source_reliability(url: str, title: str = "", snippet: str = "") -> dict:
+    """Return tier plus continuous 0-1 reliability score and reasons."""
+    if not url:
+        return {"tier": "low", "score": 0.15, "label": "Low", "reasons": ["Missing source URL"]}
+
+    domain = _normalize_domain(url)
+    root = _root_domain(domain)
+    text = f"{title} {snippet}".strip()
+    reasons: list[str] = []
+
+    if is_prediction_source(url, title, snippet):
+        return {
+            "tier": "prediction",
+            "score": 0.02,
+            "label": "Prediction",
+            "reasons": ["Prediction, betting, odds, or preview-style source"],
+        }
+
+    tier = _base_tier(domain, root, title, snippet)
+    score = {"high": 0.82, "medium": 0.64, "low": 0.34}.get(tier, 0.34)
+
+    if tier == "high":
+        if domain in HIGH_TIER_DOMAINS or root in HIGH_TIER_DOMAINS:
+            reasons.append("Curated high-reliability source")
+        elif _has_high_tier_suffix(domain):
+            reasons.append("Official or academic domain suffix")
+    elif tier == "medium":
+        reasons.append("Curated established publication or platform")
+    else:
+        reasons.append("Domain is not in the curated reliability registry")
+
+    if url.lower().startswith("https://"):
+        score += 0.03
+        reasons.append("Uses HTTPS")
+    else:
+        score -= 0.06
+        reasons.append("Does not use HTTPS")
+
+    if any(domain.endswith(hint) or root == hint for hint in SELF_PUBLISHING_HINTS):
+        score -= 0.18
+        reasons.append("Self-publishing platform")
+    if any(domain.endswith(hint) or root == hint for hint in UGC_HINTS):
+        score -= 0.14
+        reasons.append("User-generated content")
+    if SPARSE_TITLE_RE.search(title or ""):
+        score -= 0.08
+        reasons.append("Sparse or generic page title")
+    if len(text) < 40:
+        score -= 0.06
+        reasons.append("Sparse metadata/snippet")
+    if SPECULATIVE_TEXT_RE.search(text):
+        score -= 0.08
+        reasons.append("Speculative wording detected")
+    if any(word in text.lower() for word in OFFICIAL_WORDS) and tier != "low":
+        score += 0.04
+        reasons.append("Official/data-oriented wording")
+    if any(word in text.lower() for word in MARKET_WORDS) and root in {
+        "finance.yahoo.com", "nasdaq.com", "marketwatch.com", "businessinsider.com", "tradingview.com",
+    }:
+        score += 0.06
+        reasons.append("Established market data source")
+
+    score = max(0.0, min(1.0, score))
+    if score >= 0.78:
+        label = "High"
+        tier = "high"
+    elif score >= 0.55:
+        label = "Medium"
+        if tier == "low":
+            tier = "medium"
+    else:
+        label = "Low"
+        if tier != "prediction":
+            tier = "low"
+
+    return {"tier": tier, "score": round(score, 2), "label": label, "reasons": reasons[:5]}
+
+
+def classify_source(url: str, title: str = "", snippet: str = "") -> str:
+    """Return reputation tier: high, medium, low, or prediction."""
+    return source_reliability(url, title, snippet)["tier"]
+
+
 def tier_weight(tier: str) -> float:
-    """Numeric weight for ranking (higher = better)."""
+    """Numeric weight retained for older callers/UI formulas."""
     return {"high": 1.0, "medium": 0.65, "low": 0.35, "prediction": 0.02}.get(tier, 0.35)
 
 
 def sort_results(results: list[dict]) -> list[dict]:
-    """Sort search results so higher-tier sources come first.
-
-    Original Tavily relevance is preserved as a secondary signal.
-    """
-    def key(item):
+    """Sort search results so more reliable sources come first."""
+    def key(item: dict) -> float:
         url = item.get("url", "") or ""
         title = item.get("title", "") or ""
         content = item.get("content") or item.get("snippet") or ""
-        tier = classify_source(url, title, content)
-        weight = tier_weight(tier)
+        reliability = source_reliability(url, title, content)
         original_score = item.get("score")
         original_component = float(original_score) if isinstance(original_score, (int, float)) else 0.0
-        return -(weight * 10.0 + original_component)
+        return -(reliability["score"] * 10.0 + original_component)
+
     return sorted(results, key=key)

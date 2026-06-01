@@ -2,6 +2,8 @@ import json
 import logging
 import re
 import threading
+from datetime import date as local_date
+from datetime import datetime, timezone
 from typing import Any
 from urllib.parse import urlparse
 
@@ -20,7 +22,8 @@ from config import (
     DUCKDUCKGO_MAX_RESULTS,
     TAVILY_MAX_RESULTS,
 )
-from source_quality import classify_source, sort_results, tier_weight
+from rank_utils import ordinal_label, requested_rank
+from source_quality import classify_source, source_reliability, sort_results, tier_weight
 from source_relevance import (
     filter_by_relevance,
     is_text_relevant_to_query,
@@ -124,10 +127,297 @@ _TIME_SENSITIVE_RE = re.compile(
 )
 
 NEWS_MODE_DAYS = 14  # window for news-mode queries
+_HTTP_HEADERS = {"User-Agent": "Mozilla/5.0"}
+
+_FINANCE_QUERY_RE = re.compile(
+    r"\b(stock|share|shares|ticker|quote|closing price|close price|market cap|nasdaq|nyse|"
+    r"earnings|revenue|dividend|sec filing|10-k|10-q|tesla|apple|microsoft|nvidia)\b",
+    re.IGNORECASE,
+)
+
+_WEATHER_QUERY_RE = re.compile(
+    r"\b(weather|temperature|forecast|rain|snow|humidity|wind|climate)\b",
+    re.IGNORECASE,
+)
+
+_SPORTS_QUERY_RE = re.compile(
+    r"\b(score|scorer|scorers|top scorer|top scorers|goals?|goal scorers?|"
+    r"match|game|fixture|standings|leaderboard|rankings?|won|lost|league|lig|"
+    r"s[üu]per lig|nba|nfl|mlb|nhl|uefa|premier league|champions league|fifa|olympics)\b",
+    re.IGNORECASE,
+)
+
+_LEADERBOARD_QUERY_RE = re.compile(
+    r"\b(top scorer|top scorers|goal scorers?|scorers|leaderboard|rankings?|standings)\b",
+    re.IGNORECASE,
+)
+
+_MONTHS = {
+    "jan": 1, "january": 1,
+    "feb": 2, "february": 2,
+    "mar": 3, "march": 3,
+    "apr": 4, "april": 4,
+    "may": 5,
+    "jun": 6, "june": 6,
+    "jul": 7, "july": 7,
+    "aug": 8, "august": 8,
+    "sep": 9, "sept": 9, "september": 9,
+    "oct": 10, "october": 10,
+    "nov": 11, "november": 11,
+    "dec": 12, "december": 12,
+}
+
+_OFFICIAL_STATS_QUERY_RE = re.compile(
+    r"\b(inflation|unemployment|gdp|cpi|population|interest rate|exchange rate|"
+    r"official statistics|census|exports|imports|deficit)\b",
+    re.IGNORECASE,
+)
+
+_SOFTWARE_QUERY_RE = re.compile(
+    r"\b(version|release|changelog|documentation|api|sdk|package|library|"
+    r"python|javascript|node|npm|pypi|github|langgraph|ollama)\b",
+    re.IGNORECASE,
+)
+
+_HEALTH_SCIENCE_QUERY_RE = re.compile(
+    r"\b(health|disease|vaccine|medicine|drug|clinical trial|study|research|"
+    r"paper|journal|pubmed|who|cdc|nih|fda)\b",
+    re.IGNORECASE,
+)
 
 
 def _is_time_sensitive(query: str) -> bool:
     return bool(_TIME_SENSITIVE_RE.search(query or ""))
+
+
+def _authoritative_query_variants(query: str) -> list[str]:
+    """Source-directed retries for factual lookup questions."""
+    q = query.strip()
+    variants: list[str] = []
+
+    if _FINANCE_QUERY_RE.search(q):
+        variants.extend([
+            f"{q} market data official close price",
+            f"{q} site:nasdaq.com OR site:finance.yahoo.com OR site:marketwatch.com",
+        ])
+    if _WEATHER_QUERY_RE.search(q):
+        variants.append(f"{q} site:weather.gov OR site:weather.com OR site:timeanddate.com")
+    if _SPORTS_QUERY_RE.search(q):
+        variants.append(f"{q} official result ESPN league site:espn.com OR site:nba.com OR site:uefa.com")
+        if _LEADERBOARD_QUERY_RE.search(q):
+            variants.append(f"{q} top scorers goals table site:worldfootball.net OR site:transfermarkt.com OR site:topscorersfootball.com OR site:statbunker.com")
+    if _OFFICIAL_STATS_QUERY_RE.search(q):
+        variants.append(f"{q} official data statistics site:bls.gov OR site:bea.gov OR site:census.gov OR site:tuik.gov.tr OR site:eurostat.europa.eu")
+    if _SOFTWARE_QUERY_RE.search(q):
+        variants.append(f"{q} official documentation release notes site:github.com OR site:docs.python.org OR site:npmjs.com OR site:pypi.org")
+    if _HEALTH_SCIENCE_QUERY_RE.search(q):
+        variants.append(f"{q} official source study site:who.int OR site:cdc.gov OR site:nih.gov OR site:fda.gov OR site:pubmed.ncbi.nlm.nih.gov")
+
+    if not variants:
+        variants.append(f"{q} official source")
+
+    deduped: list[str] = []
+    seen = {q.lower()}
+    for variant in variants:
+        normalized = variant.lower()
+        if normalized not in seen:
+            seen.add(normalized)
+            deduped.append(variant)
+    return deduped[:2]
+
+
+def _has_strong_result(items: list[dict]) -> bool:
+    return any(
+        (item.get("_source_reliability_score") or 0) >= 0.70
+        for item in items
+        if (item.get("_source_tier") or "low") != "prediction"
+    )
+
+
+def _merge_search_items(primary: list[dict], supplemental: list[dict]) -> list[dict]:
+    by_url: dict[str, dict] = {}
+    for item in primary + supplemental:
+        url = (item.get("url") or "").strip()
+        key = url or f"{item.get('title', '')}|{item.get('content', '')}"
+        existing = by_url.get(key)
+        if not existing:
+            by_url[key] = item
+            continue
+        existing_score = existing.get("_source_reliability_score") or 0
+        item_score = item.get("_source_reliability_score") or 0
+        if item_score > existing_score:
+            by_url[key] = item
+    return list(by_url.values())
+
+
+def _money(value: Any, currency: str = "USD") -> str:
+    try:
+        amount = float(value)
+    except (TypeError, ValueError):
+        return ""
+    if currency.upper() == "USD":
+        return f"${amount:,.2f}"
+    return f"{amount:,.2f} {currency.upper()}"
+
+
+_FINANCE_SEARCH_NOISE_RE = re.compile(
+    r"\b(what|was|were|is|are|the|a|an|of|for|on|in|at|to|from|"
+    r"closing|close|price|stock|share|shares|ticker|market|cap|quote|"
+    r"yesterday|today|latest|current|recent|last|previous)\b",
+    re.IGNORECASE,
+)
+
+
+def _finance_symbol_search_terms(query: str) -> list[str]:
+    candidates: list[str] = []
+
+    ticker_match = re.search(r"\b[A-Z]{1,5}(?:\.[A-Z]{1,3})?\b", query)
+    if ticker_match:
+        candidates.append(ticker_match.group(0))
+
+    for pattern in (
+        r"\b(?:of|for)\s+([A-Za-z][A-Za-z0-9 .,&'-]{1,50}?)\s+(?:stock|share|shares|ticker)\b",
+        r"\b([A-Za-z][A-Za-z0-9 .,&'-]{1,50}?)\s+(?:stock|share|shares|ticker)\b",
+    ):
+        match = re.search(pattern, query, re.IGNORECASE)
+        if match:
+            candidates.append(match.group(1).strip(" ?.,"))
+
+    simplified = _FINANCE_SEARCH_NOISE_RE.sub(" ", query)
+    simplified = re.sub(r"[^A-Za-z0-9 .,&'-]+", " ", simplified)
+    simplified = re.sub(r"\s+", " ", simplified).strip()
+    if simplified:
+        candidates.append(simplified)
+
+    candidates.append(query)
+
+    deduped: list[str] = []
+    seen: set[str] = set()
+    for candidate in candidates:
+        candidate = candidate.strip()
+        key = candidate.lower()
+        if candidate and key not in seen:
+            seen.add(key)
+            deduped.append(candidate)
+    return deduped[:4]
+
+
+def _resolve_yahoo_symbol(query: str) -> dict[str, Any] | None:
+    if not _FINANCE_QUERY_RE.search(query or ""):
+        return None
+    for search_term in _finance_symbol_search_terms(query):
+        try:
+            response = requests.get(
+                "https://query1.finance.yahoo.com/v1/finance/search",
+                params={"q": search_term, "quotes_count": 5, "news_count": 0},
+                headers=_HTTP_HEADERS,
+                timeout=8,
+            )
+            response.raise_for_status()
+            data = response.json()
+        except Exception as exc:
+            logger.info("Yahoo Finance symbol lookup failed for %r: %s", search_term, exc)
+            continue
+
+        for quote in data.get("quotes") or []:
+            quote_type = str(quote.get("quoteType") or "").upper()
+            symbol = str(quote.get("symbol") or "").strip()
+            if symbol and quote_type in {"EQUITY", "ETF", "MUTUALFUND", "INDEX", "CRYPTOCURRENCY"}:
+                return quote
+    return None
+
+
+def _finance_structured_market_items(query: str) -> list[dict]:
+    """Fetch structured market data before generic finance snippets."""
+    quote = _resolve_yahoo_symbol(query)
+    if not quote:
+        return []
+
+    symbol = str(quote.get("symbol") or "").strip()
+    if not symbol:
+        return []
+
+    try:
+        response = requests.get(
+            f"https://query1.finance.yahoo.com/v8/finance/chart/{symbol}",
+            params={"range": "10d", "interval": "1d"},
+            headers=_HTTP_HEADERS,
+            timeout=8,
+        )
+        response.raise_for_status()
+        data = response.json()
+    except Exception as exc:
+        logger.info("Yahoo Finance chart lookup failed for %r: %s", symbol, exc)
+        return []
+
+    result = ((data.get("chart") or {}).get("result") or [None])[0]
+    if not isinstance(result, dict):
+        return []
+
+    meta = result.get("meta") or {}
+    currency = str(meta.get("currency") or "USD")
+    timestamps = result.get("timestamp") or []
+    quote_data = (((result.get("indicators") or {}).get("quote") or [{}])[0] or {})
+    closes = quote_data.get("close") or []
+
+    dated_closes: list[tuple[str, float]] = []
+    for ts, close in zip(timestamps, closes):
+        if close is None:
+            continue
+        try:
+            day = datetime.fromtimestamp(int(ts), timezone.utc).date().isoformat()
+            dated_closes.append((day, float(close)))
+        except (TypeError, ValueError, OSError):
+            continue
+    if not dated_closes and meta.get("regularMarketPrice") is None:
+        return []
+
+    latest_close = dated_closes[-1] if dated_closes else None
+    previous_close = dated_closes[-2] if len(dated_closes) >= 2 else None
+    regular_price = _money(meta.get("regularMarketPrice"), currency)
+    latest_price = _money(latest_close[1], currency) if latest_close else ""
+    previous_price = _money(previous_close[1], currency) if previous_close else ""
+
+    name = str(meta.get("longName") or meta.get("shortName") or quote.get("shortname") or symbol)
+    exchange = str(meta.get("fullExchangeName") or meta.get("exchangeName") or quote.get("exchDisp") or "")
+    source_url = f"https://finance.yahoo.com/quote/{symbol}"
+
+    facts = [f"Yahoo Finance structured market data for {symbol} ({name})"]
+    if exchange:
+        facts.append(f"Exchange: {exchange}")
+    if latest_close and latest_price:
+        facts.append(f"Most recent daily close: {latest_price} on {latest_close[0]}")
+    if previous_close and previous_price:
+        facts.append(f"Previous daily close before that: {previous_price} on {previous_close[0]}")
+    if regular_price:
+        facts.append(f"Regular market price: {regular_price}")
+    facts.append(
+        "For a non-trading calendar day, answer with the most recent available trading close and state the exact date."
+    )
+
+    hint_parts = []
+    if latest_close and latest_price:
+        hint_parts.append(f"{symbol} most recent daily close was {latest_price} on {latest_close[0]}")
+    if regular_price:
+        hint_parts.append(f"regular market price was {regular_price}")
+
+    return [{
+        "title": f"Structured market data: {name} ({symbol})",
+        "url": source_url,
+        "content": ". ".join(facts),
+        "score": 1.0,
+        "published_date": latest_close[0] if latest_close else None,
+        "_source_tier": "high",
+        "_source_reliability_score": 0.92,
+        "_source_reliability_label": "High",
+        "_source_reliability_reasons": [
+            "Structured market data source",
+            "Dated daily close series",
+            "Uses HTTPS",
+        ],
+        "_relevance_score": 1.0,
+        "_direct_data_hint": "Structured market data: " + "; ".join(hint_parts) if hint_parts else "",
+    }]
 
 
 def _get_tavily():
@@ -249,6 +539,37 @@ def _prepare_search_items(items: list[dict], query: str) -> list[dict]:
     return ranked
 
 
+def _sort_by_relevance_then_reliability(items: list[dict], query: str) -> list[dict]:
+    """Final ranking: topic relevance first, then reliability and recency."""
+    def key(item: dict) -> tuple[float, float, float, float]:
+        rel = item.get("_relevance_score")
+        if not isinstance(rel, (int, float)):
+            rel = relevance_score(
+                query,
+                str(item.get("title") or ""),
+                str(item.get("content") or item.get("snippet") or ""),
+                str(item.get("url") or ""),
+            )
+        reliability = item.get("_source_reliability_score")
+        if not isinstance(reliability, (int, float)):
+            assessment = source_reliability(
+                str(item.get("url") or ""),
+                str(item.get("title") or ""),
+                str(item.get("content") or item.get("snippet") or ""),
+            )
+            reliability = assessment["score"]
+        original = item.get("score")
+        original_component = float(original) if isinstance(original, (int, float)) else 0.0
+        return (
+            float(rel),
+            float(reliability),
+            _published_date_boost(item, query),
+            original_component,
+        )
+
+    return sorted(items, key=key, reverse=True)
+
+
 def _annotate_tavily_items(items: list[dict], query: str) -> list[dict]:
     sorted_items = _prepare_search_items(items, query)
     annotated = []
@@ -257,9 +578,18 @@ def _annotate_tavily_items(items: list[dict], query: str) -> list[dict]:
         title = item.get("title", "") or ""
         raw_content = item.get("content", "") or ""
         cleaned_content = _clean_content(raw_content)
-        tier = classify_source(url, title, cleaned_content)
-        annotated.append({**item, "content": cleaned_content, "_source_tier": tier})
-    return annotated
+        reliability = source_reliability(url, title, cleaned_content)
+        published_date = item.get("published_date") or _infer_published_date_from_text(f"{title} {cleaned_content}")
+        annotated.append({
+            **item,
+            "content": cleaned_content,
+            "published_date": published_date,
+            "_source_tier": reliability["tier"],
+            "_source_reliability_score": reliability["score"],
+            "_source_reliability_label": reliability["label"],
+            "_source_reliability_reasons": reliability["reasons"],
+        })
+    return _sort_by_relevance_then_reliability(annotated, query)
 
 
 def _parse_ddg_segments(text: str) -> list[dict]:
@@ -327,7 +657,169 @@ def _format_published_date(raw: Any) -> str:
     return ""
 
 
-def _format_results_for_llm(items: list[dict], tavily_answer: str = "") -> str:
+def _infer_published_date_from_text(text: str) -> str:
+    """Extract simple dates from snippets such as 'Feb 4, 2026 · ...'."""
+    if not text:
+        return ""
+    iso = re.search(r"\b(20\d{2})-(\d{2})-(\d{2})\b", text)
+    if iso:
+        return iso.group(0)
+    month = re.search(
+        r"\b("
+        r"Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|"
+        r"Jul(?:y)?|Aug(?:ust)?|Sep(?:t|tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?"
+        r")\s+(\d{1,2}),\s+(20\d{2})\b",
+        text,
+        re.IGNORECASE,
+    )
+    if month:
+        month_num = _MONTHS.get(month.group(1).lower()[:3])
+        day = int(month.group(2))
+        year = int(month.group(3))
+        if month_num:
+            return f"{year:04d}-{month_num:02d}-{day:02d}"
+    return ""
+
+
+def _published_date_boost(item: dict, query: str) -> float:
+    formatted = _format_published_date(item.get("published_date"))
+    time_sensitive = _is_time_sensitive(query)
+    if not formatted:
+        return -2.0 if time_sensitive else 0.0
+    if not time_sensitive:
+        return 0.5
+    try:
+        published = local_date.fromisoformat(formatted)
+    except ValueError:
+        return -2.0
+    age_days = (local_date.today() - published).days
+    if age_days < 0:
+        return 2.0
+    if age_days <= 3:
+        return 8.0
+    if age_days <= 14:
+        return 6.0
+    if age_days <= 30:
+        return 4.0
+    if age_days <= 365:
+        return 1.5
+    return -1.0
+
+
+def _extract_direct_data_hint(query: str, item: dict) -> str:
+    structured_hint = str(item.get("_direct_data_hint") or "").strip()
+    if structured_hint:
+        return structured_hint
+
+    text = " ".join(
+        part.strip()
+        for part in (
+            str(item.get("title") or ""),
+            str(item.get("content") or ""),
+        )
+        if part and part.strip()
+    )
+    if not text:
+        return ""
+
+    club_scoped_leaderboard = bool(
+        re.search(r"\b(top scorers at each club|club top scorers|per club|by club)\b", text, re.IGNORECASE)
+        or re.search(r"\|\s*pos\s*\|\s*team\s*\|\s*top scorer\s*\|\s*goals\s*\|", text, re.IGNORECASE)
+    )
+
+    if _FINANCE_QUERY_RE.search(query or ""):
+        date_match = re.search(
+            r"\b(?:on\s+)?((?:Mon|Tue|Wed|Thu|Fri|Sat|Sun)\w*\s+\d{1,2}/\d{1,2}/\d{4}|\d{4}-\d{2}-\d{2})\b",
+            text,
+            re.IGNORECASE,
+        )
+        patterns = [
+            r"\bmost recent daily close\b.{0,80}?\$?([0-9]{1,4}(?:,[0-9]{3})*(?:\.\d{1,4})?)",
+            r"\bclosing price\b.{0,80}?\bwas\s+\$?([0-9]{1,4}(?:,[0-9]{3})*(?:\.\d{1,4})?)",
+            r"\bclosed\s+(?:at|around)\s+\$?([0-9]{1,4}(?:,[0-9]{3})*(?:\.\d{1,4})?)",
+            r"\bregular market price\b.{0,80}?\$?([0-9]{1,4}(?:,[0-9]{3})*(?:\.\d{1,4})?)",
+            r"\bcurrent price\b.{0,80}?\bis\s+\$?([0-9]{1,4}(?:,[0-9]{3})*(?:\.\d{1,4})?)\s*(?:USD)?",
+            r"\bprevious close\b.{0,80}?\$?([0-9]{1,4}(?:,[0-9]{3})*(?:\.\d{1,4})?)",
+        ]
+        for pattern in patterns:
+            match = re.search(pattern, text, re.IGNORECASE)
+            if not match:
+                continue
+            value = match.group(1)
+            if not value.startswith("$"):
+                value = f"${value}"
+            hint = f"Market data candidate: {value}"
+            if date_match:
+                hint += f" on {date_match.group(1)}"
+            return hint
+
+    if _LEADERBOARD_QUERY_RE.search(query or ""):
+        if club_scoped_leaderboard and not re.search(r"\b(each club|per club|by club|club)\b", query or "", re.IGNORECASE):
+            return ""
+        wanted_rank = requested_rank(query)
+        exact_match = re.search(
+            r"\bMost goals (?:was|were) scored by\s+(.{3,120}?),\s+scoring\s+(\d{1,3})\s+goals?\b",
+            text,
+            re.IGNORECASE,
+        )
+        if exact_match and (wanted_rank is None or wanted_rank == 1):
+            names = re.sub(r"\s+and\s+", " and ", exact_match.group(1).strip())
+            goals = exact_match.group(2)
+            return f"Leaderboard candidate: {names} were joint leaders with {goals} goals"
+
+        rows: list[tuple[int, str, int]] = []
+        for row_match in re.finditer(
+            r"\|\s*(\d{1,2})\s*\|\s*([^|\n]+?)\s*\|[^|\n]*\|\s*\d{1,2}\s*\|\s*(\d{1,3})\s*\|",
+            text,
+        ):
+            try:
+                position = int(row_match.group(1))
+                goals = int(row_match.group(3))
+            except ValueError:
+                continue
+            if position > 10:
+                continue
+            player = re.sub(r"\s+", " ", row_match.group(2)).strip(" 🏆")
+            if player:
+                rows.append((position, player, goals))
+        if rows:
+            if wanted_rank is not None:
+                exact_rows = [(player, goals) for position, player, goals in rows if position == wanted_rank]
+                if exact_rows:
+                    joined = " and ".join(player for player, _goals in exact_rows[:3])
+                    goals = exact_rows[0][1]
+                    return f"Leaderboard rank {wanted_rank} candidate: {joined} was listed {ordinal_label(wanted_rank)} with {goals} goals"
+
+            max_goals = max(goal_count for _position, _player, goal_count in rows)
+            leaders = [player for _position, player, goal_count in rows if goal_count == max_goals]
+            if leaders:
+                joined = " and ".join(leaders[:3])
+                verb = "were joint leaders" if len(leaders) > 1 else "was the leader"
+                return f"Leaderboard candidate: {joined} {verb} with {max_goals} goals"
+
+    return ""
+
+
+_UNHELPFUL_SUMMARY_RE = re.compile(
+    r"\b(not mentioned|not provided|do not provide|does not provide|could not find|"
+    r"couldn't find|no definitive|not confirmed|unavailable)\b",
+    re.IGNORECASE,
+)
+
+
+def _summary_is_unhelpful(summary: str, items: list[dict]) -> bool:
+    if not summary or not _UNHELPFUL_SUMMARY_RE.search(summary):
+        return False
+    # If individual results have directly relevant content, avoid letting a
+    # negative server-side synthesis override the evidence the model can read.
+    return any(
+        (item.get("_relevance_score") or 0) >= 0.70 and str(item.get("content") or "").strip()
+        for item in items
+        if (item.get("_source_tier") or "low") != "prediction"
+    )
+
+
+def _format_results_for_llm(items: list[dict], tavily_answer: str = "", query: str = "") -> str:
     """Render search results in a clean, line-based text format.
 
     - Drops prediction-tier results entirely (they were already weighted
@@ -349,7 +841,42 @@ def _format_results_for_llm(items: list[dict], tavily_answer: str = "") -> str:
                 "Say you could not find information that directly matches what was asked.")
 
     lines = []
-    if tavily_answer and tavily_answer.strip():
+    direct_hints: list[tuple[int | None, int | None, str]] = []
+    for idx, item in enumerate(useful, start=1):
+        hint = _extract_direct_data_hint(query, item)
+        if hint:
+            goal_match = re.search(r"\bwith\s+(\d{1,3})\s+goals?\b", hint, re.IGNORECASE)
+            goal_count = int(goal_match.group(1)) if goal_match else None
+            rank_match = re.search(r"\bLeaderboard rank\s+(\d{1,2})\s+candidate\b", hint, re.IGNORECASE)
+            rank = int(rank_match.group(1)) if rank_match else None
+            direct_hints.append((rank, goal_count, f"DIRECT_DATA_HINT {idx}: {hint} - source: {(item.get('url') or '').strip()}"))
+    if direct_hints:
+        hint_lines = [line for _rank, _goal_count, line in direct_hints]
+        if _LEADERBOARD_QUERY_RE.search(query or ""):
+            wanted_rank = requested_rank(query)
+            if wanted_rank is not None:
+                rank_entries = [(goal_count, line) for rank, goal_count, line in direct_hints if rank == wanted_rank]
+                rank_lines = [line for _goal_count, line in rank_entries]
+                rank_goal_counts = [goal_count for goal_count, _line in rank_entries if goal_count is not None]
+                if rank_goal_counts:
+                    max_rank_goals = max(rank_goal_counts)
+                    rank_lines = [line for goal_count, line in rank_entries if goal_count == max_rank_goals]
+                if rank_lines:
+                    hint_lines = rank_lines
+                else:
+                    hint_lines = []
+            goal_counts = [goal_count for _rank, goal_count, _line in direct_hints if goal_count is not None]
+            if wanted_rank is None and goal_counts:
+                max_goals = max(goal_counts)
+                hint_lines = [line for _rank, goal_count, line in direct_hints if goal_count == max_goals]
+        if hint_lines:
+            lines.append("DIRECT DATA HINTS (use these exact values when they directly answer the user; if hints conflict, prefer structured market/official data and exact RESULT content over summaries):")
+            lines.extend(hint_lines[:3])
+            lines.append("")
+            lines.append("---")
+            lines.append("")
+
+    if tavily_answer and tavily_answer.strip() and not _summary_is_unhelpful(tavily_answer, useful):
         lines.append("TAVILY SUMMARY (server-side synthesis from the top results; "
                      "use as supporting evidence, but verify against the individual "
                      "RESULTs below):")
@@ -369,9 +896,21 @@ def _format_results_for_llm(items: list[dict], tavily_answer: str = "") -> str:
 
         rel = item.get("_relevance_score")
         rel_suffix = f" — RELEVANCE: {rel:.2f}" if isinstance(rel, (int, float)) else ""
-        lines.append(f"RESULT {idx} — TIER: {tier}{rel_suffix} — {domain}{date_suffix}")
+        reliability_score = item.get("_source_reliability_score")
+        reliability_suffix = (
+            f" — RELIABILITY: {reliability_score:.2f}"
+            if isinstance(reliability_score, (int, float))
+            else ""
+        )
+        lines.append(f"RESULT {idx} — TIER: {tier}{rel_suffix}{reliability_suffix} — {domain}{date_suffix}")
         lines.append(f"TITLE: {title}")
         lines.append(f"URL: {url}")
+        reasons = item.get("_source_reliability_reasons") or []
+        if reasons:
+            lines.append(f"RELIABILITY_SIGNALS: {'; '.join(str(r) for r in reasons[:4])}")
+        data_hint = _extract_direct_data_hint(query, item)
+        if data_hint:
+            lines.append(f"DATA_HINT: {data_hint}")
         if content:
             lines.append(f"CONTENT: {content}")
         else:
@@ -392,9 +931,10 @@ _EMPTY_QUERY_RETRY_MSG = (
 
 _SEARCH_TOOL_DOC = """Search the web. Returns up to ~5 results in this format:
 
-    RESULT 1 — TIER: HIGH — wikipedia.org
+    RESULT 1 — TIER: HIGH — RELEVANCE: 0.92 — RELIABILITY: 0.90 — wikipedia.org
     TITLE: Headline / article title (often contains the answer directly)
     URL: https://...
+    RELIABILITY_SIGNALS: Curated reference source; Uses HTTPS
     CONTENT: Body snippet, or "(empty — the TITLE above IS the answer)"
 
     RESULT 2 — TIER: MEDIUM — ...
@@ -405,6 +945,18 @@ Source tiers:
   LOW     — unknown sites; corroborate before relying on it
   Prediction-tier results (betting / odds / preview sites) are DROPPED before
   you see them — never use those as facts.
+
+Reliability:
+  Prefer higher RELIABILITY scores and corroboration from multiple independent
+  sources. Do not use prediction-tier results as factual evidence.
+  For market prices, if the requested calendar day was not a trading day, use
+  the most recent available trading close and state the exact date.
+  For standings, awards, top scorers, leaderboards, or rankings, a tie for
+  first is a complete answer: list every tied leader and the shared value
+  confidently instead of saying there is no single definitive answer.
+  If the user asks for a specific ordinal/rank ("3rd top scorer", "second
+  place", "5th largest"), answer that exact displayed rank, not the overall
+  leader. Prefer DIRECT_DATA_HINT lines for rank-specific questions.
 
 IMPORTANT — READ TITLES:
 When CONTENT is "(empty — the TITLE above IS the answer)", the TITLE itself
@@ -428,7 +980,10 @@ def tavily_search_results_json(query: str) -> str:
         return _EMPTY_QUERY_RETRY_MSG
 
     q = query.strip()
-    time_sensitive = _is_time_sensitive(q)
+    # Market quote pages are usually evergreen data pages rather than news
+    # articles. News-mode search often misses them, so finance lookups stay on
+    # general search even when the user says "yesterday" or "latest".
+    time_sensitive = _is_time_sensitive(q) and not _FINANCE_QUERY_RE.search(q)
     # Build kwargs. When the query is time-sensitive we switch into Tavily's
     # news topic with a recency window AND advanced search depth (longer
     # content per result). Otherwise default general search.
@@ -461,7 +1016,34 @@ def tavily_search_results_json(query: str) -> str:
                     NEWS_MODE_DAYS, q, len(items))
 
     annotated = _annotate_tavily_items(items, q)
-    return _format_results_for_llm(annotated, tavily_answer=tavily_answer)
+    structured_items = _finance_structured_market_items(q)
+    if structured_items:
+        tavily_answer = ""
+        annotated = _sort_by_relevance_then_reliability(
+            _merge_search_items(structured_items, annotated),
+            q,
+        )
+    if not _has_strong_result(annotated):
+        supplemental: list[dict] = []
+        for variant in _authoritative_query_variants(q):
+            try:
+                fallback_response = _get_tavily().search(
+                    query=variant,
+                    max_results=max(2, TAVILY_MAX_RESULTS - 1),
+                    include_answer=False,
+                    search_depth="advanced",
+                )
+            except Exception as exc:
+                logger.info("Tavily source-directed fallback failed for %r: %s", variant, exc)
+                continue
+            if isinstance(fallback_response, dict) and isinstance(fallback_response.get("results"), list):
+                supplemental.extend(_annotate_tavily_items(fallback_response["results"], q))
+        if supplemental:
+            annotated = _sort_by_relevance_then_reliability(
+                _merge_search_items(annotated, supplemental),
+                q,
+            )
+    return _format_results_for_llm(annotated, tavily_answer=tavily_answer, query=q)
 
 
 tavily_search_results_json.__doc__ = _SEARCH_TOOL_DOC
@@ -488,13 +1070,50 @@ def duckduckgo_results_json(query: str) -> str:
             "title": it.get("title", ""),
             "content": cleaned_snippet,
             "snippet": cleaned_snippet,
+            "published_date": _infer_published_date_from_text(f"{it.get('title', '')} {cleaned_snippet}"),
         })
     prepared = _prepare_search_items(normalized, query.strip())
     for it in prepared:
-        it["_source_tier"] = classify_source(
+        reliability = source_reliability(
             it.get("url", ""), it.get("title", ""), it.get("content", "")
         )
-    return _format_results_for_llm(prepared)
+        it["_source_tier"] = reliability["tier"]
+        it["_source_reliability_score"] = reliability["score"]
+        it["_source_reliability_label"] = reliability["label"]
+        it["_source_reliability_reasons"] = reliability["reasons"]
+    structured_items = _finance_structured_market_items(query.strip())
+    if structured_items:
+        prepared = _merge_search_items(structured_items, prepared)
+    if not _has_strong_result(prepared):
+        supplemental = []
+        for variant in _authoritative_query_variants(query.strip())[:1]:
+            try:
+                fallback_raw = _get_duckduckgo().invoke({"query": variant})
+            except Exception as exc:
+                logger.info("DuckDuckGo source-directed fallback failed for %r: %s", variant, exc)
+                continue
+            for it in _parse_ddg_segments(str(fallback_raw) if fallback_raw is not None else ""):
+                cleaned_snippet = _clean_content(it.get("snippet", ""), max_len=500)
+                supplemental.append({
+                    "url": it.get("url", ""),
+                    "title": it.get("title", ""),
+                    "content": cleaned_snippet,
+                    "snippet": cleaned_snippet,
+                    "published_date": _infer_published_date_from_text(f"{it.get('title', '')} {cleaned_snippet}"),
+                })
+        if supplemental:
+            supplemental = _prepare_search_items(supplemental, query.strip())
+            for it in supplemental:
+                reliability = source_reliability(
+                    it.get("url", ""), it.get("title", ""), it.get("content", "")
+                )
+                it["_source_tier"] = reliability["tier"]
+                it["_source_reliability_score"] = reliability["score"]
+                it["_source_reliability_label"] = reliability["label"]
+                it["_source_reliability_reasons"] = reliability["reasons"]
+            prepared = _merge_search_items(prepared, supplemental)
+    prepared = _sort_by_relevance_then_reliability(prepared, query.strip())
+    return _format_results_for_llm(prepared, query=query.strip())
 
 
 duckduckgo_results_json.__doc__ = _SEARCH_TOOL_DOC

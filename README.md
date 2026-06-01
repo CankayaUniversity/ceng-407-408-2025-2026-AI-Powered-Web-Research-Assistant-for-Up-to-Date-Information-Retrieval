@@ -14,15 +14,35 @@ tiers and trust signals — all running on your own machine.
   - Llama 3.1 (8B) — default
   - Qwen 2.5 (7B)
   - Llama 3.2 (3B) — faster, lower quality
-- **Source quality tiering** — sources are classified as `high` / `medium` /
-  `low` / `prediction` based on a curated domain list and title/snippet heuristics.
-  Prediction-tier sources (betting sites, "who will win" previews) are explicitly
-  excluded from factual answers.
-- **Verification pass** — after the draft answer is generated, a second LLM
-  pass cross-checks each claim against the tool results and rewrites anything
-  that contradicts or isn't supported by the high/medium-tier sources.
-- **Continuous trust signals** — `source_quality_score`, `citation_strength`,
-  `citation_coverage`, `multi_source_claim_ratio`, plus a tier breakdown chart.
+- **Source reliability scoring** — sources are classified as `high` / `medium` /
+  `low` / `prediction`, then assigned a 0-1 reliability score using curated
+  domains, official-domain heuristics, HTTPS, sparse metadata, self-publishing,
+  speculative wording, and betting/prediction signals. Prediction-tier sources
+  are explicitly excluded from factual answers.
+- **Reliability-aware ranking** — search results are ordered by topical
+  relevance first, then source reliability, with recent dated sources boosted
+  for current/latest questions.
+- **Source-directed lookup retries** — when generic search does not surface a
+  strong source, the tools retry with authoritative source profiles for market
+  data, weather, sports, official statistics, software docs, health, and
+  science questions.
+- **Structured market data lookup** — finance questions can resolve tickers
+  and retrieve dated daily close data from Yahoo Finance before generic snippets.
+- **Evidence extraction pass** — after the draft answer is generated, a
+  deterministic Python pass maps claims to retrieved sources and flags weak or
+  unsupported evidence.
+- **Extra inference passes** — before retrieval, a query-understanding LLM pass
+  classifies intent and answer shape without generating search queries; after
+  extraction, a verifier/critic LLM pass revises unsupported, over-cautious, or
+  conflicting answers against the retrieved evidence.
+- **Rank-aware leaderboard answers** — ordinal questions such as "3rd top
+  scorer" are parsed as exact-rank requests, and tool output surfaces
+  rank-specific direct hints instead of only the overall leader. The API also
+  retries the exact original rank question before verification, so the verifier
+  sees the requested row even when the model's first search drifted.
+- **Continuous trust signals** — `source_quality_score`, `source_reliability_score`,
+  `citation_strength`, `citation_coverage`, `multi_source_claim_ratio`, plus a
+  tier breakdown chart.
 - **Conversational memory** — last 5 turns of a chat are passed back into the
   agent so follow-up questions resolve correctly.
 - **24-hour result cache** — repeated questions return instantly (skipped when
@@ -94,12 +114,13 @@ test the raw endpoints.
 | File | Purpose |
 | --- | --- |
 | `main.py` | Uvicorn entrypoint (just re-exports `app`) |
-| `api.py` | FastAPI routes, SSE streaming, agent orchestration |
+| `api.py` | FastAPI routes, SSE streaming, exact-rank retry, agent orchestration |
 | `agent.py` | LangGraph ReAct agent builder (one per model) |
 | `tools.py` | Tavily + DuckDuckGo + deep page reader; defensive arg coercion for Llama 3.1's tool-calling quirks |
-| `verification.py` | Post-agent fact-checking pass |
+| `llm_passes.py` | Extra query-understanding and verifier/critic LLM calls |
+| `rank_utils.py` | Shared ordinal/rank parsing helpers |
 | `fact_extraction.py` | Claim extraction, source enrichment, trust signal computation |
-| `source_quality.py` | Domain reputation tier classifier |
+| `source_quality.py` | Domain reputation and reliability scoring |
 | `cache_store.py` | JSON-file result cache with 24h TTL and lazy expired-entry pruning |
 | `chat_store.py` | JSON-file chat history |
 | `config.py` | Models, prompts, constants, `.env` loading |
@@ -109,8 +130,9 @@ test the raw endpoints.
 
 - `GET /` — the UI
 - `GET /ask_agent_stream?question=...&model=...&chat_id=...` — Server-Sent
-  Events stream used by the UI. Emits `start`, `tool_call`, `tool_result`,
-  `answer`, `verifying`, `extracting`, `final`, `done`, `error` events.
+  Events stream used by the UI. Emits `start`, `understanding`, `tool_call`,
+  `tool_result`, `answer`, `extracting`, `verifying`, `final`, `done`, `error`
+  events.
 - `GET /ask_agent?question=...&model=...` — Legacy non-streaming endpoint.
   Returns the full result as JSON. Useful for Swagger / command-line testing.
 - `GET /api/chats` and `GET /api/chats/{id}` — chat list and detail
@@ -133,6 +155,9 @@ Both are excluded from git via `.gitignore`.
 
 - The first run takes a few seconds because all three agents are built at
   startup. Subsequent requests reuse the cached LLM clients.
+- Explicit ordinal/rank questions use an exact-original-question search retry.
+  This keeps answers like "3rd top scorer" focused on the requested row rather
+  than the overall leader or a club-by-club table.
 - If `tavily_search_results_json` fails for Llama 3.1 with a malformed-args
   error, the tool returns a teaching error message that prompts the model
   to retry with a clean string query. See the defensive coercion logic in
