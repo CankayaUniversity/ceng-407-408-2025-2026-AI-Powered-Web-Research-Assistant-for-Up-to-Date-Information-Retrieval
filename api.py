@@ -23,6 +23,8 @@ from config import (
 )
 from fact_extraction import (
     coerce_message_content,
+    compose_strict_answer,
+    cited_facts_only,
     extract_claims,
     filter_facts,
     sanitize_answer,
@@ -34,7 +36,7 @@ from llm_passes import (
     verify_answer,
 )
 from rank_utils import requested_rank
-from tools import duckduckgo_results_json, tavily_search_results_json
+from tools import duckduckgo_results_json, looks_like_fx_query, tavily_search_results_json
 
 TOOL_LOG_PREVIEW_CHARS = 2000
 EXACT_RANK_RETRY_TOOLS = (
@@ -165,6 +167,7 @@ def api_clear_cache():
 class SettingsPatch(BaseModel):
     cache_ttl_seconds: int | None = None
     history_turn_limit: int | None = None
+    strict_answer_mode: bool | None = None
 
 
 @app.get("/api/settings")
@@ -228,13 +231,13 @@ def _today_context_message() -> SystemMessage:
     )
 
 
-def _needs_exact_rank_retry(question: str, tool_messages: list[dict[str, str]]) -> bool:
-    return requested_rank(question) is not None
+def _needs_lookup_retry(question: str) -> bool:
+    return requested_rank(question) is not None or looks_like_fx_query(question)
 
 
 def _run_exact_rank_retry(question: str, tool_messages: list[dict[str, str]]) -> list[dict[str, str]]:
     """Run exact-question search when the agent lost an explicit rank constraint."""
-    if not _needs_exact_rank_retry(question, tool_messages):
+    if not _needs_lookup_retry(question):
         return []
 
     added: list[dict[str, str]] = []
@@ -252,6 +255,12 @@ def _run_exact_rank_retry(question: str, tool_messages: list[dict[str, str]]) ->
     return added
 
 
+def _resolve_strict_mode(settings: dict, strict_param: bool | None) -> bool:
+    if strict_param is not None:
+        return bool(strict_param)
+    return bool(settings.get("strict_answer_mode", False))
+
+
 @app.get("/ask_agent_stream")
 async def ask_agent_stream(
     request: Request,
@@ -259,6 +268,7 @@ async def ask_agent_stream(
     chat_id: str | None = None,
     model: str | None = None,
     regenerate: bool = False,
+    strict: bool | None = None,
 ):
     async def generate():
         cancelled = threading.Event()
@@ -275,6 +285,10 @@ async def ask_agent_stream(
             prior_turns = chat.get("turns", []) or []
             has_memory = len(prior_turns) > 0
 
+            settings = settings_store.get_all()
+            cache_ttl = settings.get("cache_ttl_seconds", 24 * 3600)
+            strict_mode = _resolve_strict_mode(settings, strict)
+
             yield _sse(
                 "start",
                 {
@@ -283,19 +297,23 @@ async def ask_agent_stream(
                     "model": model_key,
                     "model_label": model_info["label"],
                     "memory_turns": len(prior_turns),
+                    "strict_answer_mode": strict_mode,
                 },
             )
-
-            settings = settings_store.get_all()
-            cache_ttl = settings.get("cache_ttl_seconds", 24 * 3600)
 
             # Cache check (skip when memory is active OR when this is an explicit
             # regenerate — the user is asking for a fresh attempt, not a cached one).
             if not has_memory and not regenerate and cache_ttl > 0:
                 cached = cache_store.get(model_key, question, cache_ttl)
                 if cached:
-                    cached_answer = sanitize_answer(cached.get("answer", ""))
                     cached_facts = filter_facts(cached.get("facts", []))
+                    cached_signals = dict(cached.get("trust_signals") or {})
+                    if strict_mode:
+                        cached_answer = compose_strict_answer(cached_facts)
+                        cached_facts = cited_facts_only(cached_facts)
+                        cached_signals["strict_answer_mode"] = True
+                    else:
+                        cached_answer = sanitize_answer(cached.get("answer", ""))
                     saved_chat = chat_store.append_turn(
                         resolved_chat_id,
                         {
@@ -303,7 +321,7 @@ async def ask_agent_stream(
                             "answer": cached_answer,
                             "facts": cached_facts,
                             "sources": cached.get("sources", []),
-                            "trust_signals": cached.get("trust_signals", {}),
+                            "trust_signals": cached_signals,
                             "model": model_key,
                             "from_cache": True,
                         },
@@ -326,7 +344,7 @@ async def ask_agent_stream(
                             "answer": cached_answer,
                             "facts": cached_facts,
                             "sources": cached.get("sources", []),
-                            "trust_signals": cached.get("trust_signals", {}),
+                            "trust_signals": cached_signals,
                         },
                     )
                     yield _sse("done", {"chat_id": resolved_chat_id})
@@ -392,6 +410,7 @@ async def ask_agent_stream(
 
             tool_messages_collected: list[dict] = []
             final_answer = ""
+            llm_draft_answer = ""
 
             while True:
                 try:
@@ -442,19 +461,21 @@ async def ask_agent_stream(
                             )
                         elif message_type == "ai" and getattr(message, "content", None):
                             raw_answer = coerce_message_content(message.content)
-                            final_answer = sanitize_answer(raw_answer)
-                            if not final_answer.strip() and raw_answer.strip():
+                            llm_draft_answer = sanitize_answer(raw_answer)
+                            if not llm_draft_answer.strip() and raw_answer.strip():
                                 logger.warning(
                                     "Sanitizer emptied model answer (chat=%s); using raw text",
                                     resolved_chat_id,
                                 )
-                                final_answer = raw_answer.strip()
-                            yield _sse("answer", {"text": final_answer})
+                                llm_draft_answer = raw_answer.strip()
+                            final_answer = llm_draft_answer
+                            if not strict_mode:
+                                yield _sse("answer", {"text": final_answer})
 
             if await request.is_disconnected():
                 return
 
-            if _needs_exact_rank_retry(question, tool_messages_collected):
+            if _needs_lookup_retry(question):
                 for tool_name, tool in EXACT_RANK_RETRY_TOOLS:
                     call_id = f"exact-rank-{tool_name}"
                     yield _sse(
@@ -492,35 +513,53 @@ async def ask_agent_stream(
             # Pass the raw answer (with newlines) so fact_extraction can
             # detect and strip the trailing "Sources:" markdown section
             # before splitting into claims.
+            claim_source_answer = llm_draft_answer or final_answer
             extraction = await asyncio.to_thread(
                 extract_claims,
-                final_answer,
+                claim_source_answer,
                 tool_messages_collected,
                 question,
             )
 
-            yield _sse("verifying", {})
-            verification = await asyncio.to_thread(
-                verify_answer,
-                question=question,
-                answer=final_answer,
-                model_id=model_info["id"],
-                tool_messages=tool_messages_collected,
-                extraction=extraction,
-                understanding=query_understanding,
-            )
-            verified_answer = verification.get("final_answer") or final_answer
-            if verified_answer != final_answer:
-                final_answer = verified_answer
+            if strict_mode:
+                cited = cited_facts_only(extraction["facts"])
+                final_answer = compose_strict_answer(extraction["facts"])
                 extraction = await asyncio.to_thread(
                     extract_claims,
                     final_answer,
                     tool_messages_collected,
                     question,
                 )
-                extraction["trust_signals"]["verifier_revised_answer"] = True
-            extraction["trust_signals"]["verifier_status"] = verification.get("status", "skipped")
-            extraction["trust_signals"]["verifier_confidence"] = verification.get("confidence", "unknown")
+                extraction["facts"] = cited_facts_only(extraction["facts"]) or cited
+                extraction["trust_signals"]["strict_answer_mode"] = True
+                extraction["trust_signals"]["verifier_status"] = "skipped_strict_mode"
+                extraction["trust_signals"]["verifier_confidence"] = "n/a"
+                if llm_draft_answer.strip() and llm_draft_answer.strip() != final_answer.strip():
+                    extraction["trust_signals"]["llm_draft_discarded"] = True
+                yield _sse("answer", {"text": final_answer, "strict": True})
+            else:
+                yield _sse("verifying", {})
+                verification = await asyncio.to_thread(
+                    verify_answer,
+                    question=question,
+                    answer=final_answer,
+                    model_id=model_info["id"],
+                    tool_messages=tool_messages_collected,
+                    extraction=extraction,
+                    understanding=query_understanding,
+                )
+                verified_answer = verification.get("final_answer") or final_answer
+                if verified_answer != final_answer:
+                    final_answer = verified_answer
+                    extraction = await asyncio.to_thread(
+                        extract_claims,
+                        final_answer,
+                        tool_messages_collected,
+                        question,
+                    )
+                    extraction["trust_signals"]["verifier_revised_answer"] = True
+                extraction["trust_signals"]["verifier_status"] = verification.get("status", "skipped")
+                extraction["trust_signals"]["verifier_confidence"] = verification.get("confidence", "unknown")
             extraction["trust_signals"]["query_understanding"] = query_understanding
 
             turn_payload = {

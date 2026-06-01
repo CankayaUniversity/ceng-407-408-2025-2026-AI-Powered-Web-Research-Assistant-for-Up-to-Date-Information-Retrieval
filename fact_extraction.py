@@ -254,6 +254,45 @@ def filter_facts(facts: list[dict[str, Any]]) -> list[dict[str, Any]]:
     ]
 
 
+STRICT_NO_CLAIMS_MESSAGE = (
+    "No statements from the research pass could be matched to retrieved sources. "
+    "Try rephrasing the question, or turn off strict mode for a full model-written summary."
+)
+
+
+def cited_facts_only(facts: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Facts that have at least one supporting source URL attached."""
+    cited: list[dict[str, Any]] = []
+    for fact in facts or []:
+        flags = fact.get("fact_quality_flags") or {}
+        urls = fact.get("evidence_urls") or []
+        if not flags.get("has_source") or not urls:
+            continue
+        text = str(fact.get("claim_text", "")).strip()
+        if not text or _is_non_claim(text):
+            continue
+        cited.append(fact)
+    return cited
+
+
+def compose_strict_answer(facts: list[dict[str, Any]]) -> str:
+    """Build the user-visible answer by joining only source-backed extracted claims."""
+    seen: set[str] = set()
+    parts: list[str] = []
+    for fact in cited_facts_only(facts):
+        text = str(fact.get("claim_text", "")).strip()
+        key = text.lower()
+        if key in seen:
+            continue
+        seen.add(key)
+        if text and text[-1] not in ".!?":
+            text += "."
+        parts.append(text)
+    if not parts:
+        return STRICT_NO_CLAIMS_MESSAGE
+    return " ".join(parts)
+
+
 def coerce_message_content(content: object) -> str:
     """Normalize LangChain message content (str or block list) to plain text."""
     if content is None:

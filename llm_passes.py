@@ -282,6 +282,7 @@ def _fallback_verification(
     tool_messages: list[dict[str, str]],
 ) -> dict[str, Any]:
     """Deterministic safety net when the verifier LLM fails or emits bad JSON."""
+    answer = _resolve_scoreline_contradiction(answer)
     hints = _direct_hints(tool_messages)
     if not hints:
         return {"status": "skipped", "final_answer": answer, "issues": [], "confidence": "unknown"}
@@ -394,6 +395,21 @@ def _direct_hint_verification(
                 "issues": ["Answered from structured market data"],
                 "confidence": "high",
             }
+
+    for hint in _direct_hints(tool_messages):
+        fx = re.search(
+            r"Structured FX data:\s*([A-Za-z]{3})/([A-Za-z]{3})\s+was\s+([0-9][0-9,]*(?:\.\d+)?)\s+on\s+(\d{4}-\d{2}-\d{2})",
+            hint,
+            re.IGNORECASE,
+        )
+        if fx:
+            base, quote, rate, day = fx.group(1).upper(), fx.group(2).upper(), fx.group(3), fx.group(4)
+            return {
+                "status": "revise",
+                "final_answer": f"1 {base} = {rate} {quote} (as of {day}).",
+                "issues": ["Answered from structured exchange-rate data"],
+                "confidence": "high",
+            }
     return _ranked_leaderboard_answer_from_tool_content(question=question, tool_messages=tool_messages)
 
 
@@ -407,9 +423,42 @@ def rank_answer_from_tool_messages(
     return _direct_hint_verification(question=question, tool_messages=tool_messages)
 
 
+_SHOOTOUT_RE = re.compile(r"\b(?:penalt(?:y|ies)|shoot[\s-]?out|on penalties)\b", re.IGNORECASE)
+_DRAW_RE = re.compile(
+    r"\b(?:tied|drew|draw|level|all\s+square|deadlock)\b|\b(\d{1,2})\s*[-–]\s*\1\b",
+    re.IGNORECASE,
+)
+_LEADING_SCORELINE_RE = re.compile(
+    r"^\s*[A-Z][\w.&'-]*(?:\s+[A-Z][\w.&'-]*){0,3}\s+(\d{1,2})\s*[-–]\s*(\d{1,2})\s+"
+    r"[A-Z][\w.&'-]*(?:\s+[A-Z][\w.&'-]*){0,3}\s*[,.;:–-]\s*"
+)
+
+
+def _resolve_scoreline_contradiction(answer: str) -> str:
+    """Drop a leading decisive scoreline that contradicts a stated shootout.
+
+    A penalty shootout means the match was level after extra time, so an answer
+    like "PSG 2-1 Arsenal, ... tied 1-1 ... PSG won 4-3 on penalties" is
+    self-contradictory. Only fires when the text mentions BOTH a shootout and a
+    level result, and only strips a leading "TeamA N-M TeamB" headline where
+    N != M. It never rewrites or invents anything.
+    """
+    text = (answer or "").strip()
+    if not text or not _SHOOTOUT_RE.search(text) or not _DRAW_RE.search(text):
+        return answer
+    match = _LEADING_SCORELINE_RE.match(text)
+    if not match or int(match.group(1)) == int(match.group(2)):
+        return answer
+    remainder = text[match.end():].lstrip(" ,.;:–-")
+    if not remainder:
+        return answer
+    return remainder[0].upper() + remainder[1:]
+
+
 def _clean_verifier_answer(text: str) -> str:
     cleaned = sanitize_answer(text)
     cleaned = re.sub(r"\s+-\s+source:\s*https?://\S+\s*$", "", cleaned, flags=re.IGNORECASE).strip()
+    cleaned = _resolve_scoreline_contradiction(cleaned)
     return cleaned
 
 
@@ -454,7 +503,14 @@ def verify_answer(
         "answer the user directly and concisely. Do not mention rejected or "
         "incorrect candidates unless the user asked about them or the sources "
         "show a real unresolved conflict. Do not copy literal DIRECT_DATA_HINT "
-        "syntax or '- source: URL' text into the final answer."
+        "syntax or '- source: URL' text into the final answer. If a match was "
+        "decided by a penalty shootout, it was level after extra time: report "
+        "the level score and the shootout result, and never also state a "
+        "decisive scoreline as the regular result. Never describe the draft, "
+        "the evidence, or the verification process in the final_answer (for "
+        "example 'the draft answer is not supported' or 'cannot be verified "
+        "with the provided information'): either answer the question directly "
+        "or state plainly that you could not find the information."
     ))
     human = HumanMessage(content=(
         "Audit this draft answer against the evidence packet below.\n\n"

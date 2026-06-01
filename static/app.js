@@ -17,6 +17,7 @@ const deleteChatBtn = document.getElementById('delete-chat-btn');
 const statusPill = document.getElementById('status-pill');
 const statusText = statusPill.querySelector('.status-text');
 const modelToggle = document.getElementById('model-toggle');
+const strictToggle = document.getElementById('strict-toggle');
 const settingsBtn = document.getElementById('settings-btn');
 
 let isAsking = false;
@@ -25,6 +26,7 @@ let activeChatId = null;
 let cachedChats = [];
 let searchDebounce = null;
 let selectedModel = localStorage.getItem('selectedModel') || 'llama';
+let strictAnswerMode = localStorage.getItem('strictAnswerMode') === 'true';
 let activeTraceSpinner = null;
 let activeTraceLabel = null;
 /** @type {Map<string, { es: EventSource, question: string, traceSpinner: HTMLElement|null, traceLabel: HTMLElement|null, statusLabel: string }>} */
@@ -365,6 +367,13 @@ modelToggle.querySelectorAll('.model-option').forEach((btn) => {
 });
 
 applySelectedModel();
+applyStrictToggleUI();
+
+if (strictToggle) {
+  strictToggle.addEventListener('click', () => {
+    syncStrictAnswerMode(!strictAnswerMode);
+  });
+}
 
 /* ----------------- sidebar ----------------- */
 
@@ -469,7 +478,9 @@ async function openChat(chatId) {
 
     if (!restoreConversationFromSnapshot(chatId)) {
       hideEmptyState();
-      (chat.turns || []).forEach((turn) => renderHistoricalTurn(turn));
+      (chat.turns || []).forEach((turn, idx) =>
+        renderHistoricalTurn(turn, `${chat.id}-${idx}`)
+      );
       const turnEls = conversation.querySelectorAll('.turn');
       if (turnEls.length && chat.turns && chat.turns.length) {
         const lastTurnEl = turnEls[turnEls.length - 1];
@@ -617,13 +628,33 @@ function regenerateLastTurn(question, modelKey) {
   startResearch(question, { modelOverride: modelKey });
 }
 
-function buildBadges({ model, fromCache, memoryTurns }) {
+function applyStrictToggleUI() {
+  if (!strictToggle) return;
+  strictToggle.classList.toggle('active', strictAnswerMode);
+  strictToggle.setAttribute('aria-pressed', strictAnswerMode ? 'true' : 'false');
+}
+
+async function syncStrictAnswerMode(enabled) {
+  strictAnswerMode = !!enabled;
+  localStorage.setItem('strictAnswerMode', strictAnswerMode ? 'true' : 'false');
+  applyStrictToggleUI();
+  await patchSettings({ strict_answer_mode: strictAnswerMode });
+}
+
+function buildBadges({ model, fromCache, memoryTurns, strictMode }) {
   const wrap = el('div', 'turn-badges');
   const modelKey = model || 'llama';
   const modelBadge = el('span', `meta-badge model-${modelKey}`);
   modelBadge.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3 7h7l-5.5 4 2 7L12 16l-6.5 4 2-7L2 9h7z"/></svg>`;
   modelBadge.appendChild(txt('span', null, MODEL_LABELS[modelKey] || modelKey));
   wrap.appendChild(modelBadge);
+
+  if (strictMode) {
+    const strictBadge = el('span', 'meta-badge strict');
+    strictBadge.innerHTML = `<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`;
+    strictBadge.appendChild(txt('span', null, 'Strict sources'));
+    wrap.appendChild(strictBadge);
+  }
 
   if (fromCache) {
     const cacheBadge = el('span', 'meta-badge cache');
@@ -646,6 +677,89 @@ function buildAnswerCard(markdownText) {
   const card = el('div', 'answer-card');
   if (window.marked) card.innerHTML = marked.parse(markdownText || '');
   else card.textContent = markdownText || '';
+  return card;
+}
+
+function isCitedFact(fact) {
+  const flags = (fact && fact.fact_quality_flags) || {};
+  return !!(flags.has_source && (fact.evidence_urls || []).length);
+}
+
+function claimElementId(turnKey, index) {
+  return `fact-claim-${turnKey}-${index}`;
+}
+
+function focusFactClaim(claimId) {
+  const target = document.getElementById(claimId);
+  if (!target) return;
+  target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  target.classList.add('fact-card-highlight');
+  const section = target.closest('.section');
+  if (section) {
+    const title = section.querySelector('.section-title');
+    if (title) title.classList.add('section-title-flash');
+    setTimeout(() => title && title.classList.remove('section-title-flash'), 1600);
+  }
+  clearTimeout(focusFactClaim._timer);
+  focusFactClaim._timer = setTimeout(() => {
+    target.classList.remove('fact-card-highlight');
+  }, 2200);
+}
+
+function buildStrictLinkedAnswer(facts, turnKey) {
+  const card = el('div', 'answer-card answer-card-strict-linked');
+  const para = el('p', 'strict-answer-claims');
+  let wrote = false;
+  const seen = new Set();
+
+  (facts || []).forEach((fact, index) => {
+    if (!isCitedFact(fact)) return;
+    let text = String(fact.claim_text || '').trim();
+    if (!text) return;
+    const key = text.toLowerCase();
+    if (seen.has(key)) return;
+    seen.add(key);
+    if (!/[.!?]$/.test(text)) text += '.';
+
+    if (wrote) para.appendChild(document.createTextNode(' '));
+
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'strict-claim-link';
+    btn.title = 'Go to extracted claim and sources';
+    btn.textContent = text;
+    const targetId = claimElementId(turnKey, index);
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      focusFactClaim(targetId);
+    });
+    para.appendChild(btn);
+    wrote = true;
+  });
+
+  if (!wrote) {
+    card.appendChild(
+      txt('p', 'strict-answer-empty', 'No source-backed claims to display.')
+    );
+  } else {
+    card.appendChild(para);
+  }
+  return card;
+}
+
+function mountAnswerCard(agentBlock, { text, facts, strictMode, turnKey }) {
+  const card =
+    strictMode && Array.isArray(facts) && facts.length
+      ? buildStrictLinkedAnswer(facts, turnKey || 'turn')
+      : buildAnswerCard(text || '');
+  const existing = agentBlock.querySelector('.answer-card');
+  if (existing) {
+    existing.replaceWith(card);
+  } else {
+    const badges = agentBlock.querySelector('.turn-badges');
+    if (badges) badges.insertAdjacentElement('afterend', card);
+    else agentBlock.prepend(card);
+  }
   return card;
 }
 
@@ -1399,6 +1513,7 @@ function buildSettingsModal(settings, defaults) {
 
   const cacheHours = Math.round((settings.cache_ttl_seconds || 0) / 3600);
   const historyLimit = settings.history_turn_limit ?? 5;
+  const strictModeOn = !!settings.strict_answer_mode;
   const cacheDefaultH = Math.round((defaults.cache_ttl_seconds || 0) / 3600);
 
   modal.innerHTML = `
@@ -1420,6 +1535,19 @@ function buildSettingsModal(settings, defaults) {
         <div class="setting-control">
           <input type="number" id="setting-cache-ttl" value="${cacheHours}" min="0" max="720" class="setting-input"/>
           <span class="setting-unit">hours</span>
+        </div>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-label">
+          <span class="setting-name">Strict answer mode</span>
+          <span class="setting-desc">Final answer is built only from extracted claims that matched a retrieved source — no free-form LLM phrasing. <span class="setting-default">Default: off</span></span>
+        </div>
+        <div class="setting-control">
+          <label class="setting-checkbox">
+            <input type="checkbox" id="setting-strict-mode" ${strictModeOn ? 'checked' : ''}/>
+            <span>Enabled</span>
+          </label>
         </div>
       </div>
 
@@ -1480,6 +1608,16 @@ function buildSettingsModal(settings, defaults) {
     showSettingsToast(modal, result ? `Cache TTL set to ${hours}h.` : 'Failed to save', result ? 'success' : 'error');
   });
 
+  const strictInput = modal.querySelector('#setting-strict-mode');
+  strictInput.addEventListener('change', async () => {
+    await syncStrictAnswerMode(strictInput.checked);
+    showSettingsToast(
+      modal,
+      strictInput.checked ? 'Strict mode enabled.' : 'Strict mode disabled.',
+      'success'
+    );
+  });
+
   const historyInput = modal.querySelector('#setting-history');
   historyInput.addEventListener('change', async () => {
     const limit = Math.max(0, Math.min(20, parseInt(historyInput.value, 10) || 0));
@@ -1537,6 +1675,8 @@ function buildSettingsModal(settings, defaults) {
     const s = data.settings;
     cacheInput.value = Math.round((s.cache_ttl_seconds || 0) / 3600);
     historyInput.value = s.history_turn_limit;
+    strictInput.checked = !!s.strict_answer_mode;
+    await syncStrictAnswerMode(strictInput.checked);
     showSettingsToast(modal, 'Settings reset to defaults.', 'success');
   });
 
@@ -1603,10 +1743,12 @@ function buildSourcesGrid(sources) {
   return grid;
 }
 
-function buildFactsList(facts) {
+function buildFactsList(facts, turnKey) {
   const list = el('div', 'facts-list');
-  facts.forEach((fact) => {
+  const key = turnKey || 'turn';
+  facts.forEach((fact, index) => {
     const card = el('div', 'fact-card');
+    card.id = claimElementId(key, index);
     card.appendChild(txt('div', 'fact-claim', fact.claim_text));
 
     const meta = el('div', 'fact-meta');
@@ -1784,21 +1926,35 @@ function buildTrustPanel(signals, sources, facts) {
   return wrap;
 }
 
-function renderHistoricalTurn(turn) {
+function renderHistoricalTurn(turn, turnKey) {
   const turnEl = el('div', 'turn');
   turnEl.appendChild(txt('div', 'user-msg', turn.question || ''));
 
   const agentBlock = el('div', 'agent-block');
+  const strictMode = !!(turn.trust_signals && turn.trust_signals.strict_answer_mode);
+  const key = turnKey || 'hist';
   agentBlock.appendChild(
-    buildBadges({ model: turn.model, fromCache: !!turn.from_cache, memoryTurns: 0 })
+    buildBadges({
+      model: turn.model,
+      fromCache: !!turn.from_cache,
+      memoryTurns: 0,
+      strictMode,
+    })
   );
-  agentBlock.appendChild(buildAnswerCard(turn.answer || ''));
+  mountAnswerCard(agentBlock, {
+    text: turn.answer || '',
+    facts: turn.facts || [],
+    strictMode,
+    turnKey: key,
+  });
 
   if (turn.sources && turn.sources.length) {
     agentBlock.appendChild(buildSection('Sources', turn.sources.length, buildSourcesGrid(turn.sources)));
   }
   if (turn.facts && turn.facts.length) {
-    agentBlock.appendChild(buildSection('Extracted facts', turn.facts.length, buildFactsList(turn.facts)));
+    agentBlock.appendChild(
+      buildSection('Extracted facts', turn.facts.length, buildFactsList(turn.facts, key))
+    );
   }
   if (turn.trust_signals) {
     const trustMeta = computeAnswerTrustScore(turn.trust_signals);
@@ -1887,6 +2043,7 @@ async function startResearch(question, options) {
     traceSpinner: spinner,
     traceLabel,
     statusLabel,
+    turnKey: `${targetChatId}-${Date.now()}`,
   };
   researchSessions.set(targetChatId, session);
   renderChatList();
@@ -1894,6 +2051,7 @@ async function startResearch(question, options) {
 
   const params = new URLSearchParams({ question, model: modelForRequest });
   params.set('chat_id', targetChatId);
+  if (strictAnswerMode) params.set('strict', 'true');
   const url = `/ask_agent_stream?${params.toString()}`;
 
   const es = new EventSource(url);
@@ -1903,6 +2061,7 @@ async function startResearch(question, options) {
   let streamedFromCache = false;
   let streamedMemoryTurns = 0;
   let streamedModel = modelForRequest;
+  let streamedStrictMode = strictAnswerMode;
 
   function scrollIfViewing() {
     if (activeChatId === targetChatId) scrollToBottom();
@@ -1929,6 +2088,7 @@ async function startResearch(question, options) {
         model: streamedModel,
         fromCache: streamedFromCache,
         memoryTurns: streamedMemoryTurns,
+        strictMode: streamedStrictMode,
       });
       badgesEl.replaceWith(fresh);
       badgesEl = fresh;
@@ -1937,6 +2097,7 @@ async function startResearch(question, options) {
         model: streamedModel,
         fromCache: streamedFromCache,
         memoryTurns: streamedMemoryTurns,
+        strictMode: streamedStrictMode,
       });
       agentBlock.insertBefore(badgesEl, trace);
     }
@@ -1950,6 +2111,9 @@ async function startResearch(question, options) {
     }
     streamedModel = data.model || selectedModel;
     streamedMemoryTurns = data.memory_turns || 0;
+    if (typeof data.strict_answer_mode === 'boolean') {
+      streamedStrictMode = data.strict_answer_mode;
+    }
     ensureBadges();
     traceLabel.textContent = streamedMemoryTurns > 0
       ? 'Planning with conversation context…'
@@ -2011,21 +2175,24 @@ async function startResearch(question, options) {
 
   es.addEventListener('answer', (event) => {
     const data = JSON.parse(event.data);
-    traceLabel.textContent = 'Drafting answer…';
-    let answerCard = agentBlock.querySelector('.answer-card');
-    if (!answerCard) {
-      answerCard = buildAnswerCard(data.text);
-      agentBlock.appendChild(answerCard);
-    } else if (window.marked) {
-      answerCard.innerHTML = marked.parse(data.text || '');
-    } else {
-      answerCard.textContent = data.text || '';
+    traceLabel.textContent = streamedStrictMode
+      ? 'Composing cited answer…'
+      : 'Drafting answer…';
+    if (!streamedStrictMode || !data.strict) {
+      mountAnswerCard(agentBlock, {
+        text: data.text,
+        facts: [],
+        strictMode: false,
+        turnKey: session.turnKey,
+      });
     }
     scrollIfViewing();
   });
 
   es.addEventListener('extracting', () => {
-    traceLabel.textContent = 'Extracting facts & verifying citations…';
+    traceLabel.textContent = streamedStrictMode
+      ? 'Matching claims to sources…'
+      : 'Extracting facts & verifying citations…';
   });
 
   es.addEventListener('verifying', () => {
@@ -2052,22 +2219,28 @@ async function startResearch(question, options) {
     streamedModel = data.model || streamedModel;
     ensureBadges();
 
-    let answerCard = agentBlock.querySelector('.answer-card');
-    if (!answerCard) {
-      answerCard = buildAnswerCard(data.answer);
-      agentBlock.appendChild(answerCard);
-    } else if (window.marked) {
-      answerCard.innerHTML = marked.parse(data.answer || '');
-    } else {
-      answerCard.textContent = data.answer || '';
-    }
-
     if (data.sources && data.sources.length) {
       agentBlock.appendChild(buildSection('Sources', data.sources.length, buildSourcesGrid(data.sources)));
     }
     if (data.facts && data.facts.length) {
-      agentBlock.appendChild(buildSection('Extracted facts', data.facts.length, buildFactsList(data.facts)));
+      agentBlock.appendChild(
+        buildSection(
+          'Extracted facts',
+          data.facts.length,
+          buildFactsList(data.facts, session.turnKey)
+        )
+      );
     }
+
+    const useStrictLinked =
+      streamedStrictMode ||
+      (data.trust_signals && data.trust_signals.strict_answer_mode);
+    mountAnswerCard(agentBlock, {
+      text: data.answer,
+      facts: data.facts || [],
+      strictMode: useStrictLinked,
+      turnKey: session.turnKey,
+    });
     if (data.trust_signals) {
       const trustMeta = computeAnswerTrustScore(data.trust_signals);
       agentBlock.appendChild(
@@ -2116,3 +2289,10 @@ async function startResearch(question, options) {
 autosizeInput();
 input.focus();
 loadChats();
+fetchSettings().then((data) => {
+  if (data && data.settings && typeof data.settings.strict_answer_mode === 'boolean') {
+    strictAnswerMode = !!data.settings.strict_answer_mode;
+    localStorage.setItem('strictAnswerMode', strictAnswerMode ? 'true' : 'false');
+    applyStrictToggleUI();
+  }
+});

@@ -326,6 +326,41 @@ def _resolve_yahoo_symbol(query: str) -> dict[str, Any] | None:
     return None
 
 
+def _yahoo_chart_result(symbol: str, rng: str = "10d") -> dict[str, Any] | None:
+    """Fetch one daily chart result object from Yahoo Finance, or None on error."""
+    try:
+        response = requests.get(
+            f"https://query1.finance.yahoo.com/v8/finance/chart/{symbol}",
+            params={"range": rng, "interval": "1d"},
+            headers=_HTTP_HEADERS,
+            timeout=8,
+        )
+        response.raise_for_status()
+        data = response.json()
+    except Exception as exc:
+        logger.info("Yahoo Finance chart lookup failed for %r: %s", symbol, exc)
+        return None
+    result = ((data.get("chart") or {}).get("result") or [None])[0]
+    return result if isinstance(result, dict) else None
+
+
+def _chart_dated_closes(result: dict) -> list[tuple[str, float]]:
+    """Extract [(YYYY-MM-DD, close), ...] from a Yahoo chart result object."""
+    timestamps = result.get("timestamp") or []
+    quote_data = (((result.get("indicators") or {}).get("quote") or [{}])[0] or {})
+    closes = quote_data.get("close") or []
+    dated: list[tuple[str, float]] = []
+    for ts, close in zip(timestamps, closes):
+        if close is None:
+            continue
+        try:
+            day = datetime.fromtimestamp(int(ts), timezone.utc).date().isoformat()
+            dated.append((day, float(close)))
+        except (TypeError, ValueError, OSError):
+            continue
+    return dated
+
+
 def _finance_structured_market_items(query: str) -> list[dict]:
     """Fetch structured market data before generic finance snippets."""
     quote = _resolve_yahoo_symbol(query)
@@ -336,38 +371,13 @@ def _finance_structured_market_items(query: str) -> list[dict]:
     if not symbol:
         return []
 
-    try:
-        response = requests.get(
-            f"https://query1.finance.yahoo.com/v8/finance/chart/{symbol}",
-            params={"range": "10d", "interval": "1d"},
-            headers=_HTTP_HEADERS,
-            timeout=8,
-        )
-        response.raise_for_status()
-        data = response.json()
-    except Exception as exc:
-        logger.info("Yahoo Finance chart lookup failed for %r: %s", symbol, exc)
-        return []
-
-    result = ((data.get("chart") or {}).get("result") or [None])[0]
-    if not isinstance(result, dict):
+    result = _yahoo_chart_result(symbol)
+    if result is None:
         return []
 
     meta = result.get("meta") or {}
     currency = str(meta.get("currency") or "USD")
-    timestamps = result.get("timestamp") or []
-    quote_data = (((result.get("indicators") or {}).get("quote") or [{}])[0] or {})
-    closes = quote_data.get("close") or []
-
-    dated_closes: list[tuple[str, float]] = []
-    for ts, close in zip(timestamps, closes):
-        if close is None:
-            continue
-        try:
-            day = datetime.fromtimestamp(int(ts), timezone.utc).date().isoformat()
-            dated_closes.append((day, float(close)))
-        except (TypeError, ValueError, OSError):
-            continue
+    dated_closes = _chart_dated_closes(result)
     if not dated_closes and meta.get("regularMarketPrice") is None:
         return []
 
@@ -417,6 +427,179 @@ def _finance_structured_market_items(query: str) -> list[dict]:
         "_relevance_score": 1.0,
         "_direct_data_hint": "Structured market data: " + "; ".join(hint_parts) if hint_parts else "",
     }]
+
+
+# --------------------------------------------------------------------------
+# Structured exchange-rate (FX) lookup
+# --------------------------------------------------------------------------
+# Currency questions ("EUR/TRY", "euro to lira exchange rate") never reached
+# the Yahoo structured path: _FINANCE_QUERY_RE only matches equities and
+# _resolve_yahoo_symbol rejects CURRENCY quote types. We resolve the pair
+# directly to Yahoo's "<BASE><QUOTE>=X" chart symbol and emit a clean
+# DIRECT_DATA_HINT, so the verifier answers deterministically the same way
+# stock closes already do — independent of which model drafted.
+
+_FX_INTENT_RE = re.compile(
+    r"\b(exchange rate|exchange rates|forex|fx rate|currency conversion|"
+    r"currency rate|conversion rate|convert|how much is|worth in|rate of)\b",
+    re.IGNORECASE,
+)
+_CURRENCY_PAIR_RE = re.compile(r"\b[A-Za-z]{3}\s*/\s*[A-Za-z]{3}\b")
+
+_CURRENCY_ALIASES = {
+    "usd": "USD", "us dollar": "USD", "american dollar": "USD",
+    "dollar": "USD", "dollars": "USD",
+    "eur": "EUR", "euro": "EUR", "euros": "EUR",
+    "gbp": "GBP", "british pound": "GBP", "pound sterling": "GBP",
+    "sterling": "GBP", "pound": "GBP", "pounds": "GBP",
+    "try": "TRY", "turkish lira": "TRY", "lira": "TRY", "tl": "TRY",
+    "jpy": "JPY", "japanese yen": "JPY", "yen": "JPY",
+    "chf": "CHF", "swiss franc": "CHF",
+    "cad": "CAD", "canadian dollar": "CAD",
+    "aud": "AUD", "australian dollar": "AUD",
+    "cny": "CNY", "chinese yuan": "CNY", "yuan": "CNY", "renminbi": "CNY", "rmb": "CNY",
+    "inr": "INR", "indian rupee": "INR", "rupee": "INR", "rupees": "INR",
+    "rub": "RUB", "russian ruble": "RUB", "ruble": "RUB", "rouble": "RUB",
+    "krw": "KRW", "korean won": "KRW",
+    "brl": "BRL", "brazilian real": "BRL",
+    "mxn": "MXN", "mexican peso": "MXN",
+    "zar": "ZAR", "south african rand": "ZAR",
+    "aed": "AED", "uae dirham": "AED", "dirham": "AED",
+    "sar": "SAR", "saudi riyal": "SAR",
+    "sek": "SEK", "nok": "NOK", "dkk": "DKK", "pln": "PLN",
+}
+_CURRENCY_ALT = "|".join(re.escape(alias) for alias in sorted(_CURRENCY_ALIASES, key=len, reverse=True))
+_CURRENCY_ALIAS_RE = re.compile(r"\b(?:" + _CURRENCY_ALT + r")\b")
+
+# "<currency> to/in/vs <currency>" without an explicit exchange-rate word, e.g.
+# "1 euro to try", "usd in eur", "pound vs dollar". Both sides must be currency
+# tokens, which already rules out non-FX text like "did they try to win".
+_FX_CONNECTOR_RE = re.compile(
+    r"\b(" + _CURRENCY_ALT + r")\b\s*"
+    r"(?:\bto\b|\binto\b|\bin\b|\bper\b|\bvs\b|\bversus\b|\bagainst\b|/|-)\s*"
+    r"(?:\d[\d.,]*\s+)?(?:the\s+)?"
+    r"\b(" + _CURRENCY_ALT + r")\b",
+    re.IGNORECASE,
+)
+# Aliases that are also common English / proper words. A connector match made
+# up of ONLY these (e.g. "try to pound") is too risky to treat as FX.
+_AMBIGUOUS_CURRENCY_WORDS = {"try", "pound", "pounds", "sterling"}
+
+
+def _extract_currencies(query: str) -> list[str]:
+    """Currencies mentioned in the query as ISO codes, in order of appearance."""
+    found: list[str] = []
+    for match in _CURRENCY_ALIAS_RE.finditer((query or "").lower()):
+        code = _CURRENCY_ALIASES.get(match.group(0))
+        if code and code not in found:
+            found.append(code)
+    return found
+
+
+def _has_connector_fx_intent(query: str) -> bool:
+    """True for "<currency> to/in/vs <currency>" with at least one unambiguous side."""
+    match = _FX_CONNECTOR_RE.search(query or "")
+    if not match:
+        return False
+    left, right = match.group(1).lower(), match.group(2).lower()
+    return left not in _AMBIGUOUS_CURRENCY_WORDS or right not in _AMBIGUOUS_CURRENCY_WORDS
+
+
+def _resolve_currency_pair(query: str) -> tuple[str, str] | None:
+    """Return (base, quote) ISO codes for an FX query, else None.
+
+    Gated on FX intent — an exchange-rate phrase, a slash pair, or a
+    currency-to-currency connector ("1 euro to try") — so a stray currency word
+    in a non-FX question (e.g. "did they try to win") never triggers a lookup.
+    """
+    q = query or ""
+    currencies = _extract_currencies(q)
+    if not currencies:
+        return None
+    if not (
+        _FX_INTENT_RE.search(q)
+        or _CURRENCY_PAIR_RE.search(q)
+        or _has_connector_fx_intent(q)
+    ):
+        return None
+    base = currencies[0]
+    quote = currencies[1] if len(currencies) > 1 else "USD"
+    if base == quote:
+        return None
+    return base, quote
+
+
+def looks_like_fx_query(query: str) -> bool:
+    """True when the query is an exchange-rate / currency-pair lookup."""
+    return _resolve_currency_pair(query) is not None
+
+
+def _fx_structured_items(query: str) -> list[dict]:
+    """Fetch a dated exchange rate from Yahoo Finance for currency-pair queries."""
+    pair = _resolve_currency_pair(query)
+    if not pair:
+        return []
+    base, quote = pair
+    symbol = f"{base}{quote}=X"
+
+    result = _yahoo_chart_result(symbol)
+    if result is None:
+        return []
+
+    meta = result.get("meta") or {}
+    dated = _chart_dated_closes(result)
+    if dated:
+        day, rate = dated[-1]
+    elif meta.get("regularMarketPrice") is not None:
+        try:
+            rate = float(meta["regularMarketPrice"])
+        except (TypeError, ValueError):
+            return []
+        day = local_date.today().isoformat()
+    else:
+        return []
+    previous = dated[-2] if len(dated) >= 2 else None
+
+    facts = [
+        f"Yahoo Finance structured exchange rate for {base}/{quote}",
+        f"Most recent rate: 1 {base} = {rate:.4f} {quote} on {day}",
+    ]
+    if previous:
+        facts.append(f"Previous daily rate: 1 {base} = {previous[1]:.4f} {quote} on {previous[0]}")
+    facts.append(
+        "For a non-trading calendar day, this is the most recent available rate; state the exact date."
+    )
+
+    hint = (
+        f"Structured FX data: {base}/{quote} was {rate:.4f} on {day} "
+        f"(1 {base} = {rate:.4f} {quote})"
+    )
+
+    return [{
+        "title": f"Structured exchange rate: {base}/{quote}",
+        "url": f"https://finance.yahoo.com/quote/{base}{quote}=X",
+        "content": ". ".join(facts),
+        "score": 1.0,
+        "published_date": day,
+        "_source_tier": "high",
+        "_source_reliability_score": 0.92,
+        "_source_reliability_label": "High",
+        "_source_reliability_reasons": [
+            "Structured market data source",
+            "Dated daily rate series",
+            "Uses HTTPS",
+        ],
+        "_relevance_score": 1.0,
+        "_direct_data_hint": hint,
+    }]
+
+
+def _structured_data_items(query: str) -> list[dict]:
+    """High-reliability structured data for a query: equities first, then FX."""
+    items = _finance_structured_market_items(query)
+    if items:
+        return items
+    return _fx_structured_items(query)
 
 
 def _get_tavily():
@@ -1015,7 +1198,7 @@ def tavily_search_results_json(query: str) -> str:
                     NEWS_MODE_DAYS, q, len(items))
 
     annotated = _annotate_tavily_items(items, q)
-    structured_items = _finance_structured_market_items(q)
+    structured_items = _structured_data_items(q)
     if structured_items:
         tavily_answer = ""
         annotated = _sort_by_relevance_then_reliability(
@@ -1080,7 +1263,7 @@ def duckduckgo_results_json(query: str) -> str:
         it["_source_reliability_score"] = reliability["score"]
         it["_source_reliability_label"] = reliability["label"]
         it["_source_reliability_reasons"] = reliability["reasons"]
-    structured_items = _finance_structured_market_items(query.strip())
+    structured_items = _structured_data_items(query.strip())
     if structured_items:
         prepared = _merge_search_items(structured_items, prepared)
     if not _has_strong_result(prepared):
