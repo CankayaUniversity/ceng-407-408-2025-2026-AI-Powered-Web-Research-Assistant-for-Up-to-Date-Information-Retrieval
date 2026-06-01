@@ -1,4 +1,3 @@
-import json
 import logging
 import re
 import threading
@@ -23,7 +22,7 @@ from config import (
     TAVILY_MAX_RESULTS,
 )
 from rank_utils import ordinal_label, requested_rank
-from source_quality import classify_source, source_reliability, sort_results, tier_weight
+from source_quality import classify_source, source_reliability, tier_weight
 from source_relevance import (
     filter_by_relevance,
     is_text_relevant_to_query,

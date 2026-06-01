@@ -8,7 +8,6 @@ off-topic for a Fenerbahçe query.
 from __future__ import annotations
 
 import re
-import unicodedata
 
 # Minimum score to keep a result in agent context and UI sources (0–1).
 MIN_RELEVANCE_SCORE = 0.22
@@ -28,8 +27,8 @@ _EVENT_TYPE_TOKENS = frozenset({
 _QUERY_STOPWORDS = frozenset({
     "the", "and", "for", "with", "from", "that", "this", "what", "when", "where",
     "which", "how", "who", "why", "about", "latest", "current", "recent",
-    "bir", "ile", "için", "icin", "olan", "gibi", "daha", "son", "olan",
-    "the", "are", "was", "were", "has", "have", "had", "does", "did",
+    "bir", "ile", "için", "icin", "olan", "gibi", "daha", "son",
+    "are", "was", "were", "has", "have", "had", "does", "did",
 })
 
 _FOOTBALL_QUERY_RE = re.compile(

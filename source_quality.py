@@ -286,17 +286,3 @@ def classify_source(url: str, title: str = "", snippet: str = "") -> str:
 def tier_weight(tier: str) -> float:
     """Numeric weight retained for older callers/UI formulas."""
     return {"high": 1.0, "medium": 0.65, "low": 0.35, "prediction": 0.02}.get(tier, 0.35)
-
-
-def sort_results(results: list[dict]) -> list[dict]:
-    """Sort search results so more reliable sources come first."""
-    def key(item: dict) -> float:
-        url = item.get("url", "") or ""
-        title = item.get("title", "") or ""
-        content = item.get("content") or item.get("snippet") or ""
-        reliability = source_reliability(url, title, content)
-        original_score = item.get("score")
-        original_component = float(original_score) if isinstance(original_score, (int, float)) else 0.0
-        return -(reliability["score"] * 10.0 + original_component)
-
-    return sorted(results, key=key)
