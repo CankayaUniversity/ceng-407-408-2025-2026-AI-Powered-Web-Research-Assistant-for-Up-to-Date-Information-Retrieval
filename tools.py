@@ -151,6 +151,11 @@ _LEADERBOARD_QUERY_RE = re.compile(
     re.IGNORECASE,
 )
 
+_CLUB_TOP_SCORER_QUERY_RE = re.compile(
+    r"\b(top\s+(?:goal\s*)?scorer|goal\s+scorer|goalscorer|most\s+goals|scorers?)\b",
+    re.IGNORECASE,
+)
+
 _MONTHS = {
     "jan": 1, "january": 1,
     "feb": 2, "february": 2,
@@ -193,6 +198,7 @@ def _authoritative_query_variants(query: str) -> list[str]:
     """Source-directed retries for factual lookup questions."""
     q = query.strip()
     variants: list[str] = []
+    football_season = _current_european_football_season()
 
     if _FINANCE_QUERY_RE.search(q):
         variants.extend([
@@ -205,6 +211,7 @@ def _authoritative_query_variants(query: str) -> list[str]:
         variants.append(f"{q} official result ESPN league site:espn.com OR site:nba.com OR site:uefa.com")
         if _LEADERBOARD_QUERY_RE.search(q):
             variants.append(f"{q} top scorers goals table site:worldfootball.net OR site:transfermarkt.com OR site:topscorersfootball.com OR site:statbunker.com")
+            variants.append(f"{q} {football_season} site:espn.com/soccer/team/stats OR site:espn.co.uk/football/team/stats")
     if _OFFICIAL_STATS_QUERY_RE.search(q):
         variants.append(f"{q} official data statistics site:bls.gov OR site:bea.gov OR site:census.gov OR site:tuik.gov.tr OR site:eurostat.europa.eu")
     if _SOFTWARE_QUERY_RE.search(q):
@@ -222,7 +229,13 @@ def _authoritative_query_variants(query: str) -> list[str]:
         if normalized not in seen:
             seen.add(normalized)
             deduped.append(variant)
-    return deduped[:2]
+    return deduped[:3]
+
+
+def _current_european_football_season() -> str:
+    today = local_date.today()
+    start_year = today.year if today.month >= 7 else today.year - 1
+    return f"{start_year}/{start_year + 1}"
 
 
 def _has_strong_result(items: list[dict]) -> bool:
@@ -594,12 +607,141 @@ def _fx_structured_items(query: str) -> list[dict]:
     }]
 
 
+def _fold_for_match(text: str) -> str:
+    return (
+        (text or "").lower()
+        .replace("ı", "i")
+        .replace("ğ", "g")
+        .replace("ü", "u")
+        .replace("ş", "s")
+        .replace("ö", "o")
+        .replace("ç", "c")
+        .replace("?", "")
+    )
+
+
+_KNOWN_TOPSCORERSFOOTBALL_CLUBS = {
+    "besiktas": ("Beşiktaş", "https://www.topscorersfootball.com/team/besiktas"),
+    "besiktas jk": ("Beşiktaş", "https://www.topscorersfootball.com/team/besiktas"),
+    "beşiktaş": ("Beşiktaş", "https://www.topscorersfootball.com/team/besiktas"),
+    "beşiktaş jk": ("Beşiktaş", "https://www.topscorersfootball.com/team/besiktas"),
+}
+
+
+def _known_topscorersfootball_club(query: str) -> tuple[str, str] | None:
+    folded = _fold_for_match(query)
+    if re.search(r"\bbe.?ikta.?\b", folded):
+        return ("Beşiktaş", "https://www.topscorersfootball.com/team/besiktas")
+    for alias, club in _KNOWN_TOPSCORERSFOOTBALL_CLUBS.items():
+        if _fold_for_match(alias) in folded:
+            return club
+    return None
+
+
+def _parse_topscorersfootball_team_page(html: str, expected_club: str = "") -> dict[str, str] | None:
+    if not html:
+        return None
+    season = _current_european_football_season()
+    season_year = season.split("/", 1)[0]
+    soup = BeautifulSoup(html, "html.parser")
+    container = soup.find(id=f"teamYear{season_year}")
+    if container is None:
+        header = soup.find(string=re.compile(rf"top scorers season\s+{re.escape(season)}", re.IGNORECASE))
+        container = header.find_parent("table") if header else None
+    if container is None:
+        return None
+
+    text = container.get_text(" ", strip=True)
+    if expected_club and _fold_for_match(expected_club) not in _fold_for_match(text):
+        return None
+
+    current_league = ""
+    for row in container.find_all("tr"):
+        cells = [cell.get_text(" ", strip=True) for cell in row.find_all("td")]
+        if not cells:
+            continue
+        if len(cells) == 2 and ("Süper Lig" in cells[0] or "Super Lig" in cells[0]):
+            current_league = cells[0]
+            continue
+        if len(cells) >= 4 and current_league:
+            player = cells[0].strip()
+            goals = re.search(r"\b(\d{1,3})\b", cells[3])
+            if player and goals:
+                return {
+                    "club": expected_club or "Club",
+                    "season": season,
+                    "league": current_league,
+                    "name": player,
+                    "goals": goals.group(1),
+                }
+
+    return None
+
+
+def _football_club_scorer_structured_items(query: str) -> list[dict]:
+    """Direct club-season scorer lookup from a parseable team top-scorer table."""
+    q = query or ""
+    if not _SPORTS_QUERY_RE.search(q) or not _CLUB_TOP_SCORER_QUERY_RE.search(q):
+        return []
+
+    known = _known_topscorersfootball_club(q)
+    if not known:
+        return []
+
+    expected_club, url = known
+    try:
+        response = requests.get(url, headers=_HTTP_HEADERS, timeout=10)
+        response.raise_for_status()
+    except Exception as exc:
+        logger.info("TopScorersFootball club scorer lookup failed for %r: %s", expected_club, exc)
+        return []
+
+    parsed = _parse_topscorersfootball_team_page(response.text, expected_club)
+    if not parsed:
+        return []
+
+    season = parsed["season"]
+    name = parsed["name"]
+    goals = parsed["goals"]
+    club = parsed["club"]
+    league = parsed["league"]
+    content = (
+        f"{club} top scorers season {season}: {name} leads the {league} section with {goals} goals. "
+        f"For a 'this season' club top-scorer question, answer with the current season leader and goals."
+    )
+    hint = (
+        f"Club top scorer: {club}'s top scorer for the {season} {league} season "
+        f"is {name} with {goals} goals"
+    )
+    return [{
+        "title": f"Structured club scorer data: {club} {season}",
+        "url": url,
+        "content": content,
+        "score": 1.0,
+        "published_date": local_date.today().isoformat(),
+        "_source_tier": "medium",
+        "_source_reliability_score": 0.74,
+        "_source_reliability_label": "Medium",
+        "_source_reliability_reasons": [
+            "Established football statistics source",
+            "Parseable club-season scorer table",
+            "Uses HTTPS",
+        ],
+        "_relevance_score": 1.0,
+        "_direct_data_hint": hint,
+    }]
+
+
 def _structured_data_items(query: str) -> list[dict]:
-    """High-reliability structured data for a query: equities first, then FX."""
+    """High-reliability structured data for a query."""
     items = _finance_structured_market_items(query)
     if items:
         return items
-    return _fx_structured_items(query)
+    items = _fx_structured_items(query)
+    if items:
+        return items
+    return _football_club_scorer_structured_items(query)
+
 
 
 def _get_tavily():
@@ -939,6 +1081,50 @@ def _extract_direct_data_hint(query: str, item: dict) -> str:
         if club_scoped_leaderboard and not re.search(r"\b(each club|per club|by club|club)\b", query or "", re.IGNORECASE):
             return ""
         wanted_rank = requested_rank(query)
+        domain = _domain_of(str(item.get("url") or ""))
+        if "espn" in domain and re.search(r"\btop scorers\b", text, re.IGNORECASE):
+            scorer_section = re.split(
+                r"\b(?:Top Assists|Most Assists|Assists|Yellow Cards|Discipline|Goalkeepers)\b",
+                text[text.lower().find("top scorers"):],
+                maxsplit=1,
+                flags=re.IGNORECASE,
+            )[0]
+            row_match = re.search(
+                r"\b1\s*\|\s*([A-Za-zÀ-ÿğüşöçıİĞÜŞÖÇ' .-]{2,80}?)\s*\|\s*(\d{1,3})\s*\|\s*(\d{1,3})\b",
+                scorer_section,
+                re.IGNORECASE,
+            )
+            if row_match and (wanted_rank is None or wanted_rank == 1):
+                name = re.sub(r"\s+", " ", row_match.group(1)).strip()
+                played = row_match.group(2)
+                goals = row_match.group(3)
+                season_match = re.search(r"\b(20\d{2})[-/](\d{2})\b", text)
+                if season_match:
+                    season = f"{season_match.group(1)}-{season_match.group(2)}"
+                else:
+                    season = _current_european_football_season()
+                return (
+                    f"Club top scorer: ESPN lists the club's top scorer for the "
+                    f"{season} season as {name} with {goals} goals in {played} appearances"
+                )
+
+        club_current = re.search(
+            r"([A-Za-zÀ-ÿğüşöçıİĞÜŞÖÇ' .-]{2,80})'s current top 3 scorers "
+            r"for the (\d{4}/\d{4}) season are "
+            r"([^.,;]{2,80}?) with (\d{1,3}) goals?",
+            text,
+            re.IGNORECASE,
+        )
+        if club_current and (wanted_rank is None or wanted_rank == 1):
+            club = club_current.group(1).strip()
+            season = club_current.group(2).strip()
+            name = club_current.group(3).strip()
+            goals = club_current.group(4).strip()
+            return (
+                f"Club top scorer: {club}'s top scorer for the {season} season "
+                f"is {name} with {goals} goals"
+            )
+
         exact_match = re.search(
             r"\bMost goals (?:was|were) scored by\s+(.{3,120}?),\s+scoring\s+(\d{1,3})\s+goals?\b",
             text,
@@ -982,6 +1168,30 @@ def _extract_direct_data_hint(query: str, item: dict) -> str:
     return ""
 
 
+def _direct_hint_is_allowed(query: str, item: dict, hint: str) -> bool:
+    """Only promote high-confidence evidence to DATA_HINT/DIRECT_DATA_HINT.
+
+    Low-trust snippets can still appear as normal RESULT content, but they must
+    not become deterministic facts that later model passes obey blindly.
+    """
+    if not hint:
+        return False
+    if str(item.get("_direct_data_hint") or "").strip() == hint:
+        return True
+    reliability = item.get("_source_reliability_score")
+    if not isinstance(reliability, (int, float)):
+        reliability = source_reliability(
+            str(item.get("url") or ""),
+            str(item.get("title") or ""),
+            str(item.get("content") or item.get("snippet") or ""),
+        )["score"]
+    if float(reliability) >= 0.70:
+        return True
+    if _FINANCE_QUERY_RE.search(query or "") and float(reliability) >= 0.62:
+        return True
+    return False
+
+
 _UNHELPFUL_SUMMARY_RE = re.compile(
     r"\b(not mentioned|not provided|do not provide|does not provide|could not find|"
     r"couldn't find|no definitive|not confirmed|unavailable)\b",
@@ -1023,36 +1233,35 @@ def _format_results_for_llm(items: list[dict], tavily_answer: str = "", query: s
                 "Say you could not find information that directly matches what was asked.")
 
     lines = []
-    direct_hints: list[tuple[int | None, int | None, str]] = []
+    direct_hints: list[tuple[int | None, int | None, float, str]] = []
     for idx, item in enumerate(useful, start=1):
         hint = _extract_direct_data_hint(query, item)
-        if hint:
+        if hint and _direct_hint_is_allowed(query, item, hint):
             goal_match = re.search(r"\bwith\s+(\d{1,3})\s+goals?\b", hint, re.IGNORECASE)
             goal_count = int(goal_match.group(1)) if goal_match else None
             rank_match = re.search(r"\bLeaderboard rank\s+(\d{1,2})\s+candidate\b", hint, re.IGNORECASE)
             rank = int(rank_match.group(1)) if rank_match else None
-            direct_hints.append((rank, goal_count, f"DIRECT_DATA_HINT {idx}: {hint} - source: {(item.get('url') or '').strip()}"))
+            reliability = item.get("_source_reliability_score")
+            rel_score = float(reliability) if isinstance(reliability, (int, float)) else 0.0
+            direct_hints.append((rank, goal_count, rel_score, f"DIRECT_DATA_HINT {idx}: {hint} - source: {(item.get('url') or '').strip()}"))
     if direct_hints:
-        hint_lines = [line for _rank, _goal_count, line in direct_hints]
+        ranked_hints = sorted(direct_hints, key=lambda h: h[2], reverse=True)
+        hint_lines = [line for _rank, _goal_count, _rel_score, line in ranked_hints]
         if _LEADERBOARD_QUERY_RE.search(query or ""):
             wanted_rank = requested_rank(query)
             if wanted_rank is not None:
-                rank_entries = [(goal_count, line) for rank, goal_count, line in direct_hints if rank == wanted_rank]
-                rank_lines = [line for _goal_count, line in rank_entries]
-                rank_goal_counts = [goal_count for goal_count, _line in rank_entries if goal_count is not None]
+                rank_entries = [(goal_count, rel_score, line) for rank, goal_count, rel_score, line in ranked_hints if rank == wanted_rank]
+                rank_lines = [line for _goal_count, _rel_score, line in rank_entries]
+                rank_goal_counts = [goal_count for goal_count, _rel_score, _line in rank_entries if goal_count is not None]
                 if rank_goal_counts:
                     max_rank_goals = max(rank_goal_counts)
-                    rank_lines = [line for goal_count, line in rank_entries if goal_count == max_rank_goals]
+                    rank_lines = [line for goal_count, _rel_score, line in rank_entries if goal_count == max_rank_goals]
                 if rank_lines:
                     hint_lines = rank_lines
                 else:
                     hint_lines = []
-            goal_counts = [goal_count for _rank, goal_count, _line in direct_hints if goal_count is not None]
-            if wanted_rank is None and goal_counts:
-                max_goals = max(goal_counts)
-                hint_lines = [line for _rank, goal_count, line in direct_hints if goal_count == max_goals]
         if hint_lines:
-            lines.append("DIRECT DATA HINTS (use these exact values when they directly answer the user; if hints conflict, prefer structured market/official data and exact RESULT content over summaries):")
+            lines.append("DIRECT DATA HINTS (use these exact values when they directly answer the user; if hints conflict, prefer higher-reliability and corroborated sources over larger numeric values):")
             lines.extend(hint_lines[:3])
             lines.append("")
             lines.append("---")
@@ -1091,7 +1300,7 @@ def _format_results_for_llm(items: list[dict], tavily_answer: str = "", query: s
         if reasons:
             lines.append(f"RELIABILITY_SIGNALS: {'; '.join(str(r) for r in reasons[:4])}")
         data_hint = _extract_direct_data_hint(query, item)
-        if data_hint:
+        if data_hint and _direct_hint_is_allowed(query, item, data_hint):
             lines.append(f"DATA_HINT: {data_hint}")
         if content:
             lines.append(f"CONTENT: {content}")
@@ -1268,7 +1477,7 @@ def duckduckgo_results_json(query: str) -> str:
         prepared = _merge_search_items(structured_items, prepared)
     if not _has_strong_result(prepared):
         supplemental = []
-        for variant in _authoritative_query_variants(query.strip())[:1]:
+        for variant in _authoritative_query_variants(query.strip()):
             try:
                 fallback_raw = _get_duckduckgo().invoke({"query": variant})
             except Exception as exc:

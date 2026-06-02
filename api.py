@@ -30,7 +30,16 @@ from fact_extraction import (
     sanitize_answer,
 )
 from llm_passes import (
+    accept_synthesized_answer,
+    accept_verified_answer,
+    assess_escalation,
+    direct_answer_from_tool_messages,
+    extract_evidence_table,
+    plan_high_accuracy_queries,
     rank_answer_from_tool_messages,
+    refine_search_queries,
+    search_plan_context_message,
+    synthesize_answer_from_evidence,
     understanding_context_message,
     understand_query,
     verify_answer,
@@ -261,6 +270,71 @@ def _resolve_strict_mode(settings: dict, strict_param: bool | None) -> bool:
     return bool(settings.get("strict_answer_mode", False))
 
 
+def _dedupe_retrieval_queries(question: str, planned_queries: list[str]) -> list[str]:
+    """Drop blanks, the exact question, and repeats from planned supplemental queries."""
+    seen = {" ".join(question.split()).lower()}
+    queries: list[str] = []
+    for query in planned_queries or []:
+        normalized = " ".join(str(query or "").split()).lower()
+        if not normalized or normalized in seen:
+            continue
+        seen.add(normalized)
+        queries.append(str(query).strip())
+    return queries
+
+
+def _run_exact_question_retrieval(question: str, tool_messages: list[dict[str, str]]) -> list[dict[str, str]]:
+    """Run both main search tools with the user's exact wording."""
+    added: list[dict[str, str]] = []
+    for tool_name, tool in EXACT_RANK_RETRY_TOOLS:
+        try:
+            content = str(tool.invoke({"query": question}))
+        except Exception as exc:
+            logger.info("Escalation retrieval failed for %s: %s", tool_name, exc)
+            continue
+        message = {"name": tool_name, "content": content}
+        tool_messages.append(message)
+        added.append(message)
+    return added
+
+
+def _run_escalation_retrieval(
+    *,
+    question: str,
+    model_id: str,
+    understanding: dict,
+    tool_messages: list[dict[str, str]],
+) -> tuple[list[str], list[dict[str, str]]]:
+    """Run exact and supplemental retrieval for an escalated answer."""
+    added: list[dict[str, str]] = []
+    exact_messages = _run_exact_question_retrieval(question, tool_messages)
+    added.extend(exact_messages)
+    if direct_answer_from_tool_messages(question, tool_messages):
+        return [], added
+
+    planned_queries = plan_high_accuracy_queries(
+        question=question,
+        model_id=model_id,
+        understanding=understanding,
+    )
+    queries = _dedupe_retrieval_queries(question, planned_queries)
+
+    for query_index, query in enumerate(queries, start=1):
+        for tool_name, tool in EXACT_RANK_RETRY_TOOLS:
+            try:
+                content = str(tool.invoke({"query": query}))
+            except Exception as exc:
+                logger.info("Escalation retrieval failed for %s query %r: %s", tool_name, query, exc)
+                continue
+            message = {"name": tool_name, "content": content}
+            tool_messages.append(message)
+            added.append(message)
+        logger.info("Escalation supplemental query %d/%d: %r", query_index, len(queries), query)
+        if direct_answer_from_tool_messages(question, tool_messages):
+            break
+    return planned_queries, added
+
+
 @app.get("/ask_agent_stream")
 async def ask_agent_stream(
     request: Request,
@@ -359,9 +433,17 @@ async def ask_agent_stream(
                 model_info["id"],
             )
             understanding_message = understanding_context_message(query_understanding)
+            refined_queries = await asyncio.to_thread(
+                refine_search_queries,
+                question=question,
+                model_id=model_info["id"],
+                understanding=query_understanding,
+            )
+            search_plan_message = search_plan_context_message(refined_queries)
             input_messages = (
                 [_today_context_message()]
                 + ([understanding_message] if understanding_message else [])
+                + ([search_plan_message] if search_plan_message else [])
                 + history_messages
                 + [HumanMessage(content=question)]
             )
@@ -475,44 +557,12 @@ async def ask_agent_stream(
             if await request.is_disconnected():
                 return
 
-            if _needs_lookup_retry(question):
-                for tool_name, tool in EXACT_RANK_RETRY_TOOLS:
-                    call_id = f"exact-rank-{tool_name}"
-                    yield _sse(
-                        "tool_call",
-                        {
-                            "id": call_id,
-                            "name": tool_name,
-                            "args": {"query": question},
-                        },
-                    )
-                    try:
-                        content_str = await asyncio.to_thread(tool.invoke, {"query": question})
-                        content_str = str(content_str)
-                    except Exception as exc:
-                        logger.info("Exact-rank retry failed for %s: %s", tool_name, exc)
-                        continue
-                    tool_messages_collected.append({"name": tool_name, "content": content_str})
-                    yield _sse(
-                        "tool_result",
-                        {
-                            "id": call_id,
-                            "name": tool_name,
-                            "preview": content_str[:600],
-                            "length": len(content_str),
-                        },
-                    )
-                    if rank_answer_from_tool_messages(
-                        question,
-                        [{"name": tool_name, "content": content_str}],
-                    ):
-                        break
-
             yield _sse("extracting", {})
 
-            # Pass the raw answer (with newlines) so fact_extraction can
-            # detect and strip the trailing "Sources:" markdown section
-            # before splitting into claims.
+            # Cheap claim extraction first, so escalation is decided from real
+            # grounding signals without spending any extra LLM calls. Pass the
+            # raw answer (with newlines) so fact_extraction can strip a trailing
+            # "Sources:" section before splitting into claims.
             claim_source_answer = llm_draft_answer or final_answer
             extraction = await asyncio.to_thread(
                 extract_claims,
@@ -520,6 +570,149 @@ async def ask_agent_stream(
                 tool_messages_collected,
                 question,
             )
+
+            escalation = assess_escalation(
+                question=question,
+                draft_answer=final_answer,
+                trust_signals=extraction["trust_signals"],
+                understanding=query_understanding,
+                tool_messages=tool_messages_collected,
+            )
+            escalation_level = 0 if strict_mode else int(escalation["level"])
+            planned_queries: list[str] = []
+
+            async def run_escalation_query(retrieval_query: str, query_index: int):
+                for tool_name, tool in EXACT_RANK_RETRY_TOOLS:
+                    call_id = f"escalation-{query_index}-{tool_name}"
+                    yield _sse(
+                        "tool_call",
+                        {"id": call_id, "name": tool_name, "args": {"query": retrieval_query}},
+                    )
+                    try:
+                        content_str = str(await asyncio.to_thread(tool.invoke, {"query": retrieval_query}))
+                    except Exception as exc:
+                        logger.info(
+                            "Escalation retrieval failed for %s query %r: %s",
+                            tool_name, retrieval_query, exc,
+                        )
+                        continue
+                    tool_messages_collected.append({"name": tool_name, "content": content_str})
+                    yield _sse(
+                        "tool_result",
+                        {"id": call_id, "name": tool_name, "preview": content_str[:600], "length": len(content_str)},
+                    )
+
+            # Level >= 1: force exact + supplemental retrieval, then re-extract.
+            if escalation_level >= 1:
+                async for event in run_escalation_query(question, 1):
+                    yield event
+                if not direct_answer_from_tool_messages(question, tool_messages_collected):
+                    yield _sse("accuracy_planning", {})
+                    planned_queries = await asyncio.to_thread(
+                        plan_high_accuracy_queries,
+                        question=question,
+                        model_id=model_info["id"],
+                        understanding=query_understanding,
+                    )
+                    for query_index, retrieval_query in enumerate(
+                        _dedupe_retrieval_queries(question, planned_queries), start=2
+                    ):
+                        async for event in run_escalation_query(retrieval_query, query_index):
+                            yield event
+                        if direct_answer_from_tool_messages(question, tool_messages_collected):
+                            break
+                extraction = await asyncio.to_thread(
+                    extract_claims, claim_source_answer, tool_messages_collected, question
+                )
+            elif _needs_lookup_retry(question):
+                for tool_name, tool in EXACT_RANK_RETRY_TOOLS:
+                    call_id = f"exact-rank-{tool_name}"
+                    yield _sse(
+                        "tool_call",
+                        {"id": call_id, "name": tool_name, "args": {"query": question}},
+                    )
+                    try:
+                        content_str = str(await asyncio.to_thread(tool.invoke, {"query": question}))
+                    except Exception as exc:
+                        logger.info("Exact-rank retry failed for %s: %s", tool_name, exc)
+                        continue
+                    tool_messages_collected.append({"name": tool_name, "content": content_str})
+                    yield _sse(
+                        "tool_result",
+                        {"id": call_id, "name": tool_name, "preview": content_str[:600], "length": len(content_str)},
+                    )
+                    if rank_answer_from_tool_messages(question, [{"name": tool_name, "content": content_str}]):
+                        break
+                extraction = await asyncio.to_thread(
+                    extract_claims, claim_source_answer, tool_messages_collected, question
+                )
+
+            # Level 2: compose from evidence only when retrieval didn't resolve
+            # it. A Level-1 draft escalates here only if retrieval left it weak.
+            escalation_signals: dict[str, object] = {
+                "escalation_level": escalation_level,
+                "escalation_reasons": escalation["reasons"],
+            }
+            run_synthesis = (
+                not strict_mode
+                and escalation_level >= 1
+                and not direct_answer_from_tool_messages(question, tool_messages_collected)
+            )
+            if run_synthesis and escalation_level < 2:
+                post = assess_escalation(
+                    question=question,
+                    draft_answer=final_answer,
+                    trust_signals=extraction["trust_signals"],
+                    understanding=query_understanding,
+                    tool_messages=tool_messages_collected,
+                )
+                run_synthesis = int(post["level"]) >= 1
+            if planned_queries:
+                escalation_signals["escalation_planned_queries"] = planned_queries
+            if run_synthesis:
+                yield _sse("evidence_table", {})
+                evidence_table = await asyncio.to_thread(
+                    extract_evidence_table,
+                    question=question,
+                    model_id=model_info["id"],
+                    tool_messages=tool_messages_collected,
+                    understanding=query_understanding,
+                )
+                yield _sse("evidence_synthesis", {})
+                synthesis = await asyncio.to_thread(
+                    synthesize_answer_from_evidence,
+                    question=question,
+                    draft_answer=final_answer,
+                    model_id=model_info["id"],
+                    tool_messages=tool_messages_collected,
+                    extraction=extraction,
+                    understanding=query_understanding,
+                    evidence_table=evidence_table,
+                )
+                synthesis_revised = accept_synthesized_answer(synthesis, final_answer)
+                if synthesis_revised:
+                    final_answer = synthesis.get("final_answer", final_answer)
+                    extraction = await asyncio.to_thread(
+                        extract_claims,
+                        final_answer,
+                        tool_messages_collected,
+                        question,
+                    )
+                    extraction["trust_signals"]["evidence_first_answer"] = True
+                    if llm_draft_answer.strip() and llm_draft_answer.strip() != final_answer.strip():
+                        extraction["trust_signals"]["llm_draft_discarded"] = True
+                escalation_signals.update({
+                    "evidence_first_answer": synthesis_revised,
+                    "evidence_synthesis_status": synthesis.get("status", "unknown"),
+                    "evidence_synthesis_confidence": synthesis.get("confidence", "unknown"),
+                    "evidence_table_candidate_count": len(evidence_table.get("candidates") or []),
+                })
+                if evidence_table.get("conflicts"):
+                    escalation_signals["evidence_table_conflicts"] = evidence_table.get("conflicts", [])[:3]
+                if evidence_table.get("missing"):
+                    escalation_signals["evidence_table_missing"] = evidence_table.get("missing", [])[:3]
+                if synthesis.get("issues"):
+                    escalation_signals["evidence_synthesis_issues"] = synthesis.get("issues", [])
 
             if strict_mode:
                 cited = cited_facts_only(extraction["facts"])
@@ -548,9 +741,8 @@ async def ask_agent_stream(
                     extraction=extraction,
                     understanding=query_understanding,
                 )
-                verified_answer = verification.get("final_answer") or final_answer
-                if verified_answer != final_answer:
-                    final_answer = verified_answer
+                if accept_verified_answer(verification, final_answer):
+                    final_answer = verification.get("final_answer", final_answer)
                     extraction = await asyncio.to_thread(
                         extract_claims,
                         final_answer,
@@ -560,7 +752,10 @@ async def ask_agent_stream(
                     extraction["trust_signals"]["verifier_revised_answer"] = True
                 extraction["trust_signals"]["verifier_status"] = verification.get("status", "skipped")
                 extraction["trust_signals"]["verifier_confidence"] = verification.get("confidence", "unknown")
+            extraction["trust_signals"].update(escalation_signals)
             extraction["trust_signals"]["query_understanding"] = query_understanding
+            if refined_queries:
+                extraction["trust_signals"]["refined_search_queries"] = refined_queries
 
             turn_payload = {
                 "question": question,
@@ -639,6 +834,14 @@ def ask_agent(question: str, model: str | None = None):
         understanding_message = understanding_context_message(query_understanding)
         if understanding_message:
             input_message["messages"].insert(1, understanding_message)
+        refined_queries = refine_search_queries(
+            question=question,
+            model_id=model_info["id"],
+            understanding=query_understanding,
+        )
+        search_plan_message = search_plan_context_message(refined_queries)
+        if search_plan_message:
+            input_message["messages"].insert(-1, search_plan_message)
         result = agent.invoke(input_message)
 
         logger.info("=== agent reasoning trace (%s) ===", model_info["label"])
@@ -662,12 +865,82 @@ def ask_agent(question: str, model: str | None = None):
             for message in result["messages"]
             if message.type == "tool"
         ]
+        # First pass: cheap exact-rank retry + extraction so escalation can be
+        # judged from real grounding signals.
         added_tool_messages = _run_exact_rank_retry(question, tool_messages)
         for message in added_tool_messages:
             preview = message["content"][:TOOL_LOG_PREVIEW_CHARS]
             truncated = " ...(truncated)" if len(message["content"]) > TOOL_LOG_PREVIEW_CHARS else ""
             logger.info("  exact-rank result[%s]: %s%s", message["name"], preview, truncated)
         extraction = extract_claims(final_answer, tool_messages, question)
+
+        escalation = assess_escalation(
+            question=question,
+            draft_answer=final_answer,
+            trust_signals=extraction["trust_signals"],
+            understanding=query_understanding,
+            tool_messages=tool_messages,
+        )
+        escalation_level = int(escalation["level"])
+        planned_queries: list[str] = []
+        escalation_signals: dict[str, object] = {
+            "escalation_level": escalation_level,
+            "escalation_reasons": escalation["reasons"],
+        }
+        if escalation_level >= 1:
+            planned_queries, _ = _run_escalation_retrieval(
+                question=question,
+                model_id=model_info["id"],
+                understanding=query_understanding,
+                tool_messages=tool_messages,
+            )
+            extraction = extract_claims(final_answer, tool_messages, question)
+            if planned_queries:
+                escalation_signals["escalation_planned_queries"] = planned_queries
+
+        run_synthesis = escalation_level >= 1 and not direct_answer_from_tool_messages(question, tool_messages)
+        if run_synthesis and escalation_level < 2:
+            post = assess_escalation(
+                question=question,
+                draft_answer=final_answer,
+                trust_signals=extraction["trust_signals"],
+                understanding=query_understanding,
+                tool_messages=tool_messages,
+            )
+            run_synthesis = int(post["level"]) >= 1
+        if run_synthesis:
+            evidence_table = extract_evidence_table(
+                question=question,
+                model_id=model_info["id"],
+                tool_messages=tool_messages,
+                understanding=query_understanding,
+            )
+            synthesis = synthesize_answer_from_evidence(
+                question=question,
+                draft_answer=final_answer,
+                model_id=model_info["id"],
+                tool_messages=tool_messages,
+                extraction=extraction,
+                understanding=query_understanding,
+                evidence_table=evidence_table,
+            )
+            synthesis_revised = accept_synthesized_answer(synthesis, final_answer)
+            if synthesis_revised:
+                final_answer = synthesis.get("final_answer", final_answer)
+                extraction = extract_claims(final_answer, tool_messages, question)
+                extraction["trust_signals"]["evidence_first_answer"] = True
+            escalation_signals.update({
+                "evidence_first_answer": synthesis_revised,
+                "evidence_synthesis_status": synthesis.get("status", "unknown"),
+                "evidence_synthesis_confidence": synthesis.get("confidence", "unknown"),
+                "evidence_table_candidate_count": len(evidence_table.get("candidates") or []),
+            })
+            if evidence_table.get("conflicts"):
+                escalation_signals["evidence_table_conflicts"] = evidence_table.get("conflicts", [])[:3]
+            if evidence_table.get("missing"):
+                escalation_signals["evidence_table_missing"] = evidence_table.get("missing", [])[:3]
+            if synthesis.get("issues"):
+                escalation_signals["evidence_synthesis_issues"] = synthesis.get("issues", [])
         verification = verify_answer(
             question=question,
             answer=final_answer,
@@ -676,14 +949,16 @@ def ask_agent(question: str, model: str | None = None):
             extraction=extraction,
             understanding=query_understanding,
         )
-        verified_answer = verification.get("final_answer") or final_answer
-        if verified_answer != final_answer:
-            final_answer = verified_answer
+        if accept_verified_answer(verification, final_answer):
+            final_answer = verification.get("final_answer", final_answer)
             extraction = extract_claims(final_answer, tool_messages, question)
             extraction["trust_signals"]["verifier_revised_answer"] = True
         extraction["trust_signals"]["verifier_status"] = verification.get("status", "skipped")
         extraction["trust_signals"]["verifier_confidence"] = verification.get("confidence", "unknown")
+        extraction["trust_signals"].update(escalation_signals)
         extraction["trust_signals"]["query_understanding"] = query_understanding
+        if refined_queries:
+            extraction["trust_signals"]["refined_search_queries"] = refined_queries
         logger.info("trust_signals: %s", extraction["trust_signals"])
 
         return {

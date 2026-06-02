@@ -656,6 +656,16 @@ body {
   white-space: pre-wrap;
   word-break: break-word;
 }
+/* The global translucent-orange selection is invisible on the orange bubble,
+   so give user messages a solid high-contrast highlight instead. */
+.user-msg::selection {
+  background: #ffffff;
+  color: var(--accent);
+}
+.user-msg::-moz-selection {
+  background: #ffffff;
+  color: var(--accent);
+}
 
 .agent-block {
   display: flex;
@@ -2380,6 +2390,10 @@ body.modal-open {
 .meta-badge.strict {
   border-color: rgba(var(--accent-rgb), 0.35);
   color: var(--accent);
+}
+.meta-badge.accuracy {
+  border-color: rgba(6, 182, 212, 0.36);
+  color: #22d3ee;
 }
 
 .model-toggle {

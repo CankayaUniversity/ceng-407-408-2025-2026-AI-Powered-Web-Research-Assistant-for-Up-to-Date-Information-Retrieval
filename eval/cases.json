@@ -1,0 +1,34 @@
+[
+  {
+    "id": "capital-australia",
+    "question": "What is the capital of Australia?",
+    "expect_all": ["canberra"],
+    "must_not": ["sydney is the capital", "could not find"]
+  },
+  {
+    "id": "author-1984",
+    "question": "Who wrote the novel 1984?",
+    "expect_all": ["orwell"]
+  },
+  {
+    "id": "gold-symbol",
+    "question": "What is the chemical symbol for gold?",
+    "expect_regex": "\\bAu\\b"
+  },
+  {
+    "id": "tallest-mountain",
+    "question": "What is the tallest mountain above sea level on Earth?",
+    "expect_all": ["everest"]
+  },
+  {
+    "id": "speed-of-light",
+    "question": "What is the speed of light in a vacuum in kilometres per second?",
+    "expect_regex": "299[,.]?792"
+  },
+  {
+    "id": "rank-preserved-template",
+    "question": "Who is the 3rd top scorer in the Premier League this season?",
+    "must_not": ["could not find", "i cannot", "unable to find"],
+    "note": "Time-sensitive: fill expect_all with the correct player once known. The must_not check guards against the model hedging instead of answering the requested rank — which now also triggers automatic escalation server-side."
+  }
+]

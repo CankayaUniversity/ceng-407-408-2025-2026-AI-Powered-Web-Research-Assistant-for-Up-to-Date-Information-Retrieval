@@ -55,6 +55,13 @@ _DIFFERENT_CLUB_RE = re.compile(
     re.IGNORECASE,
 )
 
+_FOOTBALL_CLUB_ALIASES = {
+    "besiktas": ("besiktas", "beşiktaş", "beikta"),
+    "fenerbahce": ("fenerbahce", "fenerbahçe"),
+    "galatasaray": ("galatasaray",),
+    "trabzonspor": ("trabzonspor",),
+}
+
 _SUPER_LIG_QUERY_RE = re.compile(
     r"\b(?:turkish\s+)?s.?per\s+lig\b|\bsuperlig\b|\bturkish\b.*\blig\b",
     re.IGNORECASE,
@@ -81,6 +88,7 @@ def _normalize_text(text: str) -> str:
         .replace("ş", "s")
         .replace("ö", "o")
         .replace("ç", "c")
+        .replace("?", "")
     )
 
 
@@ -159,6 +167,11 @@ def relevance_score(
 
     q_norm = _normalize_text(query)
     title_snip = _normalize_text(f"{title} {snippet}")
+
+    for club_key, aliases in _FOOTBALL_CLUB_ALIASES.items():
+        if any(_normalize_text(alias) in q_norm for alias in aliases):
+            if club_key not in title_snip and club_key not in _normalize_text(url):
+                return 0.0
 
     # League-specific queries need league-specific evidence. Otherwise generic
     # "2025/26 top scorer" articles from La Liga etc. can look relevant by

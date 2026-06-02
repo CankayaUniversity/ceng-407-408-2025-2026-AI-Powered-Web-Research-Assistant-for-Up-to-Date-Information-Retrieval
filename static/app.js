@@ -641,7 +641,7 @@ async function syncStrictAnswerMode(enabled) {
   await patchSettings({ strict_answer_mode: strictAnswerMode });
 }
 
-function buildBadges({ model, fromCache, memoryTurns, strictMode }) {
+function buildBadges({ model, fromCache, memoryTurns, strictMode, escalated }) {
   const wrap = el('div', 'turn-badges');
   const modelKey = model || 'llama';
   const modelBadge = el('span', `meta-badge model-${modelKey}`);
@@ -654,6 +654,13 @@ function buildBadges({ model, fromCache, memoryTurns, strictMode }) {
     strictBadge.innerHTML = `<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`;
     strictBadge.appendChild(txt('span', null, 'Strict sources'));
     wrap.appendChild(strictBadge);
+  }
+
+  if (escalated) {
+    const accuracyBadge = el('span', 'meta-badge accuracy');
+    accuracyBadge.innerHTML = `<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/><circle cx="12" cy="12" r="3"/></svg>`;
+    accuracyBadge.appendChild(txt('span', null, 'Escalated'));
+    wrap.appendChild(accuracyBadge);
   }
 
   if (fromCache) {
@@ -1553,6 +1560,13 @@ function buildSettingsModal(settings, defaults) {
 
       <div class="setting-row">
         <div class="setting-label">
+          <span class="setting-name">Adaptive accuracy</span>
+          <span class="setting-desc">Always on. When the cheap answer looks weak — hedged, missing a value, thinly sourced, or conflicting — the agent automatically escalates to exact-question retrieval, supplemental searches, and an evidence-first answer pass. Turns with an <span class="meta-badge accuracy" style="display:inline-flex;vertical-align:middle">Escalated</span> badge took that path.</span>
+        </div>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-label">
           <span class="setting-name">History limit</span>
           <span class="setting-desc">How many prior turns are passed back to the agent as conversation context. Set to <code>0</code> to disable memory. <span class="setting-default">Default: ${defaults.history_turn_limit}</span></span>
         </div>
@@ -1932,6 +1946,7 @@ function renderHistoricalTurn(turn, turnKey) {
 
   const agentBlock = el('div', 'agent-block');
   const strictMode = !!(turn.trust_signals && turn.trust_signals.strict_answer_mode);
+  const escalated = !!(turn.trust_signals && Number(turn.trust_signals.escalation_level) >= 1);
   const key = turnKey || 'hist';
   agentBlock.appendChild(
     buildBadges({
@@ -1939,6 +1954,7 @@ function renderHistoricalTurn(turn, turnKey) {
       fromCache: !!turn.from_cache,
       memoryTurns: 0,
       strictMode,
+      escalated,
     })
   );
   mountAnswerCard(agentBlock, {
@@ -2062,6 +2078,7 @@ async function startResearch(question, options) {
   let streamedMemoryTurns = 0;
   let streamedModel = modelForRequest;
   let streamedStrictMode = strictAnswerMode;
+  let streamedEscalated = false;
 
   function scrollIfViewing() {
     if (activeChatId === targetChatId) scrollToBottom();
@@ -2089,6 +2106,7 @@ async function startResearch(question, options) {
         fromCache: streamedFromCache,
         memoryTurns: streamedMemoryTurns,
         strictMode: streamedStrictMode,
+        escalated: streamedEscalated,
       });
       badgesEl.replaceWith(fresh);
       badgesEl = fresh;
@@ -2098,6 +2116,7 @@ async function startResearch(question, options) {
         fromCache: streamedFromCache,
         memoryTurns: streamedMemoryTurns,
         strictMode: streamedStrictMode,
+        escalated: streamedEscalated,
       });
       agentBlock.insertBefore(badgesEl, trace);
     }
@@ -2199,6 +2218,18 @@ async function startResearch(question, options) {
     traceLabel.textContent = 'Critiquing answer against evidence…';
   });
 
+  es.addEventListener('accuracy_planning', () => {
+    traceLabel.textContent = 'Planning deeper retrieval…';
+  });
+
+  es.addEventListener('evidence_table', () => {
+    traceLabel.textContent = 'Structuring evidence candidates…';
+  });
+
+  es.addEventListener('evidence_synthesis', () => {
+    traceLabel.textContent = 'Composing from evidence table…';
+  });
+
   es.addEventListener('final', (event) => {
     const data = JSON.parse(event.data);
     const elapsed = ((Date.now() - startTime) / 1000).toFixed(streamedFromCache ? 2 : 1);
@@ -2217,6 +2248,9 @@ async function startResearch(question, options) {
 
     streamedFromCache = !!data.from_cache;
     streamedModel = data.model || streamedModel;
+    if (data.trust_signals) {
+      streamedEscalated = Number(data.trust_signals.escalation_level) >= 1;
+    }
     ensureBadges();
 
     if (data.sources && data.sources.length) {

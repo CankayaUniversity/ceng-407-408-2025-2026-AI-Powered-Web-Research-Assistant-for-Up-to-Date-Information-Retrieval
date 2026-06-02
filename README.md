@@ -28,13 +28,29 @@ tiers and trust signals — all running on your own machine.
   science questions.
 - **Structured market data lookup** — finance questions can resolve tickers
   and retrieve dated daily close data from Yahoo Finance before generic snippets.
+- **Structured football club scorer lookup** — club-scoped "top scorer this
+  season" questions can parse current-season TopScorersFootball team tables
+  before generic search snippets.
 - **Evidence extraction pass** — after the draft answer is generated, a
   deterministic Python pass maps claims to retrieved sources and flags weak or
   unsupported evidence.
 - **Extra inference passes** — before retrieval, a query-understanding LLM pass
-  classifies intent and answer shape without generating search queries; after
-  extraction, a verifier/critic LLM pass revises unsupported, over-cautious, or
-  conflicting answers against the retrieved evidence.
+  classifies intent and answer shape without generating search queries, and a
+  query-refinement pass rewrites the question into focused search queries that
+  are fed to the agent before it searches; after extraction, a verifier/critic
+  LLM pass revises unsupported, over-cautious, or conflicting answers against
+  the retrieved evidence. The synthesis and verifier revisions are gated so a
+  weak model cannot replace a usable draft with a low-confidence hedge.
+- **Adaptive accuracy escalation** — after the draft answer, cheap grounding
+  signals (trust score, citation coverage, source count, plus hedge and
+  answer-shape checks) decide how hard to work. A well-grounded answer is
+  accepted as-is (Level 0). A weakly grounded one triggers forced
+  exact-question + supplemental source-directed retrieval (Level 1). A hedge,
+  a missing expected value, or still-weak grounding after retrieval triggers a
+  structured evidence table and an evidence-first answer pass (Level 2). The
+  expensive work only runs when the signals justify it — there is no manual
+  toggle. The chosen level and reasons are recorded in trust signals, and
+  escalated turns show an "Escalated" badge.
 - **Rank-aware leaderboard answers** — ordinal questions such as "3rd top
   scorer" are parsed as exact-rank requests, and tool output surfaces
   rank-specific direct hints instead of only the overall leader. The API also
@@ -125,14 +141,16 @@ test the raw endpoints.
 | `chat_store.py` | JSON-file chat history |
 | `config.py` | Models, prompts, constants, `.env` loading |
 | `static/` | Frontend SPA (`index.html`, `app.js`, `styles.css`) |
+| `eval/` | Accuracy harness: offline logic checks + end-to-end eval runner |
 
 ## Endpoints
 
 - `GET /` — the UI
 - `GET /ask_agent_stream?question=...&model=...&chat_id=...` — Server-Sent
   Events stream used by the UI. Emits `start`, `understanding`, `tool_call`,
-  `tool_result`, `answer`, `extracting`, `verifying`, `final`, `done`, `error`
-  events.
+  `tool_result`, `answer`, `extracting`, `accuracy_planning`,
+  `evidence_table`, `evidence_synthesis`, `verifying`, `final`, `done`,
+  `error` events.
 - `GET /ask_agent?question=...&model=...` — Legacy non-streaming endpoint.
   Returns the full result as JSON. Useful for Swagger / command-line testing.
 - `GET /api/chats` and `GET /api/chats/{id}` — chat list and detail
@@ -158,6 +176,10 @@ Both are excluded from git via `.gitignore`.
 - Explicit ordinal/rank questions use an exact-original-question search retry.
   This keeps answers like "3rd top scorer" focused on the requested row rather
   than the overall leader or a club-by-club table.
+- Accuracy escalation is automatic and per-question; the result (whatever its
+  level) is cached normally, so a later identical question reuses the escalated
+  answer rather than re-running the expensive path. Escalation is skipped in
+  strict mode, which composes its answer only from cited claims.
 - If `tavily_search_results_json` fails for Llama 3.1 with a malformed-args
   error, the tool returns a teaching error message that prompts the model
   to retry with a clean string query. See the defensive coercion logic in

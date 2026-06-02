@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Any
 
 CACHE_FILE = Path(__file__).parent / "cache.json"
-CACHE_SCHEMA_VERSION = 9
+CACHE_SCHEMA_VERSION = 15
 _lock = threading.Lock()
 
 _PUNCT_RE = re.compile(r"[^\w\s]+", re.UNICODE)
